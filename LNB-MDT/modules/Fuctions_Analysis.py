@@ -88,17 +88,24 @@ class AnalysisBtnClick:
         self.Info = InfoAnalysis(self.ui)
         self.method = self.Info.method_analysis
         self.Box = SelBox()
-        try:
-            self.Box.u = mda.Universe(self.Info.path_structure
-                                      , self.Info.path_trajectory
-                                      , all_coordinates=False)
-            self.Box.residues = np.unique(self.Box.u.atoms.resnames)
-            for sp in self.Box.residues:
-                self.Box.residues_atoms[sp] = np.unique(self.Box.u.select_atoms('resname %s' % sp).names)
-            self.stackLayout()
-        except:
-            create_warn_dialog(text='Failed to import files')
+        # try:
+        #     self.Box.u = mda.Universe(self.Info.path_structure
+        #                               , self.Info.path_trajectory
+        #                               , all_coordinates=False)
+        #     self.Box.residues = np.unique(self.Box.u.atoms.resnames)
+        #     for sp in self.Box.residues:
+        #         self.Box.residues_atoms[sp] = np.unique(self.Box.u.select_atoms('resname %s' % sp).names)
+        #     self.stackLayout()
+        # except:
+        #     create_warn_dialog(text='Failed to import files')
 
+        self.Box.u = mda.Universe(self.Info.path_structure
+                                  , self.Info.path_trajectory
+                                  , all_coordinates=False)
+        self.Box.residues = np.unique(self.Box.u.atoms.resnames)
+        for sp in self.Box.residues:
+            self.Box.residues_atoms[sp] = np.unique(self.Box.u.select_atoms('resname %s' % sp).names)
+        self.stackLayout()
 
             # self.Box.u = mda.Universe(self.TEST_GRO_PATH, self.TEST_XTC_PATH)
 
@@ -148,6 +155,7 @@ class AnalysisBtnClick:
             , 'Anisotropy': AnisotropyLayout
             , 'RadialDistribution': RDLayout
             , 'Cluster': ClusterLayout
+            , 'NCluster': NClusterLayout
             , 'Gyration': GyrationLayout
             , 'PCA': PCALayout
         }
@@ -219,6 +227,7 @@ class Worker(QObject):
         # 防止线程出现问题
         time.sleep(1)
 
+
     def update_progress(self, value):
         self.progressValueChanged.emit(value)
 
@@ -228,6 +237,7 @@ class AnalysisLayout:
         self.ui = ui
         self.Box = Box
         self.Info = Info
+        self.start_time = None  # 初始化开始时间
 
     @classmethod
     def _addProgressBar(cls, func):
@@ -245,6 +255,7 @@ class AnalysisLayout:
                                    }
                                """)
                 self.ui.VLayoutRightMain.addWidget(self.ui.progressBar)
+            self.start_time = time.time()
             result = func(self, *args, **kwargs)
             worker = Worker(self.cls, self.Info.frame_first, self.Info.frame_last, self.Info.step)
             worker.progressValueChanged.connect(self.updateProgressBar)
@@ -262,6 +273,16 @@ class AnalysisLayout:
                 self.ui.btnMakeFigure = UIItemsMake.make_btn('Make Figure', background_color='#BD93F9')
                 self.ui.btnMakeFigure.clicked.connect(self.makeFigure)
                 self.ui.VLayoutRightMain.addWidget(self.ui.btnMakeFigure)
+            end_time = time.time()  # 记录结束时间
+            elapsed_time = end_time - self.start_time  # 计算耗时
+            formatted_time = time.strftime('%M:%S', time.gmtime(elapsed_time))  # 格式化耗时
+            success_message = (
+                'Analysis Completed\n'
+                f"Time taken: {formatted_time}\n"
+                "The gro file and topol file were saved at:\n"
+                f"{self.Info.path_result}"
+            )
+            create_warn_dialog(success_message, 'Analysis')
 
     def AtomsLayout(self
                     , widgetName: str
@@ -340,24 +361,34 @@ class AnalysisLayout:
 
     def SpinLayout(self, widgetName: str
                    , widgetLayout: str
-                   , labelText: str
+                   , labelText
                    , spin_value
                    , spin_min
                    , spin_max
                    , btnName: str
                    , stackID
                    , func
-                   , connect=False):
+                   , connect=False
+                   , num=1):
         widget = UIItemsMake.make_widget()
         layout = QVBoxLayout(widget)
-        label = UIItemsMake.make_label(labelText)
-        spin_box = UIItemsMake.make_spin_box(spin_value, spin_min, spin_max)
         setattr(self.ui, widgetName, widget)
         setattr(self.ui, widgetLayout, layout)
-        setattr(self.ui, widgetName + 'Label', label)
-        setattr(self.ui, widgetName + 'SpinBox', spin_box)
-        layout.addWidget(label)
-        layout.addWidget(spin_box)
+        if num != 1:
+            for i in range(num):
+                label = UIItemsMake.make_label(labelText[i])
+                spin_box = UIItemsMake.make_spin_box(spin_value[i], spin_min[i], spin_max[i])
+                setattr(self.ui, widgetName + 'Label' + str(i), label)
+                setattr(self.ui, widgetName + 'SpinBox' + str(i), spin_box)
+                layout.addWidget(label)
+                layout.addWidget(spin_box)
+        else:
+            label = UIItemsMake.make_label(labelText)
+            spin_box = UIItemsMake.make_spin_box(spin_value, spin_min, spin_max)
+            setattr(self.ui, widgetName + 'Label', label)
+            setattr(self.ui, widgetName + 'SpinBox', spin_box)
+            layout.addWidget(label)
+            layout.addWidget(spin_box)
         btnNext = UIItemsMake.make_btn(btnName)
         layout.addWidget(btnNext)
         self.ui.stackedWidget_Analysis.addWidget(widget)
@@ -463,6 +494,7 @@ class HeightLayout(AnalysisLayout):
 
     @AnalysisLayout._addProgressBar
     def run(self):
+
         self.Info.get_text()  # 得到选择的参数，例如帧数和K
         AnalysisUtils.get_atom(self.Box.get_config('Height').HeightTailGroups
                                , QCheckBox
@@ -495,7 +527,7 @@ class SZLayout(AnalysisLayout):
         self.FF_TYPE = self.getInfo(boxes)
 
     def setValueChain(self, boxes):
-        self.Chain = self.getInfo(boxes)
+        self.CHAIN = self.getInfo(boxes)
 
     def step_1(self):
         self.ListLayout('widgetFFSZ'
@@ -527,7 +559,7 @@ class SZLayout(AnalysisLayout):
                         , 'VLayoutChainSZ'
                         , 'select chain to analyse'
                         , self.Box.get_config('SZ').SZChainGroups
-                        , ['Chain A', 'Chain B', 'Chain A + Chain B']
+                        , ['sn1', 'sn2', 'sn1 and sn2']
                         , QRadioButton
                         , 'Run!'
                         , 3
@@ -786,12 +818,49 @@ class ClusterLayout(AnalysisLayout):
                                , QCheckBox
                                , self.Box.get_config('Cluster').CLHeadAtoms)
         self.Box.get_config('Cluster').CLCutoff = AnalysisUtils.get_spin_value(self.ui.widgetCutoffSpinBox)
-        print(self.Box.get_config('Cluster').CLCutoff)
-        print(self.Box.get_config('Cluster').CLHeadAtoms)
         self.cls = Cluster(self.Box.u
                            , self.Box.get_config('Cluster').CLHeadAtoms
                            , file_path=self.Info.path_result
                            , cutoff=self.Box.get_config('Cluster').CLCutoff)
+
+
+class NClusterLayout(AnalysisLayout):
+    def step_1(self):
+        self.AtomsLayout('widgetAtomsNCluster'
+                         , 'VLayoutAtomsNCluster'
+                         , 'select atoms'
+                         , self.Box.get_config('NCluster').NCLGroups
+                         , QCheckBox
+                         , 'Next'
+                         , 1
+                         , self.step_2)
+
+    def step_2(self):
+        self.SpinLayout('widgetNCutoff'
+                        , 'VLayoutNCutoff'
+                        , ['select cutoff value(A)', 'select cutoff number']
+                        , [12, 10]
+                        , [0, 0]
+                        , [1000000, 1000000]
+                        , 'RUN!'
+                        , 2
+                        , self.run
+                        , connect=True
+                        , num=2)
+
+    @AnalysisLayout._addProgressBar
+    def run(self):
+        self.Info.get_text()
+        AnalysisUtils.get_atom(self.Box.get_config('NCluster').NCLGroups
+                               , QCheckBox
+                               , self.Box.get_config('NCluster').NCLHeadAtoms)
+        self.Box.get_config('NCluster').NCLCutoff = AnalysisUtils.get_spin_value(self.ui.widgetNCutoffSpinBox0)
+        self.Box.get_config('NCluster').NCutoff = AnalysisUtils.get_spin_value(self.ui.widgetNCutoffSpinBox1)
+        self.cls = NCluster(self.Box.u
+                           , self.Box.get_config('NCluster').NCLHeadAtoms
+                           , file_path=self.Info.path_result
+                           , cutoff=self.Box.get_config('NCluster').NCLCutoff
+                           , N_cutoff=self.Box.get_config('NCluster').NCutoff)
 
 
 class BaseConfig:
@@ -888,6 +957,15 @@ class CLConfig(BaseConfig):
         self.CLGroups = []
         self.CLCutoff = 12
 
+class NCLConfig(BaseConfig):
+    __slots__ = ('NCLHeadAtoms', 'NCLGroups', 'NCLCutoff', 'NCutoff')
+
+    def __init__(self):
+        self.NCLHeadAtoms = {}
+        self.NCLGroups = []
+        self.NCLCutoff = 12
+        self.NCutoff = 10
+
 
 class ConfigFactory:
     __slots__ = ()
@@ -901,6 +979,7 @@ class ConfigFactory:
         , 'Pressure': PressureConfig
         , 'Gyration': GRConfig
         , 'Cluster': CLConfig
+        , 'NCluster': NCLConfig
         , 'PCA': PCAConfig
     }
 
