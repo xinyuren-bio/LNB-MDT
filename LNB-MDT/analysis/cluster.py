@@ -48,6 +48,8 @@ class Cluster(AnalysisBase):
         self.results.Cluster = None
         self.results.Resindices = None
 
+        self.parameters = str(residues_group) + ' cutoff:' + str(self.cutoff)
+
     @property
     def Cluster(self):
         return self.results.Cluster
@@ -97,7 +99,7 @@ class Cluster(AnalysisBase):
             dict_parameter = {'step': self.step, 'n_frames': self.n_frames,
                              'results': self.results.Cluster,
                               'file_path': self.file_path, 'description': 'Cluster',
-                              'value_divition': 1}
+                              'parameters': self.parameters}
             WriteExcelBubble(**dict_parameter).run()
 
 

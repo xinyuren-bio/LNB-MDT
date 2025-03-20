@@ -33,28 +33,27 @@ class SZ(AnalysisBase):
         self.residues = list(residuesGroup)
         self.chain = chain
 
-        self.tailSp = {}
+        self.tail = None
         self.headSp = {}
 
         self.headAtoms = self.u.atoms[[]]
         self.tailAtoms = self.u.atoms[[]]
 
+        if self.chain == 'sn1':
+            self.tail = '??A'
+        elif self.chain == 'sn2':
+            self.tail = '??B'
+        else:
+            self.tail = '??A ??B'
         for sp in residuesGroup:
             self.headSp[sp] = residuesGroup[sp][0]
-
-            if self.chain == 'Chain A':
-                self.tailSp[sp] = '??A'
-            elif self.chain == 'Chain B':
-                self.tailSp[sp] = '??B'
-            else:
-                self.tailSp[sp] = '??A ??B'
 
         # 将选择的头部原子和尾部原子按照残基名称进行排序
             self.headAtoms += self.u.select_atoms('resname %s and name %s'
                                                   % (sp, self.headSp[sp]), updating=False)
 
             self.tailAtoms += self.u.select_atoms('resname %s and name %s'
-                                                  % (sp, self.tailSp[sp]), updating=False)
+                                                  % (sp, self.tail), updating=False)
 
         # 计算每个残基尾部原子的平均位置
         self._atomTailMean = np.array([np.mean(i.positions, axis=0) for i in self.tailAtoms.split('residue')])
@@ -83,9 +82,8 @@ class SZ(AnalysisBase):
             sp: i.n_residues for sp, i in self.headAtoms.groupby('resnames').items()
         }
 
-
+        self.parameters = str(residuesGroup)+ ' K:' + str(self.k) + ' Chain:' + self.chain
         self.results.SZ = None
-
     def _prepare(self):
         self.results.SZ = np.full([self._n_residues, self.n_frames],
                                   fill_value=np.NaN)
@@ -118,7 +116,7 @@ class SZ(AnalysisBase):
             # 得到需要进行分析的原子
             sp_tail = self.tailAtoms[self._tailMask[sp]]
             # 判断该种类型的残基是否选取了两条链进行分析
-            if self.tailSp[sp] == '??A ??B':
+            if self.tail == '??A ??B':
                 chainList = ['??A', '??B']
                 spALL = np.full([self.numSp[sp], 2], fill_value=np.NaN)
                 for i, chain in enumerate(chainList):
@@ -140,7 +138,7 @@ class SZ(AnalysisBase):
                               'resnames': self.resnames,
                               'positions': self.headAtoms.positions, 'results': self.results.SZ,
                               'file_path': self.file_path, 'description': 'SZ',
-                              'value_divition': 1, 'lipids_type': lipids_ratio}
+                              'parameters': self.patameters, 'lipids_type': lipids_ratio}
             WriteExcelLipids(**dict_parameter).run()
 
 

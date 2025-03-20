@@ -46,7 +46,7 @@ class Curvature(AnalysisBase):
         self.results.MeanCurvature = None
         self.results.GussainCurvature = None
         self.results.Normal = None
-
+        self.parameters = str(residueGroup) + 'K:' + str(self.k) + 'method:' + self.method
     @property
     def MeanCurvature(self):
         return self.results.MeanCurvature
@@ -104,7 +104,7 @@ class Curvature(AnalysisBase):
                               'resnames': self.resnames,
                               'positions': self.headAtoms.positions, 'results': self.results.MeanCurvature,
                               'file_path': self.filePath, 'description': 'Mean Curvature(nm -1)',
-                              'value_divition': 0.1, 'lipids_type': lipids_ratio}
+                              'parameters': self.parameters, 'lipids_type': lipids_ratio}
             WriteExcelLipids(**dict_parameter).run()
 
 

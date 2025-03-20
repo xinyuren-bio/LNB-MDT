@@ -31,6 +31,7 @@ class PCA(AnalysisBase):
                                                   % (sp, self.headSp[sp]), updating=False)
 
         self.n_residues = self.headAtoms.n_residues
+        self.parametes = str(residuesGroup)
 
     def _prepare(self):
         self.results.PCA = np.full([self.n_frames], fill_value=np.NaN)
@@ -51,12 +52,12 @@ class PCA(AnalysisBase):
             dict_parameter = {'step': self.step, 'n_frames': self.n_frames,
                               'results': self.results.PCA,
                               'file_path': self.filePath, 'description': 'PCA',
-                              'value_divition': 1}
+                              'parameters': self.parametes}
             WriteExcelBubble(**dict_parameter).run()
 
 
 if __name__ == '__main__':
     import MDAnalysis as mda
     u = mda.Universe("E:/ach.gro", "E:/ach.xtc")
-    cls2 = PCA(u, ['DPPC','D3PC','CHOL'], path='E:/excel')
+    cls2 = PCA(u, ['DPPC','D3PC','CHOL'], filepath='E:/excel')
     cls2.run(1,100,1,verbose=True)

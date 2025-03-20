@@ -34,6 +34,8 @@ class Anisotropy(AnalysisBase):
 
         self._n_residues = self.headAtoms.n_residues
 
+        self.parameters = str(residuesGroup)
+
     @property
     def Anisotropy(self):
         return self.results.Anisotropy
@@ -56,7 +58,7 @@ class Anisotropy(AnalysisBase):
             dict_parameter = {'step': self.step, 'n_frames': self.n_frames,
                              'results': self.results.Anisotropy,
                               'file_path': self.filePath, 'description': 'Anisotropy',
-                              'value_divition': 1}
+                              'parameters': self.parameters}
             WriteExcelBubble(**dict_parameter).run()
 
 

@@ -15,14 +15,14 @@ __all__ = ['Area']
 
 
 class Area(AnalysisBase):
-    def __init__(self, universe, residueGroup: dict, k: int, file_path=None):
+    def __init__(self, universe, residuesGroup: dict, k: int, file_path=None):
         super().__init__(universe.trajectory)
         self.u = universe
         self.k = k + 1
         self.filePath = file_path
-        self.residues = list(residueGroup)
+        self.residues = list(residuesGroup)
         self.headSp = {
-            sp: residueGroup[sp][0] for sp in self.residues
+            sp: residuesGroup[sp][0] for sp in self.residues
         }
 
         self.headAtoms = self.u.atoms[[]]
@@ -38,6 +38,8 @@ class Area(AnalysisBase):
 
         self.results.Area = None
         self.current = 0
+
+        self.parameters = str(residuesGroup)+ 'K:' + str(self.k)
 
     @property
     def Area(self):
@@ -110,7 +112,7 @@ class Area(AnalysisBase):
                               'resnames': self.resnames,
                               'positions': self.headAtoms.positions, 'results': self.results.Area,
                               'file_path': self.filePath, 'description': 'Area(nm^2)',
-                              'value_divition': 1, 'lipids_type': lipids_ratio}
+                              'parameters': self.parameters, 'lipids_type': lipids_ratio}
             WriteExcelLipids(**dict_parameter).run()
 
 
@@ -123,9 +125,11 @@ def polygon_area(vertices):
 
 if __name__ == "__main__":
     import time
-    u = mda.Universe("E:/ach.gro", 'E:/ach.xtc')
-    cls2 = Area(u, {'DPPC': ['PO4'], 'DAPC':['PO4'], 'CHOL':['ROH']}, 18, file_path='E:untitled2.csv')
+    # u = mda.Universe("E:/ach.gro", 'E:/ach.xtc')
+    u = mda.Universe(r"E:\awork\lnb\ts2cg\nc3_inner.gro")
+    # cls2 = Area(u, {'DPPC': ['PO4'], 'DUPC':['PO4'], 'CHOL':['ROH']}, 18, file_path='E:untitled2.csv')
+    cls2 = Area(u, {'POPC': ['NC3']}, 18, file_path='E:untitled2.csv')
     t1 = time.time()
-    cls2.run(1, 100,verbose=True)
+    cls2.run()
     t2 = time.time()
     print('time', t2 - t1)

@@ -91,8 +91,8 @@ class CalRad(AnalysisBase):
 
 if __name__ == "__main__":
     import MDAnalysis as mda
-    u = mda.Universe("C:/Users/59563/1.gro")
+    u = mda.Universe("E:lnb.gro")
     # u = mda.Universe("E:/ach.gro")
-    cls = CalRad(u, {'N2':['N2'], 'DPPC':['NC3'],'DAPC':['NC3'],'CHOL':['ROH']}, ncircle=50, filePath='E:/excel/rad.xlsx')
+    cls = CalRad(u, {'W':['W']}, ncircle=50, filePath='E:/excel/rad.xlsx')
     # cls = CalRad(u, {'DPPC':['NC3'],'D3PC':['NC3'],'CHOL':['ROH']}, ncircle=50, filePath='E:/excel/rad1.xlsx')
     cls.run()

@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import KDTree
 from scipy.linalg import eigh
-
 from MDAnalysis.analysis.base import Results
 from MDAnalysis.lib.log import ProgressBar
 
@@ -98,19 +97,32 @@ class WriteExcel(ABC):
         pass
 
     @staticmethod
-    def _write_to_csv(file_path: str, comments: list, df: pd.DataFrame, type_: str=None):
+    def _write_to_csv(file_path: str, comments: list, df: pd.DataFrame, type_: str = None):
         try:
-            file_path = file_path.replace('.csv', f'_{type_}.csv') if type_ else file_path
+            # 修改文件路径以包含类型
+            if type_:
+                file_path = file_path.replace('.csv', f'_{type_}.csv')
+
+            # 写入注释
             with open(file_path, mode='w', newline='') as f:
                 for comment in comments:
                     f.write(f"# {comment}\n")
-            df.to_csv(file_path, mode='a', index=False, header=True)  # 使用 'a' 模式追加到文件
+
+            # 追加数据框内容
+            df.to_csv(file_path, mode='a', index=False, header=True)
+            print(f"Data successfully written to {file_path}")
+        except PermissionError:
+            print(f"Permission denied: {file_path}")
+
+            raise PermissionDeniedError(f"Permission denied: {file_path}")
         except Exception as e:
-            print(f"Error writing to CSV: {e}")
+            print(f"An error occurred: {e}")
+            raise
 
 
 @dataclass
 class WriteExcelLipids(WriteExcel):
+    parameters: str
     step: int
     n_frames: int
     resids: np.ndarray
@@ -119,14 +131,13 @@ class WriteExcelLipids(WriteExcel):
     results: np.ndarray[float]
     file_path: str
     description: str
-    value_divition: float
     lipids_type: dict
 
     def run(self):
         column_frame = [i * self.step for i in range(self.n_frames)]
         # LIPID
         lipids_ratio = ':'.join(self.lipids_type) + '=' + ':'.join(map(str, self.lipids_type.values()))
-        comments = ['Created by LNB-MDT v1.0', self.description, lipids_ratio, 'TYPE:Lipids']
+        comments = ['Created by LNB-MDT v1.0', self.description, lipids_ratio, 'TYPE:Lipids', 'Parameters:' + self.parameters]
         df_lipid = pd.DataFrame({
             'Resid': self.resids.astype(int),
             'Resname': self.resnames,
@@ -135,7 +146,6 @@ class WriteExcelLipids(WriteExcel):
                for i, frame in enumerate(column_frame)}
         })
         # FRAME
-        results_frames = np.mean(self.results, axis=0)
         df_frames = pd.DataFrame(
             {
                 'Frames': column_frame
@@ -146,7 +156,7 @@ class WriteExcelLipids(WriteExcel):
         # 储存表头的信息
         # 储存每一帧的数据信息，残基号，残基名称等
         self._write_to_csv(self.file_path, comments, df_lipid)
-        comments_frames = ['Created by LNB-MDT v1.0', 'Bubble ' + self.description, lipids_ratio, 'TYPE:Bubble']
+        comments_frames = ['Created by LNB-MDT v1.0', 'Bubble ' + self.description, lipids_ratio, 'TYPE:Bubble', 'Parameters:' + self.parameters]
         self._write_to_csv(self.file_path, comments_frames, df_frames, 'frames')
 
 
@@ -157,8 +167,7 @@ class WriteExcelBubble(WriteExcel):
     results: np.ndarray
     file_path: str
     description: str
-    value_divition: float
-
+    parameters: str
     def run(self):
         column_frame = [i * self.step for i in range(self.n_frames)]
         df = pd.DataFrame(
@@ -167,5 +176,11 @@ class WriteExcelBubble(WriteExcel):
                 , 'Values': self.results.round(3)
             }
         )
-        comments = ['Created by LNB-MDT v1.0', self.description, 'TYPE:Bubble']
+        comments = ['Created by LNB-MDT v1.0', self.description, 'TYPE:Bubble', 'Parameters:' + self.parameters]
         self._write_to_csv(self.file_path, comments, df)
+
+
+
+class PermissionDeniedError(Exception):
+    """Custom exception for permission denied errors."""
+    pass

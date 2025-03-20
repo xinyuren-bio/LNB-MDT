@@ -7,5 +7,5 @@ from .anisotropy import Anisotropy
 from .rad import CalRad
 from .gyration import Gyration_py
 from .cluster import Cluster
+from .n_cluster import NCluster
 import MDAnalysis as mda
-print('Hello')

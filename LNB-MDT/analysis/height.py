@@ -26,6 +26,8 @@ class Height(AnalysisBase):
 
         self.headSp = {sp: ' '.join(residuesGroup[sp][0]) for sp in residuesGroup}
         self.tailSp = {sp: ' '.join(residuesGroup[sp][-1]) for sp in residuesGroup}
+        print(self.headSp)
+        print(self.tailSp)
 
         self.headAtoms = self.u.atoms[[]]
         self.tailAtoms = self.u.atoms[[]]
@@ -43,6 +45,7 @@ class Height(AnalysisBase):
         self.resArrange = np.argsort(np.argsort(self.headAtoms.resindices))
         self.results.Height = None
 
+        self.parameters = str(residuesGroup)+ 'K:' + str(self.k)
     def _prepare(self):
         self.results.Height = np.full([self._n_residues, self.n_frames],
                                       fill_value=np.NaN)
@@ -64,16 +67,16 @@ class Height(AnalysisBase):
             lipids_ratio = {sp: self.u.select_atoms(f'resname {sp}').n_residues for sp in self.residues}
             dict_parameter = {'step':self.step, 'n_frames': self.n_frames, 'resids':self.resids, 'resnames':self.resnames,
              'positions':self.headAtoms.positions, 'results':self.results.Height, 'file_path':self.file_path,'description':'Height(nm)' ,
-                              'value_divition':1, 'lipids_type':lipids_ratio}
+                              'parameters': self.parameters, 'lipids_type':lipids_ratio}
             WriteExcelLipids(**dict_parameter).run()
 
 
 if __name__ == "__main__":
     import time
     t1 = time.time()
-    u = mda.Universe("E:/ach.gro", 'E:/ach.xtc')
-    dict_residue = {'DPPC': (['PO4'], ['C4B', 'C4A']), 'DAPC':(['PO4'], ['C5A', 'C5B']), 'CHOL':(['ROH'], ['R5'])}
+    u = mda.Universe(r"E:\awork\lnb\20250311\lnb.gro", r"E:\awork\lnb\20250311\md3.part0003.xtc")
+    dict_residue = {'DPPC': (['PO4'], ['C4B', 'C4A']), 'DUPC':(['PO4'], ['C3A', 'C4B']), 'CHOL':(['ROH'], ['R5'])}
     cls2 = Height(u, dict_residue, k=21, file_path='E:/untitled4.csv')
-    cls2.run(1, 100)
+    cls2.run(step=3, verbose=True)
     t2 = time.time()
     print(t2 - t1)
