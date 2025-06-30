@@ -19,9 +19,11 @@ conda create -n LNB-MDT python=3.11
 conda activate LNB-MDT
 
 pip install -r requirements.txt
+```
 
 ## Run
 
 To run the project, execute the following command:
 ```bash
 python main.py
+```
