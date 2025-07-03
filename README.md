@@ -8,7 +8,7 @@
 To ensure the project runs smoothly, we strongly recommend using [Conda / Miniconda / Anaconda] to create an isolated virtual environment for managing project dependencies.
 
 ### 1. Install Conda (if not already installed)
-f you don't have Conda (Miniconda or Anaconda) installed yet, please visit the following link to download and install the version suitable for your operating system:
+If you don't have Conda (Miniconda or Anaconda) installed yet, please visit the following link to download and install the version suitable for your operating system:
 * **Miniconda:** [https://docs.conda.io/en/latest/miniconda.html]
 
 ### 2. Create Virtual Environment
