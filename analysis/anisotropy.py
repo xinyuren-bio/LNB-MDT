@@ -117,12 +117,8 @@ if __name__ == "__main__":
     # 1. 串行
     analysis_serial = Anisotropy(u, residue_group, file_path=csv_file_serial, parallel=False)
     analysis_serial.run(start=0, stop=100, verbose=True)
-    print("Serial calculation finished.")
-    print("Results (first 5 frames):", analysis_serial.Anisotropy[:5])
-    print("\n" + "="*50 + "\n")
 
     # 2. 并行
-    print("--- Testing Parallel Calculation ---")
     analysis_parallel = Anisotropy(u, residue_group, file_path=csv_file_parallel, parallel=True, n_jobs=2)
     analysis_parallel.run(start=0, stop=500 , verbose=True)
-    print("Parallel calculation finished.")
+

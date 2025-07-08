@@ -9,6 +9,10 @@ from typing import List, Tuple
 import math
 from joblib import Parallel, delayed
 
+import MDAnalysis as mda
+from scipy.spatial import KDTree
+from scipy.linalg import eigh
+
 if __name__ == '__main__':
     current_file_path = os.path.abspath(__file__)
     current_dir = os.path.dirname(current_file_path)
@@ -16,10 +20,6 @@ if __name__ == '__main__':
     if package_root not in sys.path:
         sys.path.insert(0, package_root)
 from analysis.analysis_base import *
-
-import MDAnalysis as mda
-from scipy.spatial import KDTree
-from scipy.linalg import eigh
 
 __all__ = ['Area']
 
