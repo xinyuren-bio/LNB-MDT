@@ -159,24 +159,20 @@ if __name__ == "__main__":
     csv_file_serial = "cases/csv/height_serial.csv"
     csv_file_parallel = "cases/csv/height_parallel.csv"
 
-    if not (os.path.exists(gro_file) and os.path.exists(xtc_file)):
-         print(f"Error: Input files not found. Please ensure '{gro_file}' and '{xtc_file}' exist.")
-    else:
-        u = mda.Universe(gro_file, xtc_file)
-        residues_group = {'DPPC': (['PO4'], ['C4B', 'C4A']), 'DUPC':(['PO4'], ['C3A', 'C4B']), 'CHOL':(['ROH'], ['R5'])}
-        
-        print("--- Running Serial Analysis ---")
-        t1 = time.time()
-        analysis_serial = Height(u, residues_group, k=21, file_path=csv_file_serial, parallel=False)
-        analysis_serial.run(verbose=True)
-        t2 = time.time()
-        print(f"Serial execution time: {t2 - t1:.2f} seconds")
+    
+    u = mda.Universe(gro_file, xtc_file)
+    residues_group = {'DPPC': (['PO4'], ['C4B', 'C4A']), 'DUPC':(['PO4'], ['C3A', 'C4B']), 'CHOL':(['ROH'], ['R5'])}
+    
+    # 1. 串行
+    t1 = time.time()
+    analysis_serial = Height(u, residues_group, k=21, file_path=csv_file_serial, parallel=False)
+    analysis_serial.run(verbose=True)
+    t2 = time.time()
+    print(f"Serial execution time: {t2 - t1:.2f} seconds")
 
-        print("\n" + "="*50 + "\n")
-
-        print("--- Running Parallel Analysis ---")
-        t1 = time.time()
-        analysis_parallel = Height(u, residues_group, k=21, file_path=csv_file_parallel, parallel=True, n_jobs=-1)
-        analysis_parallel.run(verbose=True)
-        t2 = time.time()
-        print(f"Parallel execution time: {t2 - t1:.2f} seconds")
+    # 2. 并行
+    t1 = time.time()
+    analysis_parallel = Height(u, residues_group, k=21, file_path=csv_file_parallel, parallel=True, n_jobs=-1)
+    analysis_parallel.run()
+    t2 = time.time()
+    print(f"Parallel execution time: {t2 - t1:.2f} seconds")

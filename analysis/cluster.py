@@ -1,176 +1,184 @@
 import warnings
+import os
+import sys
 warnings.filterwarnings('ignore')
 
-from MDAnalysis.lib.distances import capped_distance
 import numpy as np
 import scipy.sparse
 import scipy.stats
+import MDAnalysis as mda
+from MDAnalysis.lib.distances import capped_distance
+from joblib import Parallel, delayed
 
-try:
-    from .analysis_base import *
-except:
-    from analysis_base import *
+if __name__ == '__main__':
+    current_file_path = os.path.abspath(__file__)
+    current_dir = os.path.dirname(current_file_path)
+    package_root = os.path.abspath(os.path.join(current_dir, '..'))
+    if package_root not in sys.path:
+        sys.path.insert(0, package_root)
+from analysis.analysis_base import * 
 
 __all__ = ['Cluster']
-
-
-# suppress some MDAnalysis warnings when writing PDB/GRO files
 
 
 class Cluster(AnalysisBase):
     """
     A class for analyzing lipid clustering in a bilayer system.
-    
-    This class identifies and analyzes clusters of lipid molecules based on their
-    spatial proximity. It uses a distance-based criterion to determine which lipids
-    belong to the same cluster.
     """
-    
-    def __init__(self, universe, residueGroup: dict, cutoff: float = None, file_path: str = None):
-        """
-        Initialize the Cluster analysis class.
-        
-        Parameters
-        ----------
-        universe : MDAnalysis.Universe
-            The MDAnalysis Universe object containing the molecular dynamics trajectory.
-            This should include both the structure file (e.g., .gro) and trajectory file (e.g., .xtc).
-            
-        residueGroup : dict
-            A dictionary specifying the atoms to use for clustering analysis.
-            Format: {'lipid_name': ['atom_names']}
-            Example: {
-                'DPPC': ['PO4'],
-                'CHOL': ['ROH']
-            }
-            
-        cutoff : float, optional
-            The distance cutoff (in Å) used to determine if two lipids belong to the same cluster.
-            If two lipids are closer than this distance, they are considered to be in the same cluster.
-            If None, a default value will be used.
-            
-        file_path : str, optional
-            The path where the analysis results will be saved as a CSV file.
-            If None, results will not be saved to disk.
-            
-        Attributes
-        ----------
-        headAtoms : MDAnalysis.AtomGroup
-            The selected atoms of all lipid molecules used for clustering.
-            
-        _n_residues : int
-            The total number of lipid molecules in the system.
-            
-        resids : numpy.ndarray
-            The residue IDs of all lipid molecules.
-            
-        resnames : numpy.ndarray
-            The residue names of all lipid molecules.
-            
-        results.Cluster : numpy.ndarray
-            A 2D array storing the cluster assignments for all lipid molecules across all frames.
-            Shape: (n_residues, n_frames)
-            
-        cutoff : float
-            The distance cutoff used for clustering.
-        """
+
+    def __init__(self, universe, residues_group: dict, cutoff: float = 8.0, file_path: str = None,
+                 parallel: bool = False, n_jobs: int = -1):
         super().__init__(universe.trajectory)
         self.u = universe
-        self.residues = list(residueGroup)
+        self.residues = list(residues_group)
         self.cutoff = cutoff
         self.file_path = file_path
+        self.parallel = parallel
+        self.n_jobs = n_jobs
 
-        # Convert atom names to space-separated strings
-        self.atomSp = {sp: ' '.join(residueGroup[sp]) for sp in residueGroup}
+        self.atomSp = {sp: ' '.join(residues_group[sp]) for sp in self.residues}
         print("Atoms for clustering:", self.atomSp)
 
-        # Initialize atom selection
         self.headAtoms = self.u.atoms[[]]
-
-        # Select atoms for all specified lipid types
-        for i in range(len(self.residues)):
+        for sp in self.residues:
             self.headAtoms += self.u.select_atoms('resname %s and name %s'
-                                                  % (self.residues[i], self.atomSp[self.residues[i]]), updating=False)
+                                                  % (sp, self.atomSp[sp]), updating=False)
 
-        # Set basic attributes
-        self._n_residues = self.headAtoms.n_residues
-        self.resids = self.headAtoms.resids
-        self.resnames = self.headAtoms.resnames
-        self.results.Cluster = None
+        self.n_residues = self.headAtoms.n_residues
+        self.atom_resindices = self.headAtoms.resindices
+        self.residue_names = self.headAtoms.residues.resnames
 
-        # Record analysis parameters
-        self.parameters = str(residueGroup) + 'Cutoff:' + str(self.cutoff)
-
-    @property
-    def Cluster(self):
-        return self.results.Cluster
+        self.results.LargestClusterSize = None
+        self.results.LargestClusterResidues = None
+        self.parameters = str(residues_group) + 'Cutoff:' + str(self.cutoff)
 
     @property
-    def Resindices(self):
-        return self.results.Resindices
+    def LargestClusterSize(self):
+        return self.results.LargestClusterSize
+
+    @property
+    def LargestClusterResidues(self):
+        return self.results.LargestClusterResidues
 
     def _prepare(self):
-        self.results.Cluster = np.zeros([self.n_frames])
-        self.results.Resindices = np.full(self.n_frames, fill_value=0, dtype=object)
+        self.results.LargestClusterSize = np.full(self.n_frames, 0, dtype=int)
+        self.results.LargestClusterResidues = np.full(self.n_frames, fill_value=None, dtype=object)
 
-    def _single_frame(self):
-        positions_single_frame = self.headAtoms.positions
+    @staticmethod
+    def _calculate_cluster_for_frame(positions, box, cutoff, atom_resindices, residue_names, n_residues):
         pairs = capped_distance(
-            positions_single_frame
-            , positions_single_frame
-            , max_cutoff=self.cutoff
-            , box=self._ts.dimensions
-            , return_distances=False
+            positions,
+            positions,
+            max_cutoff=cutoff,
+            box=box,
+            return_distances=False
         )
 
-        ref, nei = np.unique(self.resids[pairs], axis=0).T
+        if pairs.shape[0] == 0:
+            return 1 if n_residues > 0 else 0, np.array([]) if n_residues > 0 else np.array([])
 
-        index_needs = ref != nei
+        residue_indices_pairs = np.unique(atom_resindices[pairs], axis=0)
 
-        ref = ref[index_needs]
-        nei = nei[index_needs]
+        if residue_indices_pairs.shape[0] == 0:
+             return 1 if n_residues > 0 else 0, np.array([]) if n_residues > 0 else np.array([])
 
-        data = np.ones_like(ref)
+        ref, nei = residue_indices_pairs[residue_indices_pairs[:, 0] != residue_indices_pairs[:, 1]].T
+        data = np.ones_like(ref, dtype=np.int8)
 
         neighbours_frame = scipy.sparse.csr_matrix(
-            (data, (ref, nei))
-            , dtype=np.int8
-            , shape=(self._n_residues, self._n_residues)
+            (data, (ref, nei)),
+            shape=(n_residues, n_residues)
         )
 
-        _, com_labels = scipy.sparse.csgraph.connected_components(neighbours_frame)
+        n_components, com_labels = scipy.sparse.csgraph.connected_components(neighbours_frame, directed=False)
 
+        if n_components == 0:
+            return 0, np.array([])
+        
         unique_com_labels, counts = np.unique(com_labels, return_counts=True)
-        largest_label = unique_com_labels[np.argmax(counts)]
-        self.results.Cluster[self._frame_index] = max(counts)
-        self.results.Resindices[self._frame_index] = self.resnames[com_labels == largest_label]
+        largest_cluster_index = np.argmax(counts)
+        largest_label = unique_com_labels[largest_cluster_index]
+        max_size = counts[largest_cluster_index]
+
+        residues_in_cluster = residue_names[com_labels == largest_label]
+
+        return max_size, residues_in_cluster
+
+    def _single_frame(self):
+        size, residues = Cluster._calculate_cluster_for_frame(
+            self.headAtoms.positions,
+            self._ts.dimensions,
+            self.cutoff,
+            self.atom_resindices,
+            self.residue_names,
+            self.n_residues
+        )
+        self.results.LargestClusterSize[self._frame_index] = size
+        self.results.LargestClusterResidues[self._frame_index] = residues
+
+    def _get_inputs_generator(self):
+        for ts in self.u.trajectory[self.start:self.stop:self.step]:
+            yield (
+                self.headAtoms.positions.copy(),
+                ts.dimensions,
+                self.cutoff,
+                self.atom_resindices,
+                self.residue_names,
+                self.n_residues
+            )
+
+    def run(self, start=None, stop=None, step=None, verbose=None):
+        self.start = start if start is not None else 0
+        self.stop = stop if stop is not None and stop < self._trajectory.n_frames else self._trajectory.n_frames
+        self.step = step if step is not None else 1
+        self.n_frames = len(range(self.start, self.stop, self.step))
+        self._prepare()
+
+        if self.parallel:
+            print(f"Running in parallel on {self.n_jobs} jobs...")
+            verbose_level = 10 if verbose else 0
+            inputs_generator = self._get_inputs_generator()
+            results_list = Parallel(n_jobs=self.n_jobs, verbose=verbose_level)(
+                delayed(Cluster._calculate_cluster_for_frame)(*inputs) for inputs in inputs_generator
+            )
+            if results_list:
+                sizes, residues_list = zip(*results_list)
+                self.results.LargestClusterSize = np.array(sizes)
+                self.results.LargestClusterResidues = np.array(residues_list, dtype=object)
+        else:
+            print("Running in serial mode...")
+            super().run(start=start, stop=stop, step=step, verbose=verbose)
+
+        self._conclude()
 
     def _conclude(self):
         if self.file_path:
             dict_parameter = {
-                'frames': [i for i in range(self.start, self.stop, self.step)]
-                , 'results': self.results.Cluster
-                , 'file_path': self.file_path
-                , 'description': 'Cluster'
-                , 'parameters': self.parameters
+                'frames': list(range(self.start, self.stop, self.step)),
+                'results': self.results.LargestClusterSize,
+                'file_path': self.file_path,
+                'description': 'Largest Cluster Size',
+                'parameters': self.parameters
             }
             WriteExcelBubble(**dict_parameter).run()
-
-
-def make_data(residues_group):
-    ls1 = []
-    for residue, atoms in residues_group.items():
-        str_atom = ' '.join(atoms)
-        ls1.append(f'resname {residue} and name {str_atom}')
-    return ls1
+            print(f"Analysis complete. Results will be saved to {self.file_path}")
 
 
 if __name__ == "__main__":
-    import MDAnalysis as mda
+    gro_file = "cases/lnb.gro"
+    xtc_file = "cases/md.xtc"
+    csv_file_serial = "cases/csv/cluster_serial.csv"
+    csv_file_parallel = "cases/csv/cluster_parallel.csv"
 
-    gro_file = "../cases/lnb.gro"
-    xtc_file = "../cases/md.xtc"
-    csv_file = "../cases/csv/area_step5_lnb.csv"
     u = mda.Universe(gro_file, xtc_file)
-    cls1 = Cluster(u, {'DPPC': ['PO4'], 'DUPC': ['PO4'], 'CHOL': ['ROH']}, cutoff=20, file_path='E:/untitled1.csv')
-    cls1.run(0, 100)
+    residues_group = {'DPPC': ['PO4'], 'DUPC': ['PO4'], 'CHOL': ['ROH']}
+
+    #1. 串行
+    print("--- Running Serial Analysis ---")
+    analysis_serial = Cluster(u, residues_group, cutoff=10.0, file_path=csv_file_serial, parallel=False)
+    analysis_serial.run(verbose=True)
+    
+    #2. 并行
+    print("--- Running Parallel Analysis ---")
+    analysis_parallel = Cluster(u, residues_group, cutoff=10.0, file_path=csv_file_parallel, parallel=True, n_jobs=-1)
+    analysis_parallel.run(verbose=True)

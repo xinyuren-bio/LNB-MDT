@@ -207,18 +207,15 @@ if __name__ == "__main__":
     csv_file_mean = "cases/csv/curvature_mean_results.csv"
     csv_file_gauss = "cases/csv/curvature_gauss_results.csv"
 
-    if not (os.path.exists(gro_file) and os.path.exists(xtc_file)):
-         print(f"Error: Input files not found. Please ensure '{gro_file}' and '{xtc_file}' exist.")
-    else:
-        u = mda.Universe(gro_file, xtc_file)
-        residue_group = {'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}
+    u = mda.Universe(gro_file, xtc_file)
+    residue_group = {'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}
 
-        print("--- Running Serial Mean Curvature Analysis ---")
-        analysis_serial = Curvature(u, residue_group, k=20, file_path=csv_file_mean, method='mean', parallel=False)
-        analysis_serial.run(verbose=True)
+    # 1. 串行
+    print("--- Running Serial Mean Curvature Analysis ---")
+    analysis_serial = Curvature(u, residue_group, k=20, file_path=csv_file_mean, method='mean', parallel=False)
+    analysis_serial.run(verbose=True)
 
-        print("\n" + "="*50 + "\n")
-
-        print("--- Running Parallel Gaussian Curvature Analysis ---")
-        analysis_parallel = Curvature(u, residue_group, k=20, file_path=csv_file_gauss, method='mean', parallel=True, n_jobs=10)
-        analysis_parallel.run(verbose=True)
+    # 2. 并行
+    print("--- Running Parallel Gaussian Curvature Analysis ---")
+    analysis_parallel = Curvature(u, residue_group, k=20, file_path=csv_file_gauss, method='mean', parallel=True, n_jobs=10)
+    analysis_parallel.run(verbose=True)
