@@ -1,263 +1,224 @@
 import warnings
+import os
+import sys
 warnings.filterwarnings('ignore')
-
 import MDAnalysis as mda
 import numpy as np
-from numpy.linalg import lstsq
+from numpy.linalg import eig, lstsq
 from scipy.spatial import KDTree
+from joblib import Parallel, delayed
 
-try:
-    from .analysis_base import *
-except:
-    from analysis_base import *
+if __name__ == '__main__':
+    current_file_path = os.path.abspath(__file__)
+    current_dir = os.path.dirname(current_file_path)
+    package_root = os.path.abspath(os.path.join(current_dir, '..'))
+    if package_root not in sys.path:
+        sys.path.insert(0, package_root)
+from analysis.analysis_base import * 
 
 __all__ = ['Curvature']
 
 
 class Curvature(AnalysisBase):
     """
-    A class for calculating the mean curvature of a lipid bilayer.
-    
-    This class analyzes the local curvature of a lipid bilayer by calculating
-    the mean curvature at each point using the positions of lipid head groups.
-    The curvature is calculated using the local normal vectors and their derivatives.
+    A class for calculating the mean and Gaussian curvature of a lipid bilayer.
     """
-    
-    def __init__(self, universe, residueGroup: dict, k: int = None, file_path: str = None, method: str = 'mean'):
-        """
-        Initialize the Curvature analysis class.
-        
-        Parameters
-        ----------
-        universe : MDAnalysis.Universe
-            The MDAnalysis Universe object containing the molecular dynamics trajectory.
-            This should include both the structure file (e.g., .gro) and trajectory file (e.g., .xtc).
-            
-        residueGroup : dict
-            A dictionary specifying the head atoms for each lipid type.
-            Format: {'lipid_name': ['head_atom_names']}
-            Example: {
-                'DPPC': ['PO4'],
-                'CHOL': ['ROH']
-            }
-            
-        k : int, optional
-            The number of nearest neighbors to use for calculating local curvature.
-            A larger k value results in smoother curvature but requires more computation.
-            If None, a default value will be used.
-            
-        file_path : str, optional
-            The path where the analysis results will be saved as a CSV file.
-            If None, results will not be saved to disk.
-            
-        method : str, optional
-            The method to use for curvature calculation.
-            Options: 'mean' (default) or 'gaussian'
-            - 'mean': calculates the mean curvature (H)
-            - 'gaussian': calculates the Gaussian curvature (K)
-            
-        Attributes
-        ----------
-        headAtoms : MDAnalysis.AtomGroup
-            The selected head atoms of all lipid molecules.
-            
-        _n_residues : int
-            The total number of lipid molecules in the system.
-            
-        resids : numpy.ndarray
-            The residue IDs of all lipid molecules.
-            
-        resnames : numpy.ndarray
-            The residue names of all lipid molecules.
-            
-        results.Curvature : numpy.ndarray
-            A 2D array storing the curvature values for all lipid molecules across all frames.
-            Shape: (n_residues, n_frames)
-            
-        method : str
-            The method used for curvature calculation ('mean' or 'gaussian').
-        """
+    def __init__(self, universe, residueGroup: dict, k: int = 20, file_path: str = None,
+                 method: str = 'mean', parallel: bool = False, n_jobs: int = -1):
         super().__init__(universe.trajectory)
         self.u = universe
         self.residues = list(residueGroup)
         self.k = k
         self.file_path = file_path
-        self.method = method
+        self.method = method.lower()
+        self.parallel = parallel
+        self.n_jobs = n_jobs
 
-        # Convert head atom names to space-separated strings
         self.headSp = {sp: ' '.join(residueGroup[sp]) for sp in residueGroup}
         print("Head atoms:", self.headSp)
 
-        # Initialize atom selection
         self.headAtoms = self.u.atoms[[]]
+        for res_name in self.residues:
+            selection_str = f'resname {res_name} and name {self.headSp[res_name]}'
+            self.headAtoms += self.u.select_atoms(selection_str, updating=False)
 
-        # Select head atoms for all specified lipid types
-        for i in range(len(self.residues)):
-            self.headAtoms += self.u.select_atoms('resname %s and name %s'
-                                                  % (self.residues[i], self.headSp[self.residues[i]]), updating=False)
-
-        # Set basic attributes
         self._n_residues = self.headAtoms.n_residues
         self.resids = self.headAtoms.resids
         self.resnames = self.headAtoms.resnames
-        self.results.Curvature = None
 
-        # Record analysis parameters
-        self.parameters = str(residueGroup) + 'K:' + str(self.k) + 'Method:' + method
+        self.results.MeanCurvature = None
+        self.results.GaussianCurvature = None
+        self.results.Normal = None
+
+        self.parameters = f"{residueGroup}, K:{self.k}, Method:{self.method}"
 
     @property
     def MeanCurvature(self):
         return self.results.MeanCurvature
 
     @property
-    def GussainCurvature(self):
-        return self.results.GussainCurvature
+    def GaussianCurvature(self):
+        return self.results.GaussianCurvature
 
     def _prepare(self):
-        self.results.MeanCurvature = np.full([self._n_residues, self.n_frames]
-                                             , fill_value=np.nan)
+        self.results.MeanCurvature = np.full([self._n_residues, self.n_frames], fill_value=np.nan)
+        self.results.GaussianCurvature = np.full([self._n_residues, self.n_frames], fill_value=np.nan)
+        self.results.Normal = np.full([self._n_residues, self.n_frames, 3], fill_value=np.nan)
 
-        self.results.GussainCurvature = np.full([self._n_residues, self.n_frames]
-                                                , fill_value=np.nan)
+    @staticmethod
+    def _calculate_curvature_for_frame(head_positions, k):
+        n_residues = head_positions.shape[0]
+        if n_residues < k:
+            nan_array = np.full(n_residues, np.nan)
+            nan_normals = np.full((n_residues, 3), np.nan)
+            return (nan_array, nan_array, nan_normals)
 
-        self.results.Normal = np.full([self._n_residues, self.n_frames, 3],
-                                      fill_value=np.nan)
+        kd_tree = KDTree(head_positions)
+        _, idxs = kd_tree.query(head_positions, k)
+        nearest_neighbors = head_positions[idxs]
+
+        means = np.mean(nearest_neighbors, axis=1, keepdims=True)
+        centered_points = nearest_neighbors - means
+        cov_matrices = np.einsum('nki,nkj->nij', centered_points, centered_points)
+        eigenvalues, eigenvectors = eig(cov_matrices)
+
+        eigenvalue_indices = np.argsort(eigenvalues, axis=1)
+        n_range = np.arange(n_residues)
+
+        normals_x = eigenvectors[n_range, :, eigenvalue_indices[:, 1]]
+        normals_y = eigenvectors[n_range, :, eigenvalue_indices[:, 2]]
+        normals_z = eigenvectors[n_range, :, eigenvalue_indices[:, 0]]
+
+        center_head = np.mean(head_positions, axis=0)
+        center_to_head = center_head - head_positions
+        dots = np.einsum('ij,ij->i', normals_z, center_to_head)
+
+        flip_mask = dots < 0
+        normals_z[flip_mask] *= -1
+
+        cross_products = np.cross(normals_x, normals_y, axis=1)
+        handedness_dots = np.einsum('ij,ij->i', cross_products, normals_z)
+        flip_handedness_mask = handedness_dots < 0
+        normals_x[flip_handedness_mask], normals_y[flip_handedness_mask] = \
+            normals_y[flip_handedness_mask], normals_x[flip_handedness_mask]
+
+        normals_batch = np.stack((normals_x, normals_y, normals_z), axis=1)
+        local_points = np.einsum('nki,nji->nkj', centered_points, normals_batch)
+
+        k_mean = np.full(n_residues, np.nan)
+        k_gaussian = np.full(n_residues, np.nan)
+
+        for i in range(n_residues):
+            x_i, y_i, z_i = local_points[i].T
+            A_i = np.column_stack([x_i**2, y_i**2, x_i*y_i, x_i, y_i, np.ones_like(x_i)])
+            
+            try:
+                coeffs, _, _, _ = lstsq(A_i, z_i, rcond=None)
+            except np.linalg.LinAlgError:
+                continue
+
+            c0, c1, c2, c3, c4, _ = coeffs
+            E, F, G = c3**2 + 1, c3 * c4, c4**2 + 1
+            L, M, N = 2 * c0, c2, 2 * c1
+
+            denominator_mean = 2 * (E * G - F**2)
+            denominator_gauss = E * G - F**2
+
+            if np.abs(denominator_mean) > 1e-9:
+                k_mean[i] = (E * N - 2 * F * M + G * L) / denominator_mean
+
+            if np.abs(denominator_gauss) > 1e-9:
+                k_gaussian[i] = (L * N - M**2) / denominator_gauss
+        
+        return (k_mean * 10, k_gaussian * 10, normals_z)
 
     def _single_frame(self):
         head_positions = self.headAtoms.positions
-        kd_tree = KDTree(head_positions)
-        center_head = self.headAtoms.center_of_geometry()
-        center_to_head = center_head - head_positions
-        for i, point in enumerate(head_positions):
-            _, idxs = kd_tree.query(point, self.k)
-            nearest_neighbors = head_positions[idxs]
-            normals = fit_plane_and_get_normal(nearest_neighbors)
-            if np.dot(center_to_head[i,], normals[2]) < 0:
-                normals[2] = -normals[2]
-                xxx = cross_product(normals[0], normals[1])
-                if np.dot(xxx, normals[2]) < 0:
-                    normals[[0, 1]] = normals[[1, 0]]
-            self.results.Normal[i, self._frame_index] = normals[2]
-            mean = np.mean(nearest_neighbors, axis=0)
-            centered_points = nearest_neighbors - mean
+        k_mean, k_gaussian, normals = self._calculate_curvature_for_frame(head_positions, self.k)
 
-            local_points = (np.dot(normals, centered_points.T)).T
+        self.results.MeanCurvature[:, self._frame_index] = k_mean
+        self.results.GaussianCurvature[:, self._frame_index] = k_gaussian
+        self.results.Normal[:, self._frame_index] = normals
 
-            coefficients = fit_quadratic_surface_1(local_points)
+    def _get_inputs_generator(self):
+        for _ in self.u.trajectory[self.start:self.stop:self.step]:
+            yield (self.headAtoms.positions.copy(), self.k)
 
-            first_style = calculate_coefficients(coefficients)
+    def run(self, start=None, stop=None, step=None, verbose=None):
+        self.start = start if start is not None else 0
+        self.stop = stop if stop is not None and stop < self._trajectory.n_frames else self._trajectory.n_frames
+        self.step = step if step is not None else 1
+        self.n_frames = len(range(self.start, self.stop, self.step))
+        self._prepare()
+        
+        if self.parallel:
+            print(f"Running in parallel on {self.n_jobs} jobs...")
+            verbose_level = 10 if verbose else 0
 
-            if self.method == 'mean':
-                k_mean = calculate_mean_curvature(first_style)
-                self.results.MeanCurvature[i, self._frame_index] = k_mean
+            inputs_generator = self._get_inputs_generator()
+            results_list = Parallel(n_jobs=self.n_jobs, verbose=verbose_level)(
+                delayed(self._calculate_curvature_for_frame)(*inputs) for inputs in inputs_generator
+            )
 
-            elif self.method == 'gussain':
-                k_gussain = calculate_gaussian_curvature(first_style)
-                self.results.GussainCurvature[i, self._frame_index] = k_gussain
+            if results_list:
+                mean_curv_list, gauss_curv_list, normal_list = zip(*results_list)
+                self.results.MeanCurvature = np.array(mean_curv_list).T
+                self.results.GaussianCurvature = np.array(gauss_curv_list).T
+                self.results.Normal = np.transpose(np.array(normal_list), (1, 0, 2))
+        else:
+            print("Running in serial mode...")
+            super().run(start=start, stop=stop, step=step, verbose=verbose)
+        
+        self._conclude()
 
     def _conclude(self):
         if self.file_path:
+            if self.method == 'mean':
+                results_to_save = self.results.MeanCurvature
+                description = 'Mean Curvature (nm-1)'
+            elif self.method == 'gaussian':
+                results_to_save = self.results.GaussianCurvature
+                description = 'Gaussian Curvature (nm-2)'
+            else:
+                print(f"Warning: Unknown method '{self.method}'. Defaulting to save Mean Curvature.")
+                results_to_save = self.results.MeanCurvature
+                description = 'Mean Curvature (nm-1)'
+
             lipids_ratio = {sp: self.u.select_atoms(f'resname {sp}').n_residues for sp in self.residues}
             dict_parameter = {
-                'frames': [i for i in range(self.start, self.stop, self.step)]
-                , 'resids': self.resids
-                , 'resnames': self.resnames
-                , 'positions': self.headAtoms.positions
-                , 'results': self.results.MeanCurvature
-                , 'file_path': self.file_path
-                , 'description': 'Mean Curvature(nm -1)'
-                , 'parameters': self.parameters
-                , 'lipids_type': lipids_ratio
+                'frames': list(range(self.start, self.stop, self.step)),
+                'resids': self.resids,
+                'resnames': self.resnames,
+                'positions': self.headAtoms.positions,
+                'results': results_to_save,
+                'file_path': self.file_path,
+                'description': description,
+                'parameters': self.parameters,
+                'lipids_type': lipids_ratio
             }
             WriteExcelLipids(**dict_parameter).run()
-
-
-def fit_plane_and_get_normal(points):
-    mean = np.mean(points, axis=0)
-    centered_points = points - mean
-    covariance_matrix = np.cov(centered_points.T)
-    eigenvalues, eigenvectors = np.linalg.eig(covariance_matrix)
-    eigenvalue_index = np.argsort(eigenvalues)
-    normal_x = eigenvectors[:, eigenvalue_index[1]]
-    normal_y = eigenvectors[:, eigenvalue_index[2]]
-    normal_z = eigenvectors[:, eigenvalue_index[0]]
-    normal_arr = np.vstack((normal_x, normal_y, normal_z))
-    return normal_arr
-
-def find_k_nearest_neighbors_and_normals(k, particles):
-    kdtree = KDTree(particles)
-    normals = np.zeros((particles.shape[0], 3))
-    for i, point in enumerate(particles):
-        dists, idxs = kdtree.query(point, k + 1)
-        nearest_neighbors = particles[idxs[1:]]
-        if nearest_neighbors.shape[0] >= k:
-            nearest_neighbors = np.vstack((nearest_neighbors, point))
-            normal = fit_plane_and_get_normal(nearest_neighbors)
-            normals[i] = normal
-        else:
-            normals[i] = np.zeros(3)
-    return normals
-
-
-def cross_product(v1, v2):
-    x1, y1, z1 = v1
-    x2, y2, z2 = v2
-    cross_x = y1 * z2 - z1 * y2
-    cross_y = z1 * x2 - x1 * z2
-    cross_z = x1 * y2 - y1 * x2
-    return np.hstack((cross_x, cross_y, cross_z))
-
-
-def fit_quadratic_surface_1(point_colud):
-    A = []
-    b = []
-    for point in point_colud:
-        x, y, z = point
-        A.append([x ** 2, y ** 2, x * y, x, y, 1])
-        b.append(z)
-    A = np.array(A)
-    b = np.array(b)
-    coefficients, _, _, _ = lstsq(A, b)
-    coefficients_points = coefficients
-    return coefficients_points
-
-
-def calculate_coefficients(coefficients):
-    E = (coefficients[3] ** 2) + 1
-    F = coefficients[3] * coefficients[4]
-    G = (coefficients[4] ** 2) + 1
-    L = 2 * coefficients[0]
-    M = coefficients[2]
-    N = coefficients[1] * 2
-    EFGLMN = np.hstack((E, F, G, L, M, N))
-    return EFGLMN
-
-
-def calculate_mean_curvature(coefficients):
-    EN = coefficients[0] * coefficients[5]
-    FM = coefficients[1] * coefficients[4]
-    GL = coefficients[2] * coefficients[3]
-    EG = coefficients[0] * coefficients[2]
-    F2 = coefficients[1] ** 2
-    k_mean = (EN - 2 * FM + GL) / (2 * (EG - F2))
-    return k_mean
-
-
-def calculate_gaussian_curvature(coefficients):
-    LN = coefficients[3] * coefficients[-1]
-    M2 = coefficients[-2] ** 2
-    EG = coefficients[0] * coefficients[2]
-    F2 = coefficients[1] ** 2
-    k_gaussian = (LN - M2) / (EG - F2)
-    return k_gaussian
+            print(f"Analysis complete. Results for '{self.method}' curvature will be saved to {self.file_path}")
 
 
 if __name__ == "__main__":
-    gro_file = "../cases/lnb.gro"
-    xtc_file = "../cases/md.xtc"
-    csv_file = "../cases/csv/area_step5_lnb.csv"
-    u = mda.Universe(gro_file, xtc_file)
-    cls = Curvature(u, {'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}, 20, path='E:/untitled.csv')
-    # 执行计算
-    cls.run(0, 100, verbose=True)
 
+    gro_file = "cases/lnb.gro"
+    xtc_file = "cases/md.xtc"
+    csv_file_mean = "cases/csv/curvature_mean_results.csv"
+    csv_file_gauss = "cases/csv/curvature_gauss_results.csv"
+
+    if not (os.path.exists(gro_file) and os.path.exists(xtc_file)):
+         print(f"Error: Input files not found. Please ensure '{gro_file}' and '{xtc_file}' exist.")
+    else:
+        u = mda.Universe(gro_file, xtc_file)
+        residue_group = {'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}
+
+        print("--- Running Serial Mean Curvature Analysis ---")
+        analysis_serial = Curvature(u, residue_group, k=20, file_path=csv_file_mean, method='mean', parallel=False)
+        analysis_serial.run(verbose=True)
+
+        print("\n" + "="*50 + "\n")
+
+        print("--- Running Parallel Gaussian Curvature Analysis ---")
+        analysis_parallel = Curvature(u, residue_group, k=20, file_path=csv_file_gauss, method='mean', parallel=True, n_jobs=10)
+        analysis_parallel.run(verbose=True)
