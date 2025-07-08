@@ -5,7 +5,7 @@ from .curvature import Curvature
 from .sz import SZ
 from .anisotropy import Anisotropy
 from .rad import CalRad
-from .gyration import Gyration_py
+from .gyration import Gyration
 from .cluster import Cluster
 from .n_cluster import NCluster
 import MDAnalysis as mda
