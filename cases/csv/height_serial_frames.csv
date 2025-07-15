@@ -1,5 +1,5 @@
 # Created by LNB-MDT v1.0
-# Bubble Height
+# Bubble Height (nm)
 # DPPC:DUPC:CHOL=401:240:160
 # TYPE:Bubble
 # Parameters:{'DPPC': (['PO4'], ['C4B', 'C4A']), 'DUPC': (['PO4'], ['C3A', 'C4B']), 'CHOL': (['ROH'], ['R5'])}K:21
