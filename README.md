@@ -1,8 +1,10 @@
 # LNB-MDT
 
-**LNB-MDT** is a **M**olecular **D**ynamics **T**oolbox for **L**ipid **N**ano**B**ubbles.
+
 
 ![alt text](LNB-MDT.jpg)
+
+**LNB-MDT** is a **M**olecular **D**ynamics **T**oolbox for **L**ipid **N**ano**B**ubbles.
 ## Installation
 
 To ensure the project runs smoothly, we strongly recommend using [Conda / Miniconda / Anaconda] to create an isolated virtual environment for managing project dependencies.

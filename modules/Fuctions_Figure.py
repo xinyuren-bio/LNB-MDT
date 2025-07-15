@@ -5,7 +5,7 @@ from PySide6.QtGui import QColor
 
 from figure.figure import *
 from .Tools import *
-from exception import *
+# from exception import *
 
 global window
 
