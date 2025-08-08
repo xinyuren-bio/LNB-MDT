@@ -1,6 +1,8 @@
 import warnings
 import os
 import sys
+import argparse  # 添加argparse导入
+import ast       # 用于安全地解析residues_group字典字符串
 warnings.filterwarnings('ignore')
 
 import numpy as np
@@ -242,25 +244,123 @@ class SZ(AnalysisBase):
             print(f"Analysis complete. Results will be saved to {self.file_path}")
 
 
-if __name__ == "__main__":
-    import time
-    gro_file = "cases/lnb.gro"
-    xtc_file = "cases/md.xtc"
-    csv_file_serial = "cases/csv/sz_serial.csv"
-    csv_file_parallel = "cases/csv/sz_parallel.csv"
+# --- Command-line Argument Parsing ---
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Perform Sz Order Parameter analysis on molecular dynamics trajectories."
+    )
 
-    u = mda.Universe(gro_file, xtc_file)
-    residues_group = {'DPPC': ['PO4'], 'DUPC': ['PO4']}
-    #1. 串行
-    t1 = time.time()
-    analysis_serial = SZ(u, residues_group, chain='sn1', k=15, file_path=csv_file_serial, parallel=False)
-    analysis_serial.run(verbose=True)
-    t2 = time.time()
-    print(f"Serial analysis completed in {t2 - t1:.2f} seconds.")
-    
-    #2. 并行
-    t3 = time.time()
-    analysis_parallel = SZ(u, residues_group, chain='sn1', k=15, file_path=csv_file_parallel, parallel=True, n_jobs=2)
-    analysis_parallel.run(verbose=True)
-    t4 = time.time()
-    print(f"Parallel analysis completed in {t4 - t3:.2f} seconds.")
+    parser.add_argument(
+        "--gro-file",
+        type=str,
+        default="cases/lnb.gro",
+        help="Path to the GRO file (topology file)."
+    )
+    parser.add_argument(
+        "--xtc-file",
+        type=str,
+        default="cases/md.xtc",
+        help="Path to the XTC file (trajectory file)."
+    )
+    parser.add_argument(
+        "--output-csv",
+        type=str,
+        default="cases/csv/sz_results.csv",
+        help="Path to the output CSV file for Sz order parameter results."
+    )
+    parser.add_argument(
+        "--residues",
+        type=str,
+        default="{'DPPC': ['PO4'], 'DUPC': ['PO4']}",
+        help="A dictionary string defining residue groups for analysis. E.g., \"{'DPPC': ['PO4'], 'DUPC': ['PO4']}\""
+    )
+    parser.add_argument(
+        "--chain",
+        type=str,
+        choices=['sn1', 'sn2', 'both'],
+        default='both',
+        help="Chain type to analyze: 'sn1', 'sn2', or 'both'."
+    )
+    parser.add_argument(
+        "--k-value",
+        type=int,
+        default=15,
+        help="K value for Sz calculation."
+    )
+    parser.add_argument(
+        "--parallel",
+        action="store_true",
+        help="Enable parallel processing for Sz calculation."
+    )
+    parser.add_argument(
+        "--n-jobs",
+        type=int,
+        default=-1,
+        help="Number of jobs to run in parallel. -1 means using all available CPU cores."
+    )
+    parser.add_argument(
+        "--start-frame",
+        type=int,
+        default=0,
+        help="Starting frame for analysis (0-indexed)."
+    )
+    parser.add_argument(
+        "--stop-frame",
+        type=int,
+        help="Stopping frame for analysis (exclusive). Defaults to end of trajectory."
+    )
+    parser.add_argument(
+        "--step-frame",
+        type=int,
+        default=1,
+        help="Step size for frames during analysis."
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Enable verbose output during analysis."
+    )
+
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
+    args = parse_args()
+
+    # Parse residues_group from string
+    try:
+        residues_group_parsed = ast.literal_eval(args.residues)
+        if not isinstance(residues_group_parsed, dict):
+            raise ValueError("Residues argument must be a dictionary string.")
+    except (ValueError, SyntaxError) as e:
+        print(f"Error: Could not parse residues argument: {e}")
+        print("Please ensure it's a valid dictionary string, e.g., \"{'DPPC': ['PO4'], 'DUPC': ['PO4']}\"")
+        sys.exit(1)
+
+    print("\n--- Initializing MDAnalysis Universe ---")
+    try:
+        u = mda.Universe(args.gro_file, args.xtc_file)
+    except Exception as e:
+        print(f"Error loading MDAnalysis Universe: {e}")
+        print("Please check if GRO/XTC files exist and are valid.")
+        sys.exit(1)
+
+    print(f"\n--- Running Sz Order Parameter Analysis (chain: {args.chain}) ---")
+    sz_analysis = SZ(
+        u,
+        residues_group_parsed,
+        chain=args.chain,
+        k=args.k_value,
+        file_path=args.output_csv,
+        parallel=args.parallel,
+        n_jobs=args.n_jobs
+    )
+    sz_analysis.run(
+        start=args.start_frame,
+        stop=args.stop_frame,
+        step=args.step_frame,
+        verbose=args.verbose
+    )
+
+    print("\n--- Analysis Finished ---")
+    print(f"Results saved to: {args.output_csv}")
