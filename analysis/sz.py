@@ -1,8 +1,8 @@
 import warnings
 import os
 import sys
-import argparse  # 添加argparse导入
-import ast       # 用于安全地解析residues_group字典字符串
+import argparse
+import ast
 warnings.filterwarnings('ignore')
 
 import numpy as np
@@ -230,11 +230,11 @@ class SZ(AnalysisBase):
             lipids_ratio = {sp: self.u.select_atoms(f'resname {sp}').n_residues for sp in self.residues}
             dict_parameter = {
                 'frames': list(range(self.start, self.stop, self.step)),
-                'resids': self.resids,
-                'resnames': self.resnames,
-                'positions': self.headAtoms.positions,
-                'results': self.results.SZ,
-                'file_path': self.file_path,
+                'resids': self.resids,  # 残基ID
+                'resnames': self.resnames,  # 残基名称
+                'positions': self.headAtoms.positions,  # 残基位置
+                'results': self.results.SZ,  # 结果
+                'file_path': self.file_path,  # 输出文件路径
                 'description': f'Sz Order Parameter (chain: {self.chain})',
                 'parameters': self.parameters,
                 'lipids_type': lipids_ratio

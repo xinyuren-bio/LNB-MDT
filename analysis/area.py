@@ -2,8 +2,8 @@ import warnings
 warnings.filterwarnings('ignore')
 import sys
 import os
-import argparse  # 添加argparse导入
-import ast       # 用于安全地解析residues_group字典字符串
+import argparse
+import ast     
 
 import numpy as np
 from scipy.spatial import Voronoi
