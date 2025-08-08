@@ -1,8 +1,8 @@
 import warnings
 import os
 import sys
-import argparse  # 添加argparse导入
-import ast       # 用于安全地解析residues_group字典字符串
+import argparse 
+import ast      
 warnings.filterwarnings('ignore')
 
 import pandas as pd

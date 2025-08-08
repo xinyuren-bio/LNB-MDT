@@ -1,9 +1,9 @@
 import warnings
 warnings.filterwarnings('ignore')
 import logging
-import argparse  # 添加argparse导入
-import ast       # 用于安全地解析residues_group字典字符串
-import sys       # 用于sys.exit
+import argparse
+import ast
+import sys
 
 import numpy as np
 import pandas as pd

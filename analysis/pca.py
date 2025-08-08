@@ -1,8 +1,8 @@
 import warnings
 import os
 import sys
-import argparse  # Import the argparse module
-import ast       # For safely evaluating the residues_group dictionary from string
+import argparse
+import ast
 
 warnings.filterwarnings('ignore')
 
