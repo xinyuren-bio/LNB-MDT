@@ -31,6 +31,13 @@
 - **N-Cluster Analysis**: Cluster count statistics
 - **Radial Distribution Analysis**: Radial distribution function calculation
 
+### 🤖 Machine Learning Integration
+- **Automatic Parameter Optimization**: Bayesian optimization for finding optimal analysis parameters
+- **Anomaly Detection**: Identify unusual patterns in molecular dynamics trajectories
+- **Property Prediction**: Predict molecular properties using machine learning models
+- **Feature Engineering**: Advanced feature extraction from trajectory data
+- **Model Evaluation**: Comprehensive model performance assessment and visualization
+
 ### 🖥️ Graphical User Interface
 - Modern Qt6 interface design
 - Intuitive data visualization
@@ -53,6 +60,8 @@
 - **Python**: 3.11 or higher
 - **Conda**: Miniconda or Anaconda
 - **VMD**: 1.9.4 or higher (optional, for visualization)
+- **Scikit-learn**: 1.5.2 or higher (for machine learning features)
+- **Additional ML packages**: seaborn, joblib (automatically installed)
 
 ### Hardware Requirements
 - **Memory**: Minimum 8GB RAM, recommended 16GB+
@@ -140,6 +149,9 @@ python analysis/pca.py --gro-file cases/lnb.gro --xtc-file cases/md.xtc --residu
 
 # Area analysis example
 python analysis/area.py --gro-file cases/lnb.gro --xtc-file cases/md.xtc --residues "{'DPPC': ['PO4']}" --k-value 20 --parallel --verbose
+
+# Machine learning examples
+python test_ml_module.py  # Test ML module functionality
 ```
 
 ## 📖 User Guide
@@ -244,6 +256,8 @@ python analysis/curvature.py \
 
 For detailed usage instructions, please refer to [analysis/README_COMMAND_LINE.md](analysis/README_COMMAND_LINE.md)
 
+For machine learning features, see [machine_learning/README.md](machine_learning/README.md)
+
 ## 📁 File Structure
 
 ```
@@ -264,6 +278,12 @@ LNB-MDT/
 │   ├── n_cluster.py      # N-cluster analysis
 │   ├── rad.py            # Radial distribution analysis
 │   └── README_COMMAND_LINE.md  # Command line usage guide
+├── machine_learning/        # Machine learning modules
+│   ├── __init__.py       # ML module initialization
+│   ├── parameter_optimizer.py  # Parameter optimization
+│   ├── anomaly_detector.py     # Anomaly detection
+│   ├── predictor.py            # Property prediction
+│   └── README.md         # ML module documentation
 ├── modules/               # Core modules
 │   ├── ui_main.py        # Main interface
 │   ├── Fuctions_Analysis.py  # Analysis functions
@@ -279,49 +299,6 @@ LNB-MDT/
 │   └── csv/              # Results file directory
 ├── themes/                # Interface themes
 └── images/                # Image resources
-```
-
-## ❓ FAQ
-
-### Q: How to resolve dependency installation issues?
-A: Ensure you're using Python 3.11 and follow the installation guide to create a conda environment.
-
-### Q: What if the program fails to start?
-A: Check if the conda environment is properly activated and ensure all dependencies are installed.
-
-### Q: What if analysis is very slow?
-A: Use the `--parallel` parameter to enable parallel processing and adjust the `--n-jobs` parameter.
-
-### Q: How to handle large trajectory files?
-A: Use `--start-frame` and `--stop-frame` parameters for segmented processing, or use `--step-frame` parameter for frame skipping.
-
-### Q: How to customize analysis parameters?
-A: Refer to the help information of each analysis module (`--help`), or check the command line usage guide.
-
-## 🤝 Contributing
-
-We welcome community contributions! Please follow these steps:
-
-1. Fork the project
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### Development Environment Setup
-
-```bash
-# Clone the project
-git clone https://github.com/your-username/LNB-MDT.git
-cd LNB-MDT
-
-# Create development environment
-conda create -n LNB-MDT-dev python=3.11
-conda activate LNB-MDT-dev
-pip install -r requirements.txt
-
-# Install development dependencies
-pip install pytest black flake8
 ```
 
 ## 📄 License
