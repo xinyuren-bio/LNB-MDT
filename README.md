@@ -1,31 +1,343 @@
-# LNB-MDT
+# LNB-MDT v1.0
 
+![LNB-MDT Logo](LNB-MDT.jpg)
 
+**LNB-MDT** (Lipid NanoBubble Molecular Dynamics Toolbox) is a comprehensive toolbox designed for molecular dynamics analysis of lipid nanobubbles.
 
-![alt text](LNB-MDT.jpg)
+## 📋 Table of Contents
 
-**LNB-MDT** is a **M**olecular **D**ynamics **T**oolbox for **L**ipid **N**ano**B**ubbles.
-## Installation
+- [Features](#features)
+- [System Requirements](#system-requirements)
+- [Installation Guide](#installation-guide)
+- [Quick Start](#quick-start)
+- [User Guide](#user-guide)
+- [Command Line Tools](#command-line-tools)
+- [File Structure](#file-structure)
+- [FAQ](#faq)
+- [Contributing](#contributing)
+- [License](#license)
 
-To ensure the project runs smoothly, we strongly recommend using [Conda / Miniconda / Anaconda] to create an isolated virtual environment for managing project dependencies.
+## ✨ Features
 
-### 1. Install Conda (if not already installed)
-If you don't have Conda (Miniconda or Anaconda) installed yet, please visit the following link to download and install the version suitable for your operating system:
-* **Miniconda:** [https://docs.conda.io/en/latest/miniconda.html]
+### 🧬 Molecular Dynamics Analysis
+- **PCA Analysis**: Principal Component Analysis for analyzing lipid molecular conformational changes
+- **Area Analysis**: Voronoi tessellation area calculation
+- **Curvature Analysis**: Mean and Gaussian curvature calculation
+- **Height Analysis**: Lipid molecular height distribution analysis
+- **Cluster Analysis**: Lipid molecular aggregation behavior analysis
+- **Anisotropy Analysis**: Molecular orientation anisotropy calculation
+- **Gyration Analysis**: Molecular radius of gyration calculation
+- **Sz Order Parameter Analysis**: Lipid chain order parameter analysis
+- **N-Cluster Analysis**: Cluster count statistics
+- **Radial Distribution Analysis**: Radial distribution function calculation
 
-### 2. Create Virtual Environment
+### 🖥️ Graphical User Interface
+- Modern Qt6 interface design
+- Intuitive data visualization
+- Drag-and-drop file operations
+- VMD integration support
+
+### ⚡ High-Performance Computing
+- Parallel processing support
+- Configurable computation parameters
+- Optimized algorithm implementation
+
+## 💻 System Requirements
+
+### Operating System
+- **Windows**: Windows 10/11 (64-bit)
+- **macOS**: macOS 10.15 or higher
+- **Linux**: Ubuntu 18.04+ or other mainstream distributions
+
+### Software Dependencies
+- **Python**: 3.11 or higher
+- **Conda**: Miniconda or Anaconda
+- **VMD**: 1.9.4 or higher (optional, for visualization)
+
+### Hardware Requirements
+- **Memory**: Minimum 8GB RAM, recommended 16GB+
+- **Storage**: At least 2GB available space
+- **Processor**: Multi-core processor supporting parallel computation
+
+## 🚀 Installation Guide
+
+### Method 1: Using Installation Scripts (Recommended)
+
+**Linux/macOS:**
+```bash
+git clone https://github.com/your-username/LNB-MDT.git
+cd LNB-MDT
+./install.sh
+```
+
+**Windows:**
+```cmd
+git clone https://github.com/your-username/LNB-MDT.git
+cd LNB-MDT
+install.bat
+```
+
+### Method 2: Manual Installation
+
+#### 1. Install Conda
+
+If you haven't installed Conda yet, please visit the following links to download the version suitable for your operating system:
+
+- **Miniconda**: [https://docs.conda.io/en/latest/miniconda.html](https://docs.conda.io/en/latest/miniconda.html)
+- **Anaconda**: [https://www.anaconda.com/products/distribution](https://www.anaconda.com/products/distribution)
+
+#### 2. Clone the Project
 
 ```bash
+git clone https://github.com/your-username/LNB-MDT.git
+cd LNB-MDT
+```
+
+#### 3. Create Virtual Environment
+
+```bash
+# Create new conda environment
 conda create -n LNB-MDT python=3.11
 
+# Activate environment
 conda activate LNB-MDT
 
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-## Run
+#### 4. Verify Installation
 
-To run the project, execute the following command:
 ```bash
+# Check Python version
+python --version
+
+# Check key dependencies
+python -c "import MDAnalysis, numpy, pandas, PySide6; print('All dependencies installed successfully!')"
+```
+
+### 📖 Quick Start
+
+If you're using LNB-MDT for the first time, we recommend checking the [QUICKSTART.md](QUICKSTART.md) quick start guide.
+
+## 🎯 Quick Start
+
+### Launch Graphical Interface
+
+```bash
+# Activate environment
+conda activate LNB-MDT
+
+# Start main program
 python main.py
 ```
+
+### Use Command Line Tools
+
+```bash
+# PCA analysis example
+python analysis/pca.py --gro-file cases/lnb.gro --xtc-file cases/md.xtc --residues "{'DPPC': ['PO4']}" --parallel --verbose
+
+# Area analysis example
+python analysis/area.py --gro-file cases/lnb.gro --xtc-file cases/md.xtc --residues "{'DPPC': ['PO4']}" --k-value 20 --parallel --verbose
+```
+
+## 📖 User Guide
+
+### Graphical Interface Usage
+
+1. **Launch Program**: Run `python main.py`
+2. **Load Data**: Load GRO and XTC files through the interface
+3. **Select Analysis**: Choose analysis type from the left menu
+4. **Configure Parameters**: Set analysis parameters
+5. **Run Analysis**: Click the run button to start analysis
+6. **View Results**: Check analysis results in the results panel
+
+### Main Function Modules
+
+#### 🧬 Generation Module
+- Lipid nanobubble structure generation
+- Custom parameter configuration
+- Batch generation support
+
+#### 📊 Analysis Module
+- Multiple physical property analysis
+- Real-time progress display
+- Result visualization
+
+#### 📈 Figure Module
+- Multiple chart types
+- Custom styles
+- Export functionality
+
+#### 🔧 Data Processing Module
+- Data cleaning
+- Format conversion
+- Batch processing
+
+### VMD Integration
+
+1. **Start VMD**: Click "Start VMD" in the interface
+2. **Load Trajectory**: Drag and drop CSV files to VMD window
+3. **Visualization**: Use VMD for molecular visualization
+
+## 🖥️ Command Line Tools
+
+LNB-MDT provides a complete command-line interface supporting batch processing and automated analysis.
+
+### Common Parameters
+
+All analysis modules support the following common parameters:
+
+```bash
+--gro-file GRO_FILE      # GRO file path (topology file)
+--xtc-file XTC_FILE      # XTC file path (trajectory file)
+--output-csv OUTPUT_CSV  # Output CSV file path
+--residues RESIDUES      # Residue group dictionary string
+--parallel               # Enable parallel processing
+--n-jobs N_JOBS          # Number of parallel jobs (-1 means use all CPU cores)
+--start-frame START_FRAME # Starting frame for analysis (0-indexed)
+--stop-frame STOP_FRAME  # Ending frame for analysis (exclusive)
+--step-frame STEP_FRAME  # Frame step size
+--verbose                # Enable verbose output
+```
+
+### Analysis Module Examples
+
+#### PCA Analysis
+```bash
+python analysis/pca.py \
+  --gro-file cases/lnb.gro \
+  --xtc-file cases/md.xtc \
+  --output-csv results/pca_results.csv \
+  --residues "{'DPPC': ['PO4'], 'CHOL': ['ROH']}" \
+  --parallel \
+  --n-jobs 4 \
+  --verbose
+```
+
+#### Area Analysis
+```bash
+python analysis/area.py \
+  --gro-file cases/lnb.gro \
+  --xtc-file cases/md.xtc \
+  --output-csv results/area_results.csv \
+  --residues "{'DPPC': ['PO4']}" \
+  --k-value 20 \
+  --max-normal-angle 140 \
+  --parallel \
+  --verbose
+```
+
+#### Curvature Analysis
+```bash
+python analysis/curvature.py \
+  --gro-file cases/lnb.gro \
+  --xtc-file cases/md.xtc \
+  --output-csv results/curvature_results.csv \
+  --residues "{'DPPC': ['PO4']}" \
+  --k-value 20 \
+  --method mean \
+  --parallel \
+  --verbose
+```
+
+For detailed usage instructions, please refer to [analysis/README_COMMAND_LINE.md](analysis/README_COMMAND_LINE.md)
+
+## 📁 File Structure
+
+```
+LNB-MDT/
+├── main.py                 # Main program entry
+├── requirements.txt        # Python dependencies
+├── README.md              # Project documentation
+├── LICENSE                # License file
+├── analysis/              # Analysis modules
+│   ├── pca.py            # PCA analysis
+│   ├── area.py           # Area analysis
+│   ├── curvature.py      # Curvature analysis
+│   ├── height.py         # Height analysis
+│   ├── cluster.py        # Cluster analysis
+│   ├── anisotropy.py     # Anisotropy analysis
+│   ├── gyration.py       # Gyration analysis
+│   ├── sz.py             # Sz order parameter analysis
+│   ├── n_cluster.py      # N-cluster analysis
+│   ├── rad.py            # Radial distribution analysis
+│   └── README_COMMAND_LINE.md  # Command line usage guide
+├── modules/               # Core modules
+│   ├── ui_main.py        # Main interface
+│   ├── Fuctions_Analysis.py  # Analysis functions
+│   ├── Fuctions_Figure.py    # Figure functions
+│   ├── Fuctions_Generation.py # Generation functions
+│   └── vmd_control.py    # VMD control
+├── widgets/               # Interface components
+├── figure/                # Figure module
+├── generation/            # Generation module
+├── cases/                 # Example data
+│   ├── lnb.gro           # Example topology file
+│   ├── md.xtc            # Example trajectory file
+│   └── csv/              # Results file directory
+├── themes/                # Interface themes
+└── images/                # Image resources
+```
+
+## ❓ FAQ
+
+### Q: How to resolve dependency installation issues?
+A: Ensure you're using Python 3.11 and follow the installation guide to create a conda environment.
+
+### Q: What if the program fails to start?
+A: Check if the conda environment is properly activated and ensure all dependencies are installed.
+
+### Q: What if analysis is very slow?
+A: Use the `--parallel` parameter to enable parallel processing and adjust the `--n-jobs` parameter.
+
+### Q: How to handle large trajectory files?
+A: Use `--start-frame` and `--stop-frame` parameters for segmented processing, or use `--step-frame` parameter for frame skipping.
+
+### Q: How to customize analysis parameters?
+A: Refer to the help information of each analysis module (`--help`), or check the command line usage guide.
+
+## 🤝 Contributing
+
+We welcome community contributions! Please follow these steps:
+
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+### Development Environment Setup
+
+```bash
+# Clone the project
+git clone https://github.com/your-username/LNB-MDT.git
+cd LNB-MDT
+
+# Create development environment
+conda create -n LNB-MDT-dev python=3.11
+conda activate LNB-MDT-dev
+pip install -r requirements.txt
+
+# Install development dependencies
+pip install pytest black flake8
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📞 Contact
+
+- **Project Maintainer**: RenXinYU
+- **Email**: [your-email@example.com]
+- **Project Homepage**: [https://github.com/your-username/LNB-MDT]
+
+## 🙏 Acknowledgments
+
+Thanks to all developers and users who have contributed to this project!
+
+---
+
+**LNB-MDT v1.0** - Making lipid nanobubble analysis simpler and more efficient!
