@@ -330,9 +330,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-- **Project Maintainer**: RenXinYU
-- **Email**: [your-email@example.com]
-- **Project Homepage**: [https://github.com/your-username/LNB-MDT]
+- **Project Maintainer**: XinyuRen
+- **Email**: [zy2310205@buaa.edu.cn]
 
 ## 🙏 Acknowledgments
 
