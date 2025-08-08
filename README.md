@@ -150,8 +150,6 @@ python analysis/pca.py --gro-file cases/lnb.gro --xtc-file cases/md.xtc --residu
 # Area analysis example
 python analysis/area.py --gro-file cases/lnb.gro --xtc-file cases/md.xtc --residues "{'DPPC': ['PO4']}" --k-value 20 --parallel --verbose
 
-# Machine learning examples
-python test_ml_module.py  # Test ML module functionality
 ```
 
 ## 📖 User Guide
@@ -256,7 +254,6 @@ python analysis/curvature.py \
 
 For detailed usage instructions, please refer to [analysis/README_COMMAND_LINE.md](analysis/README_COMMAND_LINE.md)
 
-For machine learning features, see [machine_learning/README.md](machine_learning/README.md)
 
 ## 📁 File Structure
 
@@ -278,12 +275,6 @@ LNB-MDT/
 │   ├── n_cluster.py      # N-cluster analysis
 │   ├── rad.py            # Radial distribution analysis
 │   └── README_COMMAND_LINE.md  # Command line usage guide
-├── machine_learning/        # Machine learning modules
-│   ├── __init__.py       # ML module initialization
-│   ├── parameter_optimizer.py  # Parameter optimization
-│   ├── anomaly_detector.py     # Anomaly detection
-│   ├── predictor.py            # Property prediction
-│   └── README.md         # ML module documentation
 ├── modules/               # Core modules
 │   ├── ui_main.py        # Main interface
 │   ├── Fuctions_Analysis.py  # Analysis functions
@@ -309,10 +300,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Project Maintainer**: XinyuRen
 - **Email**: [zy2310205@buaa.edu.cn]
-
-## 🙏 Acknowledgments
-
-Thanks to all developers and users who have contributed to this project!
 
 ---
 
