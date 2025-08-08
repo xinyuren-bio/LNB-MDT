@@ -1,6 +1,8 @@
 import warnings
 import os
 import sys
+import argparse  # 添加argparse导入
+import ast       # 用于安全地解析residues_group字典字符串
 warnings.filterwarnings('ignore')
 
 import numpy as np
@@ -164,21 +166,115 @@ class Cluster(AnalysisBase):
             print(f"Analysis complete. Results will be saved to {self.file_path}")
 
 
+# --- Command-line Argument Parsing ---
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Perform Cluster analysis on molecular dynamics trajectories."
+    )
+
+    parser.add_argument(
+        "--gro-file",
+        type=str,
+        default="cases/lnb.gro",
+        help="Path to the GRO file (topology file)."
+    )
+    parser.add_argument(
+        "--xtc-file",
+        type=str,
+        default="cases/md.xtc",
+        help="Path to the XTC file (trajectory file)."
+    )
+    parser.add_argument(
+        "--output-csv",
+        type=str,
+        default="cases/csv/cluster_results.csv",
+        help="Path to the output CSV file for cluster results."
+    )
+    parser.add_argument(
+        "--residues",
+        type=str,
+        default="{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}",
+        help="A dictionary string defining residue groups for analysis. E.g., \"{'DPPC': ['PO4'], 'CHOL': ['ROH']}\""
+    )
+    parser.add_argument(
+        "--cutoff",
+        type=float,
+        default=8.0,
+        help="Cutoff distance for clustering (in Angstroms)."
+    )
+    parser.add_argument(
+        "--parallel",
+        action="store_true",
+        help="Enable parallel processing for cluster calculation."
+    )
+    parser.add_argument(
+        "--n-jobs",
+        type=int,
+        default=-1,
+        help="Number of jobs to run in parallel. -1 means using all available CPU cores."
+    )
+    parser.add_argument(
+        "--start-frame",
+        type=int,
+        default=0,
+        help="Starting frame for analysis (0-indexed)."
+    )
+    parser.add_argument(
+        "--stop-frame",
+        type=int,
+        help="Stopping frame for analysis (exclusive). Defaults to end of trajectory."
+    )
+    parser.add_argument(
+        "--step-frame",
+        type=int,
+        default=1,
+        help="Step size for frames during analysis."
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Enable verbose output during analysis."
+    )
+
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    gro_file = "cases/lnb.gro"
-    xtc_file = "cases/md.xtc"
-    csv_file_serial = "cases/csv/cluster_serial.csv"
-    csv_file_parallel = "cases/csv/cluster_parallel.csv"
+    args = parse_args()
 
-    u = mda.Universe(gro_file, xtc_file)
-    residues_group = {'DPPC': ['PO4'], 'DUPC': ['PO4'], 'CHOL': ['ROH']}
+    # Parse residues_group from string
+    try:
+        residues_group_parsed = ast.literal_eval(args.residues)
+        if not isinstance(residues_group_parsed, dict):
+            raise ValueError("Residues argument must be a dictionary string.")
+    except (ValueError, SyntaxError) as e:
+        print(f"Error: Could not parse residues argument: {e}")
+        print("Please ensure it's a valid dictionary string, e.g., \"{'DPPC': ['PO4'], 'CHOL': ['ROH']}\"")
+        sys.exit(1)
 
-    #1. 串行
-    print("--- Running Serial Analysis ---")
-    analysis_serial = Cluster(u, residues_group, cutoff=10.0, file_path=csv_file_serial, parallel=False)
-    analysis_serial.run(verbose=True)
-    
-    #2. 并行
-    print("--- Running Parallel Analysis ---")
-    analysis_parallel = Cluster(u, residues_group, cutoff=10.0, file_path=csv_file_parallel, parallel=True, n_jobs=-1)
-    analysis_parallel.run(verbose=True)
+    print("\n--- Initializing MDAnalysis Universe ---")
+    try:
+        u = mda.Universe(args.gro_file, args.xtc_file)
+    except Exception as e:
+        print(f"Error loading MDAnalysis Universe: {e}")
+        print("Please check if GRO/XTC files exist and are valid.")
+        sys.exit(1)
+
+    print("\n--- Running Cluster Analysis ---")
+    cluster_analysis = Cluster(
+        u,
+        residues_group_parsed,
+        cutoff=args.cutoff,
+        file_path=args.output_csv,
+        parallel=args.parallel,
+        n_jobs=args.n_jobs
+    )
+    cluster_analysis.run(
+        start=args.start_frame,
+        stop=args.stop_frame,
+        step=args.step_frame,
+        verbose=args.verbose
+    )
+
+    print("\n--- Analysis Finished ---")
+    print(f"Results saved to: {args.output_csv}")

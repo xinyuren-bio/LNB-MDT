@@ -1,6 +1,9 @@
 import warnings
 warnings.filterwarnings('ignore')
 import logging
+import argparse  # 添加argparse导入
+import ast       # 用于安全地解析residues_group字典字符串
+import sys       # 用于sys.exit
 
 import numpy as np
 import pandas as pd
@@ -89,10 +92,91 @@ class CalRad(AnalysisBase):
             df.to_excel(writer, sheet_name='Sheet1', index=False, startrow=1, header=True)
 
 
+# --- Command-line Argument Parsing ---
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Perform Radial Distribution analysis on molecular dynamics trajectories."
+    )
+
+    parser.add_argument(
+        "--gro-file",
+        type=str,
+        default="cases/lnb.gro",
+        help="Path to the GRO file (topology file)."
+    )
+    parser.add_argument(
+        "--output-excel",
+        type=str,
+        default="cases/csv/radial_distribution.xlsx",
+        help="Path to the output Excel file for radial distribution results."
+    )
+    parser.add_argument(
+        "--residues",
+        type=str,
+        default="{'DPPC': ['NC3'], 'D3PC': ['NC3'], 'CHOL': ['ROH']}",
+        help="A dictionary string defining residue groups for analysis. E.g., \"{'DPPC': ['NC3'], 'CHOL': ['ROH']}\""
+    )
+    parser.add_argument(
+        "--n-circle",
+        type=int,
+        default=50,
+        help="Number of concentric circles for radial analysis."
+    )
+    parser.add_argument(
+        "--start-frame",
+        type=int,
+        default=0,
+        help="Starting frame for analysis (0-indexed)."
+    )
+    parser.add_argument(
+        "--stop-frame",
+        type=int,
+        help="Stopping frame for analysis (exclusive). Defaults to end of trajectory."
+    )
+    parser.add_argument(
+        "--step-frame",
+        type=int,
+        default=1,
+        help="Step size for frames during analysis."
+    )
+
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    import MDAnalysis as mda
-    u = mda.Universe("E:lnb.gro")
-    # u = mda.Universe("E:/ach.gro")
-    cls = CalRad(u, {'W':['W']}, ncircle=50, filePath='E:/excel/rad.xlsx')
-    # cls = CalRad(u, {'DPPC':['NC3'],'D3PC':['NC3'],'CHOL':['ROH']}, ncircle=50, filePath='E:/excel/rad1.xlsx')
-    cls.run()
+    args = parse_args()
+
+    # Parse residues_group from string
+    try:
+        residues_group_parsed = ast.literal_eval(args.residues)
+        if not isinstance(residues_group_parsed, dict):
+            raise ValueError("Residues argument must be a dictionary string.")
+    except (ValueError, SyntaxError) as e:
+        print(f"Error: Could not parse residues argument: {e}")
+        print("Please ensure it's a valid dictionary string, e.g., \"{'DPPC': ['NC3'], 'CHOL': ['ROH']}\"")
+        sys.exit(1)
+
+    print("\n--- Initializing MDAnalysis Universe ---")
+    try:
+        import MDAnalysis as mda
+        u = mda.Universe(args.gro_file)
+    except Exception as e:
+        print(f"Error loading MDAnalysis Universe: {e}")
+        print("Please check if GRO file exists and is valid.")
+        sys.exit(1)
+
+    print("\n--- Running Radial Distribution Analysis ---")
+    rad_analysis = CalRad(
+        u,
+        residues_group_parsed,
+        ncircle=args.n_circle,
+        filePath=args.output_excel
+    )
+    rad_analysis.run(
+        start=args.start_frame,
+        stop=args.stop_frame,
+        step=args.step_frame
+    )
+
+    print("\n--- Analysis Finished ---")
+    print(f"Results saved to: {args.output_excel}")
