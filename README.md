@@ -74,14 +74,14 @@
 
 **Linux/macOS:**
 ```bash
-git clone https://github.com/your-username/LNB-MDT.git
+git clone https://github.com/xinyuren-bio/LNB-MDT.git
 cd LNB-MDT
 ./install.sh
 ```
 
 **Windows:**
 ```cmd
-git clone https://github.com/your-username/LNB-MDT.git
+git clone https://github.com/xinyuren-bio/LNB-MDT.git
 cd LNB-MDT
 install.bat
 ```
@@ -98,7 +98,7 @@ If you haven't installed Conda yet, please visit the following links to download
 #### 2. Clone the Project
 
 ```bash
-git clone https://github.com/renxinyu-bio/LNB-MDT.git
+git clone https://github.com/xinyuren-bio/LNB-MDT.git
 cd LNB-MDT
 ```
 
