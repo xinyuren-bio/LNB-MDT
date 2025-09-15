@@ -356,6 +356,8 @@ class MainWindow(QMainWindow):
 
         if btnName == 'btn_data_process':
             widgets.stackedWidget.setCurrentWidget(widgets.page_vmd)
+            UIFunctions.resetStyle(self, btnName)
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
