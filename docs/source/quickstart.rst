@@ -6,6 +6,30 @@
 启动程序
 --------
 
+首次配置
+~~~~~~~~
+
+.. raw:: html
+
+   <div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;">
+
+**首次使用需要配置VMD路径：**
+
+1. **编辑配置文件**
+   - 打开项目根目录的 `config.ini` 文件
+   - 修改 `vmd_path` 为您的VMD实际安装路径
+
+2. **常见路径示例**
+   - Windows: `C:/Program Files/VMD/vmd.exe`
+   - macOS: `/Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64`
+   - Linux: `/usr/local/bin/vmd`
+
+3. **保存并重启**
+   - 保存配置文件
+   - 重新启动程序
+
+   </div>
+
 图形界面启动
 ~~~~~~~~~~~~
 
@@ -30,20 +54,20 @@
 
    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
 
-   <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-top: 0;">🧬 Generation Module</h4>
+   <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
+   <h4 style="margin-center: 0;">🧬 Generation Module</h4>
    </div>
 
-   <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-top: 0;">📊 Analysis Module</h4>
+   <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
+   <h4 style="margin-center: 0;">📊 Analysis Module</h4>
    </div>
 
-   <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-top: 0;">📈 Figure Module</h4>
+   <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
+   <h4 style="margin-center: 0;">📈 Figure Module</h4>
    </div>
 
-   <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-top: 0;">🔧 VMD Module</h4>
+   <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
+   <h4 style="margin-center: 0;">🔧 VMD Module</h4>
    </div>
 
    </div>
@@ -324,6 +348,34 @@ VMD集成
 --------
 
 LNB-MDT支持与VMD的无缝集成：
+
+VMD路径配置
+~~~~~~~~~~~
+
+.. raw:: html
+
+   <div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;">
+
+**首次使用需要配置VMD路径：**
+
+1. **找到VMD安装路径**
+   - Windows: 通常在 `C:/Program Files/VMD/vmd.exe`
+   - macOS: 通常在 `/Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64`
+   - Linux: 通常在 `/usr/local/bin/vmd`
+
+2. **编辑配置文件**
+   - 打开项目根目录的 `config.ini` 文件
+   - 修改 `vmd_path` 为您的VMD实际安装路径
+
+3. **验证配置**
+   - 保存配置文件
+   - 重新启动LNB-MDT程序
+
+**配置文件示例：**
+.. code-block:: ini
+
+   [VMD]
+   vmd_path = /Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64
 
 启动VMD
 ~~~~~~~

@@ -509,7 +509,7 @@ class HeightLayout(AnalysisLayout):
 
         self.cls = Height(self.Box.u
                           , dictHeadTail
-                          , file_path=self.Info.path_result
+                          , filePath=self.Info.path_result
                           , k=self.Info.K)
 
 
@@ -575,7 +575,7 @@ class SZLayout(AnalysisLayout):
             self.cls = SZ(self.Box.u
                           , self.Box.get_config('SZ').SZHeadAtoms
                           , self.CHAIN
-                          , path=self.Info.path_result
+                          , filePath=self.Info.path_result
                           , k=self.Info.K)
         else:
             print('暂时不支持%s力场' % self.FF_TYPE)
@@ -603,7 +603,7 @@ class AreaLayout(AnalysisLayout):
                                )
         self.cls = Area(universe=self.Box.u
                         , residueGroup=self.Box.get_config('Area').AreaHeadAtoms
-                        , file_path=self.Info.path_result
+                        , filePath=self.Info.path_result
                         , k=self.Info.K)
 
 
@@ -628,7 +628,7 @@ class MeanCurvatureLayout(AnalysisLayout):
                                )
         self.cls = Curvature(self.Box.u
                              , self.Box.get_config('MeanCurvature').MeanCurvatureHeadAtoms
-                             , file_path=self.Info.path_result
+                             , filePath=self.Info.path_result
                              , k=self.Info.K
                              , method='mean')
 
@@ -820,7 +820,7 @@ class ClusterLayout(AnalysisLayout):
         self.Box.get_config('Cluster').CLCutoff = AnalysisUtils.get_spin_value(self.ui.widgetCutoffSpinBox)
         self.cls = Cluster(self.Box.u
                            , self.Box.get_config('Cluster').CLHeadAtoms
-                           , file_path=self.Info.path_result
+                           , filePath=self.Info.path_result
                            , cutoff=self.Box.get_config('Cluster').CLCutoff)
 
 
@@ -858,7 +858,7 @@ class NClusterLayout(AnalysisLayout):
         self.Box.get_config('NCluster').NCutoff = AnalysisUtils.get_spin_value(self.ui.widgetNCutoffSpinBox1)
         self.cls = NCluster(self.Box.u
                            , self.Box.get_config('NCluster').NCLHeadAtoms
-                           , file_path=self.Info.path_result
+                           , filePath=self.Info.path_result
                            , cutoff=self.Box.get_config('NCluster').NCLCutoff
                            , N_cutoff=self.Box.get_config('NCluster').NCutoff)
 

@@ -2741,6 +2741,6 @@ class Ui_MainWindow(object):
         self.vmd_btn_stop.setText(QCoreApplication.translate("MainWindow", u"Stop VMD", None))
         self.vmd_label.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"By\uff1aNanoBioMembrane Lab", None))
-        self.version.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">v1.0.0</span></p></body></html>", None))
+        self.version.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>v1.0</p></body></html>", None))
     # retranslateUi
 

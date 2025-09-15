@@ -28,13 +28,13 @@ class Cluster(AnalysisBase):
     A class for analyzing lipid clustering in a bilayer system.
     """
 
-    def __init__(self, universe, residues_group: dict, cutoff: float = 8.0, file_path: str = None,
+    def __init__(self, universe, residues_group: dict, cutoff: float = 8.0, filePath: str = None,
                  parallel: bool = False, n_jobs: int = -1):
         super().__init__(universe.trajectory)
         self.u = universe
         self.residues = list(residues_group)
         self.cutoff = cutoff
-        self.file_path = file_path
+        self.file_path = filePath
         self.parallel = parallel
         self.n_jobs = n_jobs
 
@@ -129,7 +129,7 @@ class Cluster(AnalysisBase):
                 self.n_residues
             )
 
-    def run(self, start=None, stop=None, step=None, verbose=None):
+    def run(self, start=None, stop=None, step=None, verbose=None, callBack=None):
         self.start = start if start is not None else 0
         self.stop = stop if stop is not None and stop < self._trajectory.n_frames else self._trajectory.n_frames
         self.step = step if step is not None else 1
@@ -149,7 +149,7 @@ class Cluster(AnalysisBase):
                 self.results.LargestClusterResidues = np.array(residues_list, dtype=object)
         else:
             print("Running in serial mode...")
-            super().run(start=start, stop=stop, step=step, verbose=verbose)
+            super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)
 
         self._conclude()
 

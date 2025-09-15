@@ -180,13 +180,13 @@ def polygon_area(vertices):
     return 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
 
 class Area(AnalysisBase):
-    def __init__(self, universe, residueGroup: dict, k: int = None, file_path: str = None, 
+    def __init__(self, universe, residueGroup: dict, k: int = None, filePath: str = None, 
                  max_normal_angle_deg: float = 140, parallel: bool = False, n_jobs: int = -1):
         super().__init__(universe.trajectory)
         self.u = universe
         self.residues = list(residueGroup)
         self.k = k if k is not None else 15
-        self.file_path = file_path
+        self.file_path = filePath
         self.max_normal_angle_deg = max_normal_angle_deg
         self.parallel = parallel
         self.n_jobs = n_jobs
@@ -380,7 +380,7 @@ class Area(AnalysisBase):
         for ts in self.u.trajectory[self.start:self.stop:self.step]:
             yield (self.headAtoms.positions.copy(), self.k, self.max_normal_angle_deg, self.resnames)
 
-    def run(self, start=None, stop=None, step=None, verbose=None):
+    def run(self, start=None, stop=None, step=None, verbose=None, callBack=None):
         """
         Execute the analysis.
         Chooses between serial and parallel execution based on self.parallel.
@@ -409,7 +409,7 @@ class Area(AnalysisBase):
             self._conclude()
         else:
             print("Running in serial mode...")
-            super().run(start=start, stop=stop, step=step, verbose=verbose)
+            super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)
 
     def _conclude(self):
         if self.file_path:
