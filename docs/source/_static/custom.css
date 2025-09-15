@@ -264,25 +264,6 @@ table tr:hover {
     background-color: white !important;
 }
 
-/* 隐藏重复的首页显示 */
-.wy-breadcrumbs {
-    display: none !important;
-}
-
-.wy-breadcrumbs-aside {
-    display: none !important;
-}
-
-/* 优化页面布局间距 */
-.rst-content {
-    margin-top: 20px !important;
-}
-
-/* 隐藏隐藏的toctree */
-.toctree-wrapper {
-    display: none !important;
-}
-
 /* 导航栏样式 */
 .wy-nav-top {
     background: var(--primary-color);
