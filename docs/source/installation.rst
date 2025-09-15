@@ -58,20 +58,6 @@ Operating System Support
 - **macOS**: macOS 10.15 (Catalina) or later
 - **Linux**: Ubuntu 18.04+, CentOS 7+, or other mainstream distributions
 
-Hardware Requirements
-~~~~~~~~~~~~~~~~~~~~~
-
-**Minimum Requirements:**
-- CPU: Dual-core processor
-- Memory: 8GB RAM
-- Storage: 2GB available space
-
-**Recommended Requirements:**
-- CPU: Quad-core or more processors
-- Memory: 16GB+ RAM
-- Storage: 5GB+ available space
-- GPU: CUDA-compatible graphics card (optional, for acceleration)
-
 Installation Methods
 --------------------
 

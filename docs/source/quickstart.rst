@@ -3,22 +3,6 @@
 
 本指南将帮助您在5分钟内开始使用LNB-MDT进行脂质纳米泡分析。
 
-前提条件
---------
-
-在开始之前，请确保您已经：
-
-.. raw:: html
-
-   <div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50;">
-
-✅ **已完成安装**: 按照 :doc:`installation` 指南完成LNB-MDT安装  
-✅ **激活环境**: conda环境已激活 (`conda activate LNB-MDT`)  
-✅ **准备数据**: 有GRO和XTC文件用于分析  
-✅ **网络连接**: 用于下载示例数据（可选）
-
-   </div>
-
 启动程序
 --------
 
@@ -28,9 +12,8 @@
 .. raw:: html
 
    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-   <h3 style="color: #2c3e50; margin-top: 0;">🖥️ 启动图形界面</h3>
-   <p>这是最直观的使用方式，适合初学者：</p>
-   <pre style="background-color: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto;">
+   <h3 style="color:rgb(0, 0, 0); margin-top: 0;">🖥️ 启动图形界面</h3>
+   <pre style="background-color:rgb(255, 255, 255); color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto;">
    <code># 激活环境
    conda activate LNB-MDT
    
@@ -45,29 +28,24 @@
 
    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
 
-   <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-top: 0;">🏠 主页</h4>
-   <p style="margin-bottom: 0;">项目概览和快速导航</p>
-   </div>
-
    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-top: 0;">🧬 生成</h4>
-   <p style="margin-bottom: 0;">脂质纳米泡结构生成</p>
+   <h4 style="margin-top: 0;">🧬 Generation Module</h4>
+   <p style="margin-bottom: 0;">脂质纳气泡生成</p>
    </div>
 
    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-top: 0;">📊 分析</h4>
-   <p style="margin-bottom: 0;">分子动力学分析</p>
+   <h4 style="margin-top: 0;">📊 Analysis Module</h4>
+   <p style="margin-bottom: 0;">轨迹分析</p>
    </div>
 
    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-top: 0;">📈 图表</h4>
+   <h4 style="margin-top: 0;">📈 Figure Module</h4>
    <p style="margin-bottom: 0;">数据可视化</p>
    </div>
 
    <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-top: 0;">🔧 数据处理</h4>
-   <p style="margin-bottom: 0;">VMD集成和数据处理</p>
+   <h4 style="margin-top: 0;">🔧 VMD Module</h4>
+   <p style="margin-bottom: 0;">VMD可视化</p>
    </div>
 
    </div>
@@ -80,7 +58,7 @@
    <div style="background-color: #fff3e0; padding: 20px; border-radius: 8px; margin: 20px 0;">
    <h3 style="color: #e65100; margin-top: 0;">💻 使用命令行工具</h3>
    <p>适合批量处理和自动化分析：</p>
-   <pre style="background-color: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto;">
+   <pre style="background-color:rgb(255, 255, 255); color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto;">
    <code># 激活环境
    conda activate LNB-MDT
    
@@ -109,7 +87,6 @@
 - `cases/lnb.gro` - 示例拓扑文件
 - `cases/md.xtc` - 示例轨迹文件
 
-   </div>
 
 步骤2：选择分析类型
 ~~~~~~~~~~~~~~~~~~~~
@@ -121,22 +98,22 @@ LNB-MDT提供多种分析类型：
    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
 
    <div style="background-color: #f3e5f5; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0; color: #7b1fa2;">📐 PCA分析</h4>
+   <h4 style="margin-top: 0; color: #7b1fa2;">📐 Anisotropy</h4>
    <p style="margin-bottom: 0;">主成分分析，研究分子构象变化</p>
    </div>
 
    <div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0; color: #388e3c;">📏 面积分析</h4>
+   <h4 style="margin-top: 0; color: #388e3c;">📏 APL</h4>
    <p style="margin-bottom: 0;">Voronoi镶嵌面积计算</p>
    </div>
 
    <div style="background-color: #fff3e0; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0; color: #f57c00;">🌊 曲率分析</h4>
+   <h4 style="margin-top: 0; color: #f57c00;">🌊 SZ</h4>
    <p style="margin-bottom: 0;">膜曲率计算（平均/高斯）</p>
    </div>
 
    <div style="background-color: #fce4ec; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0; color: #c2185b;">📊 聚类分析</h4>
+   <h4 style="margin-top: 0; color: #c2185b;">📊 Cluster</h4>
    <p style="margin-bottom: 0;">分子聚集行为分析</p>
    </div>
 
@@ -156,7 +133,6 @@ LNB-MDT提供多种分析类型：
 - **计算参数**: k值、截止距离等
 - **并行处理**: 启用多核加速
 
-   </div>
 
 步骤4：运行分析
 ~~~~~~~~~~~~~~~~
@@ -388,70 +364,7 @@ LNB-MDT支持与VMD的无缝集成：
 
    </div>
 
-常见问题
---------
-
-Q: 程序启动失败
-~~~~~~~~~~~~~~~
-
-.. raw:: html
-
-   <div style="background-color: #ffebee; padding: 15px; border-radius: 8px; border-left: 4px solid #f44336;">
-
-**解决方案：**
-1. 检查conda环境是否激活
-2. 确认Python版本 >= 3.11
-3. 检查依赖包是否完整安装
-4. 查看错误日志信息
-
-   </div>
-
-Q: 分析速度很慢
-~~~~~~~~~~~~~~~
-
-.. raw:: html
-
-   <div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;">
-
-**解决方案：**
-1. 使用 `--parallel` 参数启用并行处理
-2. 调整 `--n-jobs` 参数设置并行核数
-3. 减少分析帧数范围
-4. 优化k值等计算参数
-
-   </div>
-
-Q: 内存不足
-~~~~~~~~~~~~
-
-.. raw:: html
-
-   <div style="background-color: #f3e5f5; padding: 15px; border-radius: 8px; border-left: 4px solid #9c27b0;">
-
-**解决方案：**
-1. 关闭其他应用程序
-2. 分段处理大轨迹文件
-3. 使用较小的数据集测试
-4. 调整分析参数
-
-   </div>
-
-Q: VMD连接失败
-~~~~~~~~~~~~~~~
-
-.. raw:: html
-
-   <div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50;">
-
-**解决方案：**
-1. 检查VMD是否正确安装
-2. 确认VMD路径设置正确
-3. 检查防火墙设置
-4. 尝试手动启动VMD
-
-   </div>
-
-下一步
+Next Step
 ------
 
 .. raw:: html
