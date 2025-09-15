@@ -59,14 +59,14 @@ class SZ(AnalysisBase):
     A class for calculating the Sz order parameter for lipid acyl chains.
     """
     
-    def __init__(self, universe, residues_group: dict, chain: str = 'both', k: int = 15, file_path: str = None,
+    def __init__(self, universe, residues_group: dict, chain: str = 'both', k: int = 15, filePath: str = None,
                  parallel: bool = False, n_jobs: int = -1):
         super().__init__(universe.trajectory)
         self.u = universe
         self.residues = list(residues_group)
         self.chain = chain.lower()
         self.k = k
-        self.file_path = file_path
+        self.file_path = filePath
         self.parallel = parallel
         self.n_jobs = n_jobs
 
@@ -203,7 +203,7 @@ class SZ(AnalysisBase):
             yield (self.k, self.headAtoms.positions.copy(), tail_pos_map,
                    self.residues, self.headMasks, self.numSp, self.chain, self.sp_resids_map)
 
-    def run(self, start=None, stop=None, step=None, verbose=None):
+    def run(self, start=None, stop=None, step=None, verbose=None, callBack=None):
         self.start = start if start is not None else 0
         self.stop = stop if stop is not None and stop < self._trajectory.n_frames else self._trajectory.n_frames
         self.step = step if step is not None else 1
@@ -221,7 +221,7 @@ class SZ(AnalysisBase):
                 self.results.SZ = np.array(results_list).T
         else:
             print("Running in serial mode...")
-            super().run(start=start, stop=stop, step=step, verbose=verbose)
+            super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)
 
         self._conclude()
 

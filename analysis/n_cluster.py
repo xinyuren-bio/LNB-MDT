@@ -35,13 +35,13 @@ class NCluster(AnalysisBase):
     """
     A class for counting the number of lipid clusters above a size threshold.
     """
-    def __init__(self, universe, residues_group: dict, file_path: str = None, N_cutoff: int = 10, cutoff: float = 12.0,
+    def __init__(self, universe, residues_group: dict, filePath: str = None, N_cutoff: int = 10, cutoff: float = 12.0,
                  parallel: bool = False, n_jobs: int = -1):
         super().__init__(universe.trajectory)
         self.u = universe
         self.cutoff = cutoff
         self.N_cutoff = N_cutoff
-        self.file_path = file_path
+        self.file_path = filePath
         self.parallel = parallel
         self.n_jobs = n_jobs
 
@@ -130,7 +130,7 @@ class NCluster(AnalysisBase):
                 self.n_selection_residues
             )
 
-    def run(self, start=None, stop=None, step=None, verbose=None):
+    def run(self, start=None, stop=None, step=None, verbose=None, callBack=None):
         self.start = start if start is not None else 0
         self.stop = stop if stop is not None and stop < self._trajectory.n_frames else self._trajectory.n_frames
         self.step = step if step is not None else 1
@@ -148,7 +148,7 @@ class NCluster(AnalysisBase):
                 self.results.NCluster = np.array(results_list)
         else:
             print("Running in serial mode...")
-            super().run(start=start, stop=stop, step=step, verbose=verbose)
+            super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)
 
         self._conclude()
 

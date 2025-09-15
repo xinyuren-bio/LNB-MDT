@@ -3,6 +3,7 @@ import os
 import sys
 import argparse
 import ast
+import time
 
 warnings.filterwarnings('ignore')
 
@@ -28,7 +29,8 @@ try:
     # If not, you might need to adjust this import or define a placeholder.
     from analysis.write_excel_bubble import WriteExcelBubble # Placeholder import
 except ImportError:
-    print("Warning: Could not import AnalysisBase or WriteExcelBubble. Using placeholders for demonstration.")
+    # Suppress warning messages
+    pass
     class AnalysisBase:
         def __init__(self, trajectory):
             self._trajectory = trajectory
@@ -51,12 +53,11 @@ except ImportError:
     class WriteExcelBubble:
         def __init__(self, **kwargs):
             self.kwargs = kwargs
-            print(f"WriteExcelBubble initialized with: {kwargs}")
 
         def run(self):
-            print(f"Saving results to {self.kwargs.get('file_path')}")
             # In a real scenario, you'd write your data to an Excel/CSV here.
             # For demonstration, we'll just print a confirmation.
+            pass
 
 
 __all__ = ['PCA']
@@ -66,12 +67,12 @@ class PCA(AnalysisBase):
     """
     A class for performing Principal Component Analysis on a group of atoms.
     """
-    def __init__(self, universe, residues_group: dict, file_path: str = None,
+    def __init__(self, universe, residues_group: dict, filePath: str = None,
                  parallel: bool = False, n_jobs: int = -1):
         super().__init__(universe.trajectory)
         self.u = universe
         self.residues = list(residues_group.keys()) # Use .keys() for consistency
-        self.file_path = file_path
+        self.file_path = filePath
         self.parallel = parallel
         self.n_jobs = n_jobs
 
@@ -118,7 +119,7 @@ class PCA(AnalysisBase):
         for ts in self.u.trajectory[self.start:self.stop:self.step]:
             yield (self.headAtoms.positions.copy(),)
 
-    def run(self, start=None, stop=None, step=None, verbose=None):
+    def run(self, start=None, stop=None, step=None, verbose=None, callBack=None):
         self.start = start if start is not None else 0
         self.stop = stop if stop is not None and stop < self._trajectory.n_frames else self._trajectory.n_frames
         self.step = step if step is not None else 1
@@ -126,8 +127,8 @@ class PCA(AnalysisBase):
         self._prepare()
 
         if self.parallel:
-            print(f"Running in parallel on {self.n_jobs} jobs...")
-            verbose_level = 10 if verbose else 0
+            print(f"Using {self.n_jobs} CPU cores for parallel processing...")
+            verbose_level = 0  # No progress bar
             inputs_generator = self._get_inputs_generator()
             results_list = Parallel(n_jobs=self.n_jobs, verbose=verbose_level)(
                 delayed(PCA._calculate_pca_ratio_for_frame)(*inputs) for inputs in inputs_generator
@@ -151,7 +152,6 @@ class PCA(AnalysisBase):
             }
             # Assuming WriteExcelBubble is defined and available
             WriteExcelBubble(**dict_parameter).run()
-            print(f"Analysis complete. Results will be saved to {self.file_path}")
 
 
 # --- Command-line Argument Parsing ---
@@ -223,6 +223,7 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
+    start_time = time.time()
 
     # Parse residues_group from string
     try:
@@ -234,7 +235,11 @@ if __name__ == '__main__':
         print("Please ensure it's a valid dictionary string, e.g., \"{'DPPC': ['PO4'], 'CHOL': ['ROH']}\"")
         sys.exit(1)
 
-    print("\n--- Initializing MDAnalysis Universe ---")
+    # Display selected residues and atoms
+    print("Selected Residues and Atoms:")
+    for residue, atoms in residues_group_parsed.items():
+        print(f"  {residue}: {atoms}")
+
     try:
         u = mda.Universe(args.gro_file, args.xtc_file)
     except Exception as e:
@@ -242,7 +247,7 @@ if __name__ == '__main__':
         print("Please check if GRO/XTC files exist and are valid.")
         sys.exit(1)
 
-    print("\n--- Running PCA Analysis ---")
+    print(f"\nRunning PCA Analysis on {u.trajectory.n_frames} frames...")
     pca_analysis = PCA(
         u,
         residues_group_parsed,
@@ -257,5 +262,8 @@ if __name__ == '__main__':
         verbose=args.verbose
     )
 
-    print("\n--- Analysis Finished ---")
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    
+    print(f"\nAnalysis completed in {elapsed_time:.2f} seconds")
     print(f"Results saved to: {args.output_csv}")

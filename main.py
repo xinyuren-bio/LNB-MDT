@@ -10,6 +10,7 @@ import time
 import sys
 import os
 import platform
+import configparser
 from modules.vmd_control import VMDCommands, VMDTcp
 # IMPORT / GUI AND MODULES AND WIDGETS
 # ///////////////////////////////////////////////////////////////
@@ -25,6 +26,68 @@ os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100
 # ///////////////////////////////////////////////////////////////
 widgets = None
 
+def load_config():
+    """加载配置文件"""
+    config = configparser.ConfigParser()
+    config_file = "config.ini"
+    
+    # 如果配置文件不存在，创建默认配置
+    if not os.path.exists(config_file):
+        create_default_config(config_file)
+    
+    config.read(config_file, encoding='utf-8')
+    return config
+
+def create_default_config(config_file):
+    """创建默认配置文件"""
+    default_config = """[VMD]
+# VMD路径配置
+# Windows用户请修改为您的VMD安装路径
+# macOS用户请修改为您的VMD安装路径
+# Linux用户请修改为您的VMD安装路径
+
+# Windows示例路径:
+# vmd_path = C:/Program Files/VMD/vmd.exe
+# vmd_path = C:/VMD/vmd.exe
+
+# macOS示例路径:
+# vmd_path = /Applications/VMD.app/Contents/MacOS/VMD
+# vmd_path = /usr/local/bin/vmd
+
+# Linux示例路径:
+# vmd_path = /usr/local/bin/vmd
+# vmd_path = /opt/vmd/vmd
+
+# 默认路径 (请根据您的系统修改)
+vmd_path = C:/Program Files/VMD/vmd.exe
+
+[Analysis]
+# 分析模块默认配置
+default_parallel = true
+default_n_jobs = -1
+default_k_value = 15
+
+[UI]
+# 界面配置
+theme = dark
+language = zh_CN
+"""
+    with open(config_file, 'w', encoding='utf-8') as f:
+        f.write(default_config)
+
+def get_vmd_path():
+    """获取VMD路径"""
+    config = load_config()
+    vmd_path = config.get('VMD', 'vmd_path', fallback='C:/Program Files/VMD/vmd.exe')
+    
+    # 检查路径是否存在
+    if not os.path.exists(vmd_path):
+        print(f"警告: VMD路径不存在: {vmd_path}")
+        print("请在 config.ini 文件中修改正确的VMD路径")
+        return None
+    
+    return vmd_path
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -39,7 +102,7 @@ class MainWindow(QMainWindow):
         widgets = self.ui
         # 初始化 VMD 相关
         self.rctl_path = "./remote_ctl.tcl"
-        self.vmd_path = "C:/Program Files/VMD/vmd.exe"
+        self.vmd_path = get_vmd_path()  # 从配置文件读取VMD路径
         self.vmd = None
         self.connected = False
         self.data = None

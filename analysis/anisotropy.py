@@ -23,10 +23,10 @@ __all__ = ['Anisotropy']
 
 
 class Anisotropy(AnalysisBase):
-    def __init__(self, universe: mda.Universe, residueGroup: dict, file_path: str = None, parallel: bool = False, n_jobs: int = -1):
+    def __init__(self, universe: mda.Universe, residueGroup: dict, filePath: str = None, parallel: bool = False, n_jobs: int = -1):
         super().__init__(universe.trajectory)
         self.u = universe
-        self.file_path = file_path
+        self.file_path = filePath
         self.parallel = parallel
         self.n_jobs = n_jobs
         
@@ -75,7 +75,7 @@ class Anisotropy(AnalysisBase):
         for ts in self.u.trajectory[self.start:self.stop:self.step]:
             yield self.headAtoms.positions
 
-    def run(self, start=None, stop=None, step=None, verbose=None):
+    def run(self, start=None, stop=None, step=None, verbose=None, callBack=None):
         if self.parallel:
             self.start = start if start is not None else 0
             self.stop = stop if stop is not None and stop < self._trajectory.n_frames else self._trajectory.n_frames
@@ -92,7 +92,8 @@ class Anisotropy(AnalysisBase):
             self._conclude()
         else:
             print("Running in serial mode...")
-            super().run(start=start, stop=stop, step=step, verbose=verbose)
+            super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)
+            
     def _conclude(self):
         if self.file_path:
             dict_parameter = {
