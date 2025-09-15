@@ -171,6 +171,99 @@ table tr:hover {
     color: var(--primary-color);
 }
 
+/* 文档目录样式修改 */
+.wy-menu-vertical {
+    background: white !important;
+}
+
+.wy-menu-vertical a {
+    color: #333333 !important;
+    background: white !important;
+    padding: 8px 15px !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.wy-menu-vertical a:hover {
+    color: var(--primary-color) !important;
+    background: #f8f9fa !important;
+}
+
+.wy-menu-vertical a:visited {
+    color: #333333 !important;
+}
+
+/* 当前页面高亮 */
+.wy-menu-vertical a.current {
+    background: #e3f2fd !important;
+    color: var(--primary-color) !important;
+    border-left: 3px solid var(--primary-color) !important;
+}
+
+/* 目录标题样式 */
+.wy-menu-vertical .caption {
+    color: #333333 !important;
+    background: #f8f9fa !important;
+    font-weight: bold !important;
+    padding: 10px 15px !important;
+    border-bottom: 2px solid #e0e0e0 !important;
+}
+
+/* 子目录缩进 */
+.wy-menu-vertical .toctree-l1 > a {
+    padding-left: 15px !important;
+}
+
+.wy-menu-vertical .toctree-l2 > a {
+    padding-left: 30px !important;
+}
+
+.wy-menu-vertical .toctree-l3 > a {
+    padding-left: 45px !important;
+}
+
+.wy-menu-vertical .toctree-l4 > a {
+    padding-left: 60px !important;
+}
+
+/* 目录整体样式优化 */
+.wy-side-scroll {
+    background: white !important;
+}
+
+.wy-menu-vertical ul {
+    background: white !important;
+}
+
+.wy-menu-vertical li {
+    background: white !important;
+}
+
+/* 目录展开/折叠按钮 */
+.wy-menu-vertical .toctree-expand {
+    color: #666666 !important;
+}
+
+.wy-menu-vertical .toctree-expand:hover {
+    color: var(--primary-color) !important;
+}
+
+/* 目录分隔线 */
+.wy-menu-vertical hr {
+    border-color: #e0e0e0 !important;
+    margin: 10px 0 !important;
+}
+
+/* 确保所有目录元素都是白色背景 */
+.wy-menu-vertical * {
+    background-color: white !important;
+}
+
+.wy-menu-vertical a,
+.wy-menu-vertical li,
+.wy-menu-vertical ul {
+    background-color: white !important;
+}
+
 /* 导航栏样式 */
 .wy-nav-top {
     background: var(--primary-color);
