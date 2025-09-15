@@ -110,6 +110,30 @@ python analysis/cluster.py \
   --residues "{'DPPC': ['PO4']}" \
   --cutoff 8.0 \
   --parallel
+
+### 🤖 Machine Learning Features
+
+```bash
+# Test ML module functionality
+python test_ml_module.py
+
+# Run ML demos
+python ml_demo.py
+
+# Parameter optimization example
+python -c "
+from ml import AnalysisParameterOptimizer
+optimizer = AnalysisParameterOptimizer('area')
+print('Parameter optimizer ready!')
+"
+
+# Anomaly detection example
+python -c "
+from ml import MDAnomalyDetector
+detector = MDAnomalyDetector(method='isolation_forest')
+print('Anomaly detector ready!')
+"
+```
 ```
 
 ## 🔧 Parameter Description
