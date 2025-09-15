@@ -264,6 +264,15 @@ table tr:hover {
     background-color: white !important;
 }
 
+/* 隐藏重复的面包屑导航 */
+.wy-breadcrumbs {
+    display: none !important;
+}
+
+.wy-breadcrumbs-aside {
+    display: none !important;
+}
+
 /* 导航栏样式 */
 .wy-nav-top {
     background: var(--primary-color);
