@@ -273,6 +273,21 @@ table tr:hover {
     display: none !important;
 }
 
+/* 隐藏重复的导航元素 */
+.rst-content .wy-breadcrumbs {
+    display: none !important;
+}
+
+/* 隐藏页面顶部的重复导航 */
+.wy-nav-content-wrap .wy-nav-content .wy-breadcrumbs {
+    display: none !important;
+}
+
+/* 隐藏所有面包屑相关的元素 */
+[class*="breadcrumb"] {
+    display: none !important;
+}
+
 /* 导航栏样式 */
 .wy-nav-top {
     background: var(--primary-color);
