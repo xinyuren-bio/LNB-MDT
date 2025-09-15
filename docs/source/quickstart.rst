@@ -18,7 +18,9 @@
    conda activate LNB-MDT
    
    # 启动主程序
-   python main.py</code>
+   python main.py
+   </code>
+
    </pre>
    </div>
 
@@ -30,22 +32,18 @@
 
    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
    <h4 style="margin-top: 0;">🧬 Generation Module</h4>
-   <p style="margin-bottom: 0;">脂质纳气泡生成</p>
    </div>
 
    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
    <h4 style="margin-top: 0;">📊 Analysis Module</h4>
-   <p style="margin-bottom: 0;">轨迹分析</p>
    </div>
 
    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
    <h4 style="margin-top: 0;">📈 Figure Module</h4>
-   <p style="margin-bottom: 0;">数据可视化</p>
    </div>
 
    <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 15px; border-radius: 8px; text-align: center;">
    <h4 style="margin-top: 0;">🔧 VMD Module</h4>
-   <p style="margin-bottom: 0;">VMD可视化</p>
    </div>
 
    </div>
