@@ -138,8 +138,7 @@ LNB-MDT 文档
 
 .. toctree::
    :maxdepth: 3
-   :caption: 文档目录:
-   :numbered:
+   :hidden:
 
    installation
    quickstart

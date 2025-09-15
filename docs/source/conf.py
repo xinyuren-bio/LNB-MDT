@@ -52,7 +52,7 @@ html_theme_options = {
     'collapse_navigation': True,
     'sticky_navigation': True,
     'navigation_depth': 4,
-    'includehidden': True,
+    'includehidden': False,  # 隐藏隐藏的页面
     'titles_only': False
 }
 
