@@ -143,12 +143,9 @@ LNB-MDT 文档
 
    installation
    quickstart
-   user_guide
    analysis_modules
    machine_learning
-   command_line
    api_reference
-   examples
    troubleshooting
    contributing
 

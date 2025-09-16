@@ -485,11 +485,8 @@
    ├── index.rst              # 主页
    ├── installation.rst       # 安装指南
    ├── quickstart.rst         # 快速开始
-   ├── user_guide.rst         # 用户指南
    ├── analysis_modules.rst   # 分析模块
    ├── machine_learning.rst   # 机器学习
-   ├── command_line.rst       # 命令行工具
-   ├── examples.rst           # 使用示例
    ├── api_reference.rst      # API参考
    ├── troubleshooting.rst    # 故障排除
    └── contributing.rst       # 贡献指南

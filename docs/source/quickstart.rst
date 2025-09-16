@@ -351,7 +351,6 @@ VMD路径配置
 
 接下来可以：
 
-- 查看 :doc:`user_guide` 了解详细功能
 - 学习 :doc:`analysis_modules` 的深度使用  
 - 探索 :doc:`machine_learning` 功能
-- 掌握 :doc:`command_line` 的高级用法
+- 查看 :doc:`api_reference` 了解API详情
