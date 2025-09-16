@@ -28,10 +28,6 @@
       Linux:   /usr/local/bin/vmd
 
 3. **保存并重启**
-   .. code-block:: text
-   
-      - 保存配置文件
-      - 重新启动程序
 
 图形界面启动
 ~~~~~~~~~~~~
@@ -41,11 +37,13 @@
    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
    <h3 style="color:rgb(0, 0, 0); margin-top: 0;">🖥️ 启动图形界面</h3>
    <pre style="background-color:rgb(255, 255, 255); color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto;">
-   <code># 激活环境
-conda activate LNB-MDT
-
-# 启动主程序
-python main.py</code>
+   <code>
+      # 激活环境
+      conda activate LNB-MDT
+   
+      # 启动主程序
+      python main.py
+   </code>
 
    </pre>
    </div>
@@ -84,10 +82,10 @@ python main.py</code>
    <p>适合批量处理和自动化分析：</p>
    <pre style="background-color:rgb(255, 255, 255); color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto;">
    <code># 激活环境
-conda activate LNB-MDT
-
-# 查看帮助信息
-python analysis/pca.py --help</code>
+   conda activate LNB-MDT
+   
+   # 查看帮助信息
+   python analysis/pca.py --help</code>
    </pre>
    </div>
 
