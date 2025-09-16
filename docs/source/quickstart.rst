@@ -33,10 +33,10 @@
    <h3 style="color:rgb(0, 0, 0); margin-top: 0;">🖥️ 启动图形界面</h3>
    <pre style="background-color:rgb(255, 255, 255); color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto;">
 .. code:: python
-      # 激活环境
-      conda activate LNB-MDT
-      # 启动主程序
-      python main.py
+   # 激活环境
+   conda activate LNB-MDT
+   # 启动主程序
+   python main.py
    
 启动后您将看到LNB-MDT的主界面，包含以下功能模块：
 
