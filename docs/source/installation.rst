@@ -52,8 +52,6 @@ System Requirements
 Operating System Support
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-**LNB-MDT** supports the following operating systems:
-
 - **Windows**: Windows 10/11 (64-bit)
 - **macOS**: macOS 10.15 (Catalina) or later
 - **Linux**: Ubuntu 18.04+, CentOS 7+, or other mainstream distributions
