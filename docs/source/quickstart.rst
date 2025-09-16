@@ -16,6 +16,7 @@
 1. **编辑配置文件**
    - 打开项目根目录的 `config.ini` 文件
    - 修改 `vmd_path` 为您的VMD实际安装路径
+.. code:: text    
       #常见路径示例
       Windows: C:/Program Files/VMD/vmd.exe
       macOS:   /Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64
@@ -31,17 +32,12 @@
    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
    <h3 style="color:rgb(0, 0, 0); margin-top: 0;">🖥️ 启动图形界面</h3>
    <pre style="background-color:rgb(255, 255, 255); color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto;">
-   <code>
+.. code:: python
       # 激活环境
       conda activate LNB-MDT
-   
       # 启动主程序
       python main.py
-   </code>
-
-   </pre>
-   </div>
-
+   
 启动后您将看到LNB-MDT的主界面，包含以下功能模块：
 
 .. raw:: html
