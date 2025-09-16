@@ -6,28 +6,22 @@
 启动程序
 --------
 
-首次配置
+配置VMD路径
 ~~~~~~~~
 
 .. raw:: html
 
    <div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;">
 
-**首次使用需要配置VMD路径：**
-
 1. **编辑配置文件**
    - 打开项目根目录的 `config.ini` 文件
    - 修改 `vmd_path` 为您的VMD实际安装路径
-
-2. **常见路径示例**
-   
-   .. code-block:: text
-   
+      #常见路径示例
       Windows: C:/Program Files/VMD/vmd.exe
       macOS:   /Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64
       Linux:   /usr/local/bin/vmd
-
 3. **保存并重启**
+
 
 图形界面启动
 ~~~~~~~~~~~~
