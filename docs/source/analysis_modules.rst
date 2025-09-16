@@ -22,7 +22,7 @@ LNB-MDT提供了丰富的分子动力学分析模块，每个模块都针对特�
 
    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 10px;">
    <h3 style="margin-top: 0;">📏 面积分析</h3>
-   <p>Voronoi镶嵌面积计算</p>
+   <p>APL面积计算</p>
    <ul style="margin-bottom: 0;">
    <li>分子面积</li>
    <li>密度分布</li>
@@ -102,7 +102,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    python analysis/pca.py \
      --gro-file cases/lnb.gro \
@@ -143,7 +143,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    python analysis/area.py \
      --gro-file cases/lnb.gro \
@@ -185,7 +185,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    python analysis/curvature.py \
      --gro-file cases/lnb.gro \
@@ -226,7 +226,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    python analysis/height.py \
      --gro-file cases/lnb.gro \
@@ -266,7 +266,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    python analysis/cluster.py \
      --gro-file cases/lnb.gro \
@@ -305,7 +305,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    python analysis/anisotropy.py \
      --gro-file cases/lnb.gro \
@@ -343,7 +343,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    python analysis/gyration.py \
      --gro-file cases/lnb.gro \
@@ -383,7 +383,7 @@ Sz序参数分析 (sz.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    python analysis/sz.py \
      --gro-file cases/lnb.gro \
@@ -425,7 +425,7 @@ N-聚类分析 (n_cluster.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    python analysis/n_cluster.py \
      --gro-file cases/lnb.gro \
@@ -466,7 +466,7 @@ N-聚类分析 (n_cluster.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    python analysis/rad.py \
      --gro-file cases/lnb.gro \
@@ -500,7 +500,7 @@ k值选择
 **优化方法：**
 使用机器学习模块的k值优化器：
 
-.. code-block:: python
+.. code:: python
 
    from machine_learning import KValueOptimizer
    optimizer = KValueOptimizer('area')
@@ -560,7 +560,7 @@ CSV文件格式
 
 **标准CSV格式：**
 
-.. code-block:: csv
+.. code:: csv
 
    # Created by LNB-MDT v1.0
    # PCA Analysis
@@ -617,7 +617,8 @@ CSV文件格式
 - **周期性**: 傅里叶变换
 
 **Python分析示例：**
-.. code-block:: python
+
+.. code:: python
 
    import pandas as pd
    import numpy as np

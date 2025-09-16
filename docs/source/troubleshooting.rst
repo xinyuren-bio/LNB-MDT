@@ -23,7 +23,7 @@
 **解决方案：**
 
 1. **检查conda安装**
-   .. code-block:: bash
+   .. code:: bash
 
       # 检查conda是否安装
       which conda
@@ -59,22 +59,22 @@
 **解决方案：**
 
 1. **更新pip**
-   .. code-block:: bash
+   .. code:: bash
 
       pip install --upgrade pip
 
 2. **使用conda安装**
-   .. code-block:: bash
+   .. code:: bash
 
       conda install package_name
 
 3. **使用国内镜像**
-   .. code-block:: bash
+   .. code:: bash
 
       pip install -i https://pypi.tuna.tsinghua.edu.cn/simple package_name
 
 4. **清理缓存**
-   .. code-block:: bash
+   .. code:: bash
 
       pip cache purge
       conda clean --all
@@ -136,18 +136,18 @@
 **解决方案：**
 
 1. **检查Python版本**
-   .. code-block:: bash
+   .. code:: bash
 
       python --version
       # 确保版本 >= 3.11
 
 2. **检查依赖包**
-   .. code-block:: bash
+   .. code:: bash
 
       python -c "import MDAnalysis, numpy, pandas, PySide6; print('所有依赖安装成功！')"
 
 3. **重新安装依赖**
-   .. code-block:: bash
+   .. code:: bash
 
       pip install -r requirements.txt
 
@@ -156,7 +156,7 @@
    - 检查PYTHONPATH设置
 
 5. **查看详细错误信息**
-   .. code-block:: bash
+   .. code:: bash
 
       python main.py --verbose
 
@@ -190,7 +190,7 @@
    - 检查文件是否被其他程序占用
 
 4. **验证文件内容**
-   .. code-block:: bash
+   .. code:: bash
 
       # 检查GRO文件
       head -5 your_file.gro
@@ -214,7 +214,7 @@
 **解决方案：**
 
 1. **检查系统内存**
-   .. code-block:: bash
+   .. code:: bash
 
       # Linux/macOS
       free -h
@@ -223,12 +223,12 @@
       wmic memorychip get size
 
 2. **减少并行数**
-   .. code-block:: bash
+   .. code:: bash
 
       python analysis/pca.py --n-jobs 2  # 减少并行数
 
 3. **分段处理**
-   .. code-block:: bash
+   .. code:: bash
 
       # 分段处理大轨迹
       python analysis/pca.py --start-frame 0 --stop-frame 1000
@@ -271,7 +271,7 @@
    - 验证时间步长
 
 3. **使用示例数据测试**
-   .. code-block:: bash
+   .. code:: bash
 
       # 使用示例数据测试
       python analysis/pca.py --gro-file cases/lnb.gro --xtc-file cases/md.xtc --residues "{'DPPC': ['PO4']}"
@@ -301,7 +301,7 @@
 **解决方案：**
 
 1. **启用并行处理**
-   .. code-block:: bash
+   .. code:: bash
 
       python analysis/pca.py --parallel --n-jobs 4
 
@@ -339,7 +339,7 @@
 **解决方案：**
 
 1. **检查残基组格式**
-   .. code-block:: bash
+   .. code:: bash
 
       # 正确格式
       --residues "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
@@ -352,7 +352,7 @@
    - 检查字符串参数格式
 
 3. **使用引号包围路径**
-   .. code-block:: bash
+   .. code:: bash
 
       # 包含空格的路径
       --gro-file "/path with spaces/file.gro"
@@ -450,7 +450,7 @@ VMD集成问题
 **解决方案：**
 
 1. **安装ML依赖**
-   .. code-block:: bash
+   .. code:: bash
 
       pip install scikit-learn scipy matplotlib seaborn joblib
 
@@ -459,7 +459,7 @@ VMD集成问题
    - 检查兼容性
 
 3. **重新安装依赖**
-   .. code-block:: bash
+   .. code:: bash
 
       pip uninstall scikit-learn
       pip install scikit-learn
@@ -518,7 +518,7 @@ VMD集成问题
 **解决方案：**
 
 1. **监控系统资源**
-   .. code-block:: bash
+   .. code:: bash
 
       # Linux/macOS
       top
@@ -588,7 +588,7 @@ VMD集成问题
 
 **启用verbose模式**
 
-.. code-block:: bash
+.. code:: bash
 
    # 命令行详细输出
    python analysis/pca.py --verbose
@@ -610,7 +610,7 @@ VMD集成问题
 
 **自定义日志**
 
-.. code-block:: python
+.. code:: python
 
    import logging
 
@@ -639,7 +639,7 @@ VMD集成问题
 
 **Python错误追踪**
 
-.. code-block:: python
+.. code:: python
 
    import traceback
    import sys
@@ -654,7 +654,7 @@ VMD集成问题
 
 **系统错误检查**
 
-.. code-block:: bash
+.. code:: bash
 
    # 检查系统错误
    dmesg | tail -20  # Linux
@@ -664,7 +664,7 @@ VMD集成问题
 
 **网络连接检查**
 
-.. code-block:: bash
+.. code:: bash
 
    # 检查网络连接
    ping google.com
@@ -684,7 +684,7 @@ VMD集成问题
 
 **Python性能分析**
 
-.. code-block:: python
+.. code:: python
 
    import cProfile
    import pstats
@@ -702,7 +702,7 @@ VMD集成问题
 
 **系统性能监控**
 
-.. code-block:: bash
+.. code:: bash
 
    # 监控CPU使用
    top -p $(pgrep python)
@@ -715,7 +715,7 @@ VMD集成问题
 
 **内存分析**
 
-.. code-block:: python
+.. code:: python
 
    import psutil
    import os

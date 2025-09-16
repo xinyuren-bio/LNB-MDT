@@ -1,65 +1,59 @@
-Installation
-============
+安装指南
+========
 
-Conda
------
+Conda安装
+---------
 
-The easiest way to install **LNB-MDT** is through the `conda-forge
-<https://anaconda.org/conda-forge>`__ channel of `Conda
-<https://docs.conda.io/en/latest/index.html>`__::
+安装LNB-MDT最简单的方法是通过Conda环境管理器：
 
-    conda config --add channels conda-forge
-    conda create -n LNB-MDT -c conda-forge python=3.11
-    conda activate LNB-MDT
-    git clone https://github.com/xinyuren-bio/LNB-MDT.git
-    cd LNB-MDT
-    pip install -r requirements.txt
+.. code:: bash
 
-This will install **LNB-MDT** along with all of its dependencies into a new virtual environment.
+   conda config --add channels conda-forge
+   conda create -n LNB-MDT -c conda-forge python=3.11
+   conda activate LNB-MDT
+   git clone https://github.com/xinyuren-bio/LNB-MDT.git
+   cd LNB-MDT
+   pip install -r requirements.txt
 
-If you do not already have Conda installed on your machine, we recommend
-downloading and installing `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`__
---- a lightweight version of Conda.
+这将在一个新的虚拟环境中安装LNB-MDT及其所有依赖项。
 
-PyPI
-----
+如果您还没有安装Conda，我们建议下载并安装Miniconda，这是Conda的轻量级版本。
 
-It's also possible to install **LNB-MDT** from the `Python Package
-Index <https://pypi.org/>`__. You can do this using `pip`::
+PyPI安装
+--------
 
-    pip install LNB-MDT
+也可以从Python包索引安装LNB-MDT：
 
-Alternatively, you can also install the in-development version with::
+.. code:: bash
 
-    pip install https://github.com/xinyuren-bio/LNB-MDT/archive/main.zip
+   pip install LNB-MDT
 
-Dependencies
-------------
+或者安装开发版本：
 
-**LNB-MDT** uses `MDAnalysis <https://www.mdanalysis.org/>`__ to carry out all analysis
-calculations, and `NumPy <https://numpy.org/>`__ for numerical computations.
+.. code:: bash
 
-As mentioned above, the simplest way to install these packages,
-along with **LNB-MDT**, is with `Conda <https://docs.conda.io/en/latest/index.html>`__.
-However, it is also possible to install MDAnalysis and NumPy using pip, or from source. See
-the `MDAnalysis <https://userguide.mdanalysis.org/stable/installation.html>`_ and
-`NumPy <https://numpy.org/install/>`_
-installation instructions for further information.
+   pip install https://github.com/xinyuren-bio/LNB-MDT/archive/main.zip
 
-System Requirements
--------------------
+依赖项
+------
 
-Operating System Support
-~~~~~~~~~~~~~~~~~~~~~~~~
+LNB-MDT使用MDAnalysis进行所有分析计算，使用NumPy进行数值计算。
 
-- **Windows**: Windows 10/11 (64-bit)
-- **macOS**: macOS 10.15 (Catalina) or later
-- **Linux**: Ubuntu 18.04+, CentOS 7+, or other mainstream distributions
+如上所述，安装这些包以及LNB-MDT的最简单方法是使用Conda。但是，也可以使用pip或从源码安装MDAnalysis和NumPy。
 
-.. raw:: html
+系统要求
+--------
 
-   <div style="background-color: #e3f2fd; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
-   <h3 style="color: #1976d2; margin-top: 0;">🎉 Installation Complete!</h3>
-   <p>Congratulations! You have successfully installed LNB-MDT. You can now start using this powerful molecular dynamics analysis toolbox.</p>
-   <p><strong>Next step:</strong> Check out the <a href="quickstart.html">Quick Start Guide</a> to learn basic usage.</p>
-   </div>
+操作系统支持
+~~~~~~~~~~~~
+
+- **Windows**: Windows 10/11 (64位)
+- **macOS**: macOS 10.15 (Catalina) 或更高版本
+- **Linux**: Ubuntu 18.04+, CentOS 7+, 或其他主流发行版
+
+安装完成
+--------
+
+恭喜！您已成功安装LNB-MDT。现在可以开始使用这个强大的分子动力学分析工具箱了。
+
+下一步：查看 :doc:`quickstart` 学习基本用法。
