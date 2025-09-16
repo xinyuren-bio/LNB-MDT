@@ -44,9 +44,6 @@ LNB-MDT使用MDAnalysis进行所有分析计算，使用NumPy进行数值计算�
 系统要求
 --------
 
-操作系统支持
-~~~~~~~~~~~~
-
 - **Windows**: Windows 10/11 (64位)
 - **macOS**: macOS 10.15 (Catalina) 或更高版本
 - **Linux**: Ubuntu 18.04+, CentOS 7+, 或其他主流发行版

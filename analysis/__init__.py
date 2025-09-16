@@ -10,3 +10,4 @@ from .cluster import Cluster
 from .n_cluster import NCluster
 import MDAnalysis as mda
 from .analysis_base import *
+from .density import Density
