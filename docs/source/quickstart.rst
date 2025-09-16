@@ -20,15 +20,18 @@
    - 修改 `vmd_path` 为您的VMD实际安装路径
 
 2. **常见路径示例**
-   - Windows: `C:/Program Files/VMD/vmd.exe`
-   - macOS: `/Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64`
-   - Linux: `/usr/local/bin/vmd`
+   
+   .. code-block:: text
+   
+      Windows: C:/Program Files/VMD/vmd.exe
+      macOS:   /Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64
+      Linux:   /usr/local/bin/vmd
 
 3. **保存并重启**
-   - 保存配置文件
-   - 重新启动程序
-
-   </div>
+   .. code-block:: text
+   
+      - 保存配置文件
+      - 重新启动程序
 
 图形界面启动
 ~~~~~~~~~~~~
@@ -39,11 +42,10 @@
    <h3 style="color:rgb(0, 0, 0); margin-top: 0;">🖥️ 启动图形界面</h3>
    <pre style="background-color:rgb(255, 255, 255); color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto;">
    <code># 激活环境
-   conda activate LNB-MDT
-   
-   # 启动主程序
-   python main.py
-   </code>
+conda activate LNB-MDT
+
+# 启动主程序
+python main.py</code>
 
    </pre>
    </div>
@@ -82,10 +84,10 @@
    <p>适合批量处理和自动化分析：</p>
    <pre style="background-color:rgb(255, 255, 255); color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto;">
    <code># 激活环境
-   conda activate LNB-MDT
-   
-   # 查看帮助信息
-   python analysis/pca.py --help</code>
+conda activate LNB-MDT
+
+# 查看帮助信息
+python analysis/pca.py --help</code>
    </pre>
    </div>
 
@@ -359,9 +361,12 @@ VMD路径配置
 **首次使用需要配置VMD路径：**
 
 1. **找到VMD安装路径**
-   - Windows: 通常在 `C:/Program Files/VMD/vmd.exe`
-   - macOS: 通常在 `/Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64`
-   - Linux: 通常在 `/usr/local/bin/vmd`
+   
+   .. code-block:: text
+   
+      Windows: 通常在 C:/Program Files/VMD/vmd.exe
+      macOS:   通常在 /Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64
+      Linux:   通常在 /usr/local/bin/vmd
 
 2. **编辑配置文件**
    - 打开项目根目录的 `config.ini` 文件
