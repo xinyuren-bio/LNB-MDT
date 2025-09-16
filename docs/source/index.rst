@@ -146,6 +146,4 @@ LNB-MDT 文档
    analysis_modules
    machine_learning
    api_reference
-   troubleshooting
-   contributing
 
