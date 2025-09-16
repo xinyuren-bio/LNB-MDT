@@ -60,7 +60,7 @@ LNB-MDT提供了完整的命令行界面，支持批量处理和自动化分析�
 
 **residues参数格式：**
 
-.. code-block:: bash
+.. code:: bash
 
    # 基本格式
    --residues "{'DPPC': ['PO4']}"
@@ -91,7 +91,7 @@ LNB-MDT提供了完整的命令行界面，支持批量处理和自动化分析�
 
 **并行处理选项：**
 
-.. code-block:: bash
+.. code:: bash
 
    # 启用并行处理
    --parallel
@@ -122,7 +122,7 @@ LNB-MDT提供了完整的命令行界面，支持批量处理和自动化分析�
 
 **帧范围设置：**
 
-.. code-block:: bash
+.. code:: bash
 
    # 分析所有帧
    # 不指定 start-frame 和 stop-frame
@@ -162,7 +162,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    # 基本PCA分析
    python analysis/pca.py \
@@ -205,7 +205,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    # 基本面积分析
    python analysis/area.py \
@@ -247,7 +247,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    # 平均曲率分析
    python analysis/curvature.py \
@@ -288,7 +288,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    # 基本高度分析
    python analysis/height.py \
@@ -326,7 +326,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    # 基本聚类分析
    python analysis/cluster.py \
@@ -356,7 +356,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    # 各向异性分析
    python analysis/anisotropy.py \
@@ -375,7 +375,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    # 回转半径分析
    python analysis/gyration.py \
@@ -405,7 +405,7 @@ Sz序参数分析 (sz.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    # sn1链序参数分析
    python analysis/sz.py \
@@ -447,7 +447,7 @@ N-聚类分析 (n_cluster.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    # N-聚类分析
    python analysis/n_cluster.py \
@@ -479,7 +479,7 @@ N-聚类分析 (n_cluster.py)
 
 **使用示例**
 
-.. code-block:: bash
+.. code:: bash
 
    # 径向分布分析
    python analysis/rad.py \
@@ -503,7 +503,7 @@ N-聚类分析 (n_cluster.py)
 
 **Python脚本示例**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """
@@ -574,7 +574,7 @@ N-聚类分析 (n_cluster.py)
 
 **Shell脚本示例**
 
-.. code-block:: bash
+.. code:: bash
 
    #!/bin/bash
    # 批量分析Shell脚本
@@ -651,7 +651,7 @@ k值优化
 
 **k值优化脚本**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """
@@ -707,7 +707,7 @@ k值优化
 
 **使用优化后的参数**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """
@@ -761,7 +761,7 @@ k值优化
 
 **性能测试脚本**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """
@@ -838,7 +838,7 @@ k值优化
 
 **内存使用监控**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """
@@ -936,7 +936,7 @@ k值优化
 
 **常见参数错误：**
 
-.. code-block:: bash
+.. code:: bash
 
    # 错误：缺少引号
    --residues {'DPPC': ['PO4']}
@@ -961,7 +961,7 @@ k值优化
 
 **文件检查脚本：**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """
@@ -1015,7 +1015,7 @@ k值优化
 
 **内存优化策略：**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """
@@ -1086,7 +1086,7 @@ k值优化
 
 **目录结构**
 
-.. code-block:: text
+.. code:: text
 
    scripts/
    ├── batch_analysis.py          # 批量分析脚本
@@ -1102,7 +1102,7 @@ k值优化
 
 **配置管理**
 
-.. code-block:: json
+.. code:: json
 
    {
      "analysis": {
@@ -1132,7 +1132,7 @@ k值优化
 
 **日志记录最佳实践：**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """

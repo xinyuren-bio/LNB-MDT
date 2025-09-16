@@ -66,7 +66,7 @@
 
 **问题报告模板：**
 
-.. code-block:: text
+.. code:: text
 
    **问题描述**
    简要描述遇到的问题
@@ -106,7 +106,7 @@
 
    <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
 
-.. code-block:: text
+.. code:: text
 
    **功能描述**
    简要描述建议的功能
@@ -148,7 +148,7 @@
 2. 点击右上角的 "Fork" 按钮
 3. 克隆您的fork到本地
 
-.. code-block:: bash
+.. code:: bash
 
    git clone https://github.com/your-username/LNB-MDT.git
    cd LNB-MDT
@@ -157,7 +157,7 @@
 
 **2. 创建开发分支**
 
-.. code-block:: bash
+.. code:: bash
 
    # 创建并切换到新分支
    git checkout -b feature/your-feature-name
@@ -167,7 +167,7 @@
 
 **3. 安装开发依赖**
 
-.. code-block:: bash
+.. code:: bash
 
    # 创建开发环境
    conda create -n LNB-MDT-dev python=3.11
@@ -179,7 +179,7 @@
 
 **4. 安装预提交钩子**
 
-.. code-block:: bash
+.. code:: bash
 
    # 安装pre-commit
    pip install pre-commit
@@ -210,7 +210,7 @@
 
 **代码格式**
 
-.. code-block:: bash
+.. code:: bash
 
    # 使用black格式化代码
    black your_file.py
@@ -223,7 +223,7 @@
 
 **文档字符串格式**
 
-.. code-block:: python
+.. code:: python
 
    def example_function(param1: str, param2: int) -> bool:
        """
@@ -257,7 +257,7 @@
 
    <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
 
-.. code-block:: text
+.. code:: text
 
    tests/
    ├── test_analysis/          # 分析模块测试
@@ -276,7 +276,7 @@
 
 **测试示例**
 
-.. code-block:: python
+.. code:: python
 
    import unittest
    import numpy as np
@@ -310,7 +310,7 @@
 
 **运行测试**
 
-.. code-block:: bash
+.. code:: bash
 
    # 运行所有测试
    python -m pytest tests/
@@ -333,7 +333,7 @@
 
 **1. 提交更改**
 
-.. code-block:: bash
+.. code:: bash
 
    # 添加更改的文件
    git add .
@@ -364,7 +364,7 @@
 
    <div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;">
 
-.. code-block:: text
+.. code:: text
 
    **变更描述**
    简要描述此PR的变更内容
@@ -446,7 +446,7 @@
 
    <div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50;">
 
-.. code-block:: rst
+.. code:: rst
 
    ===========
    标题
@@ -458,7 +458,7 @@
 
    *斜体文本*
 
-   .. code-block:: python
+   .. code:: python
 
        # 代码示例
        def example():
@@ -479,7 +479,7 @@
 
    <div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;">
 
-.. code-block:: text
+.. code:: text
 
    docs/source/
    ├── index.rst              # 主页
@@ -498,7 +498,7 @@
 
 **本地构建文档**
 
-.. code-block:: bash
+.. code:: bash
 
    # 安装文档依赖
    pip install sphinx sphinx-rtd-theme myst-parser
@@ -797,7 +797,7 @@ MIT许可证是一个宽松的开源许可证，允许：
 
 **许可证文本**
 
-.. code-block:: text
+.. code:: text
 
    MIT License
 

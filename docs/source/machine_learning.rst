@@ -64,7 +64,7 @@ LNB-MDT集成了强大的机器学习功能，为分子动力学分析提供智�
 
 **机器学习模块需要额外的依赖包：**
 
-.. code-block:: bash
+.. code:: bash
 
    # 安装ML依赖
    pip install scikit-learn scipy matplotlib seaborn joblib
@@ -77,7 +77,7 @@ LNB-MDT集成了强大的机器学习功能，为分子动力学分析提供智�
 验证安装
 ~~~~~~~~
 
-.. code-block:: python
+.. code:: python
 
    # 验证ML模块安装
    from machine_learning import ParameterOptimizer, AnomalyDetector, PropertyPredictor
@@ -166,7 +166,7 @@ k值优化器
 
 **使用示例**
 
-.. code-block:: python
+.. code:: python
 
    from machine_learning import KValueOptimizer
 
@@ -375,7 +375,7 @@ k值优化器
 
 **使用示例**
 
-.. code-block:: python
+.. code:: python
 
    from machine_learning import PatternRecognizer
 
@@ -400,7 +400,7 @@ k值优化器
 
 **使用示例**
 
-.. code-block:: python
+.. code:: python
 
    from machine_learning import StateClassifier
 
@@ -447,7 +447,7 @@ k值优化器
 
 **使用示例**
 
-.. code-block:: python
+.. code:: python
 
    from machine_learning import FeatureExtractor
 
@@ -488,7 +488,7 @@ k值优化器
 
 **使用示例**
 
-.. code-block:: python
+.. code:: python
 
    from machine_learning import DataProcessor
 
@@ -517,7 +517,7 @@ API参考
 
 **AnalysisParameterOptimizer**
 
-.. code-block:: python
+.. code:: python
 
    class AnalysisParameterOptimizer:
        def __init__(self, analysis_type, **kwargs):
@@ -556,7 +556,7 @@ API参考
 
 **MDAnomalyDetector**
 
-.. code-block:: python
+.. code:: python
 
    class MDAnomalyDetector:
        def __init__(self, method='isolation_forest', **kwargs):
@@ -590,7 +590,7 @@ API参考
 
 **MDPropertyPredictor**
 
-.. code-block:: python
+.. code:: python
 
    class MDPropertyPredictor:
        def __init__(self, model_type='random_forest', **kwargs):
@@ -686,7 +686,7 @@ API参考
    <div style="background-color: #ffebee; padding: 15px; border-radius: 8px; border-left: 4px solid #f44336;">
 
 **解决方案：**
-.. code-block:: bash
+.. code:: bash
 
    pip install scikit-learn scipy matplotlib seaborn joblib
 

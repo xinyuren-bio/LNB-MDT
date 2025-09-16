@@ -19,7 +19,7 @@ LNB-MDT的完整API参考文档。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class AnalysisBase:
        """
@@ -74,7 +74,7 @@ PCA分析
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class PCA(AnalysisBase):
        """
@@ -123,7 +123,7 @@ Voronoi镶嵌面积分析类。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class Area(AnalysisBase):
        """
@@ -178,7 +178,7 @@ Voronoi镶嵌面积分析类。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class Curvature(AnalysisBase):
        """
@@ -245,7 +245,7 @@ Voronoi镶嵌面积分析类。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class Height(AnalysisBase):
        """
@@ -299,7 +299,7 @@ Voronoi镶嵌面积分析类。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class Cluster(AnalysisBase):
        """
@@ -355,7 +355,7 @@ Voronoi镶嵌面积分析类。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class ParameterOptimizer:
        """
@@ -411,7 +411,7 @@ Voronoi镶嵌面积分析类。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class AnalysisParameterOptimizer(ParameterOptimizer):
        """
@@ -450,7 +450,7 @@ k值优化器。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class KValueOptimizer:
        """
@@ -494,7 +494,7 @@ k值优化器。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class AnomalyDetector:
        """
@@ -553,7 +553,7 @@ k值优化器。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class MDAnomalyDetector(AnomalyDetector):
        """
@@ -611,7 +611,7 @@ k值优化器。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class PropertyPredictor:
        """
@@ -673,7 +673,7 @@ k值优化器。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class MDPropertyPredictor(PropertyPredictor):
        """
@@ -727,7 +727,7 @@ k值优化器。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class PatternRecognizer:
        """
@@ -783,7 +783,7 @@ k值优化器。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class FeatureExtractor:
        """
@@ -849,7 +849,7 @@ k值优化器。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class DataProcessor:
        """
@@ -919,7 +919,7 @@ VMD TCP连接器。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class VMDTcp:
        """
@@ -974,7 +974,7 @@ VMD命令集合。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class VMDCommands:
        """
@@ -1071,7 +1071,7 @@ VMD命令集合。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class FigurePage:
        """
@@ -1123,7 +1123,7 @@ VMD命令集合。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class BtnGetPath:
        """
@@ -1155,7 +1155,7 @@ VMD命令集合。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    def NextClick(ui):
        """
@@ -1175,7 +1175,7 @@ VMD命令集合。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    def BtnGeneClick(ui):
        """
@@ -1195,7 +1195,7 @@ VMD命令集合。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    def lipidsSelect(ui):
        """
@@ -1221,7 +1221,7 @@ LNB-MDT自定义异常类。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class LNBException(Exception):
        """
@@ -1251,7 +1251,7 @@ LNB-MDT自定义异常类。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class AnalysisError(LNBException):
        """
@@ -1281,7 +1281,7 @@ VMD错误异常类。
 
    </div>
 
-.. code-block:: python
+.. code:: python
 
    class VMDError(LNBException):
        """
@@ -1307,7 +1307,7 @@ VMD错误异常类。
 基本使用
 ~~~~~~~~
 
-.. code-block:: python
+.. code:: python
 
    # 基本分析使用示例
    from analysis.pca import PCA
@@ -1329,7 +1329,7 @@ VMD错误异常类。
 机器学习使用
 ~~~~~~~~~~~~
 
-.. code-block:: python
+.. code:: python
 
    # 机器学习使用示例
    from machine_learning import AnalysisParameterOptimizer, MDAnomalyDetector
@@ -1349,7 +1349,7 @@ VMD错误异常类。
 VMD集成使用
 ~~~~~~~~~~~
 
-.. code-block:: python
+.. code:: python
 
    # VMD集成使用示例
    from modules.vmd_control import VMDTcp, VMDCommands
@@ -1371,7 +1371,7 @@ VMD集成使用
 错误处理使用
 ~~~~~~~~~~~~
 
-.. code-block:: python
+.. code:: python
 
    # 错误处理使用示例
    from _exception import AnalysisError, VMDError

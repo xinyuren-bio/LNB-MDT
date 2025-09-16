@@ -19,7 +19,7 @@
 **图形界面操作**
 
 1. **启动程序**
-   .. code-block:: bash
+   .. code:: bash
 
       conda activate LNB-MDT
       python main.py
@@ -43,7 +43,7 @@
 
 **命令行操作**
 
-.. code-block:: bash
+.. code:: bash
 
    # 基本PCA分析
    python analysis/pca.py \
@@ -121,7 +121,7 @@
 
 **命令行操作**
 
-.. code-block:: bash
+.. code:: bash
 
    # 基本面积分析
    python analysis/area.py \
@@ -147,7 +147,7 @@
 
 **结果可视化**
 
-.. code-block:: python
+.. code:: python
 
    # 面积分析结果可视化
    import pandas as pd
@@ -179,7 +179,7 @@
 
 **平均曲率分析**
 
-.. code-block:: bash
+.. code:: bash
 
    # 平均曲率分析
    python analysis/curvature.py \
@@ -194,7 +194,7 @@
 
 **高斯曲率分析**
 
-.. code-block:: bash
+.. code:: bash
 
    # 高斯曲率分析
    python analysis/curvature.py \
@@ -209,7 +209,7 @@
 
 **曲率对比分析**
 
-.. code-block:: python
+.. code:: python
 
    # 曲率对比分析
    import pandas as pd
@@ -255,7 +255,7 @@
 
 **批量分析脚本**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """
@@ -376,7 +376,7 @@
 
 **参数优化脚本**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """
@@ -515,7 +515,7 @@
 
 **异常检测脚本**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """
@@ -647,7 +647,7 @@ VMD集成示例
 
 **VMD集成脚本**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """
@@ -795,7 +795,7 @@ VMD集成示例
 
 **性能测试脚本**
 
-.. code-block:: python
+.. code:: python
 
    #!/usr/bin/env python3
    """

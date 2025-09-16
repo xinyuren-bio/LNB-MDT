@@ -111,7 +111,7 @@ LNB-MDT 文档
 
 **方法1：使用安装脚本（推荐）**
 
-.. code-block:: bash
+.. code:: bash
 
    # Linux/macOS
    git clone https://github.com/xinyuren-bio/LNB-MDT.git
@@ -125,7 +125,7 @@ LNB-MDT 文档
 
 **方法2：手动安装**
 
-.. code-block:: bash
+.. code:: bash
 
    # 创建环境
    conda create -n LNB-MDT python=3.11
