@@ -44,6 +44,14 @@ High-Performance Computing
 * Configurable computation parameters
 * Optimized algorithm implementation
 
+Simplified Command Line Interface
+---------------------------------
+
+* **Short Parameter Aliases**: All parameters have short aliases (e.g., ``-g`` for ``--gro-file``)
+* **Simplified Input Formats**: Support intuitive formats like ``DPPC:PO4,CHOL:ROH``
+* **Configuration Files**: Use ``@config.json`` to avoid repetitive input
+* **Backward Compatibility**: Traditional formats are still fully supported
+
 Contents
 ========
 
@@ -52,6 +60,7 @@ Contents
 
    installation
    quickstart
+   parameter_input_guide
    analysis_modules
    machine_learning
    api_reference
