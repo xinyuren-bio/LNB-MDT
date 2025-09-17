@@ -105,13 +105,13 @@ PCA分析 (pca.py)
 .. code:: bash
 
    python analysis/pca.py \
-     --gro-file cases/lnb.gro \
-     --xtc-file cases/md.xtc \
-     --output-csv results/pca_results.csv \
-     --residues "{'DPPC': ['PO4'], 'CHOL': ['ROH']}" \
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/pca_results.csv \
+     -r DPPC:PO4,CHOL:ROH \
      --n-components 3 \
-     --parallel \
-     --verbose
+     -p \
+     -v
 
 **输出结果**
 - CSV文件包含每个帧的主成分值
@@ -146,14 +146,14 @@ PCA分析 (pca.py)
 .. code:: bash
 
    python analysis/area.py \
-     --gro-file cases/lnb.gro \
-     --xtc-file cases/md.xtc \
-     --output-csv results/area_results.csv \
-     --residues "{'DPPC': ['PO4']}" \
-     --k-value 20 \
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/area_results.csv \
+     -r DPPC:PO4 \
+     -k 20 \
      --max-normal-angle 140 \
-     --parallel \
-     --verbose
+     -p \
+     -v
 
 **输出结果**
 - 每个分子的Voronoi面积
@@ -188,14 +188,14 @@ PCA分析 (pca.py)
 .. code:: bash
 
    python analysis/curvature.py \
-     --gro-file cases/lnb.gro \
-     --xtc-file cases/md.xtc \
-     --output-csv results/curvature_results.csv \
-     --residues "{'DPPC': ['PO4']}" \
-     --k-value 20 \
-     --method mean \
-     --parallel \
-     --verbose
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/curvature_results.csv \
+     -r DPPC:PO4 \
+     -k 20 \
+     -M mean \
+     -p \
+     -v
 
 **输出结果**
 - 每个分子的曲率值
@@ -229,13 +229,13 @@ PCA分析 (pca.py)
 .. code:: bash
 
    python analysis/height.py \
-     --gro-file cases/lnb.gro \
-     --xtc-file cases/md.xtc \
-     --output-csv results/height_results.csv \
-     --residues "{'DPPC': (['PO4'], ['C4B', 'C4A']), 'CHOL': (['ROH'], ['R5'])}" \
-     --k-value 20 \
-     --parallel \
-     --verbose
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/height_results.csv \
+     -r DPPC:PO4,CHOL:ROH \
+     -k 20 \
+     -p \
+     -v
 
 **输出结果**
 - 每个分子的高度值
@@ -269,13 +269,13 @@ PCA分析 (pca.py)
 .. code:: bash
 
    python analysis/cluster.py \
-     --gro-file cases/lnb.gro \
-     --xtc-file cases/md.xtc \
-     --output-csv results/cluster_results.csv \
-     --residues "{'DPPC': ['PO4'], 'CHOL': ['ROH']}" \
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/cluster_results.csv \
+     -r DPPC:PO4,CHOL:ROH \
      --cutoff 8.0 \
-     --parallel \
-     --verbose
+     -p \
+     -v
 
 **输出结果**
 - 聚类大小分布
@@ -308,12 +308,12 @@ PCA分析 (pca.py)
 .. code:: bash
 
    python analysis/anisotropy.py \
-     --gro-file cases/lnb.gro \
-     --xtc-file cases/md.xtc \
-     --output-csv results/anisotropy_results.csv \
-     --residues "{'DPPC': ['PO4'], 'CHOL': ['ROH']}" \
-     --parallel \
-     --verbose
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/anisotropy_results.csv \
+     -r DPPC:PO4,CHOL:ROH \
+     -p \
+     -v
 
 **输出结果**
 - 各向异性参数
@@ -346,12 +346,12 @@ PCA分析 (pca.py)
 .. code:: bash
 
    python analysis/gyration.py \
-     --gro-file cases/lnb.gro \
-     --xtc-file cases/md.xtc \
-     --output-csv results/gyration_results.csv \
-     --residues "{'DPPC': ['PO4'], 'CHOL': ['ROH']}" \
-     --parallel \
-     --verbose
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/gyration_results.csv \
+     -r DPPC:PO4,CHOL:ROH \
+     -p \
+     -v
 
 **输出结果**
 - 回转半径值
@@ -386,14 +386,14 @@ Sz序参数分析 (sz.py)
 .. code:: bash
 
    python analysis/sz.py \
-     --gro-file cases/lnb.gro \
-     --xtc-file cases/md.xtc \
-     --output-csv results/sz_results.csv \
-     --residues "{'DPPC': ['PO4'], 'DUPC': ['PO4']}" \
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/sz_results.csv \
+     -r DPPC:PO4,DUPC:PO4 \
      --chain sn1 \
-     --k-value 15 \
-     --parallel \
-     --verbose
+     -k 15 \
+     -p \
+     -v
 
 **输出结果**
 - Sz序参数值
@@ -428,14 +428,14 @@ N-聚类分析 (n_cluster.py)
 .. code:: bash
 
    python analysis/n_cluster.py \
-     --gro-file cases/lnb.gro \
-     --xtc-file cases/md.xtc \
-     --output-csv results/ncluster_results.csv \
-     --residues "{'DAPC': ['GL1', 'GL2'], 'DPPC': ['PO4']}" \
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/ncluster_results.csv \
+     -r DAPC:GL1+GL2,DPPC:PO4 \
      --cutoff 12.0 \
      --n-cutoff 10 \
-     --parallel \
-     --verbose
+     -p \
+     -v
 
 **输出结果**
 - 聚类数量统计
@@ -469,9 +469,9 @@ N-聚类分析 (n_cluster.py)
 .. code:: bash
 
    python analysis/rad.py \
-     --gro-file cases/lnb.gro \
+     -g cases/lnb.gro \
      --output-excel results/radial_distribution.xlsx \
-     --residues "{'DPPC': ['NC3'], 'CHOL': ['ROH']}" \
+     -r DPPC:NC3,CHOL:ROH \
      --n-circle 50
 
 **输出结果**
@@ -698,6 +698,157 @@ LNB-MDT现在支持更简单的命令行参数输入方式：
 - **简化格式**: 支持 ``DPPC:PO4,CHOL:ROH`` 等直观格式
 - **向后兼容**: 传统格式仍然完全支持
 
-详细说明请参考 :doc:`parameter_input_guide`。
-
    </div>
+
+命令行参数详解
+~~~~~~~~~~~~~~
+
+LNB-MDT提供了丰富的命令行参数，支持简化的输入格式和短参数别名。
+
+参数对照表
+^^^^^^^^^^
+
+所有命令行参数都有对应的短别名，让命令行更加简洁：
+
+.. list-table:: 参数对照表
+   :header-rows: 1
+   :widths: 8 15 25 20 32
+
+   * - 短参数
+     - 长参数
+     - 说明
+     - 默认值
+     - 示例
+   * - ``-g``
+     - ``--gro-file``
+     - GRO文件路径
+     - -
+     - ``-g cases/lnb.gro``
+   * - ``-x``
+     - ``--xtc-file``
+     - XTC文件路径
+     - -
+     - ``-x cases/md.xtc``
+   * - ``-o``
+     - ``--output-csv``
+     - 输出CSV文件路径
+     - ``cases/csv/results.csv``
+     - ``-o results.csv``
+   * - ``-r``
+     - ``--residues``
+     - 残基组定义
+     - ``DPPC:PO4,CHOL:ROH``
+     - ``-r DPPC:PO4``
+   * - ``-a``
+     - ``--gas-group``
+     - 气体组定义
+     - ``N2:N2``
+     - ``-a N2:N2``
+   * - ``-m``
+     - ``--MW``
+     - 分子量 (g/mol)
+     - ``14``
+     - ``-m 14``
+   * - ``-R``
+     - ``--radius``
+     - 半径 (Å)
+     - ``50``
+     - ``-R 50``
+   * - ``-p``
+     - ``--parallel``
+     - 启用并行处理
+     - ``False``
+     - ``-p``
+   * - ``-j``
+     - ``--n-jobs``
+     - 并行任务数
+     - ``2``
+     - ``-j 4``
+   * - ``-s``
+     - ``--start-frame``
+     - 起始帧
+     - ``0``
+     - ``-s 0``
+   * - ``-e``
+     - ``--stop-frame``
+     - 结束帧
+     - ``全部帧``
+     - ``-e 100``
+   * - ``-t``
+     - ``--step-frame``
+     - 帧步长
+     - ``1``
+     - ``-t 5``
+   * - ``-v``
+     - ``--verbose``
+     - 详细输出
+     - ``False``
+     - ``-v``
+   * - ``-k``
+     - ``--k-value``
+     - k值
+     - ``20``
+     - ``-k 20``
+   * - ``-M``
+     - ``--method``
+     - 计算方法
+     - ``mean``
+     - ``-M mean``
+   * - ``-T``
+     - ``--threshold``
+     - 阈值
+     - ``0.5``
+     - ``-T 0.5``
+   * - ``-P``
+     - ``--plot-type``
+     - 图表类型
+     - ``all``
+     - ``-P line``
+   * - ``-d``
+     - ``--plot-dir``
+     - 图表目录
+     - ``plots/``
+     - ``-d plots/``
+
+简化格式说明
+^^^^^^^^^^^^
+
+residues和gas-group参数现在支持更直观的输入格式：
+
+基本格式
+~~~~~~~~
+
+**简单格式（推荐）:**
+.. code:: bash
+
+   # 基本格式: RESIDUE:ATOM
+   -r DPPC:PO4,CHOL:ROH
+   -a N2:N2
+   
+   # 多个残基/气体
+   -r DPPC:PO4,DUPC:PO4,CHOL:ROH
+   -a N2:N2,O2:O2
+
+**多原子格式:**
+.. code:: bash
+
+   # 多原子: RESIDUE:ATOM1+ATOM2
+   -r DPPC:PO4+GLY,CHOL:ROH
+   -r DPPC:PO4+GLY+CH2,CHOL:ROH
+
+**只有名称格式:**
+.. code:: bash
+
+   # 只有残基/气体名（原子名与名称相同）
+   -r DPPC
+   -a N2
+
+传统格式
+~~~~~~~~
+
+**字典字符串格式（仍然支持）:**
+.. code:: bash
+
+   # 传统字典格式
+   -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
+   -a "{'N2': ['N2']}"
