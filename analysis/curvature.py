@@ -209,72 +209,72 @@ def parse_args():
     )
 
     parser.add_argument(
-        "--gro-file",
+        "--gro-file", "-g",
         type=str,
         default="cases/lnb.gro",
         help="Path to the GRO file (topology file)."
     )
     parser.add_argument(
-        "--xtc-file",
+        "--xtc-file", "-x",
         type=str,
         default="cases/md.xtc",
         help="Path to the XTC file (trajectory file)."
     )
     parser.add_argument(
-        "--output-csv",
+        "--output-csv", "-o",
         type=str,
         default="cases/csv/curvature_results.csv",
         help="Path to the output CSV file for curvature results."
     )
     parser.add_argument(
-        "--residues",
+        "--residues", "-r",
         type=str,
         default="{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}",
         help="A dictionary string defining residue groups for analysis. E.g., \"{'DPPC': ['PO4'], 'CHOL': ['ROH']}\""
     )
     parser.add_argument(
-        "--k-value",
+        "--k-value", "-k",
         type=int,
         default=20,
         help="K value for curvature calculation."
     )
     parser.add_argument(
-        "--method",
+        "--method", "-M",
         type=str,
         choices=['mean', 'gaussian'],
         default='mean',
         help="Type of curvature to calculate: 'mean' or 'gaussian'."
     )
     parser.add_argument(
-        "--parallel",
+        "--parallel", "-p",
         action="store_true",
         help="Enable parallel processing for curvature calculation."
     )
     parser.add_argument(
-        "--n-jobs",
+        "--n-jobs", "-j",
         type=int,
         default=-1,
         help="Number of jobs to run in parallel. -1 means using all available CPU cores."
     )
     parser.add_argument(
-        "--start-frame",
+        "--start-frame", "-s",
         type=int,
         default=0,
         help="Starting frame for analysis (0-indexed)."
     )
     parser.add_argument(
-        "--stop-frame",
+        "--stop-frame", "-e",
         type=int,
         help="Stopping frame for analysis (exclusive). Defaults to end of trajectory."
     )
     parser.add_argument(
-        "--step-frame",
+        "--step-frame", "-t",
         type=int,
         default=1,
         help="Step size for frames during analysis."
     )
     parser.add_argument(
-        "--verbose",
+        "--verbose", "-v",
         action="store_true",
         help="Enable verbose output during analysis."
     )
