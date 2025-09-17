@@ -99,7 +99,7 @@ def parse_args():
     )
 
     parser.add_argument(
-        "--gro-file",
+        "--gro-file", "-g",
         type=str,
         default="cases/lnb.gro",
         help="Path to the GRO file (topology file)."
@@ -111,7 +111,7 @@ def parse_args():
         help="Path to the output Excel file for radial distribution results."
     )
     parser.add_argument(
-        "--residues",
+        "--residues", "-r",
         type=str,
         default="{'DPPC': ['NC3'], 'D3PC': ['NC3'], 'CHOL': ['ROH']}",
         help="A dictionary string defining residue groups for analysis. E.g., \"{'DPPC': ['NC3'], 'CHOL': ['ROH']}\""
@@ -123,18 +123,18 @@ def parse_args():
         help="Number of concentric circles for radial analysis."
     )
     parser.add_argument(
-        "--start-frame",
+        "--start-frame", "-s",
         type=int,
         default=0,
         help="Starting frame for analysis (0-indexed)."
     )
     parser.add_argument(
-        "--stop-frame",
+        "--stop-frame", "-e",
         type=int,
         help="Stopping frame for analysis (exclusive). Defaults to end of trajectory."
     )
     parser.add_argument(
-        "--step-frame",
+        "--step-frame", "-t",
         type=int,
         default=1,
         help="Step size for frames during analysis."

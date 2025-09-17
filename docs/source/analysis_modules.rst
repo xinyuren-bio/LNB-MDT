@@ -3,6 +3,159 @@
 
 LNB-MDT提供了丰富的分子动力学分析模块，每个模块都针对特定的物理性质进行分析。
 
+命令行参数详解
+==============
+
+LNB-MDT提供了丰富的命令行参数，支持简化的输入格式和短参数别名。
+
+参数对照表
+----------
+
+所有命令行参数都有对应的短别名，让命令行更加简洁：
+
+.. list-table:: 参数对照表
+   :header-rows: 1
+   :widths: 8 15 25 20 32
+
+   * - 短参数
+     - 长参数
+     - 说明
+     - 默认值
+     - 示例
+   * - ``-g``
+     - ``--gro-file``
+     - GRO文件路径
+     - -
+     - ``-g cases/lnb.gro``
+   * - ``-x``
+     - ``--xtc-file``
+     - XTC文件路径
+     - -
+     - ``-x cases/md.xtc``
+   * - ``-o``
+     - ``--output-csv``
+     - 输出CSV文件路径
+     - ``cases/csv/results.csv``
+     - ``-o results.csv``
+   * - ``-r``
+     - ``--residues``
+     - 残基组定义
+     - ``DPPC:PO4,CHOL:ROH``
+     - ``-r DPPC:PO4``
+   * - ``-a``
+     - ``--gas-group``
+     - 气体组定义
+     - ``N2:N2``
+     - ``-a N2:N2``
+   * - ``-m``
+     - ``--MW``
+     - 分子量 (g/mol)
+     - ``14``
+     - ``-m 14``
+   * - ``-R``
+     - ``--radius``
+     - 半径 (Å)
+     - ``50``
+     - ``-R 50``
+   * - ``-p``
+     - ``--parallel``
+     - 启用并行处理
+     - ``False``
+     - ``-p``
+   * - ``-j``
+     - ``--n-jobs``
+     - 并行任务数
+     - ``2``
+     - ``-j 4``
+   * - ``-s``
+     - ``--start-frame``
+     - 起始帧
+     - ``0``
+     - ``-s 0``
+   * - ``-e``
+     - ``--stop-frame``
+     - 结束帧
+     - ``全部帧``
+     - ``-e 100``
+   * - ``-t``
+     - ``--step-frame``
+     - 帧步长
+     - ``1``
+     - ``-t 5``
+   * - ``-v``
+     - ``--verbose``
+     - 详细输出
+     - ``False``
+     - ``-v``
+   * - ``-k``
+     - ``--k-value``
+     - k值
+     - ``20``
+     - ``-k 20``
+   * - ``-M``
+     - ``--method``
+     - 计算方法
+     - ``mean``
+     - ``-M mean``
+   * - ``-T``
+     - ``--threshold``
+     - 阈值
+     - ``0.5``
+     - ``-T 0.5``
+   * - ``-P``
+     - ``--plot-type``
+     - 图表类型
+     - ``all``
+     - ``-P line``
+   * - ``-d``
+     - ``--plot-dir``
+     - 图表目录
+     - ``plots/``
+     - ``-d plots/``
+
+简化格式说明
+------------
+
+residues和gas-group参数现在支持更直观的输入格式：
+
+基本格式
+~~~~~~~~
+
+**简单格式（推荐）:**
+.. code-block:: bash
+
+   # 基本格式: RESIDUE:ATOM
+   -r DPPC:PO4,CHOL:ROH
+   -a N2:N2
+   
+   # 多个残基/气体
+   -r DPPC:PO4,DUPC:PO4,CHOL:ROH
+   -a N2:N2,O2:O2
+
+**多原子格式:**
+.. code-block:: bash
+
+   # 多原子: RESIDUE:ATOM1+ATOM2
+   -r DPPC:PO4+GLY,CHOL:ROH
+   -r DPPC:PO4+GLY+CH2,CHOL:ROH
+
+**只有名称格式:**
+.. code-block:: bash
+
+   # 只有残基/气体名（原子名与名称相同）
+   -r DPPC
+   -a N2
+
+传统格式
+~~~~~~~~
+
+**字典字符串格式（仍然支持）:**
+.. code-block:: bash
+
+   # 传统字典格式
+   -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
+   -a "{'N2': ['N2']}"
+
 模块概览
 --------
 
@@ -88,17 +241,20 @@ PCA分析 (pca.py)
 
 **关键参数**
 
-.. raw:: html
+residues *residue-definition*
+    残基组定义，指定要分析的分子类型和原子。支持简化格式如 ``DPPC:PO4,CHOL:ROH``
 
-   <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
+n_components *number*
+    主成分数量，默认值为 ``3``
 
-- **residues**: 残基组字典，指定要分析的分子类型
-- **n_components**: 主成分数量（默认：3）
-- **start_frame**: 起始帧（默认：0）
-- **stop_frame**: 结束帧（默认：-1，表示到最后）
-- **step_frame**: 帧步长（默认：1）
+start_frame *frame-number*
+    起始帧，默认值为 ``0``
 
-   </div>
+stop_frame *frame-number*
+    结束帧，默认值为 ``-1``（表示分析到最后）
+
+step_frame *frame-step*
+    帧步长，默认值为 ``1``
 
 **使用示例**
 
@@ -131,15 +287,14 @@ PCA分析 (pca.py)
 
 **关键参数**
 
-.. raw:: html
+k-value *number*
+    Voronoi镶嵌的k值，默认值为 ``20``
 
-   <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
+max-normal-angle *angle*
+    最大法线角度，默认值为 ``140`` 度
 
-- **k-value**: Voronoi镶嵌的k值（默认：20）
-- **max-normal-angle**: 最大法线角度（默认：140度）
-- **residues**: 残基组字典
-
-   </div>
+residues *residue-definition*
+    残基组定义，指定要分析的分子类型和原子
 
 **使用示例**
 
@@ -173,15 +328,14 @@ PCA分析 (pca.py)
 
 **关键参数**
 
-.. raw:: html
+method *curvature-type*
+    曲率类型，可选值为 ``mean`` 或 ``gaussian``，默认值为 ``mean``
 
-   <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
+k-value *number*
+    曲率计算的k值，默认值为 ``20``
 
-- **method**: 曲率类型（'mean' 或 'gaussian'）
-- **k-value**: 曲率计算的k值（默认：20）
-- **residues**: 残基组字典
-
-   </div>
+residues *residue-definition*
+    残基组定义，指定要分析的分子类型和原子
 
 **使用示例**
 
@@ -215,14 +369,11 @@ PCA分析 (pca.py)
 
 **关键参数**
 
-.. raw:: html
+k-value *number*
+    高度计算的k值，默认值为 ``20``
 
-   <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
-
-- **k-value**: 高度计算的k值（默认：20）
-- **residues**: 残基组字典，支持多组原子
-
-   </div>
+residues *residue-definition*
+    残基组定义，指定要分析的分子类型和原子，支持多组原子
 
 **使用示例**
 
@@ -255,14 +406,11 @@ PCA分析 (pca.py)
 
 **关键参数**
 
-.. raw:: html
+cutoff *distance*
+    聚类截止距离，默认值为 ``8.0`` 埃
 
-   <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
-
-- **cutoff**: 聚类截止距离（默认：8.0埃）
-- **residues**: 残基组字典
-
-   </div>
+residues *residue-definition*
+    残基组定义，指定要分析的分子类型和原子
 
 **使用示例**
 
@@ -295,13 +443,8 @@ PCA分析 (pca.py)
 
 **关键参数**
 
-.. raw:: html
-
-   <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
-
-- **residues**: 残基组字典
-
-   </div>
+residues *residue-definition*
+    残基组定义，指定要分析的分子类型和原子
 
 **使用示例**
 
@@ -333,13 +476,8 @@ PCA分析 (pca.py)
 
 **关键参数**
 
-.. raw:: html
-
-   <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
-
-- **residues**: 残基组字典
-
-   </div>
+residues *residue-definition*
+    残基组定义，指定要分析的分子类型和原子
 
 **使用示例**
 
@@ -371,15 +509,14 @@ Sz序参数分析 (sz.py)
 
 **关键参数**
 
-.. raw:: html
+chain *chain-type*
+    链类型，可选值为 ``sn1``、``sn2`` 或 ``both``
 
-   <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
+k-value *number*
+    Sz计算的k值，默认值为 ``15``
 
-- **chain**: 链类型（'sn1', 'sn2', 或 'both'）
-- **k-value**: Sz计算的k值（默认：15）
-- **residues**: 残基组字典
-
-   </div>
+residues *residue-definition*
+    残基组定义，指定要分析的分子类型和原子
 
 **使用示例**
 
@@ -413,15 +550,14 @@ N-聚类分析 (n_cluster.py)
 
 **关键参数**
 
-.. raw:: html
+cutoff *distance*
+    聚类截止距离，默认值为 ``12.0`` 埃
 
-   <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
+n-cutoff *number*
+    最小聚类大小阈值，默认值为 ``10``
 
-- **cutoff**: 聚类截止距离（默认：12.0埃）
-- **n-cutoff**: 最小聚类大小阈值（默认：10）
-- **residues**: 残基组字典
-
-   </div>
+residues *residue-definition*
+    残基组定义，指定要分析的分子类型和原子
 
 **使用示例**
 
@@ -455,14 +591,11 @@ N-聚类分析 (n_cluster.py)
 
 **关键参数**
 
-.. raw:: html
+n-circle *number*
+    径向分析的同心圆数量，默认值为 ``50``
 
-   <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
-
-- **n-circle**: 径向分析的同心圆数量（默认：50）
-- **residues**: 残基组字典
-
-   </div>
+residues *residue-definition*
+    残基组定义，指定要分析的分子类型和原子
 
 **使用示例**
 
@@ -700,155 +833,3 @@ LNB-MDT现在支持更简单的命令行参数输入方式：
 
    </div>
 
-命令行参数详解
-~~~~~~~~~~~~~~
-
-LNB-MDT提供了丰富的命令行参数，支持简化的输入格式和短参数别名。
-
-参数对照表
-^^^^^^^^^^
-
-所有命令行参数都有对应的短别名，让命令行更加简洁：
-
-.. list-table:: 参数对照表
-   :header-rows: 1
-   :widths: 8 15 25 20 32
-
-   * - 短参数
-     - 长参数
-     - 说明
-     - 默认值
-     - 示例
-   * - ``-g``
-     - ``--gro-file``
-     - GRO文件路径
-     - -
-     - ``-g cases/lnb.gro``
-   * - ``-x``
-     - ``--xtc-file``
-     - XTC文件路径
-     - -
-     - ``-x cases/md.xtc``
-   * - ``-o``
-     - ``--output-csv``
-     - 输出CSV文件路径
-     - ``cases/csv/results.csv``
-     - ``-o results.csv``
-   * - ``-r``
-     - ``--residues``
-     - 残基组定义
-     - ``DPPC:PO4,CHOL:ROH``
-     - ``-r DPPC:PO4``
-   * - ``-a``
-     - ``--gas-group``
-     - 气体组定义
-     - ``N2:N2``
-     - ``-a N2:N2``
-   * - ``-m``
-     - ``--MW``
-     - 分子量 (g/mol)
-     - ``14``
-     - ``-m 14``
-   * - ``-R``
-     - ``--radius``
-     - 半径 (Å)
-     - ``50``
-     - ``-R 50``
-   * - ``-p``
-     - ``--parallel``
-     - 启用并行处理
-     - ``False``
-     - ``-p``
-   * - ``-j``
-     - ``--n-jobs``
-     - 并行任务数
-     - ``2``
-     - ``-j 4``
-   * - ``-s``
-     - ``--start-frame``
-     - 起始帧
-     - ``0``
-     - ``-s 0``
-   * - ``-e``
-     - ``--stop-frame``
-     - 结束帧
-     - ``全部帧``
-     - ``-e 100``
-   * - ``-t``
-     - ``--step-frame``
-     - 帧步长
-     - ``1``
-     - ``-t 5``
-   * - ``-v``
-     - ``--verbose``
-     - 详细输出
-     - ``False``
-     - ``-v``
-   * - ``-k``
-     - ``--k-value``
-     - k值
-     - ``20``
-     - ``-k 20``
-   * - ``-M``
-     - ``--method``
-     - 计算方法
-     - ``mean``
-     - ``-M mean``
-   * - ``-T``
-     - ``--threshold``
-     - 阈值
-     - ``0.5``
-     - ``-T 0.5``
-   * - ``-P``
-     - ``--plot-type``
-     - 图表类型
-     - ``all``
-     - ``-P line``
-   * - ``-d``
-     - ``--plot-dir``
-     - 图表目录
-     - ``plots/``
-     - ``-d plots/``
-
-简化格式说明
-^^^^^^^^^^^^
-
-residues和gas-group参数现在支持更直观的输入格式：
-
-基本格式
-~~~~~~~~
-
-**简单格式（推荐）:**
-.. code-block:: bash
-
-   # 基本格式: RESIDUE:ATOM
-   -r DPPC:PO4,CHOL:ROH
-   -a N2:N2
-   
-   # 多个残基/气体
-   -r DPPC:PO4,DUPC:PO4,CHOL:ROH
-   -a N2:N2,O2:O2
-
-**多原子格式:**
-.. code-block:: bash
-
-   # 多原子: RESIDUE:ATOM1+ATOM2
-   -r DPPC:PO4+GLY,CHOL:ROH
-   -r DPPC:PO4+GLY+CH2,CHOL:ROH
-
-**只有名称格式:**
-.. code-block:: bash
-
-   # 只有残基/气体名（原子名与名称相同）
-   -r DPPC
-   -a N2
-
-传统格式
-~~~~~~~~
-
-**字典字符串格式（仍然支持）:**
-.. code-block:: bash
-
-   # 传统字典格式
-   -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
-   -a "{'N2': ['N2']}"
