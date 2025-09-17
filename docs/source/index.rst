@@ -59,7 +59,6 @@ Contents
 
    installation
    quickstart
-   parameter_input_guide
    analysis_modules
    machine_learning
    api_reference
