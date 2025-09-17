@@ -32,15 +32,6 @@ LNB-MDT支持以下参数输入方式：
    </ul>
    </div>
 
-   <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">📁 配置文件</h3>
-   <p>使用配置文件避免重复输入</p>
-   <ul style="margin-bottom: 0;">
-   <li>JSON格式</li>
-   <li>文本格式</li>
-   <li>@config.json</li>
-   </ul>
-   </div>
 
    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 20px; border-radius: 10px;">
    <h3 style="margin-top: 0;">🔄 向后兼容</h3>
@@ -173,22 +164,6 @@ residues和gas-group参数现在支持更直观的输入格式：
    -r DPPC
    -a N2
 
-配置文件格式
-~~~~~~~~~~~~
-
-**JSON配置文件:**
-.. code:: bash
-
-   # 使用JSON配置文件
-   -r @cases/config/residues_config.json
-   -a @cases/config/gas_config.json
-
-**文本配置文件:**
-.. code:: bash
-
-   # 使用文本配置文件
-   -r @cases/config/residues.txt
-   -a @cases/config/gas.txt
 
 传统格式
 ~~~~~~~~
@@ -234,19 +209,6 @@ residues和gas-group参数现在支持更直观的输入格式：
      -p \
      -j 4
 
-**配置文件方式:**
-.. code:: bash
-
-   python analysis/densitywithframe.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -r @cases/config/residues_config.json \
-     -a @cases/config/gas_config.json \
-     -m 14 \
-     -R 50 \
-     -o results.csv \
-     -p \
-     -j 4
 
 PCA分析示例
 ~~~~~~~~~~~
@@ -275,64 +237,6 @@ PCA分析示例
      -p \
      -v
 
-配置文件创建
-------------
-
-创建示例配置文件
-~~~~~~~~~~~~~~~
-
-您可以使用以下命令创建示例配置文件：
-
-.. code:: bash
-
-   python analysis/parameter_utils.py
-
-这会在 ``cases/config/`` 目录下创建以下文件：
-
-- ``residues_config.json`` - JSON格式残基配置
-- ``gas_config.json`` - JSON格式气体配置
-- ``residues.txt`` - 文本格式残基配置
-- ``gas.txt`` - 文本格式气体配置
-
-JSON配置文件格式
-~~~~~~~~~~~~~~~~
-
-**residues_config.json:**
-.. code:: json
-
-   {
-     "DPPC": ["PO4"],
-     "DUPC": ["PO4"],
-     "CHOL": ["ROH"]
-   }
-
-**gas_config.json:**
-.. code:: json
-
-   {
-     "N2": ["N2"],
-     "O2": ["O2"]
-   }
-
-文本配置文件格式
-~~~~~~~~~~~~~~~~
-
-**residues.txt:**
-.. code:: text
-
-   # Residues configuration file
-   # Format: RESIDUE:ATOM1+ATOM2
-   DPPC:PO4
-   DUPC:PO4
-   CHOL:ROH
-
-**gas.txt:**
-.. code:: text
-
-   # Gas configuration file
-   # Format: GAS:ATOM
-   N2:N2
-   O2:O2
 
 Python API使用
 --------------
@@ -350,9 +254,6 @@ Python API使用
    # 多原子格式
    residues = parse_residues_simple('DPPC:PO4+GLY,CHOL:ROH')
 
-   # 配置文件
-   residues = parse_residues_simple('@config/residues.json')
-   gas_group = parse_gas_group_simple('@config/gas.json')
 
    # 传统格式（仍然支持）
    residues = parse_residues_simple("{'DPPC': ['PO4'], 'CHOL': ['ROH']}")
@@ -435,10 +336,6 @@ Python API使用
    <p>简单格式更接近自然语言，易于理解</p>
    </div>
 
-   <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">📁 更灵活</h3>
-   <p>配置文件支持，避免重复输入</p>
-   </div>
 
    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 20px; border-radius: 10px;">
    <h3 style="margin-top: 0;">🔄 兼容性</h3>
@@ -452,8 +349,7 @@ Python API使用
 
 1. **空格处理**: 参数中的空格会被自动处理
 2. **大小写敏感**: 残基名和原子名区分大小写
-3. **配置文件路径**: 使用``@``前缀指定配置文件路径
-4. **错误处理**: 如果格式不正确，会显示详细的错误信息和格式说明
-5. **向后兼容**: 所有传统格式仍然完全支持
+3. **错误处理**: 如果格式不正确，会显示详细的错误信息和格式说明
+4. **向后兼容**: 所有传统格式仍然完全支持
 
 现在您可以享受更简单、更直观的命令行体验了！

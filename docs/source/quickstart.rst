@@ -164,9 +164,6 @@ LNB-MDT现在支持更简单的参数输入方式，让命令行使用更加便�
    # 多原子格式
    -r DPPC:PO4+GLY,CHOL:ROH
    
-   # 配置文件格式
-   -r @cases/config/residues_config.json
-   -a @cases/config/gas_config.json
    
    # 传统字典格式（仍然支持）
    -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
