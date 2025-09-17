@@ -687,3 +687,18 @@ CSV文件格式
 - **算法选择**: 选择最适合的分析算法
 
    </div>
+
+   <div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50; margin-top: 20px;">
+
+**简化参数输入：**
+
+LNB-MDT现在支持更简单的命令行参数输入方式：
+
+- **短参数别名**: 所有参数都有简短别名（如 ``-g`` 代替 ``--gro-file``）
+- **简化格式**: 支持 ``DPPC:PO4,CHOL:ROH`` 等直观格式
+- **配置文件**: 使用 ``@config.json`` 避免重复输入
+- **向后兼容**: 传统格式仍然完全支持
+
+详细说明请参考 :doc:`parameter_input_guide`。
+
+   </div>

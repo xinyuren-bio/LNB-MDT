@@ -132,6 +132,45 @@ LNB-MDT提供多种分析类型：
 - **计算参数**: k值、截止距离等
 - **并行处理**: 启用多核加速
 
+简化参数输入
+^^^^^^^^^^^^
+
+LNB-MDT现在支持更简单的参数输入方式，让命令行使用更加便捷：
+
+**短参数别名:**
+.. code:: text
+
+   -g  --gro-file      GRO文件路径
+   -x  --xtc-file      XTC文件路径  
+   -o  --output-csv    输出CSV文件路径
+   -r  --residues      残基组定义
+   -a  --gas-group     气体组定义
+   -m  --MW           分子量
+   -R  --radius       半径
+   -p  --parallel     启用并行处理
+   -j  --n-jobs       并行任务数
+   -s  --start-frame   起始帧
+   -e  --stop-frame    结束帧
+   -t  --step-frame    帧步长
+   -v  --verbose       详细输出
+
+**简化的residues和gas-group格式:**
+.. code:: text
+
+   # 简单格式（推荐）
+   -r DPPC:PO4,CHOL:ROH
+   -a N2:N2
+   
+   # 多原子格式
+   -r DPPC:PO4+GLY,CHOL:ROH
+   
+   # 配置文件格式
+   -r @cases/config/residues_config.json
+   -a @cases/config/gas_config.json
+   
+   # 传统字典格式（仍然支持）
+   -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
+
 运行分析
 ~~~~~~~~
 
@@ -147,6 +186,9 @@ LNB-MDT提供多种分析类型：
 命令行运行
 ^^^^^^^^^^
 
+LNB-MDT支持简化的命令行参数输入，让您更轻松地使用命令行工具：
+
+**传统方式（仍然支持）:**
 .. code:: python
 
    # PCA分析示例
@@ -157,6 +199,18 @@ LNB-MDT提供多种分析类型：
      --residues "{'DPPC': ['PO4']}" \
      --parallel \
      --verbose
+
+**新的简化方式（推荐）:**
+.. code:: python
+
+   # 使用短参数和简单格式
+   python analysis/pca.py \
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/pca_results.csv \
+     -r DPPC:PO4 \
+     -p \
+     -v
 
 查看结果
 ~~~~~~~~
@@ -181,6 +235,7 @@ PCA分析
 
 分析脂质分子的构象变化：
 
+**传统方式:**
 .. code:: python
 
    python analysis/pca.py \
@@ -193,11 +248,25 @@ PCA分析
      --parallel \
      --verbose
 
+**简化方式:**
+.. code:: python
+
+   python analysis/pca.py \
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/pca_test.csv \
+     -r DPPC:PO4,CHOL:ROH \
+     -s 0 \
+     -e 100 \
+     -p \
+     -v
+
 面积分析
 ~~~~~~~~
 
 计算脂质分子的Voronoi镶嵌面积：
 
+**传统方式:**
 .. code:: python
 
    python analysis/area.py \
@@ -210,11 +279,25 @@ PCA分析
      --parallel \
      --verbose
 
+**简化方式:**
+.. code:: python
+
+   python analysis/area.py \
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/area_test.csv \
+     -r DPPC:PO4 \
+     -k 20 \
+     --max-normal-angle 140 \
+     -p \
+     -v
+
 曲率分析
 ~~~~~~~~
 
 计算脂质膜的曲率特性：
 
+**传统方式:**
 .. code:: python
 
    python analysis/curvature.py \
@@ -226,6 +309,38 @@ PCA分析
      --method mean \
      --parallel \
      --verbose
+
+**简化方式:**
+.. code:: python
+
+   python analysis/curvature.py \
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/curvature_test.csv \
+     -r DPPC:PO4 \
+     -k 20 \
+     -M mean \
+     -p \
+     -v
+
+密度分析
+~~~~~~~~
+
+分析气泡中气体密度随时间的变化：
+
+**简化方式（推荐）:**
+.. code:: python
+
+   python analysis/densitywithframe.py \
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/density_test.csv \
+     -r DPPC:PO4,CHOL:ROH \
+     -a N2:N2 \
+     -m 14 \
+     -R 50 \
+     -p \
+     -v
 
 机器学习功能
 ------------
