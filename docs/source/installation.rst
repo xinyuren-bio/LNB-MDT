@@ -6,7 +6,7 @@ Conda安装
 
 安装LNB-MDT最简单的方法是通过Conda环境管理器：
 
-.. code:: bash
+.. code-block:: bash
 
    conda config --add channels conda-forge
    conda create -n LNB-MDT -c conda-forge python=3.11
@@ -24,13 +24,13 @@ PyPI安装
 
 也可以从Python包索引安装LNB-MDT：
 
-.. code:: bash
+.. code-block:: bash
 
    pip install LNB-MDT
 
 或者安装开发版本：
 
-.. code:: bash
+.. code-block:: bash
 
    pip install https://github.com/xinyuren-bio/LNB-MDT/archive/main.zip
 

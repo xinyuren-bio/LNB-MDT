@@ -186,7 +186,7 @@ LNB-MDT现在支持更简单的参数输入方式，让命令行使用更加便�
 LNB-MDT支持简化的命令行参数输入，让您更轻松地使用命令行工具：
 
 **传统方式（仍然支持）:**
-.. code:: python
+.. code-block:: python
 
    # PCA分析示例
    python analysis/pca.py \
@@ -198,7 +198,7 @@ LNB-MDT支持简化的命令行参数输入，让您更轻松地使用命令行�
      --verbose
 
 **新的简化方式（推荐）:**
-.. code:: python
+.. code-block:: python
 
    # 使用短参数和简单格式
    python analysis/pca.py \
@@ -233,7 +233,7 @@ PCA分析
 分析脂质分子的构象变化：
 
 **传统方式:**
-.. code:: python
+.. code-block:: python
 
    python analysis/pca.py \
      --gro-file cases/lnb.gro \
@@ -246,7 +246,7 @@ PCA分析
      --verbose
 
 **简化方式:**
-.. code:: python
+.. code-block:: python
 
    python analysis/pca.py \
      -g cases/lnb.gro \
@@ -264,7 +264,7 @@ PCA分析
 计算脂质分子的Voronoi镶嵌面积：
 
 **传统方式:**
-.. code:: python
+.. code-block:: python
 
    python analysis/area.py \
      --gro-file cases/lnb.gro \
@@ -277,7 +277,7 @@ PCA分析
      --verbose
 
 **简化方式:**
-.. code:: python
+.. code-block:: python
 
    python analysis/area.py \
      -g cases/lnb.gro \
@@ -295,7 +295,7 @@ PCA分析
 计算脂质膜的曲率特性：
 
 **传统方式:**
-.. code:: python
+.. code-block:: python
 
    python analysis/curvature.py \
      --gro-file cases/lnb.gro \
@@ -308,7 +308,7 @@ PCA分析
      --verbose
 
 **简化方式:**
-.. code:: python
+.. code-block:: python
 
    python analysis/curvature.py \
      -g cases/lnb.gro \
@@ -326,7 +326,7 @@ PCA分析
 分析气泡中气体密度随时间的变化：
 
 **简化方式（推荐）:**
-.. code:: python
+.. code-block:: python
 
    python analysis/densitywithframe.py \
      -g cases/lnb.gro \

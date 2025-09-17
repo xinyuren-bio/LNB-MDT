@@ -102,7 +102,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code:: bash
+.. code-block:: bash
 
    python analysis/pca.py \
      -g cases/lnb.gro \
@@ -143,7 +143,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code:: bash
+.. code-block:: bash
 
    python analysis/area.py \
      -g cases/lnb.gro \
@@ -185,7 +185,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code:: bash
+.. code-block:: bash
 
    python analysis/curvature.py \
      -g cases/lnb.gro \
@@ -226,7 +226,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code:: bash
+.. code-block:: bash
 
    python analysis/height.py \
      -g cases/lnb.gro \
@@ -266,7 +266,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code:: bash
+.. code-block:: bash
 
    python analysis/cluster.py \
      -g cases/lnb.gro \
@@ -305,7 +305,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code:: bash
+.. code-block:: bash
 
    python analysis/anisotropy.py \
      -g cases/lnb.gro \
@@ -343,7 +343,7 @@ PCA分析 (pca.py)
 
 **使用示例**
 
-.. code:: bash
+.. code-block:: bash
 
    python analysis/gyration.py \
      -g cases/lnb.gro \
@@ -383,7 +383,7 @@ Sz序参数分析 (sz.py)
 
 **使用示例**
 
-.. code:: bash
+.. code-block:: bash
 
    python analysis/sz.py \
      -g cases/lnb.gro \
@@ -425,7 +425,7 @@ N-聚类分析 (n_cluster.py)
 
 **使用示例**
 
-.. code:: bash
+.. code-block:: bash
 
    python analysis/n_cluster.py \
      -g cases/lnb.gro \
@@ -466,7 +466,7 @@ N-聚类分析 (n_cluster.py)
 
 **使用示例**
 
-.. code:: bash
+.. code-block:: bash
 
    python analysis/rad.py \
      -g cases/lnb.gro \
@@ -819,7 +819,7 @@ residues和gas-group参数现在支持更直观的输入格式：
 ~~~~~~~~
 
 **简单格式（推荐）:**
-.. code:: bash
+.. code-block:: bash
 
    # 基本格式: RESIDUE:ATOM
    -r DPPC:PO4,CHOL:ROH
@@ -830,14 +830,14 @@ residues和gas-group参数现在支持更直观的输入格式：
    -a N2:N2,O2:O2
 
 **多原子格式:**
-.. code:: bash
+.. code-block:: bash
 
    # 多原子: RESIDUE:ATOM1+ATOM2
    -r DPPC:PO4+GLY,CHOL:ROH
    -r DPPC:PO4+GLY+CH2,CHOL:ROH
 
 **只有名称格式:**
-.. code:: bash
+.. code-block:: bash
 
    # 只有残基/气体名（原子名与名称相同）
    -r DPPC
@@ -847,7 +847,7 @@ residues和gas-group参数现在支持更直观的输入格式：
 ~~~~~~~~
 
 **字典字符串格式（仍然支持）:**
-.. code:: bash
+.. code-block:: bash
 
    # 传统字典格式
    -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"

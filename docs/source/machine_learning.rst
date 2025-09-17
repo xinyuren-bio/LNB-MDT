@@ -64,7 +64,7 @@ LNB-MDT集成了强大的机器学习功能，为分子动力学分析提供智�
 
 **机器学习模块需要额外的依赖包：**
 
-.. code:: bash
+.. code-block:: bash
 
    # 安装ML依赖
    pip install scikit-learn scipy matplotlib seaborn joblib
@@ -686,7 +686,7 @@ API参考
    <div style="background-color: #ffebee; padding: 15px; border-radius: 8px; border-left: 4px solid #f44336;">
 
 **解决方案：**
-.. code:: bash
+.. code-block:: bash
 
    pip install scikit-learn scipy matplotlib seaborn joblib
 
