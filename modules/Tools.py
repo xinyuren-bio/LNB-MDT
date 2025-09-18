@@ -30,8 +30,6 @@ class UIItemsMake:
                     , color=UISettings.WIDGET_COLOR
                     , font_size=UISettings.FONT_SIZE):
         widget = QWidget()
-        widget.setStyleSheet('background-color:%s;font-size:%s'
-                             % (color,            font_size))
         return widget
 
     @classmethod
@@ -58,7 +56,6 @@ class UIItemsMake:
             f"border-radius:{settings['border_radius']};"
             f"width:{settings['width']};"
             f"height:{settings['height']};"
-            f"color:{settings['font_color']}"
         )
         btn.setCursor(QCursor(Qt.PointingHandCursor))
         if callback:
@@ -73,14 +70,12 @@ class UIItemsMake:
                    , height=UISettings.LABEL_HEIGHT
                    , **kwargs):
         settings = {
-            "font_size": UISettings.FONT_SIZE,
-            "color": UISettings.FONT_COLOR
+            "font_size": UISettings.FONT_SIZE
         }
         settings.update(**kwargs)
         label = QLabel(text)
         label.setStyleSheet(
-            f"font-size:{settings['font_size']};"
-            f"color: {settings['color']}")
+            f"font-size:{settings['font_size']};")
         label.setMaximumHeight(height)
         label.setMaximumHeight(height)
         return label
@@ -102,10 +97,10 @@ class UIItemsMake:
                          , btn_type
                          , text
                          , font_size=UISettings.FONT_SIZE
-                         , color='White'):
+                         ):
         radio_check = btn_type(text)
-        radio_check.setStyleSheet('font-size:%s;color:%s'
-                                  % (font_size, color))
+        radio_check.setStyleSheet('font-size:%s;'
+                                  % (font_size))
         return radio_check
 
     @classmethod
@@ -117,16 +112,18 @@ class UIItemsMake:
         spin_box = QSpinBox()
         spin_box.setStyleSheet("""
                             QSpinBox {
+                                font: 16pt "华文细黑";
                                 color: white;
                                 border: 1px solid white;
+                                background-color: rgb(33, 37, 43);
                             }
                             QSpinBox::up-button {
-                                height: 15px; /* 设置一个合适的高度 */
+                                height: 10px; /* 设置一个合适的高度 */
                                 width: 20px; /* 设置一个合适的宽度 */
                                 subcontrol-position: top right; /* 保持按钮在右侧 */
                             }
                             QSpinBox::down-button {
-                                height: 15px; /* 设置一个合适的高度 */
+                                height: 10px; /* 设置一个合适的高度 */
                                 width: 20px; /* 设置一个合适的宽度 */
                                 subcontrol-position: bottom right; /* 保持按钮在右侧 */
                             }
