@@ -101,7 +101,8 @@ class Anisotropy(AnalysisBase):
                 'results': self.results.Anisotropy,
                 'file_path': self.file_path,
                 'description': 'Anisotropy',
-                'parameters': self.parameters
+                'parameters': self.parameters,
+                'trajectory': self._trajectory
             }
             WriteExcelBubble(**dict_parameter).run()
             print(f"Results saved to {self.file_path}")
@@ -199,7 +200,7 @@ if __name__ == "__main__":
     anisotropy_analysis = Anisotropy(
         u,
         residues_group_parsed,
-        file_path=args.output_csv,
+        filePath=args.output_csv,
         parallel=args.parallel,
         n_jobs=args.n_jobs
     )

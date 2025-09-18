@@ -148,7 +148,8 @@ class PCA(AnalysisBase):
                 'results': self.results.PCA,
                 'file_path': self.file_path,
                 'description': 'PCA Variance Ratio (min/max)',
-                'parameters': self.parameters
+                'parameters': self.parameters,
+                'trajectory': self._trajectory
             }
             # Assuming WriteExcelBubble is defined and available
             WriteExcelBubble(**dict_parameter).run()
@@ -251,7 +252,7 @@ if __name__ == '__main__':
     pca_analysis = PCA(
         u,
         residues_group_parsed,
-        file_path=args.output_csv,
+        filePath=args.output_csv,
         parallel=args.parallel,
         n_jobs=args.n_jobs
     )

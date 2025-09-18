@@ -10,5 +10,4 @@ from .cluster import Cluster
 from .n_cluster import NCluster
 import MDAnalysis as mda
 from .analysis_base import *
-from .densitywithframe import Density
-from .densitywithradius import DensityMultiRadius
+from .density import Density, DensityMultiRadius, DensityVisualizer

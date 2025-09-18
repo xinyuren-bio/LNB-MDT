@@ -147,6 +147,45 @@ class WriteExcel(ABC):
     @abstractmethod
     def run(self):
         pass
+    
+    def _convert_frames_to_time(self, frames, trajectory=None):
+        """
+        将帧数转换为时间单位（ns或ps）
+        
+        Args:
+            frames: 帧数列表
+            trajectory: MDAnalysis轨迹对象
+            
+        Returns:
+            tuple: (转换后的时间值列表, 时间单位字符串)
+        """
+        if trajectory is None:
+            # 如果没有轨迹对象，返回原始帧数
+            return frames, "frame"
+        
+        try:
+            # 获取时间步长
+            trajectory[0]  # 跳转到第一帧
+            dt = trajectory.ts.dt  # 获取时间步长（ps）
+            
+            # 计算总时间
+            total_time_ps = len(frames) * dt
+            
+            # 根据总时间选择单位
+            if total_time_ps >= 1000:  # >= 10ns
+                # 使用ns单位
+                time_values = [(frame - frames[0]) * dt / 1000 for frame in frames]
+                time_unit = "ns"
+            else:
+                # 使用ps单位
+                time_values = [(frame - frames[0]) * dt for frame in frames]
+                time_unit = "ps"
+            
+            return time_values, time_unit
+            
+        except Exception as e:
+            print(f"Warning: Could not convert frames to time: {e}")
+            return frames, "frame"
 
     @staticmethod
     def _write_to_csv(file_path: str, comments: list, df: pd.DataFrame, type_: str = None):
@@ -183,24 +222,29 @@ class WriteExcelLipids(WriteExcel):
     file_path: str
     description: str
     lipids_type: dict
+    trajectory: object = None  # 添加轨迹对象用于获取时间信息
 
     def run(self):
         # column_frame = [i * self.step for i in range(self.n_frames)]
         # LIPID
         lipids_ratio = ':'.join(self.lipids_type) + '=' + ':'.join(map(str, self.lipids_type.values()))
         comments = ['Created by LNB-MDT v1.0', self.description, lipids_ratio, 'TYPE:Lipids', 'Parameters:' + self.parameters]
+        
+        # 转换帧数为时间单位
+        time_values, time_unit = self._convert_frames_to_time(self.frames, self.trajectory)
+        
         df_lipid = pd.DataFrame({
             'Resid': self.resids.astype(int),
             'Resname': self.resnames,
             'Coordinates': [f"{x:.2f},{y:.2f},{z:.2f}" for x, y, z in self.positions],
-            **{str(frame): self.results[:, i].round(3)
-               for i, frame in enumerate(self.frames)},
+            **{f"{time_val:.2f}": self.results[:, i].round(3)
+               for i, time_val in enumerate(time_values)},
         })
         # FRAME
         df_frames = pd.DataFrame(
             {
-                'Frames': self.frames
-                , 'Values': np.mean(self.results, axis=0).round(3)
+                f'Time ({time_unit})': time_values,
+                'Values': np.mean(self.results, axis=0).round(3)
             }
         )
 
@@ -218,12 +262,17 @@ class WriteExcelBubble(WriteExcel):
     file_path: str
     description: str
     parameters: str
+    trajectory: object = None  # 添加轨迹对象用于获取时间信息
     def run(self):
         # column_frame = [i * self.step for i in range(self.n_frames)]
+        
+        # 转换帧数为时间单位
+        time_values, time_unit = self._convert_frames_to_time(self.frames, self.trajectory)
+        
         df = pd.DataFrame(
             {
-                'Frames': self.frames
-                , 'Values': self.results.round(3)
+                f'Time ({time_unit})': time_values,
+                'Values': self.results.round(3)
             }
         )
         comments = ['Created by LNB-MDT v1.0', self.description, 'TYPE:Bubble', 'Parameters:' + self.parameters]

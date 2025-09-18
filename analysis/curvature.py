@@ -196,7 +196,8 @@ class Curvature(AnalysisBase):
                 'file_path': self.file_path,
                 'description': description,
                 'parameters': self.parameters,
-                'lipids_type': lipids_ratio
+                'lipids_type': lipids_ratio,
+                'trajectory': self._trajectory
             }
             WriteExcelLipids(**dict_parameter).run()
             print(f"Analysis complete. Results for '{self.method}' curvature will be saved to {self.file_path}")
@@ -308,7 +309,7 @@ if __name__ == "__main__":
         u,
         residues_group_parsed,
         k=args.k_value,
-        file_path=args.output_csv,
+        filePath=args.output_csv,
         method=args.method,
         parallel=args.parallel,
         n_jobs=args.n_jobs

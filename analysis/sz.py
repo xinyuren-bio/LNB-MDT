@@ -237,7 +237,8 @@ class SZ(AnalysisBase):
                 'file_path': self.file_path,  # 输出文件路径
                 'description': f'Sz Order Parameter (chain: {self.chain})',
                 'parameters': self.parameters,
-                'lipids_type': lipids_ratio
+                'lipids_type': lipids_ratio,
+                'trajectory': self._trajectory
             }
             # Assuming WriteExcelLipids is a defined class and available
             WriteExcelLipids(**dict_parameter).run()
@@ -351,7 +352,7 @@ if __name__ == "__main__":
         residues_group_parsed,
         chain=args.chain,
         k=args.k_value,
-        file_path=args.output_csv,
+        filePath=args.output_csv,
         parallel=args.parallel,
         n_jobs=args.n_jobs
     )

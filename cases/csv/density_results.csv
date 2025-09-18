@@ -1,86 +1,406 @@
-# Created by LNB-MDT v1.0
-# Density With Times
-# TYPE:Bubble
-# Parameters:{'N2': ['N2']}Radius:50, MW:14
-Frames,Values
-0,63.582
-1,68.155
-2,67.267
-3,66.956
-4,72.595
-5,68.599
-6,68.51
-7,67.844
-8,66.69
-9,67.178
-10,71.352
-11,68.865
-12,69.665
-13,71.174
-14,67.666
-15,69.354
-16,69.087
-17,67.844
-18,67.178
-19,71.352
-20,69.753
-21,66.823
-22,66.068
-23,66.778
-24,69.221
-25,67.622
-26,66.246
-27,67.711
-28,71.796
-29,65.269
-30,68.466
-31,70.153
-32,68.599
-33,71.574
-34,70.863
-35,66.556
-36,70.775
-37,68.643
-38,68.999
-39,68.11
-40,70.553
-41,70.02
-42,67.311
-43,69.887
-44,68.421
-45,65.624
-46,68.688
-47,69.842
-48,65.624
-49,67.356
-50,68.421
-51,67.977
-52,66.823
-53,69.087
-54,68.91
-55,68.022
-56,67.089
-57,66.956
-58,69.842
-59,68.999
-60,65.668
-61,65.313
-62,62.294
-63,68.777
-64,69.132
-65,75.481
-66,71.751
-67,66.334
-68,72.062
-69,72.417
-70,68.821
-71,69.798
-72,66.912
-73,70.775
-74,70.153
-75,65.668
-76,67.356
-77,68.554
-78,69.798
-79,68.554
-80,65.18
+Time (frame),radius,density
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,10.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,20.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,30.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,40.0,0.0
+< Timestep 80 with unit cell dimensions [229.13667 229.13667 229.13667  90.       90.       90.     ] >,50.0,0.0

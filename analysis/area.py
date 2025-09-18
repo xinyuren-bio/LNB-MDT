@@ -424,6 +424,7 @@ class Area(AnalysisBase):
                 , 'description': 'Area(nm^2)'
                 , 'parameters': self.parameters
                 , 'lipids_type': lipids_ratio
+                , 'trajectory': self._trajectory
             }
             WriteExcelLipids(**dict_parameter).run()
             print(f"Analysis complete. Results saved to {self.file_path}")
@@ -535,7 +536,7 @@ if __name__ == "__main__":
         residues_group_parsed,
         k=args.k_value,
         max_normal_angle_deg=args.max_normal_angle,
-        file_path=args.output_csv,
+        filePath=args.output_csv,
         parallel=args.parallel,
         n_jobs=args.n_jobs
     )

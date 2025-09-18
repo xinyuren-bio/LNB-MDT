@@ -160,7 +160,8 @@ class Cluster(AnalysisBase):
                 'results': self.results.LargestClusterSize,
                 'file_path': self.file_path,
                 'description': 'Largest Cluster Size',
-                'parameters': self.parameters
+                'parameters': self.parameters,
+                'trajectory': self._trajectory
             }
             WriteExcelBubble(**dict_parameter).run()
             print(f"Analysis complete. Results will be saved to {self.file_path}")
@@ -265,7 +266,7 @@ if __name__ == "__main__":
         u,
         residues_group_parsed,
         cutoff=args.cutoff,
-        file_path=args.output_csv,
+        filePath=args.output_csv,
         parallel=args.parallel,
         n_jobs=args.n_jobs
     )
