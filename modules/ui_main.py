@@ -1677,6 +1677,15 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_9.addWidget(self.figure_btn_path)
 
+        self.figure_btn_path_2 = QPushButton(self.frame_8)
+        self.figure_btn_path_2.setObjectName(u"figure_btn_path_2")
+        self.figure_btn_path_2.setMinimumSize(QSize(80, 45))
+        self.figure_btn_path_2.setStyleSheet(u"background-color: rgb(189,147,249);\n"
+"color:white;\n"
+"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
+
+        self.horizontalLayout_9.addWidget(self.figure_btn_path_2)
+
 
         self.verticalLayout_11.addWidget(self.frame_8)
 
@@ -2594,7 +2603,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(4)
+        self.stackedWidget.setCurrentIndex(3)
         self.tabWidget.setCurrentIndex(0)
 
 
@@ -2682,6 +2691,10 @@ class Ui_MainWindow(object):
         self.figure_edit_path.setText("")
         self.figure_edit_path.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Please import Excel file", None))
         self.figure_btn_path.setText(QCoreApplication.translate("MainWindow", u"Select Excel File", None))
+#if QT_CONFIG(tooltip)
+        self.figure_btn_path_2.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><br/></p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.figure_btn_path_2.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
         self.figure_line_label_legend.setText(QCoreApplication.translate("MainWindow", u"Legend Size(0=None)", None))
         self.figure_line_btn_color_2.setText(QCoreApplication.translate("MainWindow", u"Select Color", None))
         self.figure_line_label_x.setText(QCoreApplication.translate("MainWindow", u"X-Title", None))

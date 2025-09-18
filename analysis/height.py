@@ -145,7 +145,8 @@ class Height(AnalysisBase):
                 'file_path': self.file_path,
                 'description': 'Height (nm)',
                 'parameters': self.parameters,
-                'lipids_type': lipids_ratio
+                'lipids_type': lipids_ratio,
+                'trajectory': self._trajectory
             }
             # Assuming WriteExcelLipids is defined and available
             WriteExcelLipids(**dict_parameter).run()
@@ -253,7 +254,7 @@ if __name__ == "__main__":
         u,
         residues_group_parsed,
         k=args.k_value,
-        file_path=args.output_csv,
+        filePath=args.output_csv,
         parallel=args.parallel,
         n_jobs=args.n_jobs
     )

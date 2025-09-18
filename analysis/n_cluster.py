@@ -159,7 +159,8 @@ class NCluster(AnalysisBase):
                 'results': self.results.NCluster,
                 'file_path': self.file_path,
                 'description': 'Number of Clusters',
-                'parameters': self.parameters
+                'parameters': self.parameters,
+                'trajectory': self._trajectory
             }
             # Assuming WriteExcelBubble is defined and available
             WriteExcelBubble(**dict_parameter).run()
@@ -272,7 +273,7 @@ if __name__ == "__main__":
         residues_group_parsed,
         cutoff=args.cutoff,
         N_cutoff=args.n_cutoff,
-        file_path=args.output_csv,
+        filePath=args.output_csv,
         parallel=args.parallel,
         n_jobs=args.n_jobs
     )

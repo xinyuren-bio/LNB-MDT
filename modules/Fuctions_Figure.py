@@ -24,6 +24,7 @@ TYPE_ID = {'Height(nm)': 0
                , 'Bubble SZ': 1
                , 'Bubble Mean Curvature(nm-1)': 1
                , 'Bubble Area(nm^2)': 1
+               , 'Density With Times': 2
            }
 
 FIGURE_TYPE = {0: ['Bar', 'Line', 'Scatter', 'Map']  # Lipids
