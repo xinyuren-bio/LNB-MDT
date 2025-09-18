@@ -233,6 +233,9 @@ class WriteExcelLipids(WriteExcel):
         # 转换帧数为时间单位
         time_values, time_unit = self._convert_frames_to_time(self.frames, self.trajectory)
         
+        # 添加时间单位信息到注释中
+        comments_with_time = comments + [f'TIME_UNIT:{time_unit}']
+        
         df_lipid = pd.DataFrame({
             'Resid': self.resids.astype(int),
             'Resname': self.resnames,
@@ -250,8 +253,8 @@ class WriteExcelLipids(WriteExcel):
 
         # 储存表头的信息
         # 储存每一帧的数据信息，残基号，残基名称等
-        self._write_to_csv(self.file_path, comments, df_lipid)
-        comments_frames = ['Created by LNB-MDT v1.0', 'Bubble ' + self.description, lipids_ratio, 'TYPE:Bubble', 'Parameters:' + self.parameters]
+        self._write_to_csv(self.file_path, comments_with_time, df_lipid)
+        comments_frames = ['Created by LNB-MDT v1.0', 'Bubble ' + self.description, lipids_ratio, 'TYPE:Bubble', 'Parameters:' + self.parameters, f'TIME_UNIT:{time_unit}']
         self._write_to_csv(self.file_path, comments_frames, df_frames, 'frames')
 
 

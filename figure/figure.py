@@ -7,11 +7,17 @@ from matplotlib.colors import Normalize
 from matplotlib.ticker import AutoLocator
 from scipy.interpolate import griddata
 # import cartopy.crs as ccrs
+# import cartopy.feature as cfeature
 
-__all__ = ['FigureBar', 'FigureLine', 'FigureScatter', 'read_excel']
+__all__ = ['LipidsFigure', 'BubbleFigure', 'read_excel']
 
 TYPE = {'Height(nm)': 0
-               , 'SZ': 0
+               , 'Sz Order Parameter (chain: sn1 and sn2)': 0  # 添加Sz Order Parameter支持
+               , 'Sz Order Parameter (chain: sn1)': 0  # 添加Sz Order Parameter支持
+               , 'Sz Order Parameter (chain: sn2)': 0  # 添加Sz Order Parameter支持
+               , 'Bubble Sz Order Parameter (chain: sn1 and sn2)': 0  # 添加Sz Order Parameter支持
+               , 'Bubble Sz Order Parameter (chain: sn1)': 0  # 添加Sz Order Parameter支持
+               , 'Bubble Sz Order Parameter (chain: sn2)': 0  # 添加Sz Order Parameter支持
                , 'Mean Curvature(nm -1)': 0
                , 'Area(nm^2)': 0
                , 'Anisotropy': 1
@@ -26,8 +32,9 @@ TYPE = {'Height(nm)': 0
                , 'Bubble Area(nm^2)': 1
                , 'Number of Cluster': 1
            }
-class Figure(ABC):
 
+class Figure(ABC):
+    """基础图表类"""
     def __init__(self, description, excel_data, figure_settings):
         """
         :param description: # 分析的性质
@@ -46,175 +53,195 @@ class Figure(ABC):
     def _unsupported_plot():
         print('该结果不支持绘制当前的类型图！')
 
-
-class FigureBar(Figure):
-    __slots__ = ('data_type', 'excel_data', 'figure_settings')
-
-    def plot(self):
-        plot_strategies = {
-            0: self._plot_lipids # lipids
-            , 1: self._plot_bubble # bubble
-            , 2: self._plot_rdf # rdf
-            , -1: self._unsupported_plot # no supply format
-        }
-
-        plot_action = plot_strategies.get(self.data_type, -1)
-        plot_action()
-
-        self._set_axes()
-        plt.gca().xaxis.set_major_locator(AutoLocator())
-
-        plt.show()
-
-    def _plot_lipids(self):
-        residue_groups = self.excel_data.groupby('Resname')
-        for type_name, df_group in residue_groups:
-            data_columns = df_group.iloc[:, 3:]
-            result_single = data_columns.mean(axis=1)
-            result = result_single.mean(axis=0)
-
-            bars = self._create_bar(type_name, result)
-            self._plot_error_bars(bars, result_single, result)
-            self._plot_bar_values(bars)
-            self._plot_trend_lines(bars)
-
-    def _plot_bubble(self):
-        result = self.excel_data.iloc[:, 1]
-        bars = self._create_bar(1, result.mean())
-        plt.xticks([])
-        self._plot_error_bars(bars, result)
-        self._plot_bar_values(bars)
-
-    def _plot_rdf(self):
-        print('功能正在完善中。。。')
-
-
-    def _create_bar(self, type_name, height):
-        return plt.bar(type_name, height, color=self.figure_settings['color'][type_name])
-
-    def _plot_error_bars(self, bars, data, mean_value=None):
-        if not self.figure_settings['error_deci']:
-            return
-        std_dev = np.std(data)
-
-        for bar in bars:
-            bar_height = mean_value if mean_value else bar.get_height()
-            plt.errorbar(bar.get_x() + bar.get_width() / 2,
-                         bar_height,
-                         yerr=std_dev,
-                         color='black',
-                         capsize=5)
-
-    def _plot_bar_values(self, bars):
-        if self.figure_settings['up_bar_value'] <= 0:
-            return
-        for bar in bars:
-            bar_height = bar.get_height()
-            plt.text(bar.get_x() + bar.get_width() / 2,
-                     bar_height,
-                     f'{bar_height:.2f}',
-                     ha='center',
-                     va='bottom',
-                     fontsize=self.figure_settings['up_bar_value'])
-
-    def _plot_trend_lines(self, bars):
-        if self.figure_settings['trend_size'] <= 0:
-            return
-        x, y = [], []
-        for bar in bars:
-            x.append(bar.get_x() + bar.get_width() * 0.5)
-            y.append(bar.get_height())
-        plt.plot(x, y
-                 , color=self.figure_settings['trend_color']
-                 , linestyle='--'
-                 , linewidth=self.figure_settings['trend_size'])
-
     def _set_axes(self):
-        plt.xlabel(self.figure_settings['x_title'], fontsize=self.figure_settings['axis_text'])
-        plt.ylabel(self.figure_settings['y_title'], fontsize=self.figure_settings['axis_text'])
-        if self.figure_settings['y_min'] < self.figure_settings['y_max']:
+        """设置坐标轴"""
+        # 只有当参数存在且有效时才设置坐标轴范围
+        if ('x_min' in self.figure_settings and 'x_max' in self.figure_settings and 
+            self.figure_settings['x_min'] < self.figure_settings['x_max']):
+            plt.xlim(self.figure_settings['x_min'], self.figure_settings['x_max'])
+        if ('y_min' in self.figure_settings and 'y_max' in self.figure_settings and 
+            self.figure_settings['y_min'] < self.figure_settings['y_max']):
             plt.ylim(self.figure_settings['y_min'], self.figure_settings['y_max'])
 
 
-class FigureLine(Figure):
+class LipidsFigure(Figure):
+    """脂质数据图表类 - 包含Line、Bar、Scatter方法"""
+    
     def plot(self):
-        plot_strategy = {
-            0: self._plot_lipid
-            , 1: self._plot_bubble
-            , 2: self._plot_rdf
-            , -1: self._unsupported_plot
-        }
-        plot_method = plot_strategy.get(self.data_type, self._unsupported_plot)
-        plot_method()
-        self._set_axes()
-
-        plt.show()
-
-    def _plot_lipid(self):
+        """默认绘制方法 - 绘制Line图"""
+        self.plot_line()
+    
+    def plot_line(self):
+        """绘制脂质数据的折线图"""
+        print("=== LipidsFigure.plot_line方法开始执行 ===")
+        print(f"figure_settings: {self.figure_settings}")
+        
         residue_groups = self.excel_data.groupby('Resname')
-        x_axis = self.excel_data.columns[3:].astype(int).to_numpy()
+        # 获取时间轴数据
+        time_columns = self.excel_data.columns[3:]
+        x_axis = time_columns.astype(float).to_numpy()
+        
+        print(f"脂质类型分组: {list(residue_groups.groups.keys())}")
+        print(f"时间列: {list(time_columns)}")
+        
         for type_name, df_group in residue_groups:
             result = df_group.iloc[:, 3:].mean(axis=0)
-            self._plot_line(x_axis, result, type_name, self.figure_settings['color'].get(type_name))
-
-    def _plot_bubble(self):
-        result = self.excel_data.iloc[:, 1]
-        x_axis = self.excel_data['Frames'].astype(int).to_numpy()
-        self._plot_line(x_axis, result, None, self.figure_settings['bubble_color'])
-
-    def _plot_rdf(self):
-        x_axis = self.excel_data.iloc[:, 0].to_numpy()
-        # plt.xlim(x_axis[0], x_axis[-1])
-        type_names = self.excel_data.columns.tolist()[1:]
-        for i, type_name in enumerate(type_names, start=1):
-            result = self.excel_data.iloc[:, i].to_numpy()
-            plt.plot(x_axis, result
-                     , marker=self.figure_settings['marker_shape']
-                     , markersize=float(self.figure_settings['marker_size'])
-                     , label=type_name if self.figure_settings['grid_size'] > 0 else None
-                     )
-
-    def _plot_line(self, x_data, y_data, label, color):
-        plt.plot(x_data,
-                 y_data,
-                 marker=self.figure_settings['marker_shape'],
-                 markersize=float(self.figure_settings['marker_size']),
-                 color=color,
-                 label=label if self.figure_settings['grid_size'] > 0 else None)
-
-    def _set_axes(self):
-        plt.tick_params(axis='both', labelsize=self.figure_settings['axis_scale'])
-        plt.xlabel(self.figure_settings['x_title'], fontsize=self.figure_settings['axis_text'])
-        plt.ylabel(self.figure_settings['y_title'], fontsize=self.figure_settings['axis_text'])
-        # # 获取当前轴对象
-        # ax = plt.gca()
-        #
-        # # 设置 x 轴范围
-        # if self.figure_settings['x_min'] < self.figure_settings['x_max']:
-        #     plt.xlim(self.figure_settings['x_min'], self.figure_settings['x_max'])
-        #
-        # # 使用 AutoLocator 初步设置刻度
-        # ax.xaxis.set_major_locator(AutoLocator())
-        #
-        # # 获取 AutoLocator 自动生成的刻度
-        # auto_ticks = ax.get_xticks()
-        # ax.xaxis.set_major_locator(AutoLocator())
-        if self.figure_settings['grid_size'] > 0:
-            plt.legend(fontsize=self.figure_settings['grid_size'])
-        if self.figure_settings['x_min'] < self.figure_settings['x_max']:
-            plt.xlim(self.figure_settings['x_min'], self.figure_settings['x_max'])
-        if self.figure_settings['y_min'] < self.figure_settings['y_max']:
-            plt.ylim(self.figure_settings['y_min'], self.figure_settings['y_max'])
-
-
-class FigureScatter(Figure):
-    def plot(self):
-        if self.data_type == 0:
-            self._plot_3d_scatter()
+            
+            # 获取用户设置的颜色，否则使用默认颜色
+            user_color = self.figure_settings.get('color', {}).get(type_name)
+            if user_color:
+                color = user_color
+                print(f"{type_name}: 使用用户设置颜色 {color}")
+            else:
+                # 使用默认颜色
+                default_colors = ['blue', 'red', 'green', 'orange', 'purple', 'brown', 'pink', 'gray']
+                color = default_colors[list(residue_groups.groups.keys()).index(type_name) % len(default_colors)]
+                print(f"{type_name}: 使用默认颜色 {color}")
+            
+            plt.plot(x_axis, result,
+                    marker=self.figure_settings.get('marker_shape', 'o'),
+                    markersize=self.figure_settings.get('marker_size', 5),
+                    color=color,
+                    label=type_name)
+        
+        # 设置轴标题
+        x_title = self.figure_settings.get('x_title')
+        y_title = self.figure_settings.get('y_title')
+        axis_text_size = self.figure_settings.get('axis_text', 12)
+        
+        print(f"X轴标题: {x_title}")
+        print(f"Y轴标题: {y_title}")
+        print(f"轴文本大小: {axis_text_size}")
+        
+        if x_title:
+            plt.xlabel(x_title, fontsize=axis_text_size)
+        if y_title:
+            plt.ylabel(y_title, fontsize=axis_text_size)
+        
+        # 设置y轴范围
+        y_min = self.figure_settings.get('y_min')
+        y_max = self.figure_settings.get('y_max')
+        print(f"Y轴范围: {y_min} - {y_max}")
+        
+        if y_min is not None and y_max is not None and y_min < y_max:
+            plt.ylim(y_min, y_max)
         else:
-            self._unsupported_plot()
+            # 如果Y轴范围无效，使用数据的自动范围
+            print("Y轴范围无效，使用自动范围")
+        
+        # 设置轴刻度字体大小
+        if axis_text_size:
+            plt.tick_params(axis='both', which='major', labelsize=axis_text_size)
+        
+        plt.legend()
+        self._set_axes()
+        plt.gca().xaxis.set_major_locator(AutoLocator())
+        plt.show()
+        print("=== LipidsFigure.plot_line方法执行完毕 ===")
 
-    def _plot_3d_scatter(self):
+    def plot_bar(self):
+        """绘制脂质数据的条形图"""
+        print("=== LipidsFigure.plot_bar方法开始执行 ===")
+        print(f"figure_settings: {self.figure_settings}")
+        
+        residue_groups = self.excel_data.groupby('Resname')
+        # 获取时间轴数据
+        time_columns = self.excel_data.columns[3:]
+        x_axis = time_columns.astype(float).to_numpy()
+        
+        print(f"脂质类型分组: {list(residue_groups.groups.keys())}")
+        print(f"时间列: {list(time_columns)}")
+        
+        # 为每个脂质类型计算统计数据
+        lipid_names = []
+        mean_values = []
+        error_values = []
+        colors = []
+        
+        # 默认颜色列表，确保不同脂质类型有不同颜色
+        default_colors = ['blue', 'red', 'green', 'orange', 'purple', 'brown', 'pink', 'gray']
+        
+        for i, (type_name, df_group) in enumerate(residue_groups):
+            # 计算每个时间列的平均值
+            time_means = df_group.iloc[:, 3:].mean(axis=0)  # 每列的平均值
+            
+            # 计算总体平均值（所有时间列平均值的平均值）
+            overall_mean = time_means.mean()
+            
+            # 计算标准差（用于error bar）
+            overall_std = time_means.std()
+            
+            lipid_names.append(type_name)
+            mean_values.append(overall_mean)
+            error_values.append(overall_std)
+            
+            # 优先使用用户设置的颜色，否则使用默认颜色
+            user_color = self.figure_settings.get('color', {}).get(type_name)
+            if user_color:
+                colors.append(user_color)
+                print(f"{type_name}: 使用用户设置颜色 {user_color}")
+            else:
+                colors.append(default_colors[i % len(default_colors)])
+                print(f"{type_name}: 使用默认颜色 {default_colors[i % len(default_colors)]}")
+        
+        print(f"脂质名称: {lipid_names}")
+        print(f"平均值: {mean_values}")
+        print(f"误差值: {error_values}")
+        print(f"颜色: {colors}")
+        
+        # 创建条形图
+        x_positions = range(len(lipid_names))
+        error_bar_enabled = self.figure_settings.get('error_deci', False)
+        print(f"Error bar启用: {error_bar_enabled}")
+        
+        bars = plt.bar(x_positions, mean_values, color=colors, 
+                      yerr=error_values if error_bar_enabled else None,
+                      capsize=5)
+        
+        # 设置x轴标签
+        plt.xticks(x_positions, lipid_names, rotation=45, ha='right')
+        
+        # 设置轴标题
+        x_title = self.figure_settings.get('x_title')
+        y_title = self.figure_settings.get('y_title')
+        axis_text_size = self.figure_settings.get('axis_text', 12)
+        
+        print(f"X轴标题: {x_title}")
+        print(f"Y轴标题: {y_title}")
+        print(f"轴文本大小: {axis_text_size}")
+        
+        if x_title:
+            plt.xlabel(x_title, fontsize=axis_text_size)
+        if y_title:
+            plt.ylabel(y_title, fontsize=axis_text_size)
+        
+        # 设置y轴范围
+        y_min = self.figure_settings.get('y_min')
+        y_max = self.figure_settings.get('y_max')
+        print(f"Y轴范围: {y_min} - {y_max}")
+        
+        if y_min is not None and y_max is not None and y_min < y_max:
+            plt.ylim(y_min, y_max)
+        else:
+            # 如果Y轴范围无效，使用数据的自动范围
+            print("Y轴范围无效，使用自动范围")
+        
+        # 设置轴刻度字体大小
+        if axis_text_size:
+            plt.tick_params(axis='both', which='major', labelsize=axis_text_size)
+        
+        # 添加图例
+        handles = [plt.Rectangle((0,0),1,1, color=color) for color in colors]
+        plt.legend(handles, lipid_names)
+        plt.show()
+
+        print("=== LipidsFigure.plot_bar方法执行完毕 ===")
+
+    def plot_scatter(self):
+        """绘制脂质数据的3D散点图"""
+        print("=== LipidsFigure.plot_scatter方法开始执行 ===")
+        print(f"figure_settings: {self.figure_settings}")
+        
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
 
@@ -229,128 +256,393 @@ class FigureScatter(Figure):
             colors = [cmap(norm(val)) for val in df_group.iloc[:, 3:].mean(axis=1)]
             sc = ax.scatter(positions[:, 0], positions[:, 1], positions[:, 2],
                             c=colors,
-                            s=self.figure_settings['shape_size'],
-                            marker=self.figure_settings['shape'].get(type_name, 'o'),
+                            s=self.figure_settings.get('shape_size', 50),
+                            marker=self.figure_settings.get('shape', {}).get(type_name, 'o'),
                             label=type_name)
             legend_handles.append(sc)
 
         ax.legend(handles=legend_handles, loc='best',
-                  fontsize=self.figure_settings['grid_size'] if self.figure_settings['grid_size'] > 0 else None)
+                  fontsize=self.figure_settings.get('grid_size', 12) if self.figure_settings.get('grid_size', 0) > 0 else None)
         sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
         sm.set_array([])
         cbar = plt.colorbar(sm, ax=ax, orientation='vertical', boundaries=boundaries)
         plt.show()
+        print("=== LipidsFigure.plot_scatter方法执行完毕 ===")
+
+    def plot_map(self):
+        """绘制脂质数据的Map图 - 基于您提供的MocartooScatter插值方法"""
+        print("=== LipidsFigure.plot_map方法开始执行 ===")
+        print(f"figure_settings: {self.figure_settings}")
+        
+        # 解析Coordinates列获取X、Y、Z坐标
+        coordinates = self.excel_data['Coordinates'].str.split(',', expand=True).astype(float)
+        positions = coordinates.values  # 3D坐标 (x, y, z)
+        
+        # 根据每个原子对应的类别赋值（如DPPC=1，DUPC=0）
+        # 从Resname列获取原子类型，然后根据类型赋值
+        resnames = self.excel_data['Resname'].values
+        values = []
+        for resname in resnames:
+            if resname == 'DPPC':
+                values.append(1)
+            elif resname == 'DUPC':
+                values.append(0)
+            else:
+                # 其他类型可以设置不同的值
+                values.append(0.5)  # 默认值
+        values = np.array(values)
+        
+        print(f"坐标数据形状: {positions.shape}")
+        print(f"数值数据形状: {values.shape}")
+        print(f"坐标范围: X({positions[:, 0].min():.2f}, {positions[:, 0].max():.2f}), Y({positions[:, 1].min():.2f}, {positions[:, 1].max():.2f}), Z({positions[:, 2].min():.2f}, {positions[:, 2].max():.2f})")
+        print(f"数值范围: {values.min():.3f} - {values.max():.3f}")
+        
+        # 显示原子类型分布
+        unique_resnames, counts = np.unique(resnames, return_counts=True)
+        print(f"原子类型分布:")
+        for resname, count in zip(unique_resnames, counts):
+            print(f"  {resname}: {count} 个原子")
+        
+        # 创建Mocartoo风格的球面投影
+        try:
+            import cartopy.crs as ccrs
+            from scipy.interpolate import griddata
+            
+            print("=== 开始绘制Mollweide插值图 (已处理边界) ===")
+            
+            # 计算质心
+            center_pos = np.mean(positions, axis=0)
+            print(f"质心位置: {center_pos}")
+            
+            # 使用您代码中的旋转逻辑
+            v1 = positions[0]  # 选择第一个原子作为参考
+            distance = np.linalg.norm(center_pos - v1)
+            v2 = np.array([center_pos[0], center_pos[1], center_pos[2] + distance])
+            
+            # 计算旋转矩阵（完全按照您的代码）
+            v1_vec = v1 - center_pos
+            v2_vec = v2 - center_pos
+            axis = np.cross(v1_vec, v2_vec)
+            axis_norm = np.linalg.norm(axis)
+            if axis_norm < 1e-9:
+                rotation_matrix = np.identity(3)
+            else:
+                axis = axis / axis_norm
+                angle_cos = np.dot(v1_vec, v2_vec) / (np.linalg.norm(v1_vec) * np.linalg.norm(v2_vec))
+                angle = np.arccos(np.clip(angle_cos, -1.0, 1.0))
+                I = np.identity(3)
+                skew = np.array([[0, -axis[2], axis[1]], [axis[2], 0, -axis[0]], [-axis[1], axis[0], 0]])
+                rotation_matrix = I + np.sin(angle) * skew + (1 - np.cos(angle)) * np.dot(skew, skew)
+            
+            # 旋转坐标
+            rotated_vectors = np.dot(positions - center_pos, rotation_matrix.T)
+            
+            # 转换为球坐标（按照您的代码）
+            r = np.linalg.norm(rotated_vectors, axis=1)
+            r[r == 0] = 1e-9  # 防止除以零
+            lats_rad = np.arcsin(rotated_vectors[:, 2] / r)
+            lons_rad = np.arctan2(rotated_vectors[:, 1], rotated_vectors[:, 0])
+            lats = np.degrees(lats_rad)
+            lons = np.degrees(lons_rad)
+            
+            print(f"纬度范围: {lats.min():.2f}° - {lats.max():.2f}°")
+            print(f"经度范围: {lons.min():.2f}° - {lons.max():.2f}°")
+            
+            # 创建图形和坐标系
+            fig = plt.figure(figsize=(12, 6))
+            ax = plt.axes(projection=ccrs.Mollweide())
+            ax.set_global()
+            fig.patch.set_facecolor('white')
+            ax.set_facecolor('white')
+            ax.gridlines(linestyle='--', alpha=0.5, color='lightgray')
+            ax.spines['geo'].set_edgecolor('black')
+            ax.spines['geo'].set_linewidth(1.0)
+            
+            # 定义颜色映射
+            color_map = self.figure_settings.get('color_map', 'coolwarm')
+            value_min = self.figure_settings.get('value_min', values.min())
+            value_max = self.figure_settings.get('value_max', values.max())
+            
+            print(f"使用颜色映射: {color_map}")
+            print(f"使用颜色映射范围: {value_min} - {value_max}")
+            
+            # --- 关键区域：插值和边界处理 ---
+            
+            # 创建插值网格
+            # 定义网格密度，数值越大，图像越精细
+            grid_lon = np.linspace(-180, 180, 500)
+            grid_lat = np.linspace(-90, 90, 250)
+            mesh_lon, mesh_lat = np.meshgrid(grid_lon, grid_lat)
+            points = np.vstack((lons, lats)).T
+            
+            # 执行两步插值来填充边界
+            # 步骤1: 首先进行线性插值，保证内部区域的平滑性
+            grid_values_linear = griddata(points, values, (mesh_lon, mesh_lat), method='linear')
+            
+            # 步骤2: 找到线性插值失败的区域 (NaNs)，并用最近邻插值填充它们
+            # 这是确保边界被完全覆盖的关键步骤
+            nan_mask = np.isnan(grid_values_linear)
+            grid_values_nearest = griddata(points, values, (mesh_lon[nan_mask], mesh_lat[nan_mask]), method='nearest')
+            
+            # 将填充后的值赋给原数组中的 NaN 位置，得到最终的网格数据
+            grid_values_final = grid_values_linear
+            grid_values_final[nan_mask] = grid_values_nearest
+            
+            # 绘制插值后的填充图
+            # 使用 pcolormesh 替换 contourf 来避免 'GeometryCollection' 错误
+            mesh = ax.pcolormesh(
+                mesh_lon, 
+                mesh_lat, 
+                grid_values_final, 
+                cmap=color_map, 
+                transform=ccrs.PlateCarree(),  # 输入数据是标准的经纬度坐标
+                shading='auto',
+                vmin=value_min,
+                vmax=value_max
+            )
+            
+            # 添加颜色条
+            color_bar_enabled = self.figure_settings.get('color_bar', True)
+            if color_bar_enabled:
+                cbar = plt.colorbar(mesh, ax=ax, orientation='horizontal', pad=0.05, shrink=0.7)
+                cbar.set_label('Value', fontsize=12)
+                # 针对 0/1 的离散值，设置颜色条的刻度
+                if np.array_equal(np.unique(values), [0, 1]):
+                    cbar.set_ticks([0.25, 0.75])
+                    cbar.set_ticklabels(['0', '1'])
+            
+            # 添加标题
+            title = self.figure_settings.get('title', 'Lipid Distribution Map (Mocartoo Projection)')
+            ax.set_title(title, fontsize=16, pad=20)
+            
+            # 添加统计信息
+            stats_text = f'Total Atoms: {len(values)}\nDPPC: {np.sum(values == 1)}, DUPC: {np.sum(values == 0)}'
+            plt.figtext(0.02, 0.02, stats_text, fontsize=10, 
+                       bbox=dict(boxstyle='round,pad=0.5', facecolor='white', alpha=0.9,
+                               edgecolor='gray', linewidth=1))
+            
+            plt.tight_layout()
+            plt.show()
+            
+        except ImportError:
+            print("警告: cartopy未安装，使用传统2D投影")
+            # 回退到传统的2D投影
+            self._plot_map_2d_fallback(positions, values)
+        
+        print("=== LipidsFigure.plot_map方法执行完毕 ===")
+    
+    def _plot_map_2d_fallback(self, positions, values):
+        """2D投影回退方法"""
+        # 使用XY平面投影
+        x_coords = positions[:, 0]
+        y_coords = positions[:, 1]
+        
+        # 创建网格用于插值
+        x_min, x_max = x_coords.min(), x_coords.max()
+        y_min, y_max = y_coords.min(), y_coords.max()
+        
+        xi = np.linspace(x_min, x_max, 100)
+        yi = np.linspace(y_min, y_max, 100)
+        xi_grid, yi_grid = np.meshgrid(xi, yi)
+        
+        zi = griddata((x_coords, y_coords), values, (xi_grid, yi_grid), method='cubic')
+        
+        fig, ax = plt.subplots(figsize=(12, 9))
+        
+        value_min = self.figure_settings.get('value_min', values.min())
+        value_max = self.figure_settings.get('value_max', values.max())
+        color_map = self.figure_settings.get('color_map', 'viridis')
+        
+        im = ax.imshow(zi, extent=[x_min, x_max, y_min, y_max], 
+                      origin='lower', cmap=color_map, 
+                      vmin=value_min, vmax=value_max)
+        
+        ax.set_xlabel('X Position (nm)', fontsize=14)
+        ax.set_ylabel('Y Position (nm)', fontsize=14)
+        ax.set_title('Lipid Distribution Map (2D Projection)', fontsize=16)
+        
+        if self.figure_settings.get('color_bar', True):
+            cbar = plt.colorbar(im, ax=ax)
+            cbar.set_label('Value', fontsize=12)
+        
+        plt.tight_layout()
+        plt.show()
 
     def _normalize_and_color_map(self, result):
-        if self.figure_settings['bar_min'] < self.figure_settings['bar_max']:
-            norm = Normalize(self.figure_settings['bar_min'], self.figure_settings['bar_max'])
-            boundaries = np.linspace(self.figure_settings['bar_min'], self.figure_settings['bar_max'], 256)
+        """标准化和颜色映射"""
+        bar_min = self.figure_settings.get('bar_min')
+        bar_max = self.figure_settings.get('bar_max')
+        bar_color = self.figure_settings.get('bar_color', 'viridis')
+        
+        if bar_min is not None and bar_max is not None and bar_min < bar_max:
+            norm = Normalize(bar_min, bar_max)
         else:
             norm = Normalize(result.min(), result.max())
-            boundaries = np.linspace(result.min(), result.max(), 256)
-        cmap = plt.get_cmap(self.figure_settings['bar_color'])
+        
+        cmap = plt.cm.get_cmap(bar_color)
+        boundaries = np.linspace(norm.vmin, norm.vmax, 256)
         return norm, cmap, boundaries
 
-# class FigureMap(Figure):
-#     def plot(self):
-#         if self.type == 0:
-#             positions = self.results.iloc[1:, 2:5].to_numpy()
-#             center_pos = np.mean(positions, axis=0)
-#             r = np.mean(np.linalg.norm(positions - center_pos, axis=1))
-#
-#
-#
-#
-# class Mocartoo:
-#     def __init__(self, positions, values, method: str, v1=None):
-#         """
-#
-#         :param v1: 选中的居中的原子
-#         :param positions: 所有需要进行转换的原子
-#         :param values: 每个原子的值的大小
-#         :param method: 插值方法的选择
-#         """
-#         self.v1 = v1 if v1.any() else positions[0, ]
-#         self.positions = positions
-#         self.values = values
-#         self._method = method
-#         self.center_pos = np.mean(self.positions, axis=0)
-#         distance = np.linalg.norm(self.center_pos - self.v1)  # 计算中心原子到选中原子的距离
-#         self.v2 = np.array([self.center_pos[0], self.center_pos[1], self.center_pos[2] + distance])
-#
-#     def _compute_rotation_matrix(self):
-#         axis = np.cross(self.v1 - self.center_pos, self.v2 - self.center_pos)
-#         axis_norm = np.linalg.norm(axis)
-#         if axis_norm == 0:
-#             raise ValueError("v1 and v2 are collinear, cannot compute rotation axis.")
-#         axis = axis / axis_norm  # 计算轴的单位向量
-#         angle = np.arccos(
-#             np.dot(self.v1 - self.center_pos, self.v2 - self.center_pos)
-#             / (np.linalg.norm(self.v1 - self.center_pos) * np.linalg.norm(self.v2 - self.center_pos)))
-#         I = np.identity(3)
-#         skew = np.array([[0, -axis[2], axis[1]],
-#                          [axis[2], 0, -axis[0]],
-#                          [-axis[1], axis[0], 0]])
-#         rotation_matrix = I + np.sin(angle) * skew + (1 - np.cos(angle)) * np.dot(skew, skew)
-#         return rotation_matrix
-#
-#     def _rotate_points(self):
-#         rotation_matrix = self._compute_rotation_matrix()
-#         rotated_points = np.dot(self.positions - self.center_pos, rotation_matrix.T) + self.center_pos
-#         return rotated_points
-#
-#     def make_figure(self):
-#         rotated_points = self._rotate_points()
-#         points = rotated_points
-#         # 计算每个点与质心的向量
-#         vectors = points - self.center_pos
-#         # 将向量转换为球坐标
-#         r = np.linalg.norm(vectors, axis=1)  # 这应该接近我们之前计算的半径
-#         theta = np.arccos(vectors[:, 1] / r)  # 纬度（与z轴的夹角）
-#         phi = np.arctan2(vectors[:, 0], vectors[:, 2])  # 经度（在xy平面上的角度）
-#         # 将弧度转换为度
-#         lats = np.degrees(theta) - 90
-#         lons = np.degrees(phi)
-#         index = np.nonzero(self.values)  # ????
-#         values = self.values[index]
-#         ##############################################
-#         # 创建网格点用于插值
-#         grid_lon, grid_lat = np.meshgrid(np.linspace(-180, 180, 100), np.linspace(-90, 90, 50))
-#         # 使用scipy进行插值
-#         grid_values = griddata((lons, lats), values, (grid_lon, grid_lat), method='cubic')
-#         grid_values = np.nan_to_num(grid_values)
-#         fig = plt.figure(figsize=(10, 5))
-#         ax = plt.axes(projection=ccrs.Mollweide())
-#         if self._method == 'scatter':
-#             sc = ax.scatter(lons, lats, c=values, transform=ccrs.Geodetic(), cmap='RdBu')
-#         elif self._method == 'interplot':
-#             contour = ax.contourf(grid_lon, grid_lat, grid_values, cmap='RdBu', transform=ccrs.PlateCarree())
-#         ax.set_global()
-#         plt.show()
+
+class BubbleFigure(Figure):
+    """气泡数据图表类 - 包含Line、Bar方法"""
+    
+    def plot(self):
+        """默认绘制方法 - 绘制Line图"""
+        self.plot_line()
+    
+    def plot_line(self):
+        """绘制气泡数据的折线图"""
+        print("=== BubbleFigure.plot_line方法开始执行 ===")
+        print(f"figure_settings: {self.figure_settings}")
+        
+        # 获取时间轴数据
+        time_columns = self.excel_data.columns[3:]
+        x_axis = time_columns.astype(float).to_numpy()
+        
+        print(f"时间列: {list(time_columns)}")
+        
+        # 计算平均值
+        result = self.excel_data.iloc[:, 3:].mean(axis=0)
+        
+        # 使用气泡颜色
+        bubble_color = self.figure_settings.get('bubble_color', 'blue')
+        print(f"气泡颜色: {bubble_color}")
+        
+        plt.plot(x_axis, result,
+                marker=self.figure_settings.get('marker_shape', 'o'),
+                markersize=self.figure_settings.get('marker_size', 5),
+                color=bubble_color,
+                label='Bubble')
+        
+        # 设置轴标题
+        x_title = self.figure_settings.get('x_title')
+        y_title = self.figure_settings.get('y_title')
+        axis_text_size = self.figure_settings.get('axis_text', 12)
+        
+        print(f"X轴标题: {x_title}")
+        print(f"Y轴标题: {y_title}")
+        print(f"轴文本大小: {axis_text_size}")
+        
+        if x_title:
+            plt.xlabel(x_title, fontsize=axis_text_size)
+        if y_title:
+            plt.ylabel(y_title, fontsize=axis_text_size)
+        
+        # 设置y轴范围
+        y_min = self.figure_settings.get('y_min')
+        y_max = self.figure_settings.get('y_max')
+        print(f"Y轴范围: {y_min} - {y_max}")
+        
+        if y_min is not None and y_max is not None and y_min < y_max:
+            plt.ylim(y_min, y_max)
+        else:
+            # 如果Y轴范围无效，使用数据的自动范围
+            print("Y轴范围无效，使用自动范围")
+        
+        # 设置轴刻度字体大小
+        if axis_text_size:
+            plt.tick_params(axis='both', which='major', labelsize=axis_text_size)
+        
+        plt.legend()
+        self._set_axes()
+        plt.gca().xaxis.set_major_locator(AutoLocator())
+        plt.show()
+        print("=== BubbleFigure.plot_line方法执行完毕 ===")
+
+    def plot_bar(self):
+        """绘制气泡数据的条形图"""
+        print("=== BubbleFigure.plot_bar方法开始执行 ===")
+        print(f"figure_settings: {self.figure_settings}")
+        
+        # 获取时间轴数据
+        time_columns = self.excel_data.columns[3:]
+        x_axis = time_columns.astype(float).to_numpy()
+        
+        print(f"时间列: {list(time_columns)}")
+        
+        # 计算平均值
+        result = self.excel_data.iloc[:, 3:].mean(axis=0)
+        overall_mean = result.mean()
+        overall_std = result.std()
+        
+        print(f"总体平均值: {overall_mean}")
+        print(f"标准差: {overall_std}")
+        
+        # 使用气泡颜色
+        bubble_color = self.figure_settings.get('bubble_color', 'blue')
+        print(f"气泡颜色: {bubble_color}")
+        
+        # 创建条形图
+        error_bar_enabled = self.figure_settings.get('error_deci', False)
+        print(f"Error bar启用: {error_bar_enabled}")
+        
+        bars = plt.bar([0], [overall_mean], color=bubble_color,
+                      yerr=[overall_std] if error_bar_enabled else None,
+                      capsize=5)
+        
+        # 设置x轴标签
+        plt.xticks([0], ['Bubble'])
+        
+        # 设置轴标题
+        x_title = self.figure_settings.get('x_title')
+        y_title = self.figure_settings.get('y_title')
+        axis_text_size = self.figure_settings.get('axis_text', 12)
+        
+        print(f"X轴标题: {x_title}")
+        print(f"Y轴标题: {y_title}")
+        print(f"轴文本大小: {axis_text_size}")
+        
+        if x_title:
+            plt.xlabel(x_title, fontsize=axis_text_size)
+        if y_title:
+            plt.ylabel(y_title, fontsize=axis_text_size)
+        
+        # 设置y轴范围
+        y_min = self.figure_settings.get('y_min')
+        y_max = self.figure_settings.get('y_max')
+        print(f"Y轴范围: {y_min} - {y_max}")
+        
+        if y_min is not None and y_max is not None and y_min < y_max:
+            plt.ylim(y_min, y_max)
+        else:
+            # 如果Y轴范围无效，使用数据的自动范围
+            print("Y轴范围无效，使用自动范围")
+        
+        # 设置轴刻度字体大小
+        if axis_text_size:
+            plt.tick_params(axis='both', which='major', labelsize=axis_text_size)
+        
+        # 添加图例
+        handles = [plt.Rectangle((0,0),1,1, color=bubble_color)]
+        plt.legend(handles, ['Bubble'])
+        
+        print("=== BubbleFigure.plot_bar方法执行完毕 ===")
 
 
-# ///////////////////////  Simple Factory   //////////////////////////////////
+# 工厂类已删除 - 现在直接使用LipidsFigure和BubbleFigure类
+
 
 def read_excel(file_path):
+    """读取Excel文件并返回描述、数据和时间单位"""
     try:
-        # 读取文件的第一行作为描述信息
         comments = []
+        time_unit = "frame"  # 默认时间单位
+        
         with open(file_path, 'r') as f:
             for line in f:
                 if line.startswith('#'):
-                    comments.append(line.strip()[2:])  # 去掉#号
+                    comment = line.strip()[2:]
+                    comments.append(comment)
+                    
+                    if comment.startswith('TIME_UNIT:'):
+                        time_unit = comment.split('TIME_UNIT:')[1].strip()
                 else:
-                    break  # 遇到非注释行停
-
-        # 从第二行开始读取文件，第一行（文件中的第二行）作为表头
-        df = pd.read_csv(file_path, skiprows=len(comments), header=0)  # 跳过第一行，直接读取表头和数据
+                    break
+        
+        df = pd.read_csv(file_path, skiprows=len(comments), header=0)
         valid_comments = comments[1]
-        return valid_comments, df
+        return valid_comments, df, time_unit
     except Exception as e:
         print(f"Error reading CSV: {e}")
-        return None, None
-
-
-
-
-
+        return None, None, "frame"

@@ -19,6 +19,8 @@ from modules import *
 from widgets import *
 from figure import *
 from analysis import *
+from modules.file_detection import FileTypeDetector, DynamicTabManager
+from modules.theme_manager import ThemeManager, add_theme_button_to_top_menu
 
 os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100%
 
@@ -141,6 +143,15 @@ class MainWindow(QMainWindow):
         widgets.btn_analysis.clicked.connect(self.buttonLeftClick)
         widgets.btn_data_process.clicked.connect(self.buttonLeftClick)
         self.initialSettings()
+        
+        # 初始化文件检测功能
+        self.setup_file_detection()
+        
+        # 初始化主题切换功能
+        self.setup_theme_switch()
+        
+        # 确保figure页面显示tabWidget_lipids
+        self.ensure_figure_widget_display()
 
         # EXTRA RIGHT BOX
 
@@ -199,7 +210,7 @@ class MainWindow(QMainWindow):
         self.ui.figure_bar_btn_color_2.clicked.connect(openCloseFigureColorBox)
         self.ui.figure_scatter_btn_shape_2.clicked.connect(openCloseFigureShapeBox)
         self.ui.figure_scatter_btn_shape_2.clicked.connect(lambda: FigurePage.figureBtnShape(self.ui))
-        self.ui.tabWidget.currentChanged.connect(openCloseFigureExtra)
+        self.ui.tabWidget_lipids.currentChanged.connect(openCloseFigureExtra)
 
         # SHOW APP
         # ///////////////////////////////////////////////////////////////
@@ -439,6 +450,246 @@ class MainWindow(QMainWindow):
         #     print('Mouse click: LEFT CLICK')
         # if event.buttons() == Qt.RightButton:
         #     print('Mouse click: RIGHT CLICK')
+
+    def setup_file_detection(self):
+        """设置文件检测功能"""
+        # 创建动态tab管理器，传入UI实例
+        self.tab_manager = DynamicTabManager(self.ui)
+        
+        # 将tab_manager设置到ui上，以便参数读取器可以访问
+        self.ui.tab_manager = self.tab_manager
+        
+        # 设置文件路径输入框为可编辑
+        self.ui.figure_edit_path.setReadOnly(True)
+        
+        # 添加文件选择功能到路径输入框
+        self.ui.figure_edit_path.textChanged.connect(self.on_file_path_changed)
+    
+    def setup_theme_switch(self):
+        """设置主题切换功能"""
+        try:
+            # 将主题切换按钮添加到顶部菜单
+            self.theme_manager = add_theme_button_to_top_menu(self.ui, self)
+            print("主题切换功能已成功添加到顶部菜单")
+        except Exception as e:
+            print(f"添加主题切换功能失败: {e}")
+            # 如果添加失败，至少创建主题管理器
+            self.theme_manager = ThemeManager(self)
+    
+    def ensure_figure_widget_display(self):
+        """确保figure页面默认显示信息文本框"""
+        try:
+            # 强制清理figure页面并重新设置
+            self._force_cleanup_figure_page()
+            
+            # 隐藏默认的tabWidget_lipids
+            if hasattr(self.ui, 'tabWidget_lipids'):
+                self.ui.tabWidget_lipids.setVisible(False)
+                self.ui.tabWidget_lipids.hide()
+                print("已隐藏默认的tabWidget_lipids")
+            
+            # 添加信息文本框到文件导入区域和RUN按钮之间
+            self._add_info_textbox_between_import_and_run()
+            
+            # 确保widget_2可见
+            if hasattr(self.ui, 'widget_2'):
+                self.ui.widget_2.setVisible(True)
+                self.ui.widget_2.show()
+                self.ui.widget_2.raise_()  # 确保在顶层
+                print("已确保widget_2可见")
+                
+        except Exception as e:
+            print(f"确保figure widget显示失败: {e}")
+    
+    def _add_info_textbox_between_import_and_run(self):
+        """在文件导入区域和RUN按钮之间添加信息文本框"""
+        try:
+            from PySide6.QtWidgets import QTextEdit
+            
+            # 创建信息文本框（合并标题和内容）
+            info_textbox = QTextEdit()
+            info_textbox.setObjectName("figure_info_textbox")
+            info_textbox.setMinimumHeight(300)
+            info_textbox.setMaximumHeight(350)
+            info_textbox.setReadOnly(True)
+            info_textbox.setStyleSheet("""
+                QTextEdit {
+                    font: 12pt "华文细黑";
+                    background-color: rgba(33, 37, 43, 0.9);
+                    border: 2px solid rgb(189, 147, 249);
+                    border-radius: 8px;
+                    padding: 15px;
+                    color: white;
+                    margin: 5px;
+                }
+                QTextEdit:focus {
+                    border: 2px solid rgb(255, 121, 198);
+                }
+            """)
+            
+            # 设置默认内容（包含标题）
+            default_content = """📊 Supported Plot Types
+
+📈 LIPIDS Analysis:
+• Line Chart: Time series analysis of lipid properties
+• Bar Chart: Statistical comparison of lipid groups  
+• Scatter Plot: Correlation analysis between lipid parameters
+
+🫧 BUBBLE Analysis:
+• Line Chart: Bubble size evolution over time
+• Bar Chart: Bubble distribution statistics
+
+💡 Usage: Import CSV file with TYPE:Lipids or TYPE:Bubble in line 4"""
+            
+            info_textbox.setText(default_content)
+            
+            # 将信息组件添加到widget_2的布局中，在frame_8和btn_figure_run之间
+            if hasattr(self.ui, 'widget_2'):
+                layout = self.ui.widget_2.layout()
+                if layout:
+                    # 找到btn_figure_run的位置
+                    run_button_index = -1
+                    for i in range(layout.count()):
+                        item = layout.itemAt(i)
+                        if item and item.widget() == self.ui.btn_figure_run:
+                            run_button_index = i
+                            break
+                    
+                    if run_button_index >= 0:
+                        # 在RUN按钮之前插入信息文本框
+                        layout.insertWidget(run_button_index, info_textbox)
+                        print("已在文件导入区域和RUN按钮之间添加信息文本框")
+                    else:
+                        # 如果找不到RUN按钮，添加到末尾
+                        layout.addWidget(info_textbox)
+                        print("已添加信息文本框到布局末尾")
+                    
+        except Exception as e:
+            print(f"添加信息文本框失败: {e}")
+    
+    
+    
+    def _force_cleanup_figure_page(self):
+        """强制清理figure页面，移除任何可能的table widget"""
+        try:
+            from PySide6.QtWidgets import QTableWidget
+            
+            # 遍历figure页面的所有子widget
+            all_children = self.ui.page_figure.findChildren(QTableWidget)
+            for child in all_children:
+                # 删除任何QTableWidget（除了我们不想删除的）
+                if child.objectName() != 'tabWidget_lipids':  # tabWidget_lipids不是QTableWidget，这只是保护
+                    child.setParent(None)  # 从父widget中移除
+                    child.deleteLater()    # 标记为删除
+                    print(f"已移除figure页面中的table widget: {child.objectName()}")
+            
+            # 确保页面布局正确
+            layout = self.ui.page_figure.layout()
+            if layout:
+                # 清理布局中可能存在的无效项目
+                for i in reversed(range(layout.count())):
+                    item = layout.itemAt(i)
+                    if item and item.widget():
+                        widget = item.widget()
+                        # 如果是QTableWidget且不是我们需要的，从布局中移除
+                        if isinstance(widget, QTableWidget):
+                            layout.removeWidget(widget)
+                            print(f"已从布局中移除table widget: {widget.objectName()}")
+                
+                # 确保核心widget在布局中
+                if hasattr(self.ui, 'widget_2'):
+                    widget_in_layout = False
+                    for i in range(layout.count()):
+                        item = layout.itemAt(i)
+                        if item and item.widget() == self.ui.widget_2:
+                            widget_in_layout = True
+                            break
+                    
+                    if not widget_in_layout:
+                        layout.insertWidget(0, self.ui.widget_2)  # 插入到第一个位置
+                        print("已重新添加widget_2到figure页面布局")
+                        
+        except Exception as e:
+            print(f"强制清理figure页面失败: {e}")
+
+    def on_file_path_changed(self):
+        """当文件路径改变时的回调"""
+        file_path = self.ui.figure_edit_path.text().strip()
+        if file_path and os.path.exists(file_path):
+            # 自动检测文件类型
+            self.auto_detect_file_type(file_path)
+
+    def auto_detect_file_type(self, file_path):
+        """自动检测文件类型并创建相应的TabWidget"""
+        try:
+            # 检测文件类型
+            file_type = FileTypeDetector.detect_file_type(file_path)
+            print(f"检测到文件类型: {file_type}")
+            
+            # 移除信息文本框
+            self._remove_info_textbox()
+            
+            # 确保FigureInfo被正确设置（重要！）
+            self._ensure_figure_info_for_file(file_path)
+            
+            # 创建并替换TabWidget
+            tab_widget = self.tab_manager.replace_tab_widget(file_type, file_path)
+            
+            # 显示成功消息
+            from PySide6.QtWidgets import QMessageBox
+            tab_name = self.tab_manager._get_tab_name(file_type)
+            QMessageBox.information(self, "检测成功", 
+                                  f"文件类型检测完成！\n文件: {os.path.basename(file_path)}\n类型: {tab_name}")
+            
+        except Exception as e:
+            from PySide6.QtWidgets import QMessageBox
+            QMessageBox.critical(self, "错误", f"检测文件类型时发生错误: {str(e)}")
+    
+    def _ensure_figure_info_for_file(self, file_path):
+        """确保FigureInfo被正确设置"""
+        try:
+            # 导入create_parameter_reader函数
+            from modules.Fuctions_Figure import create_parameter_reader
+            
+            # 检查是否需要重新创建FigureInfo
+            if (self.ui.FigureInfo is None or 
+                not hasattr(self.ui.FigureInfo, 'path_figure') or 
+                self.ui.FigureInfo.path_figure != file_path):
+                
+                print(f"正在为文件创建参数读取器: {file_path}")
+                
+                # 创建参数读取器
+                self.ui.FigureInfo = create_parameter_reader(self.ui)
+                
+                print("参数读取器创建成功")
+            else:
+                print("参数读取器已存在且文件路径未改变")
+                
+        except Exception as e:
+            print(f"创建参数读取器失败: {e}")
+            from PySide6.QtWidgets import QMessageBox
+            QMessageBox.warning(self, "警告", f"文件信息读取失败: {str(e)}")
+    
+    def _remove_info_textbox(self):
+        """移除信息文本框"""
+        try:
+            if hasattr(self.ui, 'widget_2'):
+                layout = self.ui.widget_2.layout()
+                if layout:
+                    # 查找并移除信息文本框
+                    for i in range(layout.count()):
+                        item = layout.itemAt(i)
+                        if item and item.widget():
+                            widget = item.widget()
+                            if widget.objectName() == "figure_info_textbox":
+                                layout.removeWidget(widget)
+                                widget.setParent(None)
+                                widget.deleteLater()
+                                print("已移除信息文本框")
+                                break
+                        
+        except Exception as e:
+            print(f"移除信息文本框失败: {e}")
 
 
 if __name__ == "__main__":

@@ -1178,9 +1178,7 @@ class Ui_MainWindow(object):
         self.analysis_label_first = QLabel(self.row2_height_2)
         self.analysis_label_first.setObjectName(u"analysis_label_first")
         self.analysis_label_first.setMaximumSize(QSize(16777215, 50))
-        self.analysis_label_first.setStyleSheet(u"font-family:Verdana;\n"
-"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"color:white;")
+        self.analysis_label_first.setStyleSheet(u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
 
         self.gridLayout_7.addWidget(self.analysis_label_first, 1, 0, 1, 1)
 
@@ -1677,22 +1675,13 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_9.addWidget(self.figure_btn_path)
 
-        self.figure_btn_path_2 = QPushButton(self.frame_8)
-        self.figure_btn_path_2.setObjectName(u"figure_btn_path_2")
-        self.figure_btn_path_2.setMinimumSize(QSize(80, 45))
-        self.figure_btn_path_2.setStyleSheet(u"background-color: rgb(189,147,249);\n"
-"color:white;\n"
-"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.horizontalLayout_9.addWidget(self.figure_btn_path_2)
-
 
         self.verticalLayout_11.addWidget(self.frame_8)
 
-        self.tabWidget = QTabWidget(self.widget_2)
-        self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.tabWidget.setStyleSheet(u"QTabBar::tab {\n"
+        self.tabWidget_lipids = QTabWidget(self.widget_2)
+        self.tabWidget_lipids.setObjectName(u"tabWidget_lipids")
+        self.tabWidget_lipids.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.tabWidget_lipids.setStyleSheet(u"QTabBar::tab {\n"
 "    background: lightgray;\n"
 "    border: 2px solid #C4C4C3;\n"
 "    border-bottom-color: #C4C4C3; /* same as the pane color */\n"
@@ -2032,7 +2021,7 @@ class Ui_MainWindow(object):
 
         self.gridLayout_9.addWidget(self.figure_line_spin_y_max_2, 6, 2, 1, 1)
 
-        self.tabWidget.addTab(self.tab_4, "")
+        self.tabWidget_lipids.addTab(self.tab_4, "")
         self.tab_5 = QWidget()
         self.tab_5.setObjectName(u"tab_5")
         self.gridLayout_11 = QGridLayout(self.tab_5)
@@ -2298,7 +2287,7 @@ class Ui_MainWindow(object):
 
         self.gridLayout_11.addWidget(self.figure_bar_spin_y_max_2, 4, 2, 1, 1)
 
-        self.tabWidget.addTab(self.tab_5, "")
+        self.tabWidget_lipids.addTab(self.tab_5, "")
         self.tab_6 = QWidget()
         self.tab_6.setObjectName(u"tab_6")
         self.gridLayout_12 = QGridLayout(self.tab_6)
@@ -2462,9 +2451,9 @@ class Ui_MainWindow(object):
 
         self.gridLayout_12.addWidget(self.figure_scatter_btn_shape_2, 3, 1, 1, 1)
 
-        self.tabWidget.addTab(self.tab_6, "")
+        self.tabWidget_lipids.addTab(self.tab_6, "")
 
-        self.verticalLayout_11.addWidget(self.tabWidget)
+        self.verticalLayout_11.addWidget(self.tabWidget_lipids)
 
         self.btn_figure_run = QPushButton(self.widget_2)
         self.btn_figure_run.setObjectName(u"btn_figure_run")
@@ -2604,7 +2593,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.stackedWidget.setCurrentIndex(3)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget_lipids.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -2664,8 +2653,8 @@ class Ui_MainWindow(object):
         self.analysis_label_frame.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt; font-weight:600;\">Frames</span></p></body></html>", None))
         self.analysis_label_method.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:16pt; font-weight:600;\">AnalysisMethods</span></p></body></html>", None))
         self.analysis_label_k.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:16pt; font-weight:600;\">K-Neighboors</span></p></body></html>", None))
-        self.analysis_label_first.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:14pt; font-weight:600;\">First</span></p></body></html>", None))
-        self.analysis_label_last.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:14pt; font-weight:600;\">Last</span></p></body></html>", None))
+        self.analysis_label_first.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Start</span></p></body></html>", None))
+        self.analysis_label_last.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">End</span></p></body></html>", None))
         self.analysis_label_step.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:14pt; font-weight:600;\">Step</span></p></body></html>", None))
         self.btnNext.setText("")
         self.label_gene_label.setText(QCoreApplication.translate("MainWindow", u"Generation", None))
@@ -2691,10 +2680,6 @@ class Ui_MainWindow(object):
         self.figure_edit_path.setText("")
         self.figure_edit_path.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Please import Excel file", None))
         self.figure_btn_path.setText(QCoreApplication.translate("MainWindow", u"Select Excel File", None))
-#if QT_CONFIG(tooltip)
-        self.figure_btn_path_2.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><br/></p></body></html>", None))
-#endif // QT_CONFIG(tooltip)
-        self.figure_btn_path_2.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
         self.figure_line_label_legend.setText(QCoreApplication.translate("MainWindow", u"Legend Size(0=None)", None))
         self.figure_line_btn_color_2.setText(QCoreApplication.translate("MainWindow", u"Select Color", None))
         self.figure_line_label_x.setText(QCoreApplication.translate("MainWindow", u"X-Title", None))
@@ -2716,7 +2701,7 @@ class Ui_MainWindow(object):
 
         self.figure_line_edit_x_2.setText("")
         self.figure_line_edit_x_2.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Default if none", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QCoreApplication.translate("MainWindow", u"Line", None))
+        self.tabWidget_lipids.setTabText(self.tabWidget_lipids.indexOf(self.tab_4), QCoreApplication.translate("MainWindow", u"Line", None))
         self.figure_bar_btn_color_2.setText(QCoreApplication.translate("MainWindow", u"Select Color", None))
         self.figure_bar_btn_trend_2.setText(QCoreApplication.translate("MainWindow", u"Select Color", None))
         self.figure_bar_label_trend.setText(QCoreApplication.translate("MainWindow", u"Trend Line", None))
@@ -2732,7 +2717,7 @@ class Ui_MainWindow(object):
         self.figure_bar_label_y_range.setText(QCoreApplication.translate("MainWindow", u"Y-Range", None))
         self.figure_bar_radio_error_2.setText(QCoreApplication.translate("MainWindow", u"Yes", None))
         self.radioButton_6.setText(QCoreApplication.translate("MainWindow", u"No", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), QCoreApplication.translate("MainWindow", u"Bar", None))
+        self.tabWidget_lipids.setTabText(self.tabWidget_lipids.indexOf(self.tab_5), QCoreApplication.translate("MainWindow", u"Bar", None))
         self.figure_scatter_label_shape_size.setText(QCoreApplication.translate("MainWindow", u"Shape size", None))
         self.figure_scatter_label_legend.setText(QCoreApplication.translate("MainWindow", u"Legend Size", None))
         self.figure_scatter_label_range.setText(QCoreApplication.translate("MainWindow", u"Value Range", None))
@@ -2748,7 +2733,7 @@ class Ui_MainWindow(object):
         self.figure_scatter_como_color_2.setItemText(7, QCoreApplication.translate("MainWindow", u"viridis", None))
 
         self.figure_scatter_btn_shape_2.setText(QCoreApplication.translate("MainWindow", u"Select Shape", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), QCoreApplication.translate("MainWindow", u"Scatter", None))
+        self.tabWidget_lipids.setTabText(self.tabWidget_lipids.indexOf(self.tab_6), QCoreApplication.translate("MainWindow", u"Scatter", None))
         self.btn_figure_run.setText(QCoreApplication.translate("MainWindow", u"RUN!", None))
         self.vmd_btn_start.setText(QCoreApplication.translate("MainWindow", u"Start VMD", None))
         self.vmd_btn_stop.setText(QCoreApplication.translate("MainWindow", u"Stop VMD", None))

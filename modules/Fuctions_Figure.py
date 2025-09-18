@@ -2,16 +2,19 @@ from collections import defaultdict
 from functools import partial
 
 from PySide6.QtGui import QColor
+from PySide6.QtWidgets import QDoubleSpinBox, QLineEdit, QRadioButton, QComboBox
 
 from figure.figure import *
 from .Tools import *
-# from exception import *
+from _exception import ExcelFormatError
 
 global window
 
 
 TYPE_ID = {'Height(nm)': 0
-               , 'SZ': 0
+               , 'Sz Order Parameter (chain: sn1 and sn2)': 0  # 添加Sz Order Parameter支持
+               , 'Sz Order Parameter (chain: sn1)': 0  # 添加Sz Order Parameter支持
+               , 'Sz Order Parameter (chain: sn2)': 0  # 添加Sz Order Parameter支持
                , 'Mean Curvature(nm-1)': 0
                , 'Area(nm^2)': 0
                , 'Anisotropy': 1
@@ -32,91 +35,388 @@ FIGURE_TYPE = {0: ['Bar', 'Line', 'Scatter', 'Map']  # Lipids
     , 2: ['Line']}  # other
 
 
-class FigureGetInfo:
-    """
-    获取FigureWidget内部的信息
-    """
-    FIGURE_METHOD: [str] = ['Line', 'Bar', 'Scatter']
-
-    def __init__(self, ui):
-        self.ui = ui
-        # path
+class BaseParameterReader:
+    """参数读取器基类"""
+    
+    def __init__(self, ui_instance):
+        self.ui = ui_instance
+        # 文件信息管理
+        self.path_figure = ui_instance.figure_edit_path.text()
+        self.description, self.results, self.time_unit = read_excel(self.path_figure)
+        self.lipids_type = self.results['Resname'].unique() if 'Resname' in self.results.columns else None
+        self.residues = None
+        
+        # 参数存储
+        self.LineInfo = defaultdict(lambda: None)
+        self.BarInfo = defaultdict(lambda: None)
+        self.ScaInfo = defaultdict(lambda: None)
+        self.MapInfo = defaultdict(lambda: None)
+        self.ColorInfo = defaultdict(lambda: None)
+        self.ShapeInfo = []
+        
+        # 图表方法
+        self.figureMethod = None
+    
+    def _get_current_tab_widget(self):
+        """获取当前活动的TabWidget"""
+        if hasattr(self.ui, 'tab_manager') and hasattr(self.ui.tab_manager, 'current_tab_widget'):
+            return self.ui.tab_manager.current_tab_widget
+        return None
+    
+    def _get_current_tab(self):
+        """获取当前活动的标签页"""
+        current_tab_widget = self._get_current_tab_widget()
+        if current_tab_widget:
+            return current_tab_widget.currentWidget()
+        return None
+    
+    def _get_file_type_from_description(self):
+        """根据描述判断文件类型"""
+        if 'Bubble' in self.description:
+            return 'bubble'
+        else:
+            return 'lipids'
+    
+    def _get_time_unit_label(self):
+        """根据CSV文件中的TIME_UNIT注释获取时间单位标签"""
         try:
-            self.path_figure = (self.ui.
-                                figure_edit_path.text())
-            self.figureMethod = self.FIGURE_METHOD[self.ui.tabWidget.currentIndex()]  # 0:line 1:bar 2:scatter
+            if self.time_unit == 'ns':
+                return "Time (ns)"
+            elif self.time_unit == 'ps':
+                return "Time (ps)"
+            else:
+                return "Frames"
+        except Exception:
+            return "Frames"
 
-            self.LineInfo = defaultdict(lambda: None)
-            self.BarInfo = defaultdict(lambda: None)
-            self.ScaInfo = defaultdict(lambda: None)
 
-            self.ColorInfo = defaultdict(lambda: None)
-            self.ShapeInfo = []
+class LipidsParameterReader(BaseParameterReader):
+    """脂质数据参数读取器"""
+    
+    def get_line(self):
+        """读取Line图参数"""
+        print("=== LipidsParameterReader.get_line方法开始执行 ===")
+        
+        current_tab = self._get_current_tab()
+        if current_tab:
+            print("从动态TabWidget读取Line参数")
+            # 从当前标签页中查找控件
+            axis_scale_spin = current_tab.findChild(QDoubleSpinBox, "lipids_line_spin_axis_tick")
+            axis_text_spin = current_tab.findChild(QDoubleSpinBox, "lipids_line_spin_axis_title")
+            grid_size_spin = current_tab.findChild(QDoubleSpinBox, "lipids_line_spin_legend")
+            x_title_edit = current_tab.findChild(QLineEdit, "lipids_line_edit_x")
+            y_title_edit = current_tab.findChild(QLineEdit, "lipids_line_edit_y")
+            x_min_spin = current_tab.findChild(QDoubleSpinBox, "lipids_line_spin_x_min")
+            x_max_spin = current_tab.findChild(QDoubleSpinBox, "lipids_line_spin_x_max")
+            print(x_max_spin.value(), 'real or ')
+            y_min_spin = current_tab.findChild(QDoubleSpinBox, "lipids_line_spin_y_min")
+            y_max_spin = current_tab.findChild(QDoubleSpinBox, "lipids_line_spin_y_max")
+            marker_size_spin = current_tab.findChild(QDoubleSpinBox, "lipids_line_spin_marker")
+            marker_shape_combo = None  # file_detection.py中没有创建这个控件
+            
+            # 读取参数值
+            line_info = {
+                'axis_scale': axis_scale_spin.value() if axis_scale_spin else 12.0,
+                'axis_text': axis_text_spin.value() if axis_text_spin else 16.0,
+                'grid_size': grid_size_spin.value() if grid_size_spin else 1.0,
+                'x_title': x_title_edit.text() if x_title_edit and x_title_edit.text() else self._get_time_unit_label(),
+                'y_title': y_title_edit.text() if y_title_edit and y_title_edit.text() else self.description,
+                'x_min': x_min_spin.value() if x_min_spin else 0.0,
+                'x_max': x_max_spin.value() if x_max_spin else 0.0,
+                'y_min': y_min_spin.value() if y_min_spin else 0.0,
+                'y_max': y_max_spin.value() if y_max_spin else 1.0,
+                'marker_size': marker_size_spin.value() if marker_size_spin else 5.0,
+                'marker_shape': marker_shape_combo.currentText() if marker_shape_combo else 'o',
+                'color': self.ColorInfo
+            }
+        else:
+            print("找不到动态TabWidget，返回空字典让matplotlib自动处理")
+            line_info = {}
+        
+        print(f"Line参数: {line_info}")
+        print("=== LipidsParameterReader.get_line方法执行完毕 ===")
+        return line_info
+    
+    def get_bar(self):
+        """读取Bar图参数"""
+        print("=== LipidsParameterReader.get_bar方法开始执行 ===")
+        
+        current_tab = self._get_current_tab()
+        if current_tab:
+            print("从动态TabWidget读取Bar参数")
+            # 从当前标签页中查找控件
+            axis_tick_spin = current_tab.findChild(QDoubleSpinBox, "lipids_bar_spin_axis_tick")
+            axis_title_spin = current_tab.findChild(QDoubleSpinBox, "lipids_bar_spin_axis_title")
+            x_title_edit = current_tab.findChild(QLineEdit, "lipids_bar_edit_x")
+            y_title_edit = current_tab.findChild(QLineEdit, "lipids_bar_edit_y")
+            y_min_spin = current_tab.findChild(QDoubleSpinBox, "lipids_bar_spin_y_min")
+            y_max_spin = current_tab.findChild(QDoubleSpinBox, "lipids_bar_spin_y_max")
+            error_yes_radio = current_tab.findChild(QRadioButton, "lipids_bar_radio_error_yes")
+            error_no_radio = current_tab.findChild(QRadioButton, "lipids_bar_radio_error_no")
+            
+            # 读取参数值
+            bar_info = {
+                'axis_scale': axis_tick_spin.value() if axis_tick_spin else 12.0,
+                'axis_text': axis_title_spin.value() if axis_title_spin else 16.0,
+                'x_title': x_title_edit.text() if x_title_edit and x_title_edit.text() else self._get_time_unit_label(),
+                'y_title': y_title_edit.text() if y_title_edit and y_title_edit.text() else self.description,
+                'y_min': y_min_spin.value() if y_min_spin else 0.0,
+                'y_max': y_max_spin.value() if y_max_spin else 1.0,
+                'trend_size': 0.0,  # 暂时设为默认值
+                'up_bar_value': 0.0,  # 暂时设为默认值
+                'error_deci': error_yes_radio.isChecked() if error_yes_radio else False,
+                'color': self.ColorInfo
+            }
+        else:
+            print("找不到动态TabWidget，返回空字典让matplotlib自动处理")
+            bar_info = {}
+        
+        print(f"Bar参数: {bar_info}")
+        print("=== LipidsParameterReader.get_bar方法执行完毕 ===")
+        return bar_info
+    
+    def get_scatter(self):
+        """读取Scatter图参数"""
+        print("=== LipidsParameterReader.get_scatter方法开始执行 ===")
+        
+        current_tab = self._get_current_tab()
+        if current_tab:
+            print("从动态TabWidget读取Scatter参数")
+            # 从当前标签页中查找控件
+            grid_size_spin = current_tab.findChild(QDoubleSpinBox, "lipids_scatter_spin_axis_tick")
+            color_min_spin = current_tab.findChild(QDoubleSpinBox, "lipids_scatter_spin_range_min")
+            color_max_spin = current_tab.findChild(QDoubleSpinBox, "lipids_scatter_spin_range_max")
+            color_map_combo = None  # file_detection.py中没有创建这个控件
+            shape_size_spin = current_tab.findChild(QDoubleSpinBox, "lipids_scatter_spin_shape_size")
+            
+            # 读取参数值
+            scatter_info = {
+                'grid_size': grid_size_spin.value() if grid_size_spin else 1.0,
+                'bar_min': color_min_spin.value() if color_min_spin else 0.0,
+                'bar_max': color_max_spin.value() if color_max_spin else 1.0,
+                'bar_color': color_map_combo.currentText() if color_map_combo else 'viridis',
+                'shape_size': shape_size_spin.value() if shape_size_spin else 50.0,
+                'shape': {}
+            }
+            
+            # 读取形状信息
+            for group in self.ShapeInfo:
+                scatter_info['shape'][group.title()] = next(
+                    (radio.text() for radio in group.findChildren(QRadioButton) if radio.isChecked()), None
+                )
+        else:
+            print("找不到动态TabWidget，返回空字典让matplotlib自动处理")
+            scatter_info = {}
+        
+        print(f"Scatter参数: {scatter_info}")
+        print("=== LipidsParameterReader.get_scatter方法执行完毕 ===")
+        return scatter_info
+    
+    def get_map(self):
+        """读取Map图参数"""
+        print("=== LipidsParameterReader.get_map方法开始执行 ===")
+        
+        current_tab = self._get_current_tab()
+        if current_tab:
+            print("从动态TabWidget读取Map参数")
+            # 从当前标签页中查找控件
+            color_bar_yes_radio = current_tab.findChild(QRadioButton, "lipids_map_radio_color_bar_yes")
+            color_bar_no_radio = current_tab.findChild(QRadioButton, "lipids_map_radio_color_bar_no")
+            x_title_edit = current_tab.findChild(QLineEdit, "lipids_map_edit_x")
+            y_title_edit = current_tab.findChild(QLineEdit, "lipids_map_edit_y")
+            value_min_spin = current_tab.findChild(QDoubleSpinBox, "lipids_map_spin_value_min")
+            value_max_spin = current_tab.findChild(QDoubleSpinBox, "lipids_map_spin_value_max")
+            color_map_combo = current_tab.findChild(QComboBox, "lipids_map_combo_color_map")
+            
+            # 读取参数值
+            map_info = {
+                'color_bar': color_bar_yes_radio.isChecked() if color_bar_yes_radio else True,
+                'x_title': x_title_edit.text() if x_title_edit and x_title_edit.text() else "X Position (nm)",
+                'y_title': y_title_edit.text() if y_title_edit and y_title_edit.text() else "Y Position (nm)",
+                'value_min': value_min_spin.value() if value_min_spin else 0.0,
+                'value_max': value_max_spin.value() if value_max_spin else 1.0,
+                'color_map': color_map_combo.currentText() if color_map_combo else "viridis"
+            }
+        else:
+            print("找不到动态TabWidget，返回空字典让matplotlib自动处理")
+            map_info = {}
+        
+        print(f"Map参数: {map_info}")
+        print("=== LipidsParameterReader.get_map方法执行完毕 ===")
+        return map_info
+    
 
-            self.description, self.results = read_excel(self.path_figure)
-            self.lipids_type = self.results['Resname'].unique() if 'Resname' in self.results.columns else None
-            self.residues = None
-        except:
-            self.ui.figure_extra = 0
 
-    @classmethod
-    def _get_xlsx_path(cls, ui) -> str:
-        return ui.figure_edit_path.text()
+class BubbleParameterReader(BaseParameterReader):
+    """气泡数据参数读取器"""
+    
+    def get_line(self):
+        """读取Line图参数"""
+        print("=== BubbleParameterReader.get_line方法开始执行 ===")
+        
+        current_tab = self._get_current_tab()
+        if current_tab:
+            print("从动态TabWidget读取Bubble Line参数")
+            # 从当前标签页中查找控件
+            axis_scale_spin = current_tab.findChild(QDoubleSpinBox, "bubble_line_spin_axis_tick")
+            axis_text_spin = current_tab.findChild(QDoubleSpinBox, "bubble_line_spin_axis_title")
+            grid_size_spin = current_tab.findChild(QDoubleSpinBox, "bubble_line_spin_legend")
+            x_title_edit = current_tab.findChild(QLineEdit, "bubble_line_edit_x")
+            y_title_edit = current_tab.findChild(QLineEdit, "bubble_line_edit_y")
+            x_min_spin = current_tab.findChild(QDoubleSpinBox, "bubble_line_spin_x_min")
+            x_max_spin = current_tab.findChild(QDoubleSpinBox, "bubble_line_spin_x_max")
+            y_min_spin = current_tab.findChild(QDoubleSpinBox, "bubble_line_spin_y_min")
+            y_max_spin = current_tab.findChild(QDoubleSpinBox, "bubble_line_spin_y_max")
+            marker_size_spin = current_tab.findChild(QDoubleSpinBox, "bubble_line_spin_marker")
+            marker_shape_combo = None  # file_detection.py中没有创建这个控件
+            
+            # 读取参数值
+            line_info = {
+                'axis_scale': axis_scale_spin.value() if axis_scale_spin else 12.0,
+                'axis_text': axis_text_spin.value() if axis_text_spin else 16.0,
+                'grid_size': grid_size_spin.value() if grid_size_spin else 1.0,
+                'x_title': x_title_edit.text() if x_title_edit and x_title_edit.text() else self._get_time_unit_label(),
+                'y_title': y_title_edit.text() if y_title_edit and y_title_edit.text() else self.description,
+                'x_min': x_min_spin.value() if x_min_spin else 0.0,
+                'x_max': x_max_spin.value() if x_max_spin else 100.0,
+                'y_min': y_min_spin.value() if y_min_spin else 0.0,
+                'y_max': y_max_spin.value() if y_max_spin else 1.0,
+                'marker_size': marker_size_spin.value() if marker_size_spin else 5.0,
+                'marker_shape': marker_shape_combo.currentText() if marker_shape_combo else 'o',
+                'color': self.ColorInfo
+            }
+        else:
+            print("找不到动态TabWidget，返回空字典让matplotlib自动处理")
+            line_info = {}
+        
+        print(f"Bubble Line参数: {line_info}")
+        print("=== BubbleParameterReader.get_line方法执行完毕 ===")
+        return line_info
+    
+    def get_bar(self):
+        """读取Bar图参数"""
+        print("=== BubbleParameterReader.get_bar方法开始执行 ===")
+        
+        current_tab = self._get_current_tab()
+        if current_tab:
+            print("从动态TabWidget读取Bubble Bar参数")
+            # 从当前标签页中查找控件
+            axis_tick_spin = current_tab.findChild(QDoubleSpinBox, "bubble_bar_spin_axis_tick")
+            axis_title_spin = current_tab.findChild(QDoubleSpinBox, "bubble_bar_spin_axis_title")
+            x_title_edit = current_tab.findChild(QLineEdit, "bubble_bar_edit_x")
+            y_title_edit = current_tab.findChild(QLineEdit, "bubble_bar_edit_y")
+            y_min_spin = current_tab.findChild(QDoubleSpinBox, "bubble_bar_spin_y_min")
+            y_max_spin = current_tab.findChild(QDoubleSpinBox, "bubble_bar_spin_y_max")
+            error_yes_radio = current_tab.findChild(QRadioButton, "bubble_bar_radio_error_yes")
+            error_no_radio = current_tab.findChild(QRadioButton, "bubble_bar_radio_error_no")
+            
+            # 读取参数值
+            bar_info = {
+                'axis_scale': axis_tick_spin.value() if axis_tick_spin else 12.0,
+                'axis_text': axis_title_spin.value() if axis_title_spin else 16.0,
+                'x_title': x_title_edit.text() if x_title_edit and x_title_edit.text() else self._get_time_unit_label(),
+                'y_title': y_title_edit.text() if y_title_edit and y_title_edit.text() else self.description,
+                'y_min': y_min_spin.value() if y_min_spin else 0.0,
+                'y_max': y_max_spin.value() if y_max_spin else 1.0,
+                'trend_size': 0.0,  # 暂时设为默认值
+                'up_bar_value': 0.0,  # 暂时设为默认值
+                'error_deci': error_yes_radio.isChecked() if error_yes_radio else False,
+                'color': self.ColorInfo
+            }
+        else:
+            print("找不到动态TabWidget，返回空字典让matplotlib自动处理")
+            bar_info = {}
+        
+        print(f"Bubble Bar参数: {bar_info}")
+        print("=== BubbleParameterReader.get_bar方法执行完毕 ===")
+        return bar_info
+    
 
-    def getLine(self):
 
-        self.LineInfo.update({
-            'axis_scale': self.ui.figure_line_spin_axis_scale_2.value()
-            , 'axis_text': self.ui.figure_line_spin_axis_text_size_2.value()
-            , 'grid_size': self.ui.figure_line_spin_grid_size_2.value()
-            , 'x_title': self.ui.figure_line_edit_x_2.text() or "Frames"
-            , 'y_title': self.ui.figure_line_edit_y_2.text() or self.description
-            , 'x_min': self.ui.figure_line_spin_x_min_2.value()
-            , 'x_max': self.ui.figure_line_spin_x_max_2.value()
-            , 'y_min': self.ui.figure_line_spin_y_min_2.value()
-            , 'y_max': self.ui.figure_line_spin_y_max_2.value()
-            , 'marker_size': self.ui.figure_line_spin_marker_size_2.value()
-            , 'marker_shape': self.ui.figure_line_como_marker.currentText()
-            , 'color': self.ui.FigureInfo.ColorInfo
-        })
+def create_parameter_reader(ui):
+    """
+    根据文件类型创建相应的参数读取器
+    
+    Args:
+        ui: UI实例
+        
+    Returns:
+        LipidsParameterReader或BubbleParameterReader实例
+    """
+    try:
+        # 根据文件类型创建相应的参数读取器
+        file_type = _get_file_type_from_description(ui)
+        if file_type == 'lipids':
+            return LipidsParameterReader(ui)
+        elif file_type == 'bubble':
+            return BubbleParameterReader(ui)
+        else:
+            return None
+    except Exception as e:
+        print(f"创建参数读取器失败: {e}")
+        ui.figure_extra = 0
+        return None
 
-        return self.LineInfo
+def _get_file_type_from_description(ui):
+    """根据描述判断文件类型"""
+    try:
+        description, _, _ = read_excel(ui.figure_edit_path.text())
+        if 'Bubble' in description:
+            return 'bubble'
+        else:
+            return 'lipids'
+    except:
+        return 'lipids'
 
-    def getBar(self):
+def _get_current_chart_type(ui):
+    """从当前TabWidget获取图表类型"""
+    try:
+        # 检查是否有tab_manager
+        if hasattr(ui, 'tab_manager') and hasattr(ui.tab_manager, 'current_tab_widget'):
+            current_tab_widget = ui.tab_manager.current_tab_widget
+            if current_tab_widget:
+                current_index = current_tab_widget.currentIndex()
+                # 根据文件类型和索引确定图表类型
+                file_type = _get_file_type_from_description(ui)
+                if file_type == 'lipids':
+                    chart_types = ['Line', 'Bar', 'Scatter', 'Map']
+                else:  # bubble
+                    chart_types = ['Line', 'Bar']
+                
+                if 0 <= current_index < len(chart_types):
+                    return chart_types[current_index]
+        
+        # 如果无法获取，返回默认值
+        print("无法获取当前图表类型，使用默认的Line")
+        return 'Line'
+    except Exception as e:
+        print(f"获取当前图表类型失败: {e}")
+        return 'Line'
 
-        self.BarInfo.update({
-            'axis_scale': self.ui.figure_bar_spin_axis_scale_2.value()
-            , 'axis_text': self.ui.figure_bar_spin_axis_text_size_2.value()
-            , 'x_title': self.ui.figure_bar_edit_x_2.text()
-            , 'y_title': self.ui.figure_bar_edit_y_2.text() or self.description
-            , 'y_min': self.ui.figure_bar_spin_y_min_2.value()
-            , 'y_max': self.ui.figure_bar_spin_y_max_2.value()
-            , 'trend_size': self.ui.figure_bar_spin_trend_2.value()
-            , 'up_bar_value': self.ui.figure_bar_spin_bar_2.value()
-            , 'error_deci': self.ui.figure_bar_radio_error_2.isChecked()
-            , 'color': self.ui.FigureInfo.ColorInfo
-        })
-
-        return self.BarInfo
-
-    def getScatter(self):
-        self.ScaInfo.update({
-            'grid_size': self.ui.figure_scatter_spin_grid_size_2.value()
-            , 'bar_min': self.ui.figure_scatter_color_min_2.value()
-            , 'bar_max': self.ui.figure_scatter_color_max_2.value()
-            , 'bar_color': self.ui.figure_scatter_como_color_2.currentText()
-            , 'shape_size': self.ui.figure_scatter_spin_shape_size_2.value()
-            , 'shape': {}
-        })
-        for group in self.ShapeInfo:
-            self.ScaInfo['shape'][group.title()] = next(
-                (radio.text() for radio in group.findChildren(QRadioButton) if radio.isChecked()), None
-            )
-        return self.ScaInfo
+def get_xlsx_path(ui) -> str:
+    """获取Excel文件路径"""
+    return ui.figure_edit_path.text()
 
 
 class FigurePage:
 
+    @staticmethod
+    def _get_time_unit_label(figure_info):
+        """根据CSV文件中的TIME_UNIT注释获取时间单位标签"""
+        try:
+            # 从FigureInfo中获取时间单位
+            time_unit = getattr(figure_info, 'time_unit', 'frame')
+            
+            # 根据时间单位返回相应的标签
+            if time_unit == 'ns':
+                return "Time (ns)"
+            elif time_unit == 'ps':
+                return "Time (ps)"
+            else:
+                return "Frames"
+                
+        except Exception:
+            return "Frames"
 
     @staticmethod
     def _ensure_figure_info(ui):
@@ -124,34 +424,109 @@ class FigurePage:
         用来检测UI界面是否导入了结果的文件路径，以及结果文件路径有没有发生更改
         """
         if ui.FigureInfo is None or ui.FigureInfo.path_figure != ui.figure_edit_path.text():
-                ui.FigureInfo = FigureGetInfo(ui)
+            ui.FigureInfo = create_parameter_reader(ui)
         return ui.FigureInfo
 
     @classmethod
     def figureBtnMakeFigure(cls, ui):
+        print("=== figureBtnMakeFigure方法开始执行 ===")
         try:
             cls._ensure_figure_info(ui)
-        except:
+            print("FigureInfo确保成功")
+        except Exception as e:
+            print(f"FigureInfo确保失败: {e}")
             create_warn_dialog("Please select the result file first.\nError in the function:figureBtnMakeFigure")
             return
-        # 没有写入if的原因是，如果文件路径没有改变，则无需再次读取文件。
-        ui.FigureInfo.figureMethod = FigureGetInfo.FIGURE_METHOD[ui.tabWidget.currentIndex()]  # 更新图形类型
+        
+        print(f"FigureInfo类型: {type(ui.FigureInfo)}")
+        print(f"FigureInfo描述: {ui.FigureInfo.description}")
+        print(f"FigureInfo结果数据形状: {ui.FigureInfo.results.shape if ui.FigureInfo.results is not None else 'None'}")
+        
+        # 从当前TabWidget获取图表类型
+        chart_type = _get_current_chart_type(ui)
+        print(f"当前绘图方法: {chart_type}")
 
-        # 使用策略模式进行图表绘制类型的选择
-        drawing_strategies = {
-            'Line': lambda: FigureLine(ui.FigureInfo.description
-                                       , ui.FigureInfo.results
-                                       , ui.FigureInfo.getLine()).plot()
-            , 'Bar': lambda: FigureBar(ui.FigureInfo.description
-                                       , ui.FigureInfo.results
-                                       , ui.FigureInfo.getBar()).plot()
-            , 'Scatter': lambda: FigureScatter(ui.FigureInfo.description
-                                               , ui.FigureInfo.results
-                                               , ui.FigureInfo.getScatter()).plot()
-        }
-        draw_action = drawing_strategies[ui.FigureInfo.figureMethod]
-        if draw_action:
-            draw_action()
+        # 直接根据文件类型和图表类型调用相应方法
+        file_type = cls._get_file_type_from_data(ui.FigureInfo.description)
+        
+        print(f"文件类型: {file_type}, 图表类型: {chart_type}")
+        
+        if file_type == 'lipids':
+            print("开始创建LipidsFigure...")
+            from figure.figure import LipidsFigure
+            chart_settings = cls._get_chart_settings(ui, chart_type)
+            print(f"图表设置: {chart_settings}")
+            lipids_figure = LipidsFigure(ui.FigureInfo.description, ui.FigureInfo.results, chart_settings)
+            
+            if chart_type == 'Line':
+                print("开始绘制Line图...")
+                lipids_figure.plot_line()
+            elif chart_type == 'Bar':
+                print("开始绘制Bar图...")
+                lipids_figure.plot_bar()
+            elif chart_type == 'Scatter':
+                print("开始绘制Scatter图...")
+                lipids_figure.plot_scatter()
+            elif chart_type == 'Map':
+                print("开始绘制Map图...")
+                lipids_figure.plot_map()
+            else:
+                print(f"不支持的图表类型: {chart_type}")
+                
+        elif file_type == 'bubble':
+            print("开始创建BubbleFigure...")
+            from figure.figure import BubbleFigure
+            chart_settings = cls._get_chart_settings(ui, chart_type)
+            print(f"图表设置: {chart_settings}")
+            bubble_figure = BubbleFigure(ui.FigureInfo.description, ui.FigureInfo.results, chart_settings)
+            
+            if chart_type == 'Line':
+                print("开始绘制Bubble Line图...")
+                bubble_figure.plot_line()
+            elif chart_type == 'Bar':
+                print("开始绘制Bubble Bar图...")
+                bubble_figure.plot_bar()
+            else:
+                print(f"Bubble类型不支持图表类型: {chart_type}")
+        else:
+            print(f"不支持的文件类型: {file_type}")
+        
+        print("=== figureBtnMakeFigure方法执行完毕 ===")
+    
+    @staticmethod
+    def _get_file_type_from_data(description):
+        """根据描述判断文件类型"""
+        if 'Bubble' in description:
+            return 'bubble'
+        else:
+            return 'lipids'
+    
+    @staticmethod
+    def _get_chart_settings(ui, chart_type):
+        """根据图表类型获取相应的设置"""
+        print(f"=== _get_chart_settings开始执行 ===")
+        print(f"FigureInfo类型: {type(ui.FigureInfo)}")
+        print(f"图表类型: {chart_type}")
+        
+        if ui.FigureInfo:
+            if chart_type == 'Line':
+                settings = ui.FigureInfo.get_line()
+                print(f"Line设置: {settings}")
+                return settings
+            elif chart_type == 'Bar':
+                settings = ui.FigureInfo.get_bar()
+                print(f"Bar设置: {settings}")
+                return settings
+            elif chart_type == 'Scatter' and hasattr(ui.FigureInfo, 'get_scatter'):
+                settings = ui.FigureInfo.get_scatter()
+                print(f"Scatter设置: {settings}")
+                return settings
+            elif chart_type == 'Map' and hasattr(ui.FigureInfo, 'get_map'):
+                settings = ui.FigureInfo.get_map()
+                print(f"Map设置: {settings}")
+                return settings
+        print("FigureInfo为空，返回空字典")
+        return {}
 
     @classmethod
     def figureBtnColor(cls, ui):
@@ -172,11 +547,25 @@ class FigurePage:
 
     @staticmethod
     def _ensure_color_lipids_sel(ui):
+        print("_ensure_color_lipids_sel方法开始执行...")
         if not getattr(ui, 'FigureColorLayout', None):
-            ui.figure_color_extra_box.setStyleSheet(u"font: 15pt \"\u534e\u6587\u7ec6\u9ed1\";")
-            ui.FigureColorLayout = QVBoxLayout()
-            ui.figure_color_extra_box.setLayout(ui.FigureColorLayout)
+            print("FigureColorLayout不存在，正在创建...")
+            if hasattr(ui, 'figure_color_extra_box'):
+                print("figure_color_extra_box存在，设置样式和布局")
+                ui.figure_color_extra_box.setStyleSheet(u"font: 15pt \"\u534e\u6587\u7ec6\u9ed1\";")
+                # 修复：设置合适的尺寸，让颜色选择框可见
+                ui.figure_color_extra_box.setMinimumSize(200, 300)
+                ui.figure_color_extra_box.setMaximumSize(300, 500)
+                ui.FigureColorLayout = QVBoxLayout()
+                ui.figure_color_extra_box.setLayout(ui.FigureColorLayout)
+                print("FigureColorLayout创建成功")
+            else:
+                print("错误：figure_color_extra_box不存在！")
+                raise AttributeError("figure_color_extra_box不存在")
+        else:
+            print("FigureColorLayout已存在")
         return None
+
 
     @staticmethod
     def _make_residues_btn(ui, callback):
@@ -193,8 +582,8 @@ class FigurePage:
             for index, residue in enumerate(ui.FigureInfo.residues):
                 btn = UIItemsMake.make_btn(
                     residue
-                    , background_color='white'
-                    , font_color='black'
+                    # , background_color='white'
+                    # , font_color='black'
                 )
                 btn.clicked.connect(partial(callback, index, btn, ui))
                 ui.FigureColorLayout.addWidget(btn)
@@ -207,15 +596,36 @@ class FigurePage:
         确保颜色布局建立
         确保读取了残基类别
         """
-        ui.figure_extra = 1
-        cls._ensure_color_lipids_sel(ui)  # 确保颜色选择布局已经创建
+        print("lipids_colors方法开始执行...")
+        try:
+            ui.figure_extra = 1
+            print("设置figure_extra = 1")
+            
+            cls._ensure_color_lipids_sel(ui)  # 确保颜色选择布局已经创建
+            print("颜色选择布局已确保")
 
-        cls._make_residues_btn(ui, cls.residues_color_sel)
+            cls._make_residues_btn(ui, cls.residues_color_sel)
+            print("残基按钮已创建")
 
-        if ui.FigureInfo.lipids_type is None:
-            raise ExcelFormatError("请严格遵守结果文件的格式！")
-        # 得到残基的信息
-        ui.figure_color_extra_box.show()
+            if ui.FigureInfo.lipids_type is None:
+                print("lipids_type为None，抛出异常")
+                raise ExcelFormatError("请严格遵守结果文件的格式！")
+            
+            print(f"lipids_type: {ui.FigureInfo.lipids_type}")
+            
+            # 得到残基的信息
+            if hasattr(ui, 'figure_color_extra_box'):
+                ui.figure_color_extra_box.show()
+                ui.figure_color_extra_box.raise_()  # 确保在最前面
+                print(f"颜色选择框已显示，尺寸: {ui.figure_color_extra_box.size()}")
+                print(f"颜色选择框位置: {ui.figure_color_extra_box.pos()}")
+                print(f"颜色选择框可见性: {ui.figure_color_extra_box.isVisible()}")
+            else:
+                print("警告：figure_color_extra_box不存在")
+                
+        except Exception as e:
+            print(f"lipids_colors方法执行出错: {e}")
+            raise
 
     @classmethod
     def single_color(cls, ui):
@@ -265,7 +675,8 @@ class FigurePage:
     def residues_color_sel(cls, index, btn, ui):
         new_color = cls._open_and_get_qcolor()
         ui.FigureInfo.ColorInfo[ui.FigureInfo.residues[index]] = new_color
-        btn.setStyleSheet(f'background-color: rgb({new_color[0]*255}, {new_color[1]*255}, {new_color[2]*255});'
+        btn.setStyleSheet(
+            f'background-color: rgb({new_color[0]*255}, {new_color[1]*255}, {new_color[2]*255});'
                           f'border-radius: {UISettings.BTN_BORDER_RADIUS};'
                           f'width: {UISettings.BTN_WIDTH};'
                           f'height: {UISettings.BTN_HEIGHT};')

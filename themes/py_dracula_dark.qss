@@ -70,7 +70,7 @@ Left Menu */
 	padding-left: 44px;
 }
 #topMenu .QPushButton:hover {
-	background-color: rgb(40, 44, 52);
+	/* 去除悬停背景色变化 */
 }
 #topMenu .QPushButton:pressed {	
 	background-color: rgb(189, 147, 249);
@@ -86,7 +86,7 @@ Left Menu */
 	padding-left: 44px;
 }
 #bottomMenu .QPushButton:hover {
-	background-color: rgb(40, 44, 52);
+	/* 去除悬停背景色变化 */
 }
 #bottomMenu .QPushButton:pressed {	
 	background-color: rgb(189, 147, 249);
@@ -108,7 +108,7 @@ Left Menu */
 	color: rgb(113, 126, 149);
 }
 #toggleButton:hover {
-	background-color: rgb(40, 44, 52);
+	/* 去除悬停背景色变化 */
 }
 #toggleButton:pressed {
 	background-color: rgb(189, 147, 249);
@@ -139,7 +139,7 @@ Extra Tab */
 
 /* Btn Close */
 #extraCloseColumnBtn { background-color: rgba(255, 255, 255, 0); border: none;  border-radius: 5px; }
-#extraCloseColumnBtn:hover { background-color: rgb(196, 161, 249); border-style: solid; border-radius: 4px; }
+#extraCloseColumnBtn:hover { /* 去除悬停背景色和边框变化 */ }
 #extraCloseColumnBtn:pressed { background-color: rgb(180, 141, 238); border-style: solid; border-radius: 4px; }
 
 /* Extra Content */
@@ -158,7 +158,7 @@ background-position: left center;
 	padding-left: 44px;
 }
 #extraTopMenu .QPushButton:hover {
-	background-color: rgb(40, 44, 52);
+	/* 去除悬停背景色变化 */
 }
 #extraTopMenu .QPushButton:pressed {	
 	background-color: rgb(189, 147, 249);
@@ -175,9 +175,22 @@ Content App */
 }
 
 /* Top Buttons */
-#rightButtons .QPushButton { background-color: rgba(255, 255, 255, 0); border: none;  border-radius: 5px; }
-#rightButtons .QPushButton:hover { background-color: rgb(44, 49, 57); border-style: solid; border-radius: 4px; }
-#rightButtons .QPushButton:pressed { background-color: rgb(23, 26, 30); border-style: solid; border-radius: 4px; }
+#rightButtons .QPushButton { 
+    background-color: rgba(255, 255, 255, 0); 
+    border: none;  
+    border-radius: 5px; 
+    font-size: 14px;
+    color: white;
+    font: 14pt "华文细黑";
+}
+#rightButtons .QPushButton:hover { 
+    /* 去除悬停背景色和边框变化 */
+}
+#rightButtons .QPushButton:pressed { 
+    background-color: rgb(23, 26, 30); 
+    border-style: solid; 
+    border-radius: 4px; 
+}
 
 /* Theme Settings */
 #extraRightBox { background-color: rgb(44, 49, 58); }
@@ -199,7 +212,7 @@ Content App */
 	padding-left: 44px;
 }
 #contentSettings .QPushButton:hover {
-	background-color: rgb(40, 44, 52);
+	/* 去除悬停背景色变化 */
 }
 #contentSettings .QPushButton:pressed {	
 	background-color: rgb(189, 147, 249);
@@ -255,11 +268,15 @@ QLineEdit {
 	border-radius: 5px;
 	border: 2px solid rgb(33, 37, 43);
 	padding-left: 10px;
+	color: rgb(248, 248, 242);
 	selection-color: rgb(255, 255, 255);
 	selection-background-color: rgb(255, 121, 198);
 }
+QLineEdit::placeholder {
+	color: rgb(139, 139, 139);
+}
 QLineEdit:hover {
-	border: 2px solid rgb(64, 71, 88);
+	/* 去除悬停边框变化 */
 }
 QLineEdit:focus {
 	border: 2px solid rgb(91, 101, 124);
@@ -281,7 +298,7 @@ QPlainTextEdit  QScrollBar:horizontal {
     height: 8px;
  }
 QPlainTextEdit:hover {
-	border: 2px solid rgb(64, 71, 88);
+	/* 去除悬停边框变化 */
 }
 QPlainTextEdit:focus {
 	border: 2px solid rgb(91, 101, 124);
@@ -375,7 +392,7 @@ QCheckBox::indicator {
     background: rgb(44, 49, 60);
 }
 QCheckBox::indicator:hover {
-    border: 3px solid rgb(58, 66, 81);
+    /* 去除悬停边框变化 */
 }
 QCheckBox::indicator:checked {
     background: 3px solid rgb(52, 59, 72);
@@ -393,7 +410,7 @@ QRadioButton::indicator {
     background: rgb(44, 49, 60);
 }
 QRadioButton::indicator:hover {
-    border: 3px solid rgb(58, 66, 81);
+    /* 去除悬停边框变化 */
 }
 QRadioButton::indicator:checked {
     background: 3px solid rgb(94, 106, 130);
@@ -410,7 +427,7 @@ QComboBox{
 	padding-left: 10px;
 }
 QComboBox:hover{
-	border: 2px solid rgb(64, 71, 88);
+	/* 去除悬停边框变化 */
 }
 QComboBox::drop-down {
 	subcontrol-origin: padding;
@@ -441,7 +458,7 @@ QSlider::groove:horizontal {
 	background-color: rgb(52, 59, 72);
 }
 QSlider::groove:horizontal:hover {
-	background-color: rgb(55, 62, 76);
+	/* 去除悬停背景色变化 */
 }
 QSlider::handle:horizontal {
     background-color: rgb(189, 147, 249);
@@ -452,7 +469,7 @@ QSlider::handle:horizontal {
 	border-radius: 5px;
 }
 QSlider::handle:horizontal:hover {
-    background-color: rgb(195, 155, 255);
+    /* 去除悬停背景色变化 */
 }
 QSlider::handle:horizontal:pressed {
     background-color: rgb(255, 121, 198);
@@ -465,7 +482,7 @@ QSlider::groove:vertical {
 	background-color: rgb(52, 59, 72);
 }
 QSlider::groove:vertical:hover {
-	background-color: rgb(55, 62, 76);
+	/* 去除悬停背景色变化 */
 }
 QSlider::handle:vertical {
     background-color: rgb(189, 147, 249);
@@ -476,7 +493,7 @@ QSlider::handle:vertical {
 	border-radius: 5px;
 }
 QSlider::handle:vertical:hover {
-    background-color: rgb(195, 155, 255);
+    /* 去除悬停背景色变化 */
 }
 QSlider::handle:vertical:pressed {
     background-color: rgb(255, 121, 198);
@@ -490,8 +507,7 @@ QCommandLinkButton {
 	padding: 5px;
 }
 QCommandLinkButton:hover {	
-	color: rgb(255, 170, 255);
-	background-color: rgb(44, 49, 60);
+	/* 去除悬停颜色和背景色变化 */
 }
 QCommandLinkButton:pressed {	
 	color: rgb(189, 147, 249);
@@ -506,8 +522,7 @@ Button */
 	background-color: rgb(52, 59, 72);
 }
 #pagesContainer QPushButton:hover {
-	background-color: rgb(57, 65, 80);
-	border: 2px solid rgb(61, 70, 86);
+	/* 去除悬停背景色和边框变化 */
 }
 #pagesContainer QPushButton:pressed {	
 	background-color: rgb(35, 40, 49);
