@@ -39,526 +39,6 @@ class Ui_MainWindow(object):
         font.setBold(False)
         font.setItalic(False)
         self.styleSheet.setFont(font)
-        self.styleSheet.setStyleSheet(u"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"\n"
-"SET APP STYLESHEET - FULL STYLES HERE\n"
-"DARK THEME - DRACULA COLOR BASED\n"
-"\n"
-"///////////////////////////////////////////////////////////////////////////////////////////////// */\n"
-"\n"
-"QWidget{\n"
-"   color: rgb(221, 221, 221);\n"
-"   font: 10pt \"Segoe UI\";\n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"Tooltip */\n"
-"QToolTip {\n"
-"   color: #ffffff;\n"
-"   background-color: rgba(33, 37, 43, 180);\n"
-"   border: 1px solid rgb(44, 49, 58);\n"
-"   background-image: none;\n"
-"   background-position: left center;\n"
-"    background-repeat: no-repeat;\n"
-"   border: none;\n"
-"   border-left: 2px solid rgb(255, 121, 198);\n"
-"   text-align: left;\n"
-"   padding-left: 8px;\n"
-"   margin: 0px;\n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"Bg App */\n"
-"#bgApp {   \n"
-"   background"
-                        "-color: rgb(40, 44, 52);\n"
-"   border: 1px solid rgb(44, 49, 58);\n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"Left Menu */\n"
-"#leftMenuBg {  \n"
-"   background-color: rgb(33, 37, 43);\n"
-"}\n"
-"#topLogo {\n"
-"   background-color: rgb(33, 37, 43);\n"
-"   background-image: url(:/images/images/images/PyDracula.png);\n"
-"   background-position: centered;\n"
-"   background-repeat: no-repeat;\n"
-"}\n"
-"#titleLeftApp { font: 63 12pt \"Segoe UI Semibold\"; }\n"
-"#titleLeftDescription { font: 8pt \"Segoe UI\"; color: rgb(189, 147, 249); }\n"
-"\n"
-"/* MENUS */\n"
-"#topMenu .QPushButton {    \n"
-"   background-position: left center;\n"
-"    background-repeat: no-repeat;\n"
-"   border: none;\n"
-"   border-left: 22px solid transparent;\n"
-"   background-color: transparent;\n"
-"   text-align: left;\n"
-"   padding-left: 44px;\n"
-"}\n"
-"#topMenu .QPushButton:hover {\n"
-"   background-color: rgb(40, 44, 52);\n"
-"}\n"
-"#topMenu .QPushButton:pressed {    \n"
-"   background-color: rgb(18"
-                        "9, 147, 249);\n"
-"   color: rgb(255, 255, 255);\n"
-"}\n"
-"#bottomMenu .QPushButton { \n"
-"   background-position: left center;\n"
-"    background-repeat: no-repeat;\n"
-"   border: none;\n"
-"   border-left: 20px solid transparent;\n"
-"   background-color:transparent;\n"
-"   text-align: left;\n"
-"   padding-left: 44px;\n"
-"}\n"
-"#bottomMenu .QPushButton:hover {\n"
-"   background-color: rgb(40, 44, 52);\n"
-"}\n"
-"#bottomMenu .QPushButton:pressed { \n"
-"   background-color: rgb(189, 147, 249);\n"
-"   color: rgb(255, 255, 255);\n"
-"}\n"
-"#leftMenuFrame{\n"
-"   border-top: 3px solid rgb(44, 49, 58);\n"
-"}\n"
-"\n"
-"/* Toggle Button */\n"
-"#toggleButton {\n"
-"   background-position: left center;\n"
-"    background-repeat: no-repeat;\n"
-"   border: none;\n"
-"   border-left: 20px solid transparent;\n"
-"   background-color: rgb(37, 41, 48);\n"
-"   text-align: left;\n"
-"   padding-left: 44px;\n"
-"   color: rgb(113, 126, 149);\n"
-"}\n"
-"#toggleButton:hover {\n"
-"   background-color: rgb(40, 44, 52);\n"
-"}\n"
-"#toggleButton:pressed {\n"
-"   background-color: rgb("
-                        "189, 147, 249);\n"
-"}\n"
-"\n"
-"/* Title Menu */\n"
-"#titleRightInfo { padding-left: 10px; }\n"
-"\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"Extra Tab */\n"
-"#extraLeftBox {    \n"
-"   background-color: rgb(44, 49, 58);\n"
-"}\n"
-"#extraTopBg{   \n"
-"   background-color: rgb(189, 147, 249)\n"
-"}\n"
-"\n"
-"/* Icon */\n"
-"#extraIcon {\n"
-"   background-position: center;\n"
-"   background-repeat: no-repeat;\n"
-"   background-image: url(:/icons/images/icons/icon_settings.png);\n"
-"}\n"
-"\n"
-"/* Label */\n"
-"#extraLabel { color: rgb(255, 255, 255); }\n"
-"\n"
-"/* Btn Close */\n"
-"#extraCloseColumnBtn { background-color: rgba(255, 255, 255, 0); border: none;  border-radius: 5px; }\n"
-"#extraCloseColumnBtn:hover { background-color: rgb(196, 161, 249); border-style: solid; border-radius: 4px; }\n"
-"#extraCloseColumnBtn:pressed { background-color: rgb(180, 141, 238); border-style: solid; border-radius: 4px; }\n"
-"\n"
-"/* Extra Content */\n"
-"#extraContent{\n"
-"   border"
-                        "-top: 3px solid rgb(40, 44, 52);\n"
-"}\n"
-"\n"
-"/* Extra Top Menus */\n"
-"#extraTopMenu .QPushButton {\n"
-"background-position: left center;\n"
-"    background-repeat: no-repeat;\n"
-"   border: none;\n"
-"   border-left: 22px solid transparent;\n"
-"   background-color:transparent;\n"
-"   text-align: left;\n"
-"   padding-left: 44px;\n"
-"}\n"
-"#extraTopMenu .QPushButton:hover {\n"
-"   background-color: rgb(40, 44, 52);\n"
-"}\n"
-"#extraTopMenu .QPushButton:pressed {   \n"
-"   background-color: rgb(189, 147, 249);\n"
-"   color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"Content App */\n"
-"#contentTopBg{ \n"
-"   background-color: rgb(33, 37, 43);\n"
-"}\n"
-"#contentBottom{\n"
-"   border-top: 3px solid rgb(44, 49, 58);\n"
-"}\n"
-"\n"
-"/* Top Buttons */\n"
-"#rightButtons .QPushButton { background-color: rgba(255, 255, 255, 0); border: none;  border-radius: 5px; }\n"
-"#rightButtons .QPushButton:hover { background-color: rgb(44, 49, 57); border-sty"
-                        "le: solid; border-radius: 4px; }\n"
-"#rightButtons .QPushButton:pressed { background-color: rgb(23, 26, 30); border-style: solid; border-radius: 4px; }\n"
-"\n"
-"/* Theme Settings */\n"
-"#extraRightBox { background-color: rgb(44, 49, 58); }\n"
-"#themeSettingsTopDetail { background-color: rgb(189, 147, 249); }\n"
-"\n"
-"/* Bottom Bar */\n"
-"#bottomBar { background-color: rgb(44, 49, 58); }\n"
-"#bottomBar QLabel { font-size: 11px; color: rgb(113, 126, 149); padding-left: 10px; padding-right: 10px; padding-bottom: 2px; }\n"
-"\n"
-"/* CONTENT SETTINGS */\n"
-"/* MENUS */\n"
-"#contentSettings .QPushButton {    \n"
-"   background-position: left center;\n"
-"    background-repeat: no-repeat;\n"
-"   border: none;\n"
-"   border-left: 22px solid transparent;\n"
-"   background-color:transparent;\n"
-"   text-align: left;\n"
-"   padding-left: 44px;\n"
-"}\n"
-"#contentSettings .QPushButton:hover {\n"
-"   background-color: rgb(40, 44, 52);\n"
-"}\n"
-"#contentSettings .QPushButton:pressed {    \n"
-"   background-color: rgb(189, 147, 249);\n"
-"   color: rgb"
-                        "(255, 255, 255);\n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"QTableWidget */\n"
-"QTableWidget { \n"
-"   background-color: transparent;\n"
-"   padding: 10px;\n"
-"   border-radius: 5px;\n"
-"   gridline-color: rgb(44, 49, 58);\n"
-"   border-bottom: 1px solid rgb(44, 49, 60);\n"
-"}\n"
-"QTableWidget::item{\n"
-"   border-color: rgb(44, 49, 60);\n"
-"   padding-left: 5px;\n"
-"   padding-right: 5px;\n"
-"   gridline-color: rgb(44, 49, 60);\n"
-"}\n"
-"QTableWidget::item:selected{\n"
-"   background-color: rgb(189, 147, 249);\n"
-"}\n"
-"QHeaderView::section{\n"
-"   background-color: rgb(33, 37, 43);\n"
-"   max-width: 30px;\n"
-"   border: 1px solid rgb(44, 49, 58);\n"
-"   border-style: none;\n"
-"    border-bottom: 1px solid rgb(44, 49, 60);\n"
-"    border-right: 1px solid rgb(44, 49, 60);\n"
-"}\n"
-"QTableWidget::horizontalHeader {   \n"
-"   background-color: rgb(33, 37, 43);\n"
-"}\n"
-"QHeaderView::section:horizontal\n"
-"{\n"
-"    border: 1px solid rgb(33, 37, 43);\n"
-"   background-co"
-                        "lor: rgb(33, 37, 43);\n"
-"   padding: 3px;\n"
-"   border-top-left-radius: 7px;\n"
-"    border-top-right-radius: 7px;\n"
-"}\n"
-"QHeaderView::section:vertical\n"
-"{\n"
-"    border: 1px solid rgb(44, 49, 60);\n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"LineEdit */\n"
-"QLineEdit {\n"
-"   background-color: rgb(33, 37, 43);\n"
-"   border-radius: 5px;\n"
-"   border: 2px solid rgb(33, 37, 43);\n"
-"   padding-left: 10px;\n"
-"   selection-color: rgb(255, 255, 255);\n"
-"   selection-background-color: rgb(255, 121, 198);\n"
-"}\n"
-"QLineEdit:hover {\n"
-"   border: 2px solid rgb(64, 71, 88);\n"
-"}\n"
-"QLineEdit:focus {\n"
-"   border: 2px solid rgb(91, 101, 124);\n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"PlainTextEdit */\n"
-"QPlainTextEdit {\n"
-"   background-color: rgb(27, 29, 35);\n"
-"   border-radius: 5px;\n"
-"   padding: 10px;\n"
-"   selection-color: rgb(255, 255, 255);\n"
-"   selection-background-c"
-                        "olor: rgb(255, 121, 198);\n"
-"}\n"
-"QPlainTextEdit  QScrollBar:vertical {\n"
-"    width: 8px;\n"
-" }\n"
-"QPlainTextEdit  QScrollBar:horizontal {\n"
-"    height: 8px;\n"
-" }\n"
-"QPlainTextEdit:hover {\n"
-"   border: 2px solid rgb(64, 71, 88);\n"
-"}\n"
-"QPlainTextEdit:focus {\n"
-"   border: 2px solid rgb(91, 101, 124);\n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"ScrollBars */\n"
-"QScrollBar:horizontal {\n"
-"    border: none;\n"
-"    background: rgb(52, 59, 72);\n"
-"    height: 8px;\n"
-"    margin: 0px 21px 0 21px;\n"
-"   border-radius: 0px;\n"
-"}\n"
-"QScrollBar::handle:horizontal {\n"
-"    background: rgb(189, 147, 249);\n"
-"    min-width: 25px;\n"
-"   border-radius: 4px\n"
-"}\n"
-"QScrollBar::add-line:horizontal {\n"
-"    border: none;\n"
-"    background: rgb(55, 63, 77);\n"
-"    width: 20px;\n"
-"   border-top-right-radius: 4px;\n"
-"    border-bottom-right-radius: 4px;\n"
-"    subcontrol-position: right;\n"
-"    subcontrol-origin: margin;\n"
-"}\n"
-""
-                        "QScrollBar::sub-line:horizontal {\n"
-"    border: none;\n"
-"    background: rgb(55, 63, 77);\n"
-"    width: 20px;\n"
-"   border-top-left-radius: 4px;\n"
-"    border-bottom-left-radius: 4px;\n"
-"    subcontrol-position: left;\n"
-"    subcontrol-origin: margin;\n"
-"}\n"
-"QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal\n"
-"{\n"
-"     background: none;\n"
-"}\n"
-"QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal\n"
-"{\n"
-"     background: none;\n"
-"}\n"
-" QScrollBar:vertical {\n"
-"   border: none;\n"
-"    background: rgb(52, 59, 72);\n"
-"    width: 8px;\n"
-"    margin: 21px 0 21px 0;\n"
-"   border-radius: 0px;\n"
-" }\n"
-" QScrollBar::handle:vertical { \n"
-"   background: rgb(189, 147, 249);\n"
-"    min-height: 25px;\n"
-"   border-radius: 4px\n"
-" }\n"
-" QScrollBar::add-line:vertical {\n"
-"     border: none;\n"
-"    background: rgb(55, 63, 77);\n"
-"     height: 20px;\n"
-"   border-bottom-left-radius: 4px;\n"
-"    border-bottom-right-radius: 4px;\n"
-"     subcontrol-position: bottom;\n"
-"     su"
-                        "bcontrol-origin: margin;\n"
-" }\n"
-" QScrollBar::sub-line:vertical {\n"
-"   border: none;\n"
-"    background: rgb(55, 63, 77);\n"
-"     height: 20px;\n"
-"   border-top-left-radius: 4px;\n"
-"    border-top-right-radius: 4px;\n"
-"     subcontrol-position: top;\n"
-"     subcontrol-origin: margin;\n"
-" }\n"
-" QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\n"
-"     background: none;\n"
-" }\n"
-"\n"
-" QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
-"     background: none;\n"
-" }\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"CheckBox */\n"
-"QCheckBox::indicator {\n"
-"    border: 3px solid rgb(52, 59, 72);\n"
-"   width: 15px;\n"
-"   height: 15px;\n"
-"   border-radius: 10px;\n"
-"    background: rgb(44, 49, 60);\n"
-"}\n"
-"QCheckBox::indicator:hover {\n"
-"    border: 3px solid rgb(58, 66, 81);\n"
-"}\n"
-"QCheckBox::indicator:checked {\n"
-"    background: 3px solid rgb(52, 59, 72);\n"
-"   border: 3px solid rgb(52, 59, 72); \n"
-"   back"
-                        "ground-image: url(:/icons/images/icons/cil-check-alt.png);\n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"RadioButton */\n"
-"QRadioButton::indicator {\n"
-"    border: 3px solid rgb(52, 59, 72);\n"
-"   width: 15px;\n"
-"   height: 15px;\n"
-"   border-radius: 10px;\n"
-"    background: rgb(44, 49, 60);\n"
-"}\n"
-"QRadioButton::indicator:hover {\n"
-"    border: 3px solid rgb(58, 66, 81);\n"
-"}\n"
-"QRadioButton::indicator:checked {\n"
-"    background: 3px solid rgb(94, 106, 130);\n"
-"   border: 3px solid rgb(52, 59, 72); \n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"ComboBox */\n"
-"QComboBox{\n"
-"   background-color: rgb(27, 29, 35);\n"
-"   border-radius: 5px;\n"
-"   border: 2px solid rgb(33, 37, 43);\n"
-"   padding: 5px;\n"
-"   padding-left: 10px;\n"
-"}\n"
-"QComboBox:hover{\n"
-"   border: 2px solid rgb(64, 71, 88);\n"
-"}\n"
-"QComboBox::drop-down {\n"
-"   subcontrol-origin: padding;\n"
-"   subco"
-                        "ntrol-position: top right;\n"
-"   width: 25px; \n"
-"   border-left-width: 3px;\n"
-"   border-left-color: rgba(39, 44, 54, 150);\n"
-"   border-left-style: solid;\n"
-"   border-top-right-radius: 3px;\n"
-"   border-bottom-right-radius: 3px;   \n"
-"   background-image: url(:/icons/images/icons/cil-arrow-bottom.png);\n"
-"   background-position: center;\n"
-"   background-repeat: no-reperat;\n"
-" }\n"
-"QComboBox QAbstractItemView {\n"
-"   color: rgb(255, 121, 198); \n"
-"   background-color: rgb(33, 37, 43);\n"
-"   padding: 10px;\n"
-"   selection-background-color: rgb(39, 44, 54);\n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"Sliders */\n"
-"QSlider::groove:horizontal {\n"
-"    border-radius: 5px;\n"
-"    height: 10px;\n"
-"   margin: 0px;\n"
-"   background-color: rgb(52, 59, 72);\n"
-"}\n"
-"QSlider::groove:horizontal:hover {\n"
-"   background-color: rgb(55, 62, 76);\n"
-"}\n"
-"QSlider::handle:horizontal {\n"
-"    background-color: rgb(189, 147, 249);\n"
-"    border: none;\n"
-"    h"
-                        "eight: 10px;\n"
-"    width: 10px;\n"
-"    margin: 0px;\n"
-"   border-radius: 5px;\n"
-"}\n"
-"QSlider::handle:horizontal:hover {\n"
-"    background-color: rgb(195, 155, 255);\n"
-"}\n"
-"QSlider::handle:horizontal:pressed {\n"
-"    background-color: rgb(255, 121, 198);\n"
-"}\n"
-"\n"
-"QSlider::groove:vertical {\n"
-"    border-radius: 5px;\n"
-"    width: 10px;\n"
-"    margin: 0px;\n"
-"   background-color: rgb(52, 59, 72);\n"
-"}\n"
-"QSlider::groove:vertical:hover {\n"
-"   background-color: rgb(55, 62, 76);\n"
-"}\n"
-"QSlider::handle:vertical {\n"
-"    background-color: rgb(189, 147, 249);\n"
-"   border: none;\n"
-"    height: 10px;\n"
-"    width: 10px;\n"
-"    margin: 0px;\n"
-"   border-radius: 5px;\n"
-"}\n"
-"QSlider::handle:vertical:hover {\n"
-"    background-color: rgb(195, 155, 255);\n"
-"}\n"
-"QSlider::handle:vertical:pressed {\n"
-"    background-color: rgb(255, 121, 198);\n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"CommandLinkButton */\n"
-"QCommandLi"
-                        "nkButton { \n"
-"   color: rgb(255, 121, 198);\n"
-"   border-radius: 5px;\n"
-"   padding: 5px;\n"
-"   color: rgb(255, 170, 255);\n"
-"}\n"
-"QCommandLinkButton:hover { \n"
-"   color: rgb(255, 170, 255);\n"
-"   background-color: rgb(44, 49, 60);\n"
-"}\n"
-"QCommandLinkButton:pressed {   \n"
-"   color: rgb(189, 147, 249);\n"
-"   background-color: rgb(52, 58, 71);\n"
-"}\n"
-"\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"Button */\n"
-"#pagesContainer QPushButton {\n"
-"   border: 2px solid rgb(52, 59, 72);\n"
-"   border-radius: 5px;    \n"
-"   background-color: rgb(52, 59, 72);\n"
-"}\n"
-"#pagesContainer QPushButton:hover {\n"
-"   background-color: rgb(57, 65, 80);\n"
-"   border: 2px solid rgb(61, 70, 86);\n"
-"}\n"
-"#pagesContainer QPushButton:pressed {  \n"
-"   background-color: rgb(35, 40, 49);\n"
-"   border: 2px solid rgb(43, 50, 61);\n"
-"}\n"
-"\n"
-"")
         self.verticalLayout_23 = QVBoxLayout(self.styleSheet)
         self.verticalLayout_23.setSpacing(0)
         self.verticalLayout_23.setObjectName(u"verticalLayout_23")
@@ -957,11 +437,12 @@ class Ui_MainWindow(object):
         font4.setItalic(False)
         self.btnTrajectory.setFont(font4)
         self.btnTrajectory.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.btnTrajectory.setStyleSheet(u"background-color: rgb(52, 59, 72);\n"
-"text-align:left;\n"
-"font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"\n"
-"")
+        # self.btnTrajectory.setStyleSheet(
+                # u"background-color: rgb(52, 59, 72);\n"
+# "text-align:left;\n"
+# "font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "\n"
+# "")
         icon3 = QIcon()
         icon3.addFile(u":/icons/images/icons/cil-folder-open.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.btnTrajectory.setIcon(icon3)
@@ -972,8 +453,10 @@ class Ui_MainWindow(object):
         self.editStructure.setObjectName(u"editStructure")
         self.editStructure.setMinimumSize(QSize(100, 50))
         self.editStructure.setMaximumSize(QSize(16000, 200))
-        self.editStructure.setStyleSheet(u"background-color: rgb(33, 37, 43);\n"
-"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
+        self.editStructure.setStyleSheet(
+                # u"background-color: rgb(33, 37, 43);\n"
+                
+                u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
 
         self.gridLayout_6.addWidget(self.editStructure, 0, 0, 1, 1)
 
@@ -981,7 +464,8 @@ class Ui_MainWindow(object):
         self.editTrajectory.setObjectName(u"editTrajectory")
         self.editTrajectory.setMinimumSize(QSize(100, 50))
         self.editTrajectory.setMaximumSize(QSize(16777215, 200))
-        self.editTrajectory.setStyleSheet(u"background-color: rgb(33, 37, 43);\n"
+        self.editTrajectory.setStyleSheet(
+                # u"background-color: rgb(33, 37, 43);\n"
 "font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
 
         self.gridLayout_6.addWidget(self.editTrajectory, 1, 0, 1, 1)
@@ -992,9 +476,10 @@ class Ui_MainWindow(object):
         self.btnSructure.setMaximumSize(QSize(100, 16777215))
         self.btnSructure.setFont(font4)
         self.btnSructure.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.btnSructure.setStyleSheet(u"background-color: rgb(52, 59, 72);\n"
-"text-align:left;\n"
-"font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";")
+        # self.btnSructure.setStyleSheet(
+                # u"background-color: rgb(52, 59, 72);\n"
+# "text-align:left;\n"
+# "font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";")
         self.btnSructure.setIcon(icon3)
         self.btnSructure.setCheckable(False)
 
@@ -1006,9 +491,10 @@ class Ui_MainWindow(object):
         self.btnResult.setMaximumSize(QSize(100, 16777215))
         self.btnResult.setFont(font4)
         self.btnResult.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.btnResult.setStyleSheet(u"background-color: rgb(52, 59, 72);\n"
-"text-align:left;\n"
-"font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";")
+        # self.btnResult.setStyleSheet(
+                # u"background-color: rgb(52, 59, 72);\n"
+# "text-align:left;\n"
+# "font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";")
         self.btnResult.setIcon(icon3)
 
         self.gridLayout_6.addWidget(self.btnResult, 2, 1, 1, 1)
@@ -1017,7 +503,8 @@ class Ui_MainWindow(object):
         self.editResult.setObjectName(u"editResult")
         self.editResult.setMinimumSize(QSize(100, 50))
         self.editResult.setMaximumSize(QSize(16777215, 200))
-        self.editResult.setStyleSheet(u"background-color: rgb(33, 37, 43);\n"
+        self.editResult.setStyleSheet(
+                # u"background-color: rgb(33, 37, 43);\n"
 "font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
 
         self.gridLayout_6.addWidget(self.editResult, 2, 0, 1, 1)
@@ -1049,8 +536,7 @@ class Ui_MainWindow(object):
         self.comboBoxMethod.addItem("")
         self.comboBoxMethod.addItem("")
         self.comboBoxMethod.addItem("")
-        self.comboBoxMethod.addItem("")
-        self.comboBoxMethod.addItem("")
+
         self.comboBoxMethod.setObjectName(u"comboBoxMethod")
         self.comboBoxMethod.setMinimumSize(QSize(0, 40))
         font5 = QFont()
@@ -1060,10 +546,10 @@ class Ui_MainWindow(object):
         font5.setItalic(False)
         self.comboBoxMethod.setFont(font5)
         self.comboBoxMethod.setAutoFillBackground(False)
-        self.comboBoxMethod.setStyleSheet(u"background-color:rgb(40,44,52);\n"
-"font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"font-weight:bold;\n"
-"border: 1px solid white;")
+        # self.comboBoxMethod.setStyleSheet(u"background-color:rgb(40,44,52);\n"
+# "font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "font-weight:bold;\n"
+# "border: 1px solid white;")
         self.comboBoxMethod.setIconSize(QSize(16, 16))
         self.comboBoxMethod.setFrame(True)
 
@@ -1072,24 +558,25 @@ class Ui_MainWindow(object):
         self.editLastFrame = QSpinBox(self.row2_height_2)
         self.editLastFrame.setObjectName(u"editLastFrame")
         self.editLastFrame.setMinimumSize(QSize(0, 40))
-        self.editLastFrame.setStyleSheet(u"QSpinBox {\n"
+        self.editLastFrame.setStyleSheet(
+# u"QSpinBox {\n"
 "    font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QSpinBox::up-button {\n"
-"    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QSpinBox::down-button {\n"
-"    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
+# "    color: white;\n"
+# "    border: 1px solid;\n"
+# "background-color:rgb(33, 37, 43);\n"
+# "}\n"
+# "\n"
+# "QSpinBox::up-button {\n"
+# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
+# "\n"
+# "QSpinBox::down-button {\n"
+# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
 "")
 
         self.gridLayout_7.addWidget(self.editLastFrame, 2, 1, 2, 1)
@@ -1097,24 +584,25 @@ class Ui_MainWindow(object):
         self.editStep = QSpinBox(self.row2_height_2)
         self.editStep.setObjectName(u"editStep")
         self.editStep.setMinimumSize(QSize(0, 40))
-        self.editStep.setStyleSheet(u"QSpinBox {\n"
+        self.editStep.setStyleSheet(
+                u"QSpinBox {\n"
 "    font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QSpinBox::up-button {\n"
-"    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QSpinBox::down-button {\n"
-"    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
+# "    color: white;\n"
+# "    border: 1px solid white;\n"
+# "background-color:rgb(33, 37, 43);\n"
+# "}\n"
+# "\n"
+# "QSpinBox::up-button {\n"
+# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
+# "\n"
+# "QSpinBox::down-button {\n"
+# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
 "")
 
         self.gridLayout_7.addWidget(self.editStep, 2, 2, 2, 1)
@@ -1137,24 +625,25 @@ class Ui_MainWindow(object):
         self.editFirstFrame = QSpinBox(self.row2_height_2)
         self.editFirstFrame.setObjectName(u"editFirstFrame")
         self.editFirstFrame.setMinimumSize(QSize(0, 40))
-        self.editFirstFrame.setStyleSheet(u"QSpinBox {\n"
+        self.editFirstFrame.setStyleSheet(
+                u"QSpinBox {\n"
 "    font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color: rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QSpinBox::up-button {\n"
-"    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QSpinBox::down-button {\n"
-"    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
+# "    color: white;\n"
+# "    border: 1px solid white;\n"
+# "background-color: rgb(33, 37, 43);\n"
+# "}\n"
+# "\n"
+# "QSpinBox::up-button {\n"
+# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
+# "\n"
+# "QSpinBox::down-button {\n"
+# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
 "")
 
         self.gridLayout_7.addWidget(self.editFirstFrame, 2, 0, 2, 1)
@@ -1201,22 +690,22 @@ class Ui_MainWindow(object):
         self.editK.setMinimumSize(QSize(0, 40))
         self.editK.setStyleSheet(u"QSpinBox {\n"
 "    font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QSpinBox::up-button {\n"
-"    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QSpinBox::down-button {\n"
-"    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
+# "    color: white;\n"
+# "    border: 1px solid white;\n"
+# "background-color:rgb(33, 37, 43);\n"
+# "}\n"
+# "\n"
+# "QSpinBox::up-button {\n"
+# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
+# "\n"
+# "QSpinBox::down-button {\n"
+# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
 "")
 
         self.gridLayout_7.addWidget(self.editK, 2, 4, 2, 1)
@@ -1289,7 +778,8 @@ class Ui_MainWindow(object):
         self.edit_gene_path = QLineEdit(self.frame_5)
         self.edit_gene_path.setObjectName(u"edit_gene_path")
         self.edit_gene_path.setMinimumSize(QSize(0, 45))
-        self.edit_gene_path.setStyleSheet(u"background-color: rgb(33, 37, 43);\n"
+        self.edit_gene_path.setStyleSheet(
+                # u"background-color: rgb(33, 37, 43);\n"
 "font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
 
         self.horizontalLayout_7.addWidget(self.edit_gene_path)
@@ -1298,10 +788,11 @@ class Ui_MainWindow(object):
         self.btn_gene_path.setObjectName(u"btn_gene_path")
         self.btn_gene_path.setMinimumSize(QSize(150, 45))
         self.btn_gene_path.setFont(font4)
-        self.btn_gene_path.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.btn_gene_path.setStyleSheet(u"background-color: rgb(52, 59, 72);\n"
-"text-align:left;\n"
-"font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";")
+        self.btn_gene_path.setCursor(QCursor(Qt.CursorShape.PointingHandCursor)) # 手型
+        # self.btn_gene_path.setStyleSheet(
+                # u"background-color: rgb(52, 59, 72);\n"
+# "text-align:left;\n"
+# "font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";")
         self.btn_gene_path.setIcon(icon3)
 
         self.horizontalLayout_7.addWidget(self.btn_gene_path)
@@ -1348,22 +839,22 @@ class Ui_MainWindow(object):
         self.spin_box_x.setMinimumSize(QSize(0, 30))
         self.spin_box_x.setStyleSheet(u"QDoubleSpinBox {\n"
 "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
+# "    color: white;\n"
+# "    border: 1px solid white;\n"
+# "background-color:rgb(33, 37, 43);\n"
+# "}\n"
+# "\n"
+# "QDoubleSpinBox::up-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
+# "\n"
+# "QDoubleSpinBox::down-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
 "")
         self.spin_box_x.setValue(20.000000000000000)
 
@@ -1374,22 +865,22 @@ class Ui_MainWindow(object):
         self.spin_box_y.setMinimumSize(QSize(0, 30))
         self.spin_box_y.setStyleSheet(u"QDoubleSpinBox {\n"
 "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
+# "    color: white;\n"
+# "    border: 1px solid white;\n"
+# "background-color:rgb(33, 37, 43);\n"
+# "}\n"
+# "\n"
+# "QDoubleSpinBox::up-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
+# "\n"
+# "QDoubleSpinBox::down-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
 "")
         self.spin_box_y.setValue(20.000000000000000)
 
@@ -1400,22 +891,22 @@ class Ui_MainWindow(object):
         self.spin_box_z.setMinimumSize(QSize(0, 30))
         self.spin_box_z.setStyleSheet(u"QDoubleSpinBox {\n"
 "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
+# "    color: white;\n"
+# "    border: 1px solid white;\n"
+# "background-color:rgb(33, 37, 43);\n"
+# "}\n"
+# "\n"
+# "QDoubleSpinBox::up-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
+# "\n"
+# "QDoubleSpinBox::down-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
 "")
         self.spin_box_z.setValue(20.000000000000000)
 
@@ -1444,10 +935,11 @@ class Ui_MainWindow(object):
         self.como_gas.addItem("")
         self.como_gas.setObjectName(u"como_gas")
         self.como_gas.setMinimumSize(QSize(30, 0))
-        self.como_gas.setStyleSheet(u"background-color:rgb(40,44,52);\n"
-"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"font-weight:bold;\n"
-"border: 1px solid white;")
+        # self.como_gas.setStyleSheet(
+                # u"background-color:rgb(40,44,52);\n"
+# u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "font-weight:bold;\n"
+# "border: 1px solid white;")
 
         self.gridLayout_8.addWidget(self.como_gas, 1, 0, 1, 1)
 
@@ -1466,24 +958,25 @@ class Ui_MainWindow(object):
         self.spin_gas_density = QSpinBox(self.frame_3)
         self.spin_gas_density.setObjectName(u"spin_gas_density")
         self.spin_gas_density.setMinimumSize(QSize(0, 30))
-        self.spin_gas_density.setStyleSheet(u"QSpinBox {\n"
+        self.spin_gas_density.setStyleSheet(
+                u"QSpinBox {\n"
 "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
+# "    color: white;\n"
+# "    border: 1px solid white;\n"
+# "background-color:rgb(33, 37, 43);\n"
+# "}\n"
+# "\n"
+# "QSpinBox::up-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
+# "\n"
+# "QSpinBox::down-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
 "")
         self.spin_gas_density.setMaximum(100000)
         self.spin_gas_density.setValue(145)
@@ -1495,22 +988,22 @@ class Ui_MainWindow(object):
         self.spin_area_5.setMinimumSize(QSize(0, 30))
         self.spin_area_5.setStyleSheet(u"QDoubleSpinBox {\n"
 "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
+# "    color: white;\n"
+# "    border: 1px solid white;\n"
+# "background-color:rgb(33, 37, 43);\n"
+# "}\n"
+# "\n"
+# "QDoubleSpinBox::up-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
+# "\n"
+# "QDoubleSpinBox::down-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
 "")
         self.spin_area_5.setValue(1.000000000000000)
 
@@ -1526,23 +1019,23 @@ class Ui_MainWindow(object):
         self.spin_r.setObjectName(u"spin_r")
         self.spin_r.setMinimumSize(QSize(0, 30))
         self.spin_r.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
+# "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "    color: white;\n"
+# "    border: 1px solid white;\n"
+# "background-color:rgb(33, 37, 43);\n"
+# "}\n"
+# "\n"
+# "QDoubleSpinBox::up-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
+# "\n"
+# "QDoubleSpinBox::down-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
 "")
         self.spin_r.setValue(5.000000000000000)
 
@@ -1552,9 +1045,10 @@ class Ui_MainWindow(object):
         self.btn_gene_lipid.setObjectName(u"btn_gene_lipid")
         self.btn_gene_lipid.setMinimumSize(QSize(0, 80))
         self.btn_gene_lipid.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.btn_gene_lipid.setStyleSheet(u"font: 18pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"background-color: rgb(189,147,249);\n"
-"color:white;")
+        # self.btn_gene_lipid.setStyleSheet(u"font: 18pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "background-color: rgb(189,147,249);\n"
+# "color:white;"
+# )
 
         self.gridLayout_8.addWidget(self.btn_gene_lipid, 0, 4, 2, 1)
 
@@ -1572,22 +1066,22 @@ class Ui_MainWindow(object):
         self.spin_salt.setMinimumSize(QSize(0, 30))
         self.spin_salt.setStyleSheet(u"QDoubleSpinBox {\n"
 "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
+# "    color: white;\n"
+# "    border: 1px solid white;\n"
+# "background-color:rgb(33, 37, 43);\n"
+# "}\n"
+# "\n"
+# "QDoubleSpinBox::up-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
+# "\n"
+# "QDoubleSpinBox::down-button {\n"
+# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
+# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
+# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
+# "}\n"
 "")
         self.spin_salt.setValue(0.150000000000000)
 
@@ -1610,10 +1104,11 @@ class Ui_MainWindow(object):
         self.como_solvent.addItem("")
         self.como_solvent.setObjectName(u"como_solvent")
         self.como_solvent.setMinimumSize(QSize(0, 30))
-        self.como_solvent.setStyleSheet(u"background-color:rgb(40,44,52);\n"
-"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"font-weight:bold;\n"
-"border: 1px solid white;")
+        # self.como_solvent.setStyleSheet(
+                # u"background-color:rgb(40,44,52);\n"
+# u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "font-weight:bold;\n"
+# "border: 1px solid white;")
 
         self.gridLayout_10.addWidget(self.como_solvent, 2, 0, 1, 1)
 
@@ -1624,9 +1119,10 @@ class Ui_MainWindow(object):
         self.btn_gene_run.setObjectName(u"btn_gene_run")
         self.btn_gene_run.setMinimumSize(QSize(0, 30))
         self.btn_gene_run.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.btn_gene_run.setStyleSheet(u"background-color: rgb(189,147,249);\n"
-"color:white;\n"
-"font-size:18pt;")
+        # self.btn_gene_run.setStyleSheet(
+                # u"background-color: rgb(189,147,249);\n"
+# "color:white;\n"
+# "font-size:18pt;")
 
         self.verticalLayout.addWidget(self.btn_gene_run)
 
@@ -1660,7 +1156,8 @@ class Ui_MainWindow(object):
         self.figure_edit_path = QLineEdit(self.frame_8)
         self.figure_edit_path.setObjectName(u"figure_edit_path")
         self.figure_edit_path.setMinimumSize(QSize(0, 45))
-        self.figure_edit_path.setStyleSheet(u"background-color: rgb(33, 37, 43);\n"
+        self.figure_edit_path.setStyleSheet(
+                # u"background-color: rgb(33, 37, 43);\n"
 "font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
         self.figure_edit_path.setReadOnly(True)
 
@@ -1669,791 +1166,15 @@ class Ui_MainWindow(object):
         self.figure_btn_path = QPushButton(self.frame_8)
         self.figure_btn_path.setObjectName(u"figure_btn_path")
         self.figure_btn_path.setMinimumSize(QSize(80, 45))
-        self.figure_btn_path.setStyleSheet(u"background-color: rgb(52, 59, 72);\n"
-"text-align:left;\n"
-"font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";")
+        # self.figure_btn_path.setStyleSheet(
+                # u"background-color: rgb(52, 59, 72);\n"
+# "text-align:left;\n"
+# "font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";")
 
         self.horizontalLayout_9.addWidget(self.figure_btn_path)
 
 
         self.verticalLayout_11.addWidget(self.frame_8)
-
-        self.tabWidget_lipids = QTabWidget(self.widget_2)
-        self.tabWidget_lipids.setObjectName(u"tabWidget_lipids")
-        self.tabWidget_lipids.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.tabWidget_lipids.setStyleSheet(u"QTabBar::tab {\n"
-"    background: lightgray;\n"
-"    border: 2px solid #C4C4C3;\n"
-"    border-bottom-color: #C4C4C3; /* same as the pane color */\n"
-"    border-top-left-radius: 5px;\n"
-"    border-top-right-radius: 5px;\n"
-"    min-width: 16ex;\n"
-"    padding: 2px;\n"
-"   font: 18pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"   color:balck;\n"
-"}\n"
-"\n"
-"QTabBar::tab:selected {\n"
-"    background: lightblue;\n"
-"}\n"
-"\n"
-"QTabBar::tab:hover {\n"
-"    background: pink;\n"
-"}\n"
-"")
-        self.tab_4 = QWidget()
-        self.tab_4.setObjectName(u"tab_4")
-        self.gridLayout_9 = QGridLayout(self.tab_4)
-        self.gridLayout_9.setObjectName(u"gridLayout_9")
-        self.figure_line_label_legend = QLabel(self.tab_4)
-        self.figure_line_label_legend.setObjectName(u"figure_line_label_legend")
-        self.figure_line_label_legend.setStyleSheet(u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_9.addWidget(self.figure_line_label_legend, 2, 0, 1, 1)
-
-        self.figure_line_btn_color_2 = QPushButton(self.tab_4)
-        self.figure_line_btn_color_2.setObjectName(u"figure_line_btn_color_2")
-        self.figure_line_btn_color_2.setEnabled(True)
-        self.figure_line_btn_color_2.setMinimumSize(QSize(0, 38))
-        self.figure_line_btn_color_2.setMaximumSize(QSize(16000000, 16777215))
-        self.figure_line_btn_color_2.setBaseSize(QSize(0, 0))
-        self.figure_line_btn_color_2.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.figure_line_btn_color_2.setStyleSheet(u"background-color: rgb(189,147,249);\n"
-"color:white;\n"
-"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_9.addWidget(self.figure_line_btn_color_2, 8, 1, 1, 1)
-
-        self.figure_line_spin_marker_size_2 = QDoubleSpinBox(self.tab_4)
-        self.figure_line_spin_marker_size_2.setObjectName(u"figure_line_spin_marker_size_2")
-        self.figure_line_spin_marker_size_2.setMinimumSize(QSize(0, 30))
-        self.figure_line_spin_marker_size_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_line_spin_marker_size_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-
-        self.gridLayout_9.addWidget(self.figure_line_spin_marker_size_2, 7, 1, 1, 1)
-
-        self.figure_line_label_x = QLabel(self.tab_4)
-        self.figure_line_label_x.setObjectName(u"figure_line_label_x")
-        self.figure_line_label_x.setStyleSheet(u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_9.addWidget(self.figure_line_label_x, 3, 0, 1, 1)
-
-        self.figure_line_label_color = QLabel(self.tab_4)
-        self.figure_line_label_color.setObjectName(u"figure_line_label_color")
-        self.figure_line_label_color.setStyleSheet(u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_9.addWidget(self.figure_line_label_color, 8, 0, 1, 1)
-
-        self.figure_line_label_y_range = QLabel(self.tab_4)
-        self.figure_line_label_y_range.setObjectName(u"figure_line_label_y_range")
-        self.figure_line_label_y_range.setStyleSheet(u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_9.addWidget(self.figure_line_label_y_range, 6, 0, 1, 1)
-
-        self.figure_line_label_x_range = QLabel(self.tab_4)
-        self.figure_line_label_x_range.setObjectName(u"figure_line_label_x_range")
-        self.figure_line_label_x_range.setStyleSheet(u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_9.addWidget(self.figure_line_label_x_range, 5, 0, 1, 1)
-
-        self.figure_line_label_y = QLabel(self.tab_4)
-        self.figure_line_label_y.setObjectName(u"figure_line_label_y")
-        self.figure_line_label_y.setStyleSheet(u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_9.addWidget(self.figure_line_label_y, 4, 0, 1, 1)
-
-        self.figure_line_label_axis_tick = QLabel(self.tab_4)
-        self.figure_line_label_axis_tick.setObjectName(u"figure_line_label_axis_tick")
-        self.figure_line_label_axis_tick.setStyleSheet(u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_9.addWidget(self.figure_line_label_axis_tick, 0, 0, 1, 1)
-
-        self.figure_line_label_marker = QLabel(self.tab_4)
-        self.figure_line_label_marker.setObjectName(u"figure_line_label_marker")
-        self.figure_line_label_marker.setStyleSheet(u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_9.addWidget(self.figure_line_label_marker, 7, 0, 1, 1)
-
-        self.figure_line_label_axis_title = QLabel(self.tab_4)
-        self.figure_line_label_axis_title.setObjectName(u"figure_line_label_axis_title")
-        self.figure_line_label_axis_title.setMinimumSize(QSize(50, 0))
-        self.figure_line_label_axis_title.setStyleSheet(u"font: 14pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_9.addWidget(self.figure_line_label_axis_title, 1, 0, 1, 1)
-
-        self.figure_line_spin_axis_scale_2 = QDoubleSpinBox(self.tab_4)
-        self.figure_line_spin_axis_scale_2.setObjectName(u"figure_line_spin_axis_scale_2")
-        self.figure_line_spin_axis_scale_2.setMinimumSize(QSize(0, 30))
-        self.figure_line_spin_axis_scale_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_line_spin_axis_scale_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_line_spin_axis_scale_2.setMaximum(100000.000000000000000)
-        self.figure_line_spin_axis_scale_2.setValue(10.000000000000000)
-
-        self.gridLayout_9.addWidget(self.figure_line_spin_axis_scale_2, 0, 1, 1, 1)
-
-        self.figure_line_spin_grid_size_2 = QDoubleSpinBox(self.tab_4)
-        self.figure_line_spin_grid_size_2.setObjectName(u"figure_line_spin_grid_size_2")
-        self.figure_line_spin_grid_size_2.setMinimumSize(QSize(0, 30))
-        self.figure_line_spin_grid_size_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_line_spin_grid_size_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_line_spin_grid_size_2.setMaximum(100000.000000000000000)
-        self.figure_line_spin_grid_size_2.setValue(10.000000000000000)
-
-        self.gridLayout_9.addWidget(self.figure_line_spin_grid_size_2, 2, 1, 1, 1)
-
-        self.figure_line_spin_axis_text_size_2 = QDoubleSpinBox(self.tab_4)
-        self.figure_line_spin_axis_text_size_2.setObjectName(u"figure_line_spin_axis_text_size_2")
-        self.figure_line_spin_axis_text_size_2.setMinimumSize(QSize(200, 30))
-        self.figure_line_spin_axis_text_size_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_line_spin_axis_text_size_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_line_spin_axis_text_size_2.setMaximum(100000.000000000000000)
-        self.figure_line_spin_axis_text_size_2.setValue(11.000000000000000)
-
-        self.gridLayout_9.addWidget(self.figure_line_spin_axis_text_size_2, 1, 1, 1, 1)
-
-        self.figure_line_spin_x_min_2 = QDoubleSpinBox(self.tab_4)
-        self.figure_line_spin_x_min_2.setObjectName(u"figure_line_spin_x_min_2")
-        self.figure_line_spin_x_min_2.setMinimumSize(QSize(0, 30))
-        self.figure_line_spin_x_min_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_line_spin_x_min_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_line_spin_x_min_2.setMinimum(-1000000000.000000000000000)
-        self.figure_line_spin_x_min_2.setMaximum(1000000000.000000000000000)
-
-        self.gridLayout_9.addWidget(self.figure_line_spin_x_min_2, 5, 1, 1, 1)
-
-        self.figure_line_edit_y_2 = QLineEdit(self.tab_4)
-        self.figure_line_edit_y_2.setObjectName(u"figure_line_edit_y_2")
-        self.figure_line_edit_y_2.setMinimumSize(QSize(0, 30))
-        self.figure_line_edit_y_2.setMaximumSize(QSize(16000000, 16777215))
-        self.figure_line_edit_y_2.setStyleSheet(u"background-color: rgb(33, 37, 43);\n"
-"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_9.addWidget(self.figure_line_edit_y_2, 4, 1, 1, 1)
-
-        self.figure_line_spin_y_min_2 = QDoubleSpinBox(self.tab_4)
-        self.figure_line_spin_y_min_2.setObjectName(u"figure_line_spin_y_min_2")
-        self.figure_line_spin_y_min_2.setMinimumSize(QSize(0, 30))
-        self.figure_line_spin_y_min_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_line_spin_y_min_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_line_spin_y_min_2.setMinimum(-1000000000.000000000000000)
-        self.figure_line_spin_y_min_2.setMaximum(1000000000.000000000000000)
-
-        self.gridLayout_9.addWidget(self.figure_line_spin_y_min_2, 6, 1, 1, 1)
-
-        self.figure_line_spin_x_max_2 = QDoubleSpinBox(self.tab_4)
-        self.figure_line_spin_x_max_2.setObjectName(u"figure_line_spin_x_max_2")
-        self.figure_line_spin_x_max_2.setMinimumSize(QSize(200, 30))
-        self.figure_line_spin_x_max_2.setMaximumSize(QSize(16000000, 16777215))
-        self.figure_line_spin_x_max_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_line_spin_x_max_2.setMinimum(-1000000000.000000000000000)
-        self.figure_line_spin_x_max_2.setMaximum(1000000000.000000000000000)
-
-        self.gridLayout_9.addWidget(self.figure_line_spin_x_max_2, 5, 2, 1, 1)
-
-        self.figure_line_como_marker = QComboBox(self.tab_4)
-        self.figure_line_como_marker.addItem("")
-        self.figure_line_como_marker.addItem("")
-        self.figure_line_como_marker.addItem("")
-        self.figure_line_como_marker.addItem("")
-        self.figure_line_como_marker.addItem("")
-        self.figure_line_como_marker.addItem("")
-        self.figure_line_como_marker.addItem("")
-        self.figure_line_como_marker.setObjectName(u"figure_line_como_marker")
-        self.figure_line_como_marker.setMinimumSize(QSize(0, 30))
-        self.figure_line_como_marker.setStyleSheet(u"background-color:rgb(40,44,52);\n"
-"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"font-weight:bold;\n"
-"border: 1px solid white;")
-
-        self.gridLayout_9.addWidget(self.figure_line_como_marker, 7, 2, 1, 1)
-
-        self.figure_line_edit_x_2 = QLineEdit(self.tab_4)
-        self.figure_line_edit_x_2.setObjectName(u"figure_line_edit_x_2")
-        self.figure_line_edit_x_2.setMinimumSize(QSize(0, 30))
-        self.figure_line_edit_x_2.setMaximumSize(QSize(16777215, 16777215))
-        self.figure_line_edit_x_2.setStyleSheet(u"background-color: rgb(33, 37, 43);\n"
-"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_9.addWidget(self.figure_line_edit_x_2, 3, 1, 1, 1)
-
-        self.figure_line_spin_y_max_2 = QDoubleSpinBox(self.tab_4)
-        self.figure_line_spin_y_max_2.setObjectName(u"figure_line_spin_y_max_2")
-        self.figure_line_spin_y_max_2.setMinimumSize(QSize(200, 30))
-        self.figure_line_spin_y_max_2.setMaximumSize(QSize(16000000, 16777215))
-        self.figure_line_spin_y_max_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_line_spin_y_max_2.setMinimum(-1000000000.000000000000000)
-        self.figure_line_spin_y_max_2.setMaximum(1000000000.000000000000000)
-
-        self.gridLayout_9.addWidget(self.figure_line_spin_y_max_2, 6, 2, 1, 1)
-
-        self.tabWidget_lipids.addTab(self.tab_4, "")
-        self.tab_5 = QWidget()
-        self.tab_5.setObjectName(u"tab_5")
-        self.gridLayout_11 = QGridLayout(self.tab_5)
-        self.gridLayout_11.setObjectName(u"gridLayout_11")
-        self.figure_bar_btn_color_2 = QPushButton(self.tab_5)
-        self.figure_bar_btn_color_2.setObjectName(u"figure_bar_btn_color_2")
-        self.figure_bar_btn_color_2.setMinimumSize(QSize(0, 30))
-        self.figure_bar_btn_color_2.setStyleSheet(u"background-color: rgb(189,147,249);\n"
-"color:white;\n"
-"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_btn_color_2, 7, 2, 1, 1)
-
-        self.figure_bar_spin_bar_2 = QDoubleSpinBox(self.tab_5)
-        self.figure_bar_spin_bar_2.setObjectName(u"figure_bar_spin_bar_2")
-        self.figure_bar_spin_bar_2.setMinimumSize(QSize(0, 30))
-        self.figure_bar_spin_bar_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_bar_spin_bar_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-
-        self.gridLayout_11.addWidget(self.figure_bar_spin_bar_2, 6, 1, 1, 1)
-
-        self.figure_bar_spin_trend_2 = QDoubleSpinBox(self.tab_5)
-        self.figure_bar_spin_trend_2.setObjectName(u"figure_bar_spin_trend_2")
-        self.figure_bar_spin_trend_2.setMinimumSize(QSize(0, 30))
-        self.figure_bar_spin_trend_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_bar_spin_trend_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-
-        self.gridLayout_11.addWidget(self.figure_bar_spin_trend_2, 5, 1, 1, 1)
-
-        self.figure_bar_btn_trend_2 = QPushButton(self.tab_5)
-        self.figure_bar_btn_trend_2.setObjectName(u"figure_bar_btn_trend_2")
-        self.figure_bar_btn_trend_2.setMinimumSize(QSize(0, 30))
-        self.figure_bar_btn_trend_2.setStyleSheet(u"background-color: rgb(189,147,249);\n"
-"color:white;\n"
-"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_btn_trend_2, 5, 2, 1, 1)
-
-        self.figure_bar_label_trend = QLabel(self.tab_5)
-        self.figure_bar_label_trend.setObjectName(u"figure_bar_label_trend")
-        self.figure_bar_label_trend.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_label_trend, 5, 0, 1, 1)
-
-        self.figure_bar_label_y = QLabel(self.tab_5)
-        self.figure_bar_label_y.setObjectName(u"figure_bar_label_y")
-        self.figure_bar_label_y.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_label_y, 3, 0, 1, 1)
-
-        self.figure_bar_edit_x_2 = QLineEdit(self.tab_5)
-        self.figure_bar_edit_x_2.setObjectName(u"figure_bar_edit_x_2")
-        self.figure_bar_edit_x_2.setMinimumSize(QSize(0, 30))
-        self.figure_bar_edit_x_2.setStyleSheet(u"background-color: rgb(33, 37, 43);\n"
-"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_edit_x_2, 2, 1, 1, 1)
-
-        self.figure_bar_spin_axis_scale_2 = QDoubleSpinBox(self.tab_5)
-        self.figure_bar_spin_axis_scale_2.setObjectName(u"figure_bar_spin_axis_scale_2")
-        self.figure_bar_spin_axis_scale_2.setMinimumSize(QSize(0, 30))
-        self.figure_bar_spin_axis_scale_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_bar_spin_axis_scale_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_bar_spin_axis_scale_2.setMaximum(10000.000000000000000)
-        self.figure_bar_spin_axis_scale_2.setValue(10.000000000000000)
-
-        self.gridLayout_11.addWidget(self.figure_bar_spin_axis_scale_2, 0, 1, 1, 1)
-
-        self.figure_bar_edit_y_2 = QLineEdit(self.tab_5)
-        self.figure_bar_edit_y_2.setObjectName(u"figure_bar_edit_y_2")
-        self.figure_bar_edit_y_2.setMinimumSize(QSize(0, 30))
-        self.figure_bar_edit_y_2.setStyleSheet(u"background-color: rgb(33, 37, 43);\n"
-"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_edit_y_2, 3, 1, 1, 1)
-
-        self.figure_bar_spin_axis_text_size_2 = QDoubleSpinBox(self.tab_5)
-        self.figure_bar_spin_axis_text_size_2.setObjectName(u"figure_bar_spin_axis_text_size_2")
-        self.figure_bar_spin_axis_text_size_2.setMinimumSize(QSize(0, 30))
-        self.figure_bar_spin_axis_text_size_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_bar_spin_axis_text_size_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_bar_spin_axis_text_size_2.setMaximum(10000.000000000000000)
-        self.figure_bar_spin_axis_text_size_2.setValue(10.000000000000000)
-
-        self.gridLayout_11.addWidget(self.figure_bar_spin_axis_text_size_2, 1, 1, 1, 1)
-
-        self.figure_bar_label_axis_title = QLabel(self.tab_5)
-        self.figure_bar_label_axis_title.setObjectName(u"figure_bar_label_axis_title")
-        self.figure_bar_label_axis_title.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_label_axis_title, 1, 0, 1, 1)
-
-        self.figure_bar_label_error = QLabel(self.tab_5)
-        self.figure_bar_label_error.setObjectName(u"figure_bar_label_error")
-        self.figure_bar_label_error.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_label_error, 8, 0, 1, 1)
-
-        self.figure_bar_label_x = QLabel(self.tab_5)
-        self.figure_bar_label_x.setObjectName(u"figure_bar_label_x")
-        self.figure_bar_label_x.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_label_x, 2, 0, 1, 1)
-
-        self.figure_bar_label_axis_tick = QLabel(self.tab_5)
-        self.figure_bar_label_axis_tick.setObjectName(u"figure_bar_label_axis_tick")
-        self.figure_bar_label_axis_tick.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_label_axis_tick, 0, 0, 1, 1)
-
-        self.figure_bar_label_color = QLabel(self.tab_5)
-        self.figure_bar_label_color.setObjectName(u"figure_bar_label_color")
-        self.figure_bar_label_color.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_label_color, 7, 0, 1, 1)
-
-        self.figure_bar_label_bar = QLabel(self.tab_5)
-        self.figure_bar_label_bar.setObjectName(u"figure_bar_label_bar")
-        self.figure_bar_label_bar.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_label_bar, 6, 0, 1, 1)
-
-        self.figure_bar_label_y_range = QLabel(self.tab_5)
-        self.figure_bar_label_y_range.setObjectName(u"figure_bar_label_y_range")
-        self.figure_bar_label_y_range.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_11.addWidget(self.figure_bar_label_y_range, 4, 0, 1, 1)
-
-        self.figure_bar_radio_error_2 = QRadioButton(self.tab_5)
-        self.figure_bar_radio_error_2.setObjectName(u"figure_bar_radio_error_2")
-        self.figure_bar_radio_error_2.setMinimumSize(QSize(0, 30))
-        self.figure_bar_radio_error_2.setStyleSheet(u"font-size: 16pt \"\u534e\u6587\u7ec6\u9ed1\"")
-
-        self.gridLayout_11.addWidget(self.figure_bar_radio_error_2, 8, 1, 1, 1)
-
-        self.radioButton_6 = QRadioButton(self.tab_5)
-        self.radioButton_6.setObjectName(u"radioButton_6")
-        self.radioButton_6.setMinimumSize(QSize(0, 30))
-        self.radioButton_6.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\"")
-        self.radioButton_6.setChecked(True)
-
-        self.gridLayout_11.addWidget(self.radioButton_6, 8, 2, 1, 1)
-
-        self.figure_bar_spin_y_min_2 = QDoubleSpinBox(self.tab_5)
-        self.figure_bar_spin_y_min_2.setObjectName(u"figure_bar_spin_y_min_2")
-        self.figure_bar_spin_y_min_2.setMinimumSize(QSize(200, 30))
-        self.figure_bar_spin_y_min_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_bar_spin_y_min_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_bar_spin_y_min_2.setMinimum(-1000000000.000000000000000)
-        self.figure_bar_spin_y_min_2.setMaximum(1000000000.000000000000000)
-
-        self.gridLayout_11.addWidget(self.figure_bar_spin_y_min_2, 4, 1, 1, 1)
-
-        self.figure_bar_spin_y_max_2 = QDoubleSpinBox(self.tab_5)
-        self.figure_bar_spin_y_max_2.setObjectName(u"figure_bar_spin_y_max_2")
-        self.figure_bar_spin_y_max_2.setMinimumSize(QSize(200, 30))
-        self.figure_bar_spin_y_max_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_bar_spin_y_max_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_bar_spin_y_max_2.setMinimum(-1000000000.000000000000000)
-        self.figure_bar_spin_y_max_2.setMaximum(1000000000.000000000000000)
-
-        self.gridLayout_11.addWidget(self.figure_bar_spin_y_max_2, 4, 2, 1, 1)
-
-        self.tabWidget_lipids.addTab(self.tab_5, "")
-        self.tab_6 = QWidget()
-        self.tab_6.setObjectName(u"tab_6")
-        self.gridLayout_12 = QGridLayout(self.tab_6)
-        self.gridLayout_12.setObjectName(u"gridLayout_12")
-        self.figure_scatter_label_shape_size = QLabel(self.tab_6)
-        self.figure_scatter_label_shape_size.setObjectName(u"figure_scatter_label_shape_size")
-        self.figure_scatter_label_shape_size.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_12.addWidget(self.figure_scatter_label_shape_size, 4, 0, 1, 1)
-
-        self.figure_scatter_label_legend = QLabel(self.tab_6)
-        self.figure_scatter_label_legend.setObjectName(u"figure_scatter_label_legend")
-        self.figure_scatter_label_legend.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_12.addWidget(self.figure_scatter_label_legend, 0, 0, 1, 1)
-
-        self.figure_scatter_label_range = QLabel(self.tab_6)
-        self.figure_scatter_label_range.setObjectName(u"figure_scatter_label_range")
-        self.figure_scatter_label_range.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_12.addWidget(self.figure_scatter_label_range, 1, 0, 1, 1)
-
-        self.figure_scatter_label_color = QLabel(self.tab_6)
-        self.figure_scatter_label_color.setObjectName(u"figure_scatter_label_color")
-        self.figure_scatter_label_color.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_12.addWidget(self.figure_scatter_label_color, 2, 0, 1, 1)
-
-        self.figure_scatter_label_shape = QLabel(self.tab_6)
-        self.figure_scatter_label_shape.setObjectName(u"figure_scatter_label_shape")
-        self.figure_scatter_label_shape.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_12.addWidget(self.figure_scatter_label_shape, 3, 0, 1, 1)
-
-        self.figure_scatter_spin_grid_size_2 = QDoubleSpinBox(self.tab_6)
-        self.figure_scatter_spin_grid_size_2.setObjectName(u"figure_scatter_spin_grid_size_2")
-        self.figure_scatter_spin_grid_size_2.setMinimumSize(QSize(0, 30))
-        self.figure_scatter_spin_grid_size_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_scatter_spin_grid_size_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_scatter_spin_grid_size_2.setMaximum(100000.000000000000000)
-        self.figure_scatter_spin_grid_size_2.setValue(10.000000000000000)
-
-        self.gridLayout_12.addWidget(self.figure_scatter_spin_grid_size_2, 0, 1, 1, 1)
-
-        self.figure_scatter_color_min_2 = QDoubleSpinBox(self.tab_6)
-        self.figure_scatter_color_min_2.setObjectName(u"figure_scatter_color_min_2")
-        self.figure_scatter_color_min_2.setMinimumSize(QSize(0, 30))
-        self.figure_scatter_color_min_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_scatter_color_min_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-
-        self.gridLayout_12.addWidget(self.figure_scatter_color_min_2, 1, 1, 1, 1)
-
-        self.figure_scatter_color_max_2 = QDoubleSpinBox(self.tab_6)
-        self.figure_scatter_color_max_2.setObjectName(u"figure_scatter_color_max_2")
-        self.figure_scatter_color_max_2.setMinimumSize(QSize(0, 30))
-        self.figure_scatter_color_max_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_scatter_color_max_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-
-        self.gridLayout_12.addWidget(self.figure_scatter_color_max_2, 1, 2, 1, 1)
-
-        self.figure_scatter_spin_shape_size_2 = QDoubleSpinBox(self.tab_6)
-        self.figure_scatter_spin_shape_size_2.setObjectName(u"figure_scatter_spin_shape_size_2")
-        self.figure_scatter_spin_shape_size_2.setMinimumSize(QSize(0, 30))
-        self.figure_scatter_spin_shape_size_2.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"    color: white;\n"
-"    border: 1px solid white;\n"
-"background-color:rgb(33, 37, 43);\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::up-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}\n"
-"\n"
-"QDoubleSpinBox::down-button {\n"
-"    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-"    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-"    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-"}")
-        self.figure_scatter_spin_shape_size_2.setMaximum(100000.000000000000000)
-        self.figure_scatter_spin_shape_size_2.setValue(10.000000000000000)
-
-        self.gridLayout_12.addWidget(self.figure_scatter_spin_shape_size_2, 4, 1, 1, 1)
-
-        self.figure_scatter_como_color_2 = QComboBox(self.tab_6)
-        self.figure_scatter_como_color_2.addItem("")
-        self.figure_scatter_como_color_2.addItem("")
-        self.figure_scatter_como_color_2.addItem("")
-        self.figure_scatter_como_color_2.addItem("")
-        self.figure_scatter_como_color_2.addItem("")
-        self.figure_scatter_como_color_2.addItem("")
-        self.figure_scatter_como_color_2.addItem("")
-        self.figure_scatter_como_color_2.addItem("")
-        self.figure_scatter_como_color_2.setObjectName(u"figure_scatter_como_color_2")
-        self.figure_scatter_como_color_2.setMinimumSize(QSize(0, 30))
-        self.figure_scatter_como_color_2.setMaximumSize(QSize(200, 16777215))
-        self.figure_scatter_como_color_2.setStyleSheet(u"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"background-color:rgb(33, 37, 43);")
-
-        self.gridLayout_12.addWidget(self.figure_scatter_como_color_2, 2, 1, 1, 1)
-
-        self.figure_scatter_btn_shape_2 = QPushButton(self.tab_6)
-        self.figure_scatter_btn_shape_2.setObjectName(u"figure_scatter_btn_shape_2")
-        self.figure_scatter_btn_shape_2.setMinimumSize(QSize(0, 30))
-        self.figure_scatter_btn_shape_2.setStyleSheet(u"background-color: rgb(189,147,249);\n"
-"color:white;\n"
-"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";")
-
-        self.gridLayout_12.addWidget(self.figure_scatter_btn_shape_2, 3, 1, 1, 1)
-
-        self.tabWidget_lipids.addTab(self.tab_6, "")
-
-        self.verticalLayout_11.addWidget(self.tabWidget_lipids)
 
         self.btn_figure_run = QPushButton(self.widget_2)
         self.btn_figure_run.setObjectName(u"btn_figure_run")
@@ -2463,7 +1184,7 @@ class Ui_MainWindow(object):
         self.btn_figure_run.setLayoutDirection(Qt.LeftToRight)
         self.btn_figure_run.setStyleSheet(u"background-color: rgb(189,147,249);\n"
 "color:white;\n"
-"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
 "")
 
         self.verticalLayout_11.addWidget(self.btn_figure_run)
@@ -2503,17 +1224,21 @@ class Ui_MainWindow(object):
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
         self.vmd_btn_start = QPushButton(self.frame_6)
         self.vmd_btn_start.setObjectName(u"vmd_btn_start")
-        self.vmd_btn_start.setStyleSheet(u"background-color: rgb(189,147,249);\n"
-"color:white;\n"
-"font-size:18pt;")
+        self.vmd_btn_start.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        # self.vmd_btn_start.setStyleSheet(
+                # u"background-color: rgb(189,147,249);\n"
+# "color:white;\n"
+# "font-size:18pt;")
 
         self.horizontalLayout_10.addWidget(self.vmd_btn_start)
 
         self.vmd_btn_stop = QPushButton(self.frame_6)
         self.vmd_btn_stop.setObjectName(u"vmd_btn_stop")
-        self.vmd_btn_stop.setStyleSheet(u"background-color: rgb(189,147,249);\n"
-"color:white;\n"
-"font-size:18pt;")
+        self.vmd_btn_stop.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        # self.vmd_btn_stop.setStyleSheet(
+                # u"background-color: rgb(189,147,249);\n"
+# "color:white;\n"
+# "font-size:18pt;")
 
         self.horizontalLayout_10.addWidget(self.vmd_btn_stop)
 
@@ -2593,7 +1318,6 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.stackedWidget.setCurrentIndex(3)
-        self.tabWidget_lipids.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -2641,14 +1365,11 @@ class Ui_MainWindow(object):
         self.comboBoxMethod.setItemText(0, QCoreApplication.translate("MainWindow", u"Anisotropy", None))
         self.comboBoxMethod.setItemText(1, QCoreApplication.translate("MainWindow", u"Area", None))
         self.comboBoxMethod.setItemText(2, QCoreApplication.translate("MainWindow", u"Cluster", None))
-        self.comboBoxMethod.setItemText(3, QCoreApplication.translate("MainWindow", u"Gyration", None))
-        self.comboBoxMethod.setItemText(4, QCoreApplication.translate("MainWindow", u"Height", None))
-        self.comboBoxMethod.setItemText(5, QCoreApplication.translate("MainWindow", u"MeanCurvature", None))
-        self.comboBoxMethod.setItemText(6, QCoreApplication.translate("MainWindow", u"NCluster", None))
-        self.comboBoxMethod.setItemText(7, QCoreApplication.translate("MainWindow", u"PCA", None))
-        self.comboBoxMethod.setItemText(8, QCoreApplication.translate("MainWindow", u"Pressure", None))
-        self.comboBoxMethod.setItemText(9, QCoreApplication.translate("MainWindow", u"RadialDistribution", None))
-        self.comboBoxMethod.setItemText(10, QCoreApplication.translate("MainWindow", u"SZ", None))
+        self.comboBoxMethod.setItemText(3, QCoreApplication.translate("MainWindow", u"DensityRadius", None))
+        self.comboBoxMethod.setItemText(4, QCoreApplication.translate("MainWindow", u"DensityMultiRadius", None))
+        self.comboBoxMethod.setItemText(5, QCoreApplication.translate("MainWindow", u"Gyration", None))
+        self.comboBoxMethod.setItemText(6, QCoreApplication.translate("MainWindow", u"Height", None))
+        self.comboBoxMethod.setItemText(7, QCoreApplication.translate("MainWindow", u"SZ", None))
 
         self.analysis_label_frame.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt; font-weight:600;\">Frames</span></p></body></html>", None))
         self.analysis_label_method.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:16pt; font-weight:600;\">AnalysisMethods</span></p></body></html>", None))
@@ -2680,60 +1401,8 @@ class Ui_MainWindow(object):
         self.figure_edit_path.setText("")
         self.figure_edit_path.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Please import Excel file", None))
         self.figure_btn_path.setText(QCoreApplication.translate("MainWindow", u"Select Excel File", None))
-        self.figure_line_label_legend.setText(QCoreApplication.translate("MainWindow", u"Legend Size(0=None)", None))
-        self.figure_line_btn_color_2.setText(QCoreApplication.translate("MainWindow", u"Select Color", None))
-        self.figure_line_label_x.setText(QCoreApplication.translate("MainWindow", u"X-Title", None))
-        self.figure_line_label_color.setText(QCoreApplication.translate("MainWindow", u"Color", None))
-        self.figure_line_label_y_range.setText(QCoreApplication.translate("MainWindow", u"Y-Range", None))
-        self.figure_line_label_x_range.setText(QCoreApplication.translate("MainWindow", u"X-Range", None))
-        self.figure_line_label_y.setText(QCoreApplication.translate("MainWindow", u"Y-Title", None))
-        self.figure_line_label_axis_tick.setText(QCoreApplication.translate("MainWindow", u"Axis Tick Size", None))
-        self.figure_line_label_marker.setText(QCoreApplication.translate("MainWindow", u"Marker Size", None))
-        self.figure_line_label_axis_title.setText(QCoreApplication.translate("MainWindow", u"Axis Title Size", None))
-        self.figure_line_edit_y_2.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Default if none", None))
-        self.figure_line_como_marker.setItemText(0, QCoreApplication.translate("MainWindow", u"o", None))
-        self.figure_line_como_marker.setItemText(1, QCoreApplication.translate("MainWindow", u"p", None))
-        self.figure_line_como_marker.setItemText(2, QCoreApplication.translate("MainWindow", u"s", None))
-        self.figure_line_como_marker.setItemText(3, QCoreApplication.translate("MainWindow", u"^", None))
-        self.figure_line_como_marker.setItemText(4, QCoreApplication.translate("MainWindow", u"*", None))
-        self.figure_line_como_marker.setItemText(5, QCoreApplication.translate("MainWindow", u"x", None))
-        self.figure_line_como_marker.setItemText(6, QCoreApplication.translate("MainWindow", u"+", None))
 
-        self.figure_line_edit_x_2.setText("")
-        self.figure_line_edit_x_2.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Default if none", None))
-        self.tabWidget_lipids.setTabText(self.tabWidget_lipids.indexOf(self.tab_4), QCoreApplication.translate("MainWindow", u"Line", None))
-        self.figure_bar_btn_color_2.setText(QCoreApplication.translate("MainWindow", u"Select Color", None))
-        self.figure_bar_btn_trend_2.setText(QCoreApplication.translate("MainWindow", u"Select Color", None))
-        self.figure_bar_label_trend.setText(QCoreApplication.translate("MainWindow", u"Trend Line", None))
-        self.figure_bar_label_y.setText(QCoreApplication.translate("MainWindow", u"Y-Title", None))
-        self.figure_bar_edit_x_2.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Default if none", None))
-        self.figure_bar_edit_y_2.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Default if none", None))
-        self.figure_bar_label_axis_title.setText(QCoreApplication.translate("MainWindow", u"Axis Title Size", None))
-        self.figure_bar_label_error.setText(QCoreApplication.translate("MainWindow", u"Error Bar", None))
-        self.figure_bar_label_x.setText(QCoreApplication.translate("MainWindow", u"X-Title", None))
-        self.figure_bar_label_axis_tick.setText(QCoreApplication.translate("MainWindow", u"Axis Tick Size", None))
-        self.figure_bar_label_color.setText(QCoreApplication.translate("MainWindow", u"Color", None))
-        self.figure_bar_label_bar.setText(QCoreApplication.translate("MainWindow", u"Bar Value", None))
-        self.figure_bar_label_y_range.setText(QCoreApplication.translate("MainWindow", u"Y-Range", None))
-        self.figure_bar_radio_error_2.setText(QCoreApplication.translate("MainWindow", u"Yes", None))
-        self.radioButton_6.setText(QCoreApplication.translate("MainWindow", u"No", None))
-        self.tabWidget_lipids.setTabText(self.tabWidget_lipids.indexOf(self.tab_5), QCoreApplication.translate("MainWindow", u"Bar", None))
-        self.figure_scatter_label_shape_size.setText(QCoreApplication.translate("MainWindow", u"Shape size", None))
-        self.figure_scatter_label_legend.setText(QCoreApplication.translate("MainWindow", u"Legend Size", None))
-        self.figure_scatter_label_range.setText(QCoreApplication.translate("MainWindow", u"Value Range", None))
-        self.figure_scatter_label_color.setText(QCoreApplication.translate("MainWindow", u"Color Type", None))
-        self.figure_scatter_label_shape.setText(QCoreApplication.translate("MainWindow", u"Shape", None))
-        self.figure_scatter_como_color_2.setItemText(0, QCoreApplication.translate("MainWindow", u"bwr", None))
-        self.figure_scatter_como_color_2.setItemText(1, QCoreApplication.translate("MainWindow", u"binary", None))
-        self.figure_scatter_como_color_2.setItemText(2, QCoreApplication.translate("MainWindow", u"Blues", None))
-        self.figure_scatter_como_color_2.setItemText(3, QCoreApplication.translate("MainWindow", u"Greys", None))
-        self.figure_scatter_como_color_2.setItemText(4, QCoreApplication.translate("MainWindow", u"inferno", None))
-        self.figure_scatter_como_color_2.setItemText(5, QCoreApplication.translate("MainWindow", u"Oranges", None))
-        self.figure_scatter_como_color_2.setItemText(6, QCoreApplication.translate("MainWindow", u"RaBu", None))
-        self.figure_scatter_como_color_2.setItemText(7, QCoreApplication.translate("MainWindow", u"viridis", None))
 
-        self.figure_scatter_btn_shape_2.setText(QCoreApplication.translate("MainWindow", u"Select Shape", None))
-        self.tabWidget_lipids.setTabText(self.tabWidget_lipids.indexOf(self.tab_6), QCoreApplication.translate("MainWindow", u"Scatter", None))
         self.btn_figure_run.setText(QCoreApplication.translate("MainWindow", u"RUN!", None))
         self.vmd_btn_start.setText(QCoreApplication.translate("MainWindow", u"Start VMD", None))
         self.vmd_btn_stop.setText(QCoreApplication.translate("MainWindow", u"Stop VMD", None))

@@ -125,7 +125,7 @@ class LipidsParameterReader(BaseParameterReader):
                 'x_max': x_max_spin.value() if x_max_spin else 0.0,
                 'y_min': y_min_spin.value() if y_min_spin else 0.0,
                 'y_max': y_max_spin.value() if y_max_spin else 1.0,
-                'marker_size': marker_size_spin.value() if marker_size_spin else 5.0,
+                'marker_size': marker_size_spin.value() if marker_size_spin else 0,
                 'marker_shape': marker_shape_combo.currentText() if marker_shape_combo else 'o',
                 'color': self.ColorInfo
             }
@@ -281,7 +281,7 @@ class BubbleParameterReader(BaseParameterReader):
                 'x_max': x_max_spin.value() if x_max_spin else 100.0,
                 'y_min': y_min_spin.value() if y_min_spin else 0.0,
                 'y_max': y_max_spin.value() if y_max_spin else 1.0,
-                'marker_size': marker_size_spin.value() if marker_size_spin else 5.0,
+                'marker_size': marker_size_spin.value() if marker_size_spin else 0,
                 'marker_shape': marker_shape_combo.currentText() if marker_shape_combo else 'o',
                 'color': self.ColorInfo
             }

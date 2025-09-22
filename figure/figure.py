@@ -11,7 +11,8 @@ from scipy.interpolate import griddata
 
 __all__ = ['LipidsFigure', 'BubbleFigure', 'read_excel']
 
-TYPE = {'Height(nm)': 0
+TYPE = {
+                'Height (nm)': 0
                , 'Sz Order Parameter (chain: sn1 and sn2)': 0  # 添加Sz Order Parameter支持
                , 'Sz Order Parameter (chain: sn1)': 0  # 添加Sz Order Parameter支持
                , 'Sz Order Parameter (chain: sn2)': 0  # 添加Sz Order Parameter支持
@@ -20,6 +21,8 @@ TYPE = {'Height(nm)': 0
                , 'Bubble Sz Order Parameter (chain: sn2)': 0  # 添加Sz Order Parameter支持
                , 'Mean Curvature(nm -1)': 0
                , 'Area(nm^2)': 0
+               , 'Density With Times': 1  # 添加Density支持
+               , 'Density Multi-Radius': 0  # 添加DensityMultiRadius支持
                , 'Anisotropy': 1
                , 'Gyration(nm)': 1
                , 'Cluster': 1
@@ -100,7 +103,7 @@ class LipidsFigure(Figure):
             
             plt.plot(x_axis, result,
                     marker=self.figure_settings.get('marker_shape', 'o'),
-                    markersize=self.figure_settings.get('marker_size', 5),
+                    markersize=self.figure_settings.get('marker_size', 0),
                     color=color,
                     label=type_name)
         
@@ -511,7 +514,7 @@ class BubbleFigure(Figure):
         
         plt.plot(x_axis, result,
                 marker=self.figure_settings.get('marker_shape', 'o'),
-                markersize=self.figure_settings.get('marker_size', 5),
+                markersize=self.figure_settings.get('marker_size', 0),
                 color=bubble_color,
                 label='Bubble')
         

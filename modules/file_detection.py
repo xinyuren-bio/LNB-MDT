@@ -73,15 +73,34 @@ class DynamicTabManager:
         
         # 保存原始的TabWidget（如果还没有保存的话）
         if self.original_tab_widget is None:
-        #     # 通过UI实例访问tabWidget
-            self.original_tab_widget = self.ui_instance.tabWidget_lipids
+            # 由于tabWidget_lipids已被删除，我们需要创建一个默认的TabWidget作为参考
+            # 或者直接使用None，让后续代码处理
+            self.original_tab_widget = None
         
         # 创建新的TabWidget
         new_tab_widget = QTabWidget()
         
-        # 设置新TabWidget的样式（与原始TabWidget保持一致）
-        new_tab_widget.setStyleSheet(self.original_tab_widget.styleSheet())
-        new_tab_widget.setCursor(self.original_tab_widget.cursor())
+        # 设置新TabWidget的样式（使用默认样式）
+        new_tab_widget.setStyleSheet("""
+            QTabBar::tab {
+                background: lightgray;
+                border: 2px solid #C4C4C3;
+                border-bottom-color: #C4C4C3;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                min-width: 16ex;
+                padding: 2px;
+                font: 18pt "华文细黑";
+                color: black;
+            }
+            QTabBar::tab:selected {
+                background: lightblue;
+            }
+            QTabBar::tab:hover {
+                background: pink;
+            }
+        """)
+        new_tab_widget.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         
         # 根据文件类型创建不同的内容
         if file_type == 'lipids':
@@ -144,6 +163,22 @@ class DynamicTabManager:
             
             # 显示新的TabWidget
             new_widget.show()
+        elif parent_layout:
+            # 如果没有当前TabWidget，直接添加到布局中
+            # 获取RUN按钮的引用
+            run_button = self.ui_instance.btn_figure_run
+            
+            # 找到RUN按钮在布局中的位置
+            run_button_index = parent_layout.indexOf(run_button)
+            if run_button_index >= 0:
+                # 在RUN按钮之前插入新的TabWidget
+                parent_layout.insertWidget(run_button_index, new_widget)
+            else:
+                # 如果找不到RUN按钮，直接添加到末尾
+                parent_layout.addWidget(new_widget)
+            
+            # 显示新的TabWidget
+            new_widget.show()
             
             # 确保布局更新
             parent_layout.update()
@@ -168,9 +203,27 @@ class DynamicTabManager:
         # 创建新的TabWidget
         bubble_tab_widget = QTabWidget()
         
-        # 设置样式（与原始TabWidget保持一致）
-        bubble_tab_widget.setStyleSheet(self.original_tab_widget.styleSheet())
-        bubble_tab_widget.setCursor(self.original_tab_widget.cursor())
+        # 设置样式（使用默认样式）
+        bubble_tab_widget.setStyleSheet("""
+            QTabBar::tab {
+                background: lightgray;
+                border: 2px solid #C4C4C3;
+                border-bottom-color: #C4C4C3;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                min-width: 16ex;
+                padding: 2px;
+                font: 18pt "华文细黑";
+                color: black;
+            }
+            QTabBar::tab:selected {
+                background: lightblue;
+            }
+            QTabBar::tab:hover {
+                background: pink;
+            }
+        """)
+        bubble_tab_widget.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         
         # 创建Line tab - 完全仿照原有设计
         line_tab = self._create_bubble_line_tab()
@@ -358,7 +411,7 @@ class DynamicTabManager:
         marker_spin.setObjectName("bubble_line_spin_marker")
         marker_spin.setMinimum(0.0)
         marker_spin.setMaximum(100.0)
-        marker_spin.setValue(6.0)
+        marker_spin.setValue(0)
         grid_layout.addWidget(marker_spin, 7, 1, 1, 1)
         
         # Color
@@ -631,9 +684,27 @@ class DynamicTabManager:
         # 创建新的TabWidget
         lipids_tab_widget = QTabWidget()
         
-        # 设置样式（与原始TabWidget保持一致）
-        lipids_tab_widget.setStyleSheet(self.original_tab_widget.styleSheet())
-        lipids_tab_widget.setCursor(self.original_tab_widget.cursor())
+        # 设置样式（使用默认样式）
+        lipids_tab_widget.setStyleSheet("""
+            QTabBar::tab {
+                background: lightgray;
+                border: 2px solid #C4C4C3;
+                border-bottom-color: #C4C4C3;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                min-width: 16ex;
+                padding: 2px;
+                font: 18pt "华文细黑";
+                color: black;
+            }
+            QTabBar::tab:selected {
+                background: lightblue;
+            }
+            QTabBar::tab:hover {
+                background: pink;
+            }
+        """)
+        lipids_tab_widget.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         
         # 创建Line tab - 使用美化的设计
         line_tab = self._create_lipids_line_tab()
@@ -788,7 +859,7 @@ class DynamicTabManager:
         marker_spin.setObjectName("lipids_line_spin_marker")
         marker_spin.setMinimum(0.0)
         marker_spin.setMaximum(100.0)
-        marker_spin.setValue(6.0)
+        marker_spin.setValue(0)
         grid_layout.addWidget(marker_spin, 7, 1, 1, 1)
         
         # Color

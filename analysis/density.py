@@ -39,6 +39,9 @@ class Density(AnalysisBase):
         self.file_path = filePath
         self.parallel = parallel
         self.n_jobs = n_jobs
+        
+        # Density分析支持的图表类型
+        self.supported_figure_types = ['Line Chart', 'Heatmap']
         self.headSp = {sp: ' '.join(ResiudeGroup[sp]) for sp in ResiudeGroup}
         self.gas_sp = {sp: ' '.join(GasGroup[sp]) for sp in GasGroup}
 
@@ -186,6 +189,186 @@ class Density(AnalysisBase):
             }
             # Assuming WriteExcelBubble is defined and available
             WriteExcelBubble(**dict_parameter).run()
+            
+            # 准备绘图数据
+            self._prepare_plot_data()
+        else:
+            return self.results.DensityWithtimes
+    
+    def _prepare_plot_data(self):
+        """准备绘图数据，格式化为DataFrame"""
+        import pandas as pd
+        
+        # 创建绘图数据
+        frames = list(range(self.start, self.stop, self.step))
+        data = []
+        
+        # Density是整体数据，不是按残基分组
+        mean_density = np.mean(self.results.DensityWithtimes, axis=0)
+        for j, frame in enumerate(frames):
+            row = {
+                'Time(ns)': frame * self._trajectory.dt / 1000,  # 转换为ns
+                'Value': mean_density[j]
+            }
+            data.append(row)
+        
+        self.plot_data = pd.DataFrame(data)
+        print(f"Density plot data prepared: {self.plot_data.shape}")
+        print(f"Columns: {list(self.plot_data.columns)}")
+    
+    def plot_line(self, figure_settings=None):
+        """绘制Density数据的折线图"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time(ns)',
+                'y_title': 'Density',
+                'axis_text': 12,
+                'marker_shape': 'o',
+                'marker_size': 0,
+                'bubble_color': 'red'
+            }
+        
+        # 直接使用matplotlib绘制
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(10, 6))
+        plt.plot(self.plot_data['Time(ns)'], self.plot_data['Value'],
+                marker=figure_settings.get('marker_shape', 'o'),
+                markersize=figure_settings.get('marker_size', 0),
+                color=figure_settings.get('bubble_color', 'red'),
+                label='Density')
+        
+        plt.xlabel(figure_settings.get('x_title', 'Time(ns)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', 'Density'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('Density Analysis Results', fontsize=14)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
+    
+    def plot_bar(self, figure_settings=None):
+        """绘制Density数据的条形图"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time(ns)',
+                'y_title': 'Density',
+                'axis_text': 12,
+                'bar_color': 'skyblue',
+                'bar_min': None,
+                'bar_max': None
+            }
+        
+        # 直接使用matplotlib绘制
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(10, 6))
+        plt.bar(self.plot_data['Time(ns)'], self.plot_data['Value'],
+               color=figure_settings.get('bar_color', 'skyblue'),
+               alpha=0.7,
+               label='Density')
+        
+        plt.xlabel(figure_settings.get('x_title', 'Time(ns)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', 'Density'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('Density Analysis Results', fontsize=14)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
+    
+    def plot_heatmap(self, figure_settings=None):
+        """绘制Density数据的热图（基于时间序列数据）"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        # 直接使用matplotlib绘制简化的热图
+        import matplotlib.pyplot as plt
+        import numpy as np
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time(ns)',
+                'y_title': 'Density',
+                'axis_text': 12,
+                'cmap': 'viridis'
+            }
+        
+        # 创建热图数据：将1D数据转换为2D矩阵
+        frames = self.plot_data['Time(ns)'].values
+        values = self.plot_data['Value'].values
+        
+        # 创建2D数据矩阵（每行代表一个时间点，每列代表一个密度值）
+        # 这里我们创建一个简化的热图，显示密度随时间的变化
+        data_matrix = values.reshape(1, -1)  # 1行，多列
+        
+        plt.figure(figsize=(12, 6))
+        
+        # 绘制热图
+        im = plt.imshow(data_matrix, cmap=figure_settings.get('cmap', 'viridis'), 
+                       aspect='auto', interpolation='nearest')
+        
+        # 设置坐标轴
+        plt.xticks(range(len(frames)), frames)
+        plt.yticks([0], ['Density'])
+        
+        # 添加颜色条
+        cbar = plt.colorbar(im)
+        cbar.set_label('Density Value', fontsize=figure_settings.get('axis_text', 12))
+        
+        plt.xlabel(figure_settings.get('x_title', 'Time(ns)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', 'Density'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('Density Analysis Heatmap', fontsize=14, fontweight='bold')
+        plt.tight_layout()
+        plt.show()
+    
+    def plot_3d_surface(self, figure_settings=None):
+        """绘制Density数据的3D表面图（基于时间序列数据）"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        # 直接使用matplotlib绘制简化的3D图
+        import matplotlib.pyplot as plt
+        from mpl_toolkits.mplot3d import Axes3D
+        import numpy as np
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time(ns)',
+                'y_title': 'Density',
+                'z_title': 'Value',
+                'axis_text': 12,
+                'cmap': 'viridis'
+            }
+        
+        # 创建3D数据
+        frames = self.plot_data['Time(ns)'].values
+        values = self.plot_data['Value'].values
+        
+        # 创建3D表面数据
+        X = frames
+        Y = np.zeros_like(frames)  # 创建一个平面
+        Z = values
+        
+        fig = plt.figure(figsize=(12, 8))
+        ax = fig.add_subplot(111, projection='3d')
+        
+        # 绘制3D表面
+        ax.plot_surface(X, Y, Z, cmap=figure_settings.get('cmap', 'viridis'), 
+                       alpha=0.8, linewidth=0, antialiased=True)
+        
+        # 设置标签
+        ax.set_xlabel(figure_settings.get('x_title', 'Time(ns)'), fontsize=figure_settings.get('axis_text', 12))
+        ax.set_ylabel(figure_settings.get('y_title', 'Density'), fontsize=figure_settings.get('axis_text', 12))
+        ax.set_zlabel(figure_settings.get('z_title', 'Value'), fontsize=figure_settings.get('axis_text', 12))
+        ax.set_title('Density Analysis 3D Surface', fontsize=14, fontweight='bold')
+        
+        plt.tight_layout()
+        plt.show()
 
 
 class DensityMultiRadius(AnalysisBase):
@@ -205,6 +388,9 @@ class DensityMultiRadius(AnalysisBase):
         self.file_path = filePath
         self.parallel = parallel
         self.n_jobs = n_jobs
+        
+        # DensityMultiRadius分析支持的图表类型
+        self.supported_figure_types = ['Line Chart', 'Heatmap']
         self.headSp = {sp: ' '.join(ResiudeGroup[sp]) for sp in ResiudeGroup}
         self.gas_sp = {sp: ' '.join(GasGroup[sp]) for sp in GasGroup}
 
@@ -230,10 +416,8 @@ class DensityMultiRadius(AnalysisBase):
 
     def _single_frame(self):
         """计算单帧的多半径密度"""
-        # 计算脂质头部的整体质心
         cog = self.headAtoms.center_of_mass()
         
-        # 检查质心是否有效
         if cog is None or np.any(np.isnan(cog)):
             density_values = np.zeros(len(self.radii) - 1)
         else:
@@ -358,68 +542,195 @@ class DensityMultiRadius(AnalysisBase):
         if self.file_path:
             # 保存多半径密度数据
             self._save_multi_radius_data()
+            
+            # 准备绘图数据
+            self._prepare_plot_data()
+        else:
+            return self.results.DensityMultiRadius
+    
+    def _prepare_plot_data(self):
+        """准备绘图数据，格式化为DataFrame（按半径层分组）"""
+        import pandas as pd
+        
+        # 创建绘图数据（按半径层分组）
+        frames = list(range(self.start, self.stop, self.step))
+        data = []
+        
+        # 按半径层分组
+        for i, radius_range in enumerate(self.radii[:-1]):  # 排除最后一个半径
+            row = {
+                'Radius': f'{radius_range:.1f}-{self.radii[i+1]:.1f}Å',
+                'RadiusIndex': i,
+                'RadiusRange': f'{radius_range:.1f}-{self.radii[i+1]:.1f}'
+            }
+            # 添加每个时间帧的密度数据
+            for j, frame in enumerate(frames):
+                row[str(frame)] = self.results.DensityMultiRadius[i, j]
+            data.append(row)
+        
+        self.plot_data = pd.DataFrame(data)
+        print(f"DensityMultiRadius plot data prepared: {self.plot_data.shape}")
+    
+    def plot_line(self, figure_settings=None):
+        """绘制DensityMultiRadius数据的折线图（按半径层分组）"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time(ns)',
+                'y_title': 'Density Multi-Radius',
+                'axis_text': 12,
+                'marker_shape': 'o',
+                'marker_size': 0,
+                'line_color': 'darkred'
+            }
+        
+        # 直接使用matplotlib绘制
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(10, 6))
+        
+        # 获取时间列（第4列及以后）
+        time_columns = self.plot_data.columns[3:]
+        x_axis = time_columns.astype(float) * self._trajectory.dt / 1000  # 转换为ns
+        
+        # 按半径层分组绘制
+        colors = ['darkred', 'blue', 'green', 'orange', 'purple', 'brown', 'pink', 'gray', 'cyan', 'magenta']
+        
+        for i, (_, row) in enumerate(self.plot_data.iterrows()):
+            color = colors[i % len(colors)]
+            radius_range = row['Radius']
+            # 获取该半径层在所有时间点的密度值
+            density_values = []
+            for col in self.plot_data.columns[3:]:  # 从第4列开始是时间列
+                try:
+                    density_values.append(float(row[col]))
+                except (ValueError, TypeError):
+                    density_values.append(0.0)  # 如果转换失败，使用0
+            
+            plt.plot(x_axis, density_values,
+                    marker=figure_settings.get('marker_shape', 'o'),
+                    markersize=figure_settings.get('marker_size', 0),
+                    color=color,
+                    label=f'Radius {radius_range}')
+        
+        plt.xlabel(figure_settings.get('x_title', 'Time(ns)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', 'Density Multi-Radius'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('Density Multi-Radius Analysis Results', fontsize=14)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
+    
+    
+    
+    def plot_heatmap(self, figure_settings=None):
+        """绘制DensityMultiRadius数据的热图（纵坐标：半径层，横坐标：时间）"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        # 直接使用matplotlib绘制热图
+        import matplotlib.pyplot as plt
+        import numpy as np
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time(ns)',
+                'y_title': 'Radius Layer',
+                'axis_text': 12,
+                'cmap': 'viridis'
+            }
+        
+        # 创建热图数据矩阵
+        # 行：半径层，列：时间点
+        time_columns = self.plot_data.columns[3:]  # 时间列（第4列及以后）
+        x_axis = time_columns.astype(float) * self._trajectory.dt / 1000  # 转换为ns
+        
+        # 创建数据矩阵：每行是一个半径层，每列是一个时间点
+        data_matrix = []
+        radius_labels = []
+        
+        for i, (_, row) in enumerate(self.plot_data.iterrows()):
+            radius_labels.append(row['Radius'])
+            # 获取时间序列数据（跳过前3列：Radius, RadiusIndex, RadiusRange）
+            density_values = []
+            for col in self.plot_data.columns[3:]:  # 从第4列开始是时间列
+                try:
+                    density_values.append(float(row[col]))
+                except (ValueError, TypeError):
+                    density_values.append(0.0)  # 如果转换失败，使用0
+            data_matrix.append(density_values)
+        
+        data_matrix = np.array(data_matrix, dtype=float)
+        
+        plt.figure(figsize=(12, 8))
+        im = plt.imshow(data_matrix, cmap=figure_settings.get('cmap', 'viridis'), 
+                       aspect='auto', interpolation='nearest')
+        
+        # 设置坐标轴
+        plt.xlabel(figure_settings.get('x_title', 'Time(ns)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', 'Radius Layer'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('Density Multi-Radius Heatmap', fontsize=14)
+        
+        # 设置x轴标签（时间）
+        x_ticks = np.linspace(0, len(x_axis)-1, min(10, len(x_axis)))
+        plt.xticks(x_ticks, [f'{x_axis[int(i)]:.1f}' for i in x_ticks])
+        
+        # 设置y轴标签（半径层）
+        plt.yticks(range(len(radius_labels)), radius_labels)
+        
+        # 添加颜色条
+        plt.colorbar(im, label='Density')
+        
+        plt.tight_layout()
+        plt.show()
+    
 
     def _save_multi_radius_data(self):
-        """保存多半径密度数据到CSV，使用WriteExcelLipids的格式"""
-        # 转换帧数为时间单位
-        frames = list(range(self.start, self.stop, self.step))
-        time_values, time_unit = WriteExcel._convert_frames_to_time(frames, self._trajectory)
-        
-        # 确保time_values是数值列表
-        if len(time_values) > 0:
-            if isinstance(time_values[0], str):
-                time_values = [float(t) for t in time_values]
-            elif hasattr(time_values[0], 'time'):
-                # 如果是Timestep对象，提取time属性
-                time_values = [float(t.time) for t in time_values]
-        
-        # 创建类似WriteExcelLipids的数据框
-        # 每个半径层作为一行，包含所有时间点的密度值
+        """保存多半径密度数据到CSV，只保存半径层信息"""
+        # 创建半径层数据框
         data_rows = []
         
         for radius_idx in range(len(self.radii) - 1):
             inner_radius = self.radii[radius_idx]
             outer_radius = self.radii[radius_idx + 1]
             
-            # 构建行数据：半径信息 + 各时间点的密度值
+            # 计算环形体积
+            inner_vol = (4/3) * np.pi * (inner_radius ** 3) * 1e-30
+            outer_vol = (4/3) * np.pi * (outer_radius ** 3) * 1e-30
+            ring_volume = outer_vol - inner_vol
+            
+            # 构建行数据：只保存半径层的基本信息
             row_data = {
-                'Radius_Layer': f"{inner_radius:.1f}-{outer_radius:.1f}Å",
-                'Inner_Radius': inner_radius,
-                'Outer_Radius': outer_radius,
-                'Volume': (4/3) * np.pi * (outer_radius**3 - inner_radius**3) * 1e-30,  # m³
-                **{f"{time_val:.2f}": self.results.DensityMultiRadius[radius_idx, frame_idx]
-                   for frame_idx, time_val in enumerate(time_values) if frame_idx < self.results.DensityMultiRadius.shape[1]}
+                'Radius_Layer': radius_idx + 1,
+                'Inner_Radius_A': inner_radius,
+                'Outer_Radius_A': outer_radius,
+                'Radius_Range': f"{inner_radius:.1f}-{outer_radius:.1f}Å",
+                'Volume_m3': ring_volume,
+                'Volume_A3': ring_volume * 1e30,  # 转换为Å³
+                'Mean_Density': np.mean(self.results.DensityMultiRadius[radius_idx, :]) if self.results.DensityMultiRadius is not None else 0.0,
+                'Max_Density': np.max(self.results.DensityMultiRadius[radius_idx, :]) if self.results.DensityMultiRadius is not None else 0.0,
+                'Min_Density': np.min(self.results.DensityMultiRadius[radius_idx, :]) if self.results.DensityMultiRadius is not None else 0.0
             }
             data_rows.append(row_data)
         
-        df_lipid = pd.DataFrame(data_rows)
+        df_radius = pd.DataFrame(data_rows)
         
-        # 创建时间序列数据框（类似WriteExcelLipids的FRAME部分）
-        # 确保数组长度匹配
-        n_frames_actual = min(len(time_values), self.results.DensityMultiRadius.shape[1])
-        df_frames = pd.DataFrame({
-            f'Time ({time_unit})': time_values[:n_frames_actual],
-            'Values': np.mean(self.results.DensityMultiRadius[:, :n_frames_actual], axis=0)  # 所有半径层的平均密度
-        })
-        
-        # 保存到CSV，使用WriteExcelLipids的格式
+        # 保存到CSV
         with open(self.file_path, 'w') as f:
             f.write(f"# Created by LNB-MDT v1.0\n")
-            f.write(f"# Multi-Radius Density Analysis\n")
-            f.write(f"# TYPE:Lipids\n")
+            f.write(f"# Multi-Radius Density Analysis - Radius Layer Summary\n")
             f.write(f"# Parameters:{self.parameters}\n")
-            f.write(f"# Time Unit: {time_unit}\n")
-            f.write(f"# Radius Segments: {len(self.radii)-1}\n")
-            f.write(f"# Total Frames: {self.n_frames}\n")
+            f.write(f"# Total Radius Layers: {len(self.radii)-1}\n")
+            f.write(f"# Max Radius: {self.max_radius}Å\n")
+            f.write(f"# Number Segments: {self.number_segments}\n")
             f.write(f"\n")
             
             # 写入半径层数据
-            df_lipid.to_csv(f, index=False)
+            df_radius.to_csv(f, index=False)
             f.write(f"\n")
-            
-            # 写入时间序列数据
-            f.write(f"# FRAME\n")
-            df_frames.to_csv(f, index=False)
+
         
         print(f"Multi-radius density data saved to: {self.file_path}")
 

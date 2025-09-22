@@ -158,20 +158,20 @@ def compute_voronoi_area(i, points):
                 area = polygon_area(vertices)
                 return area
             else:
-                print(f"点 {i} 裁剪后的多边形点数不足")
+                # print(f"点 {i} 裁剪后的多边形点数不足")
                 return np.nan
         else:
             finite_vertices = vor.vertices[region_vertices]
             area = polygon_area(finite_vertices)
             
             if area <= 0:
-                print(f"点 {i} 的Voronoi面积为负或零: {area}")
+                # print(f"点 {i} 的Voronoi面积为负或零: {area}")
                 return np.nan
             
             return area
             
     except Exception as e:
-        print(f"点 {i} 的Voronoi计算出错: {str(e)}")
+        # print(f"点 {i} 的Voronoi计算出错: {str(e)}")
         return np.nan
 
 def polygon_area(vertices):
@@ -203,6 +203,8 @@ class Area(AnalysisBase):
         self.resids = self.headAtoms.resids
         self.resnames = self.headAtoms.resnames
         self.results.Area = None
+        self.supported_figure_types = ['Line Chart', 'Bar Chart']
+        self.plot_data = None
 
         self.parameters = str(residueGroup) + f'K:{self.k}'
         if self.max_normal_angle_deg is not None:
@@ -428,6 +430,120 @@ class Area(AnalysisBase):
             }
             WriteExcelLipids(**dict_parameter).run()
             print(f"Analysis complete. Results saved to {self.file_path}")
+            
+            # 准备绘图数据
+            self._prepare_plot_data()
+    
+    def _prepare_plot_data(self):
+        """准备绘图数据，格式化为DataFrame（按残基类型分组）"""
+        import pandas as pd
+        
+        # 创建绘图数据（按残基类型分组）
+        frames = list(range(self.start, self.stop, self.step))
+        data = []
+        
+        # 按残基类型分组
+        for i, resname in enumerate(self.resnames):
+            row = {
+                'Resid': self.resids[i],
+                'Resname': resname,
+                'Coordinates': f"{self.headAtoms.positions[i][0]:.3f},{self.headAtoms.positions[i][1]:.3f},{self.headAtoms.positions[i][2]:.3f}"
+            }
+            # 添加每个时间帧的面积数据
+            for j, frame in enumerate(frames):
+                row[str(frame)] = self.results.Area[i, j]
+            data.append(row)
+        
+        self.plot_data = pd.DataFrame(data)
+        print(f"Area plot data prepared: {self.plot_data.shape}")
+    
+    def plot_line(self, figure_settings=None):
+        """绘制Area数据的折线图（按残基类型分组）"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time (ns)',
+                'y_title': 'Area (nm²)',
+                'axis_text': 12,
+                'marker_shape': 'o',
+                'marker_size': 0,
+                'line_color': 'darkorange'
+            }
+        
+        # 直接使用matplotlib绘制
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(10, 6))
+        
+        # 获取时间列（第4列及以后）
+        time_columns = self.plot_data.columns[3:]
+        x_axis = time_columns.astype(float) * self._trajectory.dt / 1000  # 转换为ns
+        
+        # 按残基类型分组绘制
+        residue_groups = self.plot_data.groupby('Resname')
+        colors = ['darkorange', 'red', 'green', 'blue', 'purple', 'brown', 'pink', 'gray']
+        
+        for i, (resname, group) in enumerate(residue_groups):
+            color = colors[i % len(colors)]
+            # 计算该残基类型的平均值
+            mean_values = group.iloc[:, 3:].mean(axis=0).values
+            plt.plot(x_axis, mean_values,
+                    marker=figure_settings.get('marker_shape', 'o'),
+                    markersize=figure_settings.get('marker_size', 0),
+                    color=color,
+                    label=f'{resname}')
+        
+        plt.xlabel(figure_settings.get('x_title', 'Time (ns)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', 'Area (nm²)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('Area Analysis Results', fontsize=14)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
+    
+    def plot_bar(self, figure_settings=None):
+        """绘制Area数据的条形图（按残基类型分组）"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Residue Type',
+                'y_title': 'Area (nm²)',
+                'axis_text': 12,
+                'bar_color': 'orange'
+            }
+        
+        # 直接使用matplotlib绘制
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(10, 6))
+        
+        # 按残基类型分组计算平均值
+        residue_groups = self.plot_data.groupby('Resname')
+        residue_names = []
+        mean_areas = []
+        colors = ['orange', 'red', 'green', 'blue', 'purple', 'brown', 'pink', 'gray']
+        
+        for i, (resname, group) in enumerate(residue_groups):
+            residue_names.append(resname)
+            # 计算该残基类型在所有时间点的平均面积
+            mean_area = group.iloc[:, 3:].mean().mean()
+            mean_areas.append(mean_area)
+        
+        bars = plt.bar(residue_names, mean_areas,
+                      color=colors[:len(residue_names)],
+                      alpha=0.7)
+        
+        plt.xlabel('Residue Type', fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', 'Area (nm²)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('Area Analysis Results (Average)', fontsize=14)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
 
 
 # --- Command-line Argument Parsing ---

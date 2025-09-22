@@ -208,18 +208,9 @@ def _ensure_figure_info_for_file(self, file_path):
             not hasattr(self.ui.FigureInfo, 'path_figure') or 
             self.ui.FigureInfo.path_figure != file_path):
             
-            # 临时设置tabWidget_lipids为当前活动的TabWidget
-            original_tab_widget = None
-            if hasattr(self, 'tab_manager') and self.tab_manager.current_tab_widget:
-                original_tab_widget = self.ui.tabWidget_lipids
-                self.ui.tabWidget_lipids = self.tab_manager.current_tab_widget
-            
-            # 创建FigureInfo
+            # 注意：tabWidget_lipids已被删除，现在使用动态创建的TabWidget
+            # 创建FigureInfo（不再需要临时设置tabWidget_lipids）
             self.ui.FigureInfo = FigureGetInfo(self.ui)
-            
-            # 恢复原始引用
-            if original_tab_widget:
-                self.ui.tabWidget_lipids = original_tab_widget
                 
     except Exception as e:
         print(f"创建FigureInfo失败: {e}")

@@ -69,6 +69,12 @@ class SZ(AnalysisBase):
         self.file_path = filePath
         self.parallel = parallel
         self.n_jobs = n_jobs
+        
+        # SZ分析支持的图表类型
+        self.supported_figure_types = ['Line Chart', 'Bar Chart']
+        
+        # 存储绘图数据，用于后续绘图
+        self.plot_data = None
 
         self.headAtoms = self.u.atoms[[]]
         self.tailAtoms = self.u.atoms[[]]
@@ -243,6 +249,170 @@ class SZ(AnalysisBase):
             # Assuming WriteExcelLipids is a defined class and available
             WriteExcelLipids(**dict_parameter).run()
             print(f"Analysis complete. Results will be saved to {self.file_path}")
+            
+            # 准备绘图数据
+            self._prepare_plot_data()
+        else:
+            return self.results.SZ
+    
+    def _prepare_plot_data(self):
+        """准备绘图数据，格式化为DataFrame"""
+        import pandas as pd
+        
+        # 创建绘图数据
+        frames = list(range(self.start, self.stop, self.step))
+        data = []
+        
+        for i, resname in enumerate(self.resnames):
+            row = {
+                'Resid': self.resids[i],
+                'Resname': resname,
+                'Coordinates': f"{self.headAtoms.positions[i][0]:.3f},{self.headAtoms.positions[i][1]:.3f},{self.headAtoms.positions[i][2]:.3f}"
+            }
+            # 添加每个时间帧的SZ数据
+            for j, frame in enumerate(frames):
+                row[str(frame)] = self.results.SZ[i, j]
+            data.append(row)
+        
+        self.plot_data = pd.DataFrame(data)
+        print(f"SZ plot data prepared: {self.plot_data.shape}")
+    
+    def plot_line(self, figure_settings=None):
+        """绘制SZ数据的折线图"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time (ns)',
+                'y_title': f'Sz Order Parameter (chain: {self.chain})',
+                'axis_text': 12,
+                'marker_shape': 'o',
+                'marker_size': 0,
+                'line_color': 'darkgreen'
+            }
+        
+        # 直接使用matplotlib绘制
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(10, 6))
+        
+        # 获取时间列（第4列及以后）
+        time_columns = self.plot_data.columns[3:]
+        x_axis = time_columns.astype(float) * self._trajectory.dt / 1000  # 转换为ns
+        
+        # 按残基类型分组绘制
+        residue_groups = self.plot_data.groupby('Resname')
+        colors = ['darkgreen', 'red', 'blue', 'orange', 'purple', 'brown', 'pink', 'gray']
+        
+        for i, (resname, group) in enumerate(residue_groups):
+            color = colors[i % len(colors)]
+            # 计算该残基类型的平均值
+            mean_values = group.iloc[:, 3:].mean(axis=0).values
+            plt.plot(x_axis, mean_values,
+                    marker=figure_settings.get('marker_shape', 'o'),
+                    markersize=figure_settings.get('marker_size', 0),
+                    color=color,
+                    label=f'{resname}')
+        
+        plt.xlabel(figure_settings.get('x_title', 'Time (ns)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', f'Sz Order Parameter (chain: {self.chain})'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('SZ Analysis Results', fontsize=14)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
+    
+    def plot_bar(self, figure_settings=None):
+        """绘制SZ数据的条形图"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time (ns)',
+                'y_title': f'Sz Order Parameter (chain: {self.chain})',
+                'axis_text': 12,
+                'bar_color': 'forestgreen'
+            }
+        
+        # 直接使用matplotlib绘制
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(10, 6))
+        
+        # 获取时间列（第4列及以后）
+        time_columns = self.plot_data.columns[3:]
+        x_axis = time_columns.astype(float) * self._trajectory.dt / 1000  # 转换为ns
+        
+        # 按残基类型分组计算平均值
+        residue_groups = self.plot_data.groupby('Resname')
+        residue_names = []
+        mean_sz_values = []
+        colors = ['forestgreen', 'red', 'green', 'orange', 'purple', 'brown', 'pink', 'gray']
+        
+        for i, (resname, group) in enumerate(residue_groups):
+            residue_names.append(resname)
+            # 计算该残基类型在所有时间点的平均SZ值
+            mean_sz = group.iloc[:, 3:].mean().mean()
+            mean_sz_values.append(mean_sz)
+        
+        bars = plt.bar(residue_names, mean_sz_values,
+                      color=colors[:len(residue_names)],
+                      alpha=0.7)
+        
+        plt.xlabel('Residue Type', fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', f'Sz Order Parameter (chain: {self.chain})'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('SZ Analysis Results (Average)', fontsize=14)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
+    
+    def plot_scatter(self, figure_settings=None):
+        """绘制SZ数据的散点图"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time (ns)',
+                'y_title': f'Sz Order Parameter (chain: {self.chain})',
+                'axis_text': 12,
+                'scatter_color': 'darkgreen',
+                'scatter_size': 50
+            }
+        
+        # 直接使用matplotlib绘制
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(10, 6))
+        
+        # 获取时间列（第4列及以后）
+        time_columns = self.plot_data.columns[3:]
+        x_axis = time_columns.astype(float) * self._trajectory.dt / 1000  # 转换为ns
+        
+        # 按残基类型分组绘制散点
+        residue_groups = self.plot_data.groupby('Resname')
+        colors = ['darkgreen', 'red', 'blue', 'orange', 'purple', 'brown', 'pink', 'gray']
+        
+        for i, (resname, group) in enumerate(residue_groups):
+            color = colors[i % len(colors)]
+            # 计算该残基类型的平均值
+            mean_values = group.iloc[:, 3:].mean(axis=0).values
+            plt.scatter(x_axis, mean_values,
+                       color=color,
+                       s=figure_settings.get('scatter_size', 50),
+                       alpha=0.7,
+                       label=f'{resname}')
+        
+        plt.xlabel(figure_settings.get('x_title', 'Time (ns)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', f'Sz Order Parameter (chain: {self.chain})'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('SZ Analysis Results', fontsize=14)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
 
 
 # --- Command-line Argument Parsing ---

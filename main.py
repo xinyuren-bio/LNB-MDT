@@ -99,6 +99,12 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+    # +++ 添加以下代码以解决背景颜色问题 +++
+        # 强制所有QPushButton都填充自己的背景，以覆盖系统原生样式。
+        # 这是解决macOS等系统上背景色不生效问题的关键。
+        # for button in self.findChildren(QPushButton):
+        #     button.setAutoFillBackground(True)
+
         # 初始化 VMDControlPanel
         global widgets
         widgets = self.ui
@@ -150,7 +156,7 @@ class MainWindow(QMainWindow):
         # 初始化主题切换功能
         self.setup_theme_switch()
         
-        # 确保figure页面显示tabWidget_lipids
+        # 确保figure页面显示信息文本框
         self.ensure_figure_widget_display()
 
         # EXTRA RIGHT BOX
@@ -202,15 +208,7 @@ class MainWindow(QMainWindow):
         self.ui.FigureShapeWidget = None
         self.ui.btn_figure_run.clicked.connect(lambda: FigurePage.figureBtnMakeFigure(self.ui))
         self.ui.figure_btn_path.clicked.connect(lambda: BtnGetPath.run(self.ui.figure_edit_path, 'figure_xlsx'))
-
-        self.ui.figure_line_btn_color_2.clicked.connect(lambda: FigurePage.figureBtnColor(self.ui))
-        self.ui.figure_line_btn_color_2.clicked.connect(openCloseFigureColorBox)
-        # self.ui.figure_bar_btn_trend_2.clicked.connect(lambda: FigurePage.figure_trend_line_color_btn)
-        self.ui.figure_bar_btn_color_2.clicked.connect(lambda: FigurePage.figureBtnColor(self.ui))
-        self.ui.figure_bar_btn_color_2.clicked.connect(openCloseFigureColorBox)
-        self.ui.figure_scatter_btn_shape_2.clicked.connect(openCloseFigureShapeBox)
-        self.ui.figure_scatter_btn_shape_2.clicked.connect(lambda: FigurePage.figureBtnShape(self.ui))
-        self.ui.tabWidget_lipids.currentChanged.connect(openCloseFigureExtra)
+        # self.ui.btn_gene_run.setStyleSheet("background-color: red; color: white;")
 
         # SHOW APP
         # ///////////////////////////////////////////////////////////////
@@ -218,16 +216,16 @@ class MainWindow(QMainWindow):
 
         # SET CUSTOM THEME
         # ///////////////////////////////////////////////////////////////
-        useCustomTheme = False
-        themeFile = "themes\py_dracula_light.qss"
+        # useCustomTheme = True
+        # themeFile = "themes/py_dracula_light.qss"
 
-        # SET THEME AND HACKS
-        if useCustomTheme:
-            # LOAD AND APPLY STYLE
-            UIFunctions.theme(self, themeFile, True)
+        # # SET THEME AND HACKS
+        # if useCustomTheme:
+        #     # LOAD AND APPLY STYLE
+        #     UIFunctions.theme(self, themeFile, True)
 
             # SET HACKS
-            AppFunctions.setThemeHack(self)
+            # AppFunctions.setThemeHack(self)
 
         # SET HOME PAGE AND SELECT MENU
         widgets.stackedWidget.setCurrentWidget(widgets.page_home)
@@ -408,6 +406,7 @@ class MainWindow(QMainWindow):
         # SHOW HOME PAGE
         if btnName == "btn_home":
             widgets.stackedWidget.setCurrentWidget(widgets.page_home)
+            # 用来改变侧边按钮点击后的显示
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
@@ -482,11 +481,7 @@ class MainWindow(QMainWindow):
             # 强制清理figure页面并重新设置
             self._force_cleanup_figure_page()
             
-            # 隐藏默认的tabWidget_lipids
-            if hasattr(self.ui, 'tabWidget_lipids'):
-                self.ui.tabWidget_lipids.setVisible(False)
-                self.ui.tabWidget_lipids.hide()
-                print("已隐藏默认的tabWidget_lipids")
+            # tabWidget_lipids已被删除，无需隐藏
             
             # 添加信息文本框到文件导入区域和RUN按钮之间
             self._add_info_textbox_between_import_and_run()
@@ -578,7 +573,7 @@ class MainWindow(QMainWindow):
             all_children = self.ui.page_figure.findChildren(QTableWidget)
             for child in all_children:
                 # 删除任何QTableWidget（除了我们不想删除的）
-                if child.objectName() != 'tabWidget_lipids':  # tabWidget_lipids不是QTableWidget，这只是保护
+                if child.objectName() != 'info_textbox':  # 保护信息文本框不被删除
                     child.setParent(None)  # 从父widget中移除
                     child.deleteLater()    # 标记为删除
                     print(f"已移除figure页面中的table widget: {child.objectName()}")

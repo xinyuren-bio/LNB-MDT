@@ -50,13 +50,13 @@ class UIItemsMake:
 
         settings.update(**kwargs)
         btn = QPushButton(btnName)
-        btn.setStyleSheet(
-            f"background-color:{settings['background_color']};"
-            f"font-size:{settings['font_size']};"
-            f"border-radius:{settings['border_radius']};"
-            f"width:{settings['width']};"
-            f"height:{settings['height']};"
-        )
+        # btn.setStyleSheet(
+        #     f"background-color:{settings['background_color']};"
+        #     f"font-size:{settings['font_size']};"
+        #     f"border-radius:{settings['border_radius']};"
+        #     f"width:{settings['width']};"
+        #     f"height:{settings['height']};"
+        # )
         btn.setCursor(QCursor(Qt.PointingHandCursor))
         if callback:
             btn.clicked.connect(callback)
@@ -74,8 +74,8 @@ class UIItemsMake:
         }
         settings.update(**kwargs)
         label = QLabel(text)
-        label.setStyleSheet(
-            f"font-size:{settings['font_size']};")
+        # label.setStyleSheet(
+        #     f"font-size:{settings['font_size']};")
         label.setMaximumHeight(height)
         label.setMaximumHeight(height)
         return label
@@ -85,11 +85,11 @@ class UIItemsMake:
                        , title: str
                        , title_color='white'):
         group_box = QGroupBox(title)
-        group_box.setStyleSheet("""QGroupBox {font-size:14pt;}
-                                   QGroupBox::title {color: %s;}
-                                   QGroupBox QCheckBox {color: white;}
-                                   QGroupBox QRadioButton {color: white;}
-                                """ % title_color)
+        # group_box.setStyleSheet("""QGroupBox {font-size:14pt;}
+        #                            QGroupBox::title {color: %s;}
+        #                            QGroupBox QCheckBox {color: white;}
+        #                            QGroupBox QRadioButton {color: white;}
+        #                         """ % title_color)
         return group_box
 
     @classmethod
@@ -99,8 +99,8 @@ class UIItemsMake:
                          , font_size=UISettings.FONT_SIZE
                          ):
         radio_check = btn_type(text)
-        radio_check.setStyleSheet('font-size:%s;'
-                                  % (font_size))
+        # radio_check.setStyleSheet('font-size:%s;'
+        #                           % (font_size))
         return radio_check
 
     @classmethod
@@ -110,24 +110,24 @@ class UIItemsMake:
                       , max=UISettings.SPIN_MAX
                       , step=UISettings.SPIN_STEP):
         spin_box = QSpinBox()
-        spin_box.setStyleSheet("""
-                            QSpinBox {
-                                font: 16pt "华文细黑";
-                                color: white;
-                                border: 1px solid white;
-                                background-color: rgb(33, 37, 43);
-                            }
-                            QSpinBox::up-button {
-                                height: 10px; /* 设置一个合适的高度 */
-                                width: 20px; /* 设置一个合适的宽度 */
-                                subcontrol-position: top right; /* 保持按钮在右侧 */
-                            }
-                            QSpinBox::down-button {
-                                height: 10px; /* 设置一个合适的高度 */
-                                width: 20px; /* 设置一个合适的宽度 */
-                                subcontrol-position: bottom right; /* 保持按钮在右侧 */
-                            }
-                        """)
+        # spin_box.setStyleSheet("""
+        #                     QSpinBox {
+        #                         font: 16pt "华文细黑";
+        #                         color: white;
+        #                         border: 1px solid white;
+        #                         background-color: rgb(33, 37, 43);
+        #                     }
+        #                     QSpinBox::up-button {
+        #                         height: 10px; /* 设置一个合适的高度 */
+        #                         width: 20px; /* 设置一个合适的宽度 */
+        #                         subcontrol-position: top right; /* 保持按钮在右侧 */
+        #                     }
+        #                     QSpinBox::down-button {
+        #                         height: 10px; /* 设置一个合适的高度 */
+        #                         width: 20px; /* 设置一个合适的宽度 */
+        #                         subcontrol-position: bottom right; /* 保持按钮在右侧 */
+        #                     }
+        #                 """)
         spin_box.setValue(value)
         spin_box.setMinimum(min)
         spin_box.setMaximum(max)

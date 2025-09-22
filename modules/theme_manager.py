@@ -60,6 +60,10 @@ class ThemeManager:
             return False
             
         try:
+            # +++ 添加下面这两行代码来打印路径 +++
+            # import os as os
+            print(f"--- [DEBUG] 正在尝试加载QSS文件, 绝对路径是: {os.path.abspath(theme_file)}")
+            # +++++++++++++++++++++++++++++++++++++
             with open(theme_file, 'r', encoding='utf-8') as f:
                 style_sheet = f.read()
                 
@@ -72,19 +76,98 @@ class ThemeManager:
                 self.main_window.setStyleSheet(style_sheet)
                 print(f"主题已切换到: {theme_name} (应用到主窗口)")
             
-            # 强制更新analysis页面的组件样式
-            self._update_analysis_components_style(theme_name)
-                
+            # 主题切换完成，样式由QSS文件控制
             self.current_theme = theme_name
             
             # 保存设置
             self.save_theme_setting()
+            
+            # 通知UI组件更新图标
+            self.notify_theme_change()
             
             return True
             
         except Exception as e:
             print(f"加载主题失败: {e}")
             return False
+    
+    def notify_theme_change(self):
+        """
+        通知UI组件主题已更改，需要更新图标
+        """
+        try:
+            # 方法1：通过全局变量通知
+            import main
+            if hasattr(main, 'window') and main.window:
+                # 查找AnalysisBtnClick实例
+                if hasattr(main.window.ui, 'extraRightBox') and main.window.ui.extraRightBox:
+                    if hasattr(main.window.ui, 'VLayoutRightMain'):
+                        layout = main.window.ui.VLayoutRightMain
+                        if layout:
+                            for i in range(layout.count()):
+                                item = layout.itemAt(i)
+                                if item and item.widget():
+                                    widget = item.widget()
+                                    # 检查widget内部是否有按钮
+                                    self.update_buttons_in_widget(widget)
+            
+            # 方法2：直接通过UI查找按钮并更新
+            if hasattr(self.main_window.ui, 'btnBack') and hasattr(self.main_window.ui, 'btnRefresh'):
+                self.update_direct_buttons()
+            
+            print(f"主题变更通知已发送")
+        except Exception as e:
+            print(f"发送主题变更通知时出错: {e}")
+    
+    def update_direct_buttons(self):
+        """
+        直接更新按钮图标
+        """
+        try:
+            is_dark = self.is_dark_theme()
+            
+            if is_dark:
+                back_icon_path = 'images/icons/houtui_black.png'
+                refresh_icon_path = 'images/icons/shuaxin_black.png'
+            else:
+                back_icon_path = 'images/icons/houtui.png'
+                refresh_icon_path = 'images/icons/shuaxin.png'
+            
+            # 更新按钮图标
+            if hasattr(self.main_window.ui, 'btnBack'):
+                self.main_window.ui.btnBack.setIcon(QIcon(back_icon_path))
+                print(f"直接更新Back按钮图标: {back_icon_path}")
+            
+            if hasattr(self.main_window.ui, 'btnRefresh'):
+                self.main_window.ui.btnRefresh.setIcon(QIcon(refresh_icon_path))
+                print(f"直接更新Refresh按钮图标: {refresh_icon_path}")
+                
+        except Exception as e:
+            print(f"直接更新按钮图标时出错: {e}")
+    
+    def update_buttons_in_widget(self, widget):
+        """
+        更新指定widget中的按钮图标
+        """
+        try:
+            # 递归查找按钮
+            def find_and_update_buttons(obj):
+                if hasattr(obj, 'btnBack') and hasattr(obj, 'btnRefresh'):
+                    # 如果找到了按钮，尝试调用update_button_icons方法
+                    if hasattr(obj, 'update_button_icons'):
+                        obj.update_button_icons()
+                        print("已更新按钮图标")
+                        return True
+                
+                # 递归查找子对象
+                for child in obj.children():
+                    if find_and_update_buttons(child):
+                        return True
+                return False
+            
+            find_and_update_buttons(widget)
+        except Exception as e:
+            print(f"更新widget中的按钮图标时出错: {e}")
     
     def toggle_theme(self):
         """切换主题"""
@@ -98,258 +181,6 @@ class ThemeManager:
     def is_dark_theme(self):
         """判断是否为暗色主题"""
         return self.current_theme == "dark"
-    
-    def _update_analysis_components_style(self, theme_name):
-        """更新analysis页面组件的样式"""
-        try:
-            if not hasattr(self.main_window.ui, 'page_analysis'):
-                return
-                
-            # 定义主题相关的颜色
-            if theme_name == "dark":
-                bg_color = "rgb(33, 37, 43)"
-                text_color = "white"
-                border_color = "white"
-            else:  # light theme
-                bg_color = "rgb(248, 248, 242)"
-                text_color = "rgb(40, 42, 54)"
-                border_color = "rgb(68, 71, 90)"
-            
-            # 更新QSpinBox样式
-            spinbox_style = f"""
-                QSpinBox {{
-                    font: 12pt "华文细黑";
-                    color: {text_color};
-                    border: 1px solid {border_color};
-                    background-color: {bg_color};
-                }}
-                QSpinBox::up-button {{
-                    background-color: {bg_color};
-                    border: 1px solid {border_color};
-                    width: 30px;
-                    subcontrol-position: top right;
-                }}
-                QSpinBox::down-button {{
-                    background-color: {bg_color};
-                    border: 1px solid {border_color};
-                    width: 30px;
-                    subcontrol-position: bottom right;
-                }}
-            """
-            
-            # 更新QDoubleSpinBox样式
-            doublespinbox_style = f"""
-                QDoubleSpinBox {{
-                    font: 16pt "华文细黑";
-                    color: {text_color};
-                    border: 1px solid {border_color};
-                    background-color: {bg_color};
-                }}
-                QDoubleSpinBox::up-button {{
-                    background-color: {bg_color};
-                    border: 1px solid {border_color};
-                    width: 30px;
-                    subcontrol-position: top right;
-                }}
-                QDoubleSpinBox::down-button {{
-                    background-color: {bg_color};
-                    border: 1px solid {border_color};
-                    width: 30px;
-                    subcontrol-position: bottom right;
-                }}
-            """
-            
-            # 更新Label样式
-            label_style = f"""
-                QLabel {{
-                    color: {text_color};
-                    font: 12pt "华文细黑";
-                }}
-            """
-            
-            # 应用样式到analysis页面的组件
-            analysis_page = self.main_window.ui.page_analysis
-            
-            # 更新QSpinBox组件
-            for spinbox in analysis_page.findChildren("QSpinBox"):
-                if hasattr(spinbox, 'setStyleSheet'):
-                    spinbox.setStyleSheet(spinbox_style)
-            
-            # 更新QDoubleSpinBox组件
-            for doublespinbox in analysis_page.findChildren("QDoubleSpinBox"):
-                if hasattr(doublespinbox, 'setStyleSheet'):
-                    doublespinbox.setStyleSheet(doublespinbox_style)
-            
-            # 更新Label组件
-            for label in analysis_page.findChildren("QLabel"):
-                if hasattr(label, 'setStyleSheet'):
-                    label.setStyleSheet(label_style)
-            
-            # 更新QLineEdit组件
-            placeholder_color = "rgb(139, 139, 139)" if theme_name == "dark" else "rgb(50, 50, 50)"
-            lineedit_style = f"""
-                QLineEdit {{
-                    background-color: {bg_color};
-                    border-radius: 5px;
-                    border: 2px solid {bg_color};
-                    padding-left: 10px;
-                    color: {text_color};
-                    selection-color: rgb(255, 255, 255);
-                    selection-background-color: rgb(255, 121, 198);
-                }}
-                QLineEdit::placeholder {{
-                    color: {placeholder_color};
-                }}
-                QLineEdit:focus {{
-                    border: 2px solid {border_color};
-                }}
-            """
-            for lineedit in analysis_page.findChildren("QLineEdit"):
-                if hasattr(lineedit, 'setStyleSheet'):
-                    lineedit.setStyleSheet(lineedit_style)
-            
-            # 特别处理analysis_label_first，因为它有内嵌的HTML内容和白色文字样式
-            if hasattr(self.main_window.ui, 'analysis_label_first'):
-                # 直接修改HTML内容中的颜色，使用更强的样式覆盖
-                if theme_name == "dark":
-                    html_content = '<html><head/><body><p><span style=" font-size:14pt; font-weight:600; color:white !important;">First</span></p></body></html>'
-                else:  # light theme
-                    html_content = '<html><head/><body><p><span style=" font-size:14pt; font-weight:600; color:rgb(40, 42, 54) !important;">First</span></p></body></html>'
-                
-                self.main_window.ui.analysis_label_first.setText(html_content)
-                
-                # 设置更强的样式表覆盖
-                first_label_style = f"""
-                    QLabel {{
-                        color: {text_color} !important;
-                        font: 14pt "华文细黑" !important;
-                        font-family: Verdana !important;
-                    }}
-                    QLabel * {{
-                        color: {text_color} !important;
-                    }}
-                """
-                self.main_window.ui.analysis_label_first.setStyleSheet(first_label_style)
-                print(f"已特别更新analysis_label_first样式和内容: {theme_name}")
-                
-                # 强制刷新组件
-                self.main_window.ui.analysis_label_first.update()
-                self.main_window.ui.analysis_label_first.repaint()
-                
-                # 延迟再次设置，确保生效
-                from PySide6.QtCore import QTimer
-                QTimer.singleShot(100, lambda: self.main_window.ui.analysis_label_first.setStyleSheet(first_label_style))
-            
-            # 更新所有页面的组件样式（不仅仅是analysis页面）
-            self._update_all_pages_components_style(theme_name, text_color, bg_color, border_color)
-                    
-            print(f"已更新analysis页面组件样式: {theme_name}")
-            
-        except Exception as e:
-            print(f"更新analysis组件样式失败: {e}")
-    
-    def _update_all_pages_components_style(self, theme_name, text_color, bg_color, border_color):
-        """更新所有页面的组件样式"""
-        try:
-            # 更新QSpinBox样式
-            spinbox_style = f"""
-                QSpinBox {{
-                    font: 12pt "华文细黑";
-                    color: {text_color};
-                    border: 1px solid {border_color};
-                    background-color: {bg_color};
-                }}
-                QSpinBox::up-button {{
-                    background-color: {bg_color};
-                    border: 1px solid {border_color};
-                    width: 30px;
-                    subcontrol-position: top right;
-                }}
-                QSpinBox::down-button {{
-                    background-color: {bg_color};
-                    border: 1px solid {border_color};
-                    width: 30px;
-                    subcontrol-position: bottom right;
-                }}
-            """
-            
-            # 更新QDoubleSpinBox样式
-            doublespinbox_style = f"""
-                QDoubleSpinBox {{
-                    font: 16pt "华文细黑";
-                    color: {text_color};
-                    border: 1px solid {border_color};
-                    background-color: {bg_color};
-                }}
-                QDoubleSpinBox::up-button {{
-                    background-color: {bg_color};
-                    border: 1px solid {border_color};
-                    width: 30px;
-                    subcontrol-position: top right;
-                }}
-                QDoubleSpinBox::down-button {{
-                    background-color: {bg_color};
-                    border: 1px solid {border_color};
-                    width: 30px;
-                    subcontrol-position: bottom right;
-                }}
-            """
-            
-            # 更新Label样式
-            label_style = f"""
-                QLabel {{
-                    color: {text_color};
-                    font: 12pt "华文细黑";
-                }}
-            """
-            
-            # 更新所有页面的组件
-            for page_name in ['page_home', 'page_analysis', 'page_generation', 'page_figure', 'page_data_process']:
-                if hasattr(self.main_window.ui, page_name):
-                    page = getattr(self.main_window.ui, page_name)
-                    
-                    # 更新QSpinBox组件
-                    for spinbox in page.findChildren("QSpinBox"):
-                        if hasattr(spinbox, 'setStyleSheet'):
-                            spinbox.setStyleSheet(spinbox_style)
-                    
-                    # 更新QDoubleSpinBox组件
-                    for doublespinbox in page.findChildren("QDoubleSpinBox"):
-                        if hasattr(doublespinbox, 'setStyleSheet'):
-                            doublespinbox.setStyleSheet(doublespinbox_style)
-                    
-                    # 更新Label组件
-                    for label in page.findChildren("QLabel"):
-                        if hasattr(label, 'setStyleSheet'):
-                            label.setStyleSheet(label_style)
-                    
-                    # 更新QLineEdit组件
-                    placeholder_color = "rgb(139, 139, 139)" if theme_name == "dark" else "rgb(50, 50, 50)"
-                    lineedit_style = f"""
-                        QLineEdit {{
-                            background-color: {bg_color};
-                            border-radius: 5px;
-                            border: 2px solid {bg_color};
-                            padding-left: 10px;
-                            color: {text_color};
-                            selection-color: rgb(255, 255, 255);
-                            selection-background-color: rgb(255, 121, 198);
-                        }}
-                        QLineEdit::placeholder {{
-                            color: {placeholder_color};
-                        }}
-                        QLineEdit:focus {{
-                            border: 2px solid {border_color};
-                        }}
-                    """
-                    for lineedit in page.findChildren("QLineEdit"):
-                        if hasattr(lineedit, 'setStyleSheet'):
-                            lineedit.setStyleSheet(lineedit_style)
-            
-            print(f"已更新所有页面组件样式: {theme_name}")
-            
-        except Exception as e:
-            print(f"更新所有页面组件样式失败: {e}")
     
 
 
@@ -368,6 +199,7 @@ class ThemeSwitchButton(QPushButton):
         self.theme_manager = theme_manager
         
         # 设置按钮属性
+        self.setObjectName("themeSwitchButton")  # 设置对象名以便QSS样式控制
         self.setFixedSize(28, 28)  # 与EN按钮相同大小
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setToolTip("切换主题 (白天/黑夜)")
@@ -389,27 +221,7 @@ class ThemeSwitchButton(QPushButton):
             self.setText("☀️")
             self.setToolTip("切换到黑夜模式")
             
-        # 设置按钮样式 - 与EN按钮保持一致
-        self.setStyleSheet("""
-            QPushButton {
-                background-color: rgba(255, 255, 255, 0);
-                border: none;
-                border-radius: 5px;
-                font-size: 14px;
-                color: white;
-                font: 14pt "华文细黑";
-            }
-            QPushButton:hover {
-                # background-color: rgb(44, 49, 57);
-                # border-style: solid;
-                # border-radius: 4px;
-            }
-            QPushButton:pressed {
-                # background-color: rgb(23, 26, 30);
-                # border-style: solid;
-                # border-radius: 4px;
-            }
-        """)
+        # 按钮样式由QSS文件控制
     
     def toggle_theme(self):
         """切换主题"""

@@ -3,7 +3,6 @@
 SET APP STYLESHEET - FULL STYLES HERE
 DARK THEME - DRACULA COLOR BASED
 
-# BY: WANDERSON M.PIMENTA
 # PROJECT MADE WITH: Qt Designer and PySide6
 # V: 1.0.0
 #
@@ -16,6 +15,28 @@ DARK THEME - DRACULA COLOR BASED
 # https://doc.qt.io/qtforpython/licenses.html
 
 ///////////////////////////////////////////////////////////////////////////////////////////////// */
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////////////////
+General PushButton */
+QPushButton {
+	background-color: rgb(68, 71, 90);
+	color: white;
+	
+	font: 12pt "华文细黑";
+	padding: 5px;
+}
+QPushButton:hover {
+	background-color: rgb(80, 85, 105);
+}
+QPushButton:pressed {
+	background-color: rgb(189, 147, 249);
+}
+QPushButton:disabled {
+	background-color: rgb(50, 50, 50);
+	color: rgb(150, 150, 150);
+}
+
 
 QWidget{
 	color: rgb(221, 221, 221);
@@ -187,9 +208,25 @@ Content App */
     /* 去除悬停背景色和边框变化 */
 }
 #rightButtons .QPushButton:pressed { 
-    background-color: rgb(23, 26, 30); 
+    background-color: transparent; 
     border-style: solid; 
     border-radius: 4px; 
+}
+
+/* Theme Switch Button */
+#themeSwitchButton {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
+    font: 14pt "华文细黑";
+}
+#themeSwitchButton:hover {
+    background-color: transparent !important;
+}
+#themeSwitchButton:pressed {
+    background-color: transparent !important;
 }
 
 /* Theme Settings */
@@ -268,7 +305,7 @@ QLineEdit {
 	border-radius: 5px;
 	border: 2px solid rgb(33, 37, 43);
 	padding-left: 10px;
-	color: rgb(248, 248, 242);
+	color: white;
 	selection-color: rgb(255, 255, 255);
 	selection-background-color: rgb(255, 121, 198);
 }
@@ -418,36 +455,35 @@ QRadioButton::indicator:checked {
 }
 
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
-ComboBox */
-QComboBox{
-	background-color: rgb(27, 29, 35);
-	border-radius: 5px;
-	border: 2px solid rgb(33, 37, 43);
-	padding: 5px;
-	padding-left: 10px;
+/* ComboBox 极简样式 */
+QComboBox {
+    /* 1. 边框颜色 */
+    border: 2px solidrgb(2, 2, 2); /*粉色边框*/
+
+    /* 2. (当前选中项)文字颜色 */
+    color:rgb(255, 255, 255); /* 深紫色背景 */
+
+    /* --- 其他基础样式 --- */
+    background-color: #6272a4;
+    border-radius: 5px;
+    padding: 5px;
+    padding-left: 10px;
 }
-QComboBox:hover{
-	/* 去除悬停边框变化 */
-}
-QComboBox::drop-down {
-	subcontrol-origin: padding;
-	subcontrol-position: top right;
-	width: 25px; 
-	border-left-width: 3px;
-	border-left-color: rgba(39, 44, 54, 150);
-	border-left-style: solid;
-	border-top-right-radius: 3px;
-	border-bottom-right-radius: 3px;	
-	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);
-	background-position: center;
-	background-repeat: no-reperat;
- }
+
+/* 下拉菜单（列表）的样式 */
 QComboBox QAbstractItemView {
-	color: rgb(255, 121, 198);	
-	background-color: rgb(33, 37, 43);
-	padding: 10px;
-	selection-background-color: rgb(39, 44, 54);
+    /* 3. 下拉菜单的背景颜色 */
+    background-color: #44475a; /* 深紫色背景 */
+
+    /* 4. 下拉菜单的文字颜色 */
+    color:rgb(0, 0, 0); /* 亮白色文字 */
+
+    /* --- 必要的交互样式 --- */
+    /* 鼠标滑过或选中某一项时的背景色 */
+    selection-background-color: #6272a4;
+    outline: 0px; /* 去除选中项的虚线框 */
 }
+
 
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
 Sliders */

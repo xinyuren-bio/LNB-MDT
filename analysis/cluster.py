@@ -37,6 +37,12 @@ class Cluster(AnalysisBase):
         self.file_path = filePath
         self.parallel = parallel
         self.n_jobs = n_jobs
+        
+        # Cluster分析支持的图表类型
+        self.supported_figure_types = ['Line Chart', 'Bar Chart']
+        
+        # 存储绘图数据，用于后续绘图
+        self.plot_data = None
 
         self.atomSp = {sp: ' '.join(residues_group[sp]) for sp in self.residues}
         print("Atoms for clustering:", self.atomSp)
@@ -81,6 +87,13 @@ class Cluster(AnalysisBase):
 
         residue_indices_pairs = np.unique(atom_resindices[pairs], axis=0)
 
+        if residue_indices_pairs.shape[0] == 0:
+             return 1 if n_residues > 0 else 0, np.array([]) if n_residues > 0 else np.array([])
+
+        # 过滤掉超出范围的索引
+        valid_mask = (residue_indices_pairs[:, 0] < n_residues) & (residue_indices_pairs[:, 1] < n_residues)
+        residue_indices_pairs = residue_indices_pairs[valid_mask]
+        
         if residue_indices_pairs.shape[0] == 0:
              return 1 if n_residues > 0 else 0, np.array([]) if n_residues > 0 else np.array([])
 
@@ -165,6 +178,93 @@ class Cluster(AnalysisBase):
             }
             WriteExcelBubble(**dict_parameter).run()
             print(f"Analysis complete. Results will be saved to {self.file_path}")
+            
+            # 准备绘图数据
+            self._prepare_plot_data()
+        else:
+            return self.results.LargestClusterSize
+    
+    def _prepare_plot_data(self):
+        """准备绘图数据，格式化为DataFrame（BubbleFigure格式）"""
+        import pandas as pd
+        
+        # 创建绘图数据（BubbleFigure格式）
+        frames = list(range(self.start, self.stop, self.step))
+        data = []
+        
+        # Cluster是整体数据，不是按残基分组
+        for j, frame in enumerate(frames):
+            row = {
+                'Time(ns)': frame * self._trajectory.dt / 1000,  # 转换为ns
+                'Value': self.results.LargestClusterSize[j]
+            }
+            data.append(row)
+        
+        self.plot_data = pd.DataFrame(data)
+        print(f"Cluster plot data prepared: {self.plot_data.shape}")
+    
+    def plot_line(self, figure_settings=None):
+        """绘制Cluster数据的折线图"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time (ns)',
+                'y_title': 'Largest Cluster Size',
+                'axis_text': 12,
+                'marker_shape': 'o',
+                'marker_size': 0,
+                'line_color': 'purple'
+            }
+        
+        # 直接使用matplotlib绘制
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(10, 6))
+        plt.plot(self.plot_data['Time(ns)'], self.plot_data['Value'],
+                marker=figure_settings.get('marker_shape', 'o'),
+                markersize=figure_settings.get('marker_size', 0),
+                color=figure_settings.get('line_color', 'purple'),
+                label='Cluster Size')
+        
+        plt.xlabel(figure_settings.get('x_title', 'Time (ns)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', 'Largest Cluster Size'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('Cluster Analysis Results', fontsize=14)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
+    
+    def plot_bar(self, figure_settings=None):
+        """绘制Cluster数据的条形图"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time (ns)',
+                'y_title': 'Largest Cluster Size',
+                'axis_text': 12,
+                'bar_color': 'plum'
+            }
+        
+        # 直接使用matplotlib绘制
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(10, 6))
+        plt.bar(self.plot_data['Time(ns)'], self.plot_data['Value'],
+               color=figure_settings.get('bar_color', 'plum'),
+               alpha=0.7,
+               label='Cluster Size')
+        
+        plt.xlabel(figure_settings.get('x_title', 'Time (ns)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', 'Largest Cluster Size'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('Cluster Analysis Results', fontsize=14)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
 
 
 # --- Command-line Argument Parsing ---

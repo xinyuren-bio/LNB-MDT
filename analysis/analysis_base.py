@@ -13,6 +13,8 @@ class AnalysisBase(ABC):
         self._trajectory = trajectory
         self._verbose = verbose
         self.results = Results()
+        # 支持的图表类型列表，子类可以重写此属性
+        self.supported_figure_types = ['Line Chart', 'Bar Chart']
 
     def _setup_frames(self, trajectory, start=None, stop=None, step=None,
                       frames=None):

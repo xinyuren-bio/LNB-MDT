@@ -30,6 +30,12 @@ class Anisotropy(AnalysisBase):
         self.parallel = parallel
         self.n_jobs = n_jobs
         
+        # Anisotropy分析支持的图表类型
+        self.supported_figure_types = ['Line Chart', 'Bar Chart']
+        
+        # 存储绘图数据，用于后续绘图
+        self.plot_data = None
+        
         self.residues = list(residueGroup)
         self.headSp = {sp: ' '.join(residueGroup[sp]) for sp in residueGroup}
         print("Head atoms:", self.headSp)
@@ -106,6 +112,93 @@ class Anisotropy(AnalysisBase):
             }
             WriteExcelBubble(**dict_parameter).run()
             print(f"Results saved to {self.file_path}")
+            
+            # 准备绘图数据
+            self._prepare_plot_data()
+        else:
+            return self.results.Anisotropy
+    
+    def _prepare_plot_data(self):
+        """准备绘图数据，格式化为DataFrame（BubbleFigure格式）"""
+        import pandas as pd
+        
+        # 创建绘图数据（BubbleFigure格式）
+        frames = list(range(self.start, self.stop, self.step))
+        data = []
+        
+        # Anisotropy是整体数据，不是按残基分组
+        for j, frame in enumerate(frames):
+            row = {
+                'Time(ns)': frame * self._trajectory.dt / 1000,  # 转换为ns
+                'Value': self.results.Anisotropy[j]
+            }
+            data.append(row)
+        
+        self.plot_data = pd.DataFrame(data)
+        print(f"Anisotropy plot data prepared: {self.plot_data.shape}")
+    
+    def plot_line(self, figure_settings=None):
+        """绘制Anisotropy数据的折线图"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time (ns)',
+                'y_title': 'Anisotropy',
+                'axis_text': 12,
+                'marker_shape': 'o',
+                'marker_size': 0,
+                'line_color': 'blue'
+            }
+        
+        # 直接使用matplotlib绘制
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(10, 6))
+        plt.plot(self.plot_data['Time(ns)'], self.plot_data['Value'],
+                marker=figure_settings.get('marker_shape', 'o'),
+                markersize=figure_settings.get('marker_size', 0),
+                color=figure_settings.get('line_color', 'blue'),
+                label='Anisotropy')
+        
+        plt.xlabel(figure_settings.get('x_title', 'Time (ns)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', 'Anisotropy'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('Anisotropy Analysis Results', fontsize=14)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
+    
+    def plot_bar(self, figure_settings=None):
+        """绘制Anisotropy数据的条形图"""
+        if self.plot_data is None:
+            self._prepare_plot_data()
+        
+        if figure_settings is None:
+            figure_settings = {
+                'x_title': 'Time (ns)',
+                'y_title': 'Anisotropy',
+                'axis_text': 12,
+                'bar_color': 'lightblue'
+            }
+        
+        # 直接使用matplotlib绘制
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(10, 6))
+        plt.bar(self.plot_data['Time(ns)'], self.plot_data['Value'],
+               color=figure_settings.get('bar_color', 'lightblue'),
+               alpha=0.7,
+               label='Anisotropy')
+        
+        plt.xlabel(figure_settings.get('x_title', 'Time (ns)'), fontsize=figure_settings.get('axis_text', 12))
+        plt.ylabel(figure_settings.get('y_title', 'Anisotropy'), fontsize=figure_settings.get('axis_text', 12))
+        plt.title('Anisotropy Analysis Results', fontsize=14)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
 
 
 # --- Command-line Argument Parsing ---
