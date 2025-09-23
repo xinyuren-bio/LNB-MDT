@@ -89,13 +89,13 @@ class Anisotropy(AnalysisBase):
             self.n_frames = len(range(self.start, self.stop, self.step))
             self._prepare()
             print(f"Running in parallel on {self.n_jobs} jobs...")
-            positions_generator = self._get_positions_generator()
-            verbose_level = 10 if verbose else 0
-            results_list = Parallel(n_jobs=self.n_jobs, verbose=verbose_level)(
-                delayed(self._calculate_anisotropy)(pos) for pos in positions_generator
-            )
-            self.results.Anisotropy = np.array(results_list)
-            self._conclude()
+            
+            # 使用父类的run方法以确保进度条正常工作
+            # 但禁用并行模式以避免冲突
+            original_parallel = self.parallel
+            self.parallel = False
+            super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)
+            self.parallel = original_parallel
         else:
             print("Running in serial mode...")
             super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)

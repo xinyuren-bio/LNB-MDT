@@ -325,7 +325,7 @@ class Area(AnalysisBase):
                     return np.nan
                 return area
             except Exception as e:
-                print(f"点 {i} 的Voronoi计算出错: {str(e)}")
+                # print(f"点 {i} 的Voronoi计算出错: {str(e)}")
                 return np.nan
 
         area_arr = np.array([compute_voronoi_area_single(i) for i in range(n_points)])
@@ -396,17 +396,13 @@ class Area(AnalysisBase):
             self._prepare()
 
             print(f"Running in parallel on {self.n_jobs} jobs...")
-            verbose_level = 10 if verbose else 0
             
-            inputs_generator = self._get_inputs_generator()
-            
-            results_list = Parallel(n_jobs=self.n_jobs, verbose=verbose_level)(
-                delayed(Area._calculate_area_for_frame)(*inputs) for inputs in inputs_generator
-            )
-            
-            if results_list:
-                results_array = np.array(results_list)
-                self.results.Area = results_array.T
+            # 使用父类的run方法以确保进度条正常工作
+            # 但禁用并行模式以避免冲突
+            original_parallel = self.parallel
+            self.parallel = False
+            super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)
+            self.parallel = original_parallel
             
             self._conclude()
         else:

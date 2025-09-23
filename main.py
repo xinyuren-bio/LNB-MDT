@@ -469,9 +469,7 @@ class MainWindow(QMainWindow):
         try:
             # 将主题切换按钮添加到顶部菜单
             self.theme_manager = add_theme_button_to_top_menu(self.ui, self)
-            print("主题切换功能已成功添加到顶部菜单")
         except Exception as e:
-            print(f"添加主题切换功能失败: {e}")
             # 如果添加失败，至少创建主题管理器
             self.theme_manager = ThemeManager(self)
     
@@ -491,10 +489,9 @@ class MainWindow(QMainWindow):
                 self.ui.widget_2.setVisible(True)
                 self.ui.widget_2.show()
                 self.ui.widget_2.raise_()  # 确保在顶层
-                print("已确保widget_2可见")
                 
         except Exception as e:
-            print(f"确保figure widget显示失败: {e}")
+            pass  # 确保figure widget显示失败
     
     def _add_info_textbox_between_import_and_run(self):
         """在文件导入区域和RUN按钮之间添加信息文本框"""
@@ -553,14 +550,12 @@ class MainWindow(QMainWindow):
                     if run_button_index >= 0:
                         # 在RUN按钮之前插入信息文本框
                         layout.insertWidget(run_button_index, info_textbox)
-                        print("已在文件导入区域和RUN按钮之间添加信息文本框")
                     else:
                         # 如果找不到RUN按钮，添加到末尾
                         layout.addWidget(info_textbox)
-                        print("已添加信息文本框到布局末尾")
                     
         except Exception as e:
-            print(f"添加信息文本框失败: {e}")
+            pass  # 添加信息文本框失败
     
     
     
@@ -576,7 +571,6 @@ class MainWindow(QMainWindow):
                 if child.objectName() != 'info_textbox':  # 保护信息文本框不被删除
                     child.setParent(None)  # 从父widget中移除
                     child.deleteLater()    # 标记为删除
-                    print(f"已移除figure页面中的table widget: {child.objectName()}")
             
             # 确保页面布局正确
             layout = self.ui.page_figure.layout()
@@ -589,7 +583,6 @@ class MainWindow(QMainWindow):
                         # 如果是QTableWidget且不是我们需要的，从布局中移除
                         if isinstance(widget, QTableWidget):
                             layout.removeWidget(widget)
-                            print(f"已从布局中移除table widget: {widget.objectName()}")
                 
                 # 确保核心widget在布局中
                 if hasattr(self.ui, 'widget_2'):
@@ -602,10 +595,9 @@ class MainWindow(QMainWindow):
                     
                     if not widget_in_layout:
                         layout.insertWidget(0, self.ui.widget_2)  # 插入到第一个位置
-                        print("已重新添加widget_2到figure页面布局")
                         
         except Exception as e:
-            print(f"强制清理figure页面失败: {e}")
+            pass  # 强制清理figure页面失败
 
     def on_file_path_changed(self):
         """当文件路径改变时的回调"""
@@ -619,7 +611,9 @@ class MainWindow(QMainWindow):
         try:
             # 检测文件类型
             file_type = FileTypeDetector.detect_file_type(file_path)
-            print(f"检测到文件类型: {file_type}")
+            
+            # 保存文件类型到UI实例中，避免重复检测
+            self.ui.detected_file_type = file_type
             
             # 移除信息文本框
             self._remove_info_textbox()
@@ -651,17 +645,12 @@ class MainWindow(QMainWindow):
                 not hasattr(self.ui.FigureInfo, 'path_figure') or 
                 self.ui.FigureInfo.path_figure != file_path):
                 
-                print(f"正在为文件创建参数读取器: {file_path}")
-                
                 # 创建参数读取器
                 self.ui.FigureInfo = create_parameter_reader(self.ui)
-                
-                print("参数读取器创建成功")
             else:
-                print("参数读取器已存在且文件路径未改变")
+                pass  # 参数读取器已存在且文件路径未改变
                 
         except Exception as e:
-            print(f"创建参数读取器失败: {e}")
             from PySide6.QtWidgets import QMessageBox
             QMessageBox.warning(self, "警告", f"文件信息读取失败: {str(e)}")
     
@@ -680,11 +669,10 @@ class MainWindow(QMainWindow):
                                 layout.removeWidget(widget)
                                 widget.setParent(None)
                                 widget.deleteLater()
-                                print("已移除信息文本框")
                                 break
                         
         except Exception as e:
-            print(f"移除信息文本框失败: {e}")
+            pass  # 移除信息文本框失败
 
 
 if __name__ == "__main__":

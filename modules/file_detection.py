@@ -25,40 +25,58 @@ class FileTypeDetector:
     @staticmethod
     def detect_file_type(file_path):
         """检测CSV文件类型（lipids或bubble）"""
+        print(f"DEBUG: FileTypeDetector.detect_file_type called with: {file_path}")
+        
         if not os.path.exists(file_path):
+            print(f"DEBUG: File does not exist: {file_path}")
             return "unknown"
         
         # 获取文件扩展名
         _, ext = os.path.splitext(file_path.lower())
+        print(f"DEBUG: File extension: {ext}")
         
         # 只支持CSV文件
         if ext != '.csv':
+            print(f"DEBUG: Unsupported file type: {ext}")
             return "unsupported"
         
         # 读取CSV文件的前几行来检测类型
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
+                print(f"DEBUG: Read {len(lines)} lines from file")
                 
-                # 检查第4行（索引3）的TYPE信息
-                if len(lines) >= 4:
-                    line_4 = lines[3].strip()
-                    if line_4.startswith('# TYPE:'):
-                        type_info = line_4.split('# TYPE:')[1].strip()
+                # 检查前几行（最多10行）的TYPE信息
+                for i in range(min(10, len(lines))):
+                    line = lines[i].strip()
+                    print(f"DEBUG: Line {i}: {line}")
+                    if line.startswith('# TYPE:'):
+                        type_info = line.split('# TYPE:')[1].strip()
+                        print(f"DEBUG: Found TYPE line: '{type_info}'")
+                        
                         if type_info.lower() == 'lipids':
+                            print(f"DEBUG: Returning 'lipids'")
                             return 'lipids'
                         elif type_info.lower() == 'bubble':
+                            print(f"DEBUG: Returning 'bubble'")
                             return 'bubble'
+                        elif type_info.lower() == 'density with time':
+                            print(f"DEBUG: Returning 'density_time'")
+                            return 'density_time'
+                        elif type_info.lower() == 'density with radius':
+                            print(f"DEBUG: Returning 'density_radius'")
+                            return 'density_radius'
                         else:
+                            print(f"DEBUG: Unknown CSV type: '{type_info}', returning 'unknown_csv_type'")
                             return 'unknown_csv_type'
-                    else:
-                        return 'unknown_csv_format'
-                else:
-                    return 'invalid_csv_format'
+                
+                # 如果没有找到TYPE信息，返回未知格式
+                print(f"DEBUG: No TYPE line found, returning 'unknown_csv_format'")
+                return 'unknown_csv_format'
                     
         except Exception as e:
-            print(f"读取CSV文件时出错: {e}")
-            return 'csv_read_error'
+            print(f"DEBUG: Exception reading CSV file: {e}")
+            pass  # 读取CSV文件时出错
 
 class DynamicTabManager:
     """动态Tab Widget管理器"""
@@ -109,6 +127,12 @@ class DynamicTabManager:
         elif file_type == 'bubble':
             # 对于bubble类型，创建新的tabWidget，复制Line和Bar
             return self._create_bubble_tab_widget(file_path)
+        elif file_type == 'density_time':
+            # 对于density_time类型，创建类似bubble的TabWidget
+            return self._create_density_time_tab_widget(file_path)
+        elif file_type == 'density_radius':
+            # 对于density_radius类型，创建包含Heatmap的TabWidget
+            return self._create_density_radius_tab_widget(file_path)
         else:
             # 创建错误信息tab
             content_widget = QWidget()
@@ -188,6 +212,8 @@ class DynamicTabManager:
         name_mapping = {
             'lipids': '🧬 Lipids分析',
             'bubble': '🫧 Bubble分析',
+            'density_time': '📊 Density Time分析',
+            'density_radius': '📈 Density Radius分析',
             'unsupported': '❌ 不支持的文件类型',
             'unknown_csv_type': '❓ 未知CSV类型',
             'unknown_csv_format': '❓ 未知CSV格式',
@@ -273,8 +299,8 @@ class DynamicTabManager:
         
         error_messages = {
             'unsupported': f"不支持的文件类型。\n文件: {file_path}\n\n只支持CSV文件。",
-            'unknown_csv_type': f"未知的CSV类型。\n文件: {file_path}\n\n支持的CSV类型: lipids, bubble",
-            'unknown_csv_format': f"未知的CSV格式。\n文件: {file_path}\n\nCSV文件第4行应包含: # TYPE:lipids 或 # TYPE:bubble",
+            'unknown_csv_type': f"未知的CSV类型。\n文件: {file_path}\n\n支持的CSV类型: lipids, bubble, density_time, density_radius",
+            'unknown_csv_format': f"未知的CSV格式。\n文件: {file_path}\n\nCSV文件第4行应包含: # TYPE:lipids 或 # TYPE:bubble 或 # TYPE:Density With Time 或 # TYPE:Density With Radius",
             'invalid_csv_format': f"无效的CSV格式。\n文件: {file_path}\n\nCSV文件至少需要4行。",
             'csv_read_error': f"CSV文件读取错误。\n文件: {file_path}\n\n请检查文件是否存在且可读。"
         }
@@ -1176,19 +1202,14 @@ class DynamicTabManager:
         current_index = tab_widget.currentIndex()
         current_tab = tab_widget.widget(current_index)
         
-        print(f"绑定按钮 - 当前标签页索引: {current_index}, 文件类型: {getattr(self, 'current_file_type', 'None')}")
-        print(f"当前标签页对象名: {current_tab.objectName() if current_tab else 'None'}")
-        
         # 根据文件类型和当前tab类型绑定相应的按钮
         if hasattr(self, 'current_file_type'):
             if self.current_file_type == 'lipids':
-                print("调用_bind_lipids_buttons")
                 self._bind_lipids_buttons(tab_widget, current_index, file_path)
             elif self.current_file_type == 'bubble':
-                print("调用_bind_bubble_buttons")
                 self._bind_bubble_buttons(tab_widget, current_index, file_path)
         else:
-            print("current_file_type属性不存在")
+            pass  # current_file_type属性不存在
     
     def _bind_lipids_buttons(self, tab_widget, tab_index, file_path):
         """绑定Lipids类型TabWidget的按钮功能"""
@@ -1212,29 +1233,23 @@ class DynamicTabManager:
     
     def _bind_line_buttons(self, line_tab, file_path):
         """绑定Line tab中的按钮功能"""
-        print(f"正在绑定Line tab按钮...")
-        
         # 查找颜色选择按钮
         color_btn = line_tab.findChild(QPushButton, "lipids_line_btn_color")
         if color_btn:
-            print(f"找到lipids_line_btn_color按钮，正在绑定...")
             color_btn.clicked.connect(lambda: self._handle_color_selection(line_tab, "line"))
-            print(f"lipids_line_btn_color按钮绑定成功")
         else:
-            print(f"未找到lipids_line_btn_color按钮")
+            pass  # 未找到lipids_line_btn_color按钮
         
         # 查找bubble颜色按钮（如果存在）
         bubble_color_btn = line_tab.findChild(QPushButton, "bubble_line_btn_color")
         if bubble_color_btn:
-            print(f"找到bubble_line_btn_color按钮，正在绑定...")
             bubble_color_btn.clicked.connect(lambda: self._handle_color_selection(line_tab, "line"))
-            print(f"bubble_line_btn_color按钮绑定成功")
         else:
-            print(f"未找到bubble_line_btn_color按钮")
+            pass  # 未找到bubble_line_btn_color按钮
         
         # 调试：列出所有按钮
         all_buttons = line_tab.findChildren(QPushButton)
-        print(f"Line tab中找到的所有按钮: {[btn.objectName() for btn in all_buttons]}")
+        pass  # Line tab中找到的所有按钮
     
     def _bind_bar_buttons(self, bar_tab, file_path):
         """绑定Bar tab中的按钮功能"""
@@ -1266,7 +1281,6 @@ class DynamicTabManager:
     
     def _handle_color_selection(self, tab_widget, tab_type):
         """处理颜色选择功能"""
-        print(f"颜色选择按钮被点击！文件类型: {self.current_file_type}, 标签页类型: {tab_type}")
         try:
             # 导入颜色选择功能
             from .Fuctions_Figure import FigurePage
@@ -1276,24 +1290,18 @@ class DynamicTabManager:
             
             # 确保FigureInfo已初始化
             if not hasattr(main_ui, 'FigureInfo') or main_ui.FigureInfo is None:
-                print("FigureInfo未初始化，显示警告")
                 QMessageBox.warning(None, "警告", "请先选择结果文件！")
                 return
             
-            print(f"FigureInfo已存在，正在调用颜色选择功能...")
-            
             # 根据文件类型调用相应的颜色选择方法
             if self.current_file_type == 'lipids':
-                print("调用lipids_colors方法")
                 FigurePage.lipids_colors(main_ui)
             elif self.current_file_type == 'bubble':
-                print("调用single_color方法")
                 FigurePage.single_color(main_ui)
             else:
-                print(f"未知的文件类型: {self.current_file_type}")
+                pass  # 未知的文件类型
                 
         except Exception as e:
-            print(f"颜色选择功能出错: {e}")
             QMessageBox.critical(None, "错误", f"颜色选择功能出错: {str(e)}")
     
     def _handle_trend_selection(self, tab_widget):
@@ -1351,4 +1359,141 @@ class DynamicTabManager:
         
         # 立即绑定当前活跃tab的按钮
         self.bind_dynamic_tab_buttons(tab_widget, file_path)
+    
+    def _create_density_time_tab_widget(self, file_path):
+        """创建Density Time类型的TabWidget，包含Line和Bar两个tab"""
+        # 创建新的TabWidget
+        density_time_tab_widget = QTabWidget()
+        
+        # 设置样式（使用默认样式）
+        density_time_tab_widget.setStyleSheet("""
+            QTabBar::tab {
+                background: lightgray;
+                border: 2px solid #C4C4C3;
+                border-bottom-color: #C4C4C3;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                min-width: 16ex;
+                padding: 2px;
+                font: 18pt "华文细黑";
+                color: black;
+            }
+            QTabBar::tab:selected {
+                background: lightblue;
+            }
+            QTabBar::tab:hover {
+                background: pink;
+            }
+        """)
+        density_time_tab_widget.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        
+        # 创建Line tab
+        line_tab = self._create_bubble_line_tab()
+        density_time_tab_widget.addTab(line_tab, "📈 Density-Time Line")
+        
+        # 创建Heatmap tab
+        heatmap_tab = self._create_density_heatmap_tab()
+        density_time_tab_widget.addTab(heatmap_tab, "🗺️ Density-Time Heatmap")
+        
+        # 替换当前的TabWidget
+        self._replace_widget_in_layout(density_time_tab_widget)
+        self.current_tab_widget = density_time_tab_widget
+        
+        # 设置按钮绑定
+        self.setup_button_bindings_for_new_tab(density_time_tab_widget, 'density_time', file_path)
+        
+        return density_time_tab_widget
+    
+    def _create_density_radius_tab_widget(self, file_path):
+        """创建Density Radius类型的TabWidget，包含Line和Heatmap两个tab"""
+        # 创建新的TabWidget
+        density_radius_tab_widget = QTabWidget()
+        
+        # 设置样式（使用默认样式）
+        density_radius_tab_widget.setStyleSheet("""
+            QTabBar::tab {
+                background: lightgray;
+                border: 2px solid #C4C4C3;
+                border-bottom-color: #C4C4C3;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                min-width: 16ex;
+                padding: 2px;
+                font: 18pt "华文细黑";
+                color: black;
+            }
+            QTabBar::tab:selected {
+                background: lightblue;
+            }
+            QTabBar::tab:hover {
+                background: pink;
+            }
+        """)
+        density_radius_tab_widget.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        
+        # 创建Line tab
+        line_tab = self._create_bubble_line_tab()
+        density_radius_tab_widget.addTab(line_tab, "📈 Density-Radius Line")
+        
+        # 创建Heatmap tab
+        heatmap_tab = self._create_density_heatmap_tab()
+        density_radius_tab_widget.addTab(heatmap_tab, "🗺️ Density-Radius Heatmap")
+        
+        # 替换当前的TabWidget
+        self._replace_widget_in_layout(density_radius_tab_widget)
+        self.current_tab_widget = density_radius_tab_widget
+        
+        # 设置按钮绑定
+        self.setup_button_bindings_for_new_tab(density_radius_tab_widget, 'density_radius', file_path)
+        
+        return density_radius_tab_widget
+    
+    def _create_density_heatmap_tab(self):
+        """创建Density Heatmap tab"""
+        # 创建Heatmap tab widget
+        heatmap_tab = QWidget()
+        heatmap_tab.setObjectName("density_heatmap_tab")
+        
+        # 创建GridLayout
+        grid_layout = QGridLayout(heatmap_tab)
+        grid_layout.setObjectName("density_heatmap_gridLayout")
+        
+        # X-Title
+        x_title_label = QLabel(heatmap_tab)
+        x_title_label.setObjectName("density_heatmap_label_x")
+        x_title_label.setStyleSheet("font: 16pt \"华文细黑\";")
+        x_title_label.setText("X-Title")
+        grid_layout.addWidget(x_title_label, 0, 0, 1, 1)
+        
+        x_title_edit = QLineEdit(heatmap_tab)
+        x_title_edit.setObjectName("density_heatmap_edit_x")
+        x_title_edit.setPlaceholderText("Default if none")
+        grid_layout.addWidget(x_title_edit, 0, 1, 1, 1)
+        
+        # Y-Title
+        y_title_label = QLabel(heatmap_tab)
+        y_title_label.setObjectName("density_heatmap_label_y")
+        y_title_label.setStyleSheet("font: 16pt \"华文细黑\";")
+        y_title_label.setText("Y-Title")
+        grid_layout.addWidget(y_title_label, 1, 0, 1, 1)
+        
+        y_title_edit = QLineEdit(heatmap_tab)
+        y_title_edit.setObjectName("density_heatmap_edit_y")
+        y_title_edit.setPlaceholderText("Default if none")
+        grid_layout.addWidget(y_title_edit, 1, 1, 1, 1)
+        
+        # Color Map
+        color_map_label = QLabel(heatmap_tab)
+        color_map_label.setObjectName("density_heatmap_label_color_map")
+        color_map_label.setStyleSheet("font: 16pt \"华文细黑\";")
+        color_map_label.setText("Color Map")
+        grid_layout.addWidget(color_map_label, 2, 0, 1, 1)
+        
+        color_map_combo = QComboBox(heatmap_tab)
+        color_map_combo.setObjectName("density_heatmap_combo_color_map")
+        color_map_combo.addItems(["viridis", "plasma", "inferno", "magma", "jet", "hot", "cool", "spring", "summer", "autumn", "winter"])
+        color_map_combo.setCurrentText("viridis")
+        grid_layout.addWidget(color_map_combo, 2, 1, 1, 1)
+        
+        return heatmap_tab
     

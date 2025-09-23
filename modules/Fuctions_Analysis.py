@@ -78,8 +78,8 @@ class AnalysisBtnClick:
     的不同的显示，由AnalysisLayout完成
     """
     FONT_SIZE = '15pt'  # 字体大小
-    TEST_GRO_PATH = 'E:/ach.gro'
-    TEST_XTC_PATH = 'E:/ach.xtc'
+    TEST_GRO_PATH = './cases/lnb.gro'
+    TEST_XTC_PATH = './cases/md.xtc'
 
     def __init__(self, ui):
         self.ui = ui
@@ -100,8 +100,8 @@ class AnalysisBtnClick:
         # except:
         #     create_warn_dialog(text='Failed to import files')
 
-        self.Box.u = mda.Universe(self.Info.path_structure
-                                  , self.Info.path_trajectory
+        self.Box.u = mda.Universe(self.Info.path_structure if self.Info.path_structure else self.TEST_GRO_PATH
+                                  , self.Info.path_trajectory if self.Info.path_trajectory else self.TEST_XTC_PATH
                                   , all_coordinates=False)
         self.Box.residues = np.unique(self.Box.u.atoms.resnames)
         for sp in self.Box.residues:
@@ -122,7 +122,6 @@ class AnalysisBtnClick:
         self.ui.widgetUpNextBack = QWidget()
         # 创建顶部布局用来刷新事件
         # 创建带图标的Back按钮
-        print(f"*** Creating Back button ***")
         self.ui.btnBack = QPushButton()
         self.update_button_icons()  # 根据当前主题设置图标
         self.ui.btnBack.setIconSize(QSize(24, 24))
@@ -167,7 +166,7 @@ class AnalysisBtnClick:
         HLayoutNextBack.addWidget(self.ui.btnRefresh)
 
         # 定义使用统一界面的方法（不需要传统的残基选择界面）
-        unified_methods = ['DensityRadius', 'DensityMultiRadius', 'Area', 'Gyration', 'Anisotropy']
+        unified_methods = ['DensityTime', 'DensityRadius', 'Area', 'Gyration', 'Anisotropy']
         
         if self.method not in unified_methods:
             # 创建显示残基的窗口，并添加到StackedWidget以及在该窗口添加垂直布局
@@ -181,8 +180,14 @@ class AnalysisBtnClick:
                 checkBox = QCheckBox(sp)
                 self.ui.VLayoutResidue.addWidget(checkBox)
                 self.Box.residues_list.append(checkBox)
-        elif self.method == 'DensityRadius':
-            print('DensityRadius')
+        elif self.method == 'DensityTime':
+            print('DensityTime')
+            # 为DensityTime直接创建SpinBox界面
+            widget = UIItemsMake.make_widget()
+            layout = QVBoxLayout(widget)
+            self.ui.widgetspinbox = widget
+            self.ui.VLayoutspinbox = layout
+
             # 为DensityRadius直接创建SpinBox界面
             widget = UIItemsMake.make_widget()
             layout = QVBoxLayout(widget)
@@ -212,12 +217,12 @@ class AnalysisBtnClick:
             self.ui.stackedWidget_Analysis.setCurrentIndex(0)
             
             # 创建DensityRadiusHandler实例并连接按钮事件
-            self.density_handler = DensityRadiusHandler(self.ui, self.Box, self.Info)
+            self.density_handler = DensityTimeHandler(self.ui, self.Box, self.Info)
             btnNext.clicked.connect(lambda: self.density_handler.step_1())
-            print("DensityRadius button connected successfully")
-        elif self.method == 'DensityMultiRadius':
-            print('DensityMultiRadius')
-            # 为DensityMultiRadius直接创建SpinBox界面
+            print("DensityTime button connected successfully")
+        elif self.method == 'DensityRadius':
+            print('DensityRadius')
+            # 为DensityRadius直接创建SpinBox界面
             widget = UIItemsMake.make_widget()
             layout = QVBoxLayout(widget)
             self.ui.widgetspinbox = widget
@@ -254,9 +259,9 @@ class AnalysisBtnClick:
             self.ui.stackedWidget_Analysis.setCurrentIndex(0)
             
             # 创建DensityMultiRadiusHandler实例并连接按钮事件
-            self.density_multi_handler = DensityMultiRadiusHandler(self.ui, self.Box, self.Info)
-            btnNext.clicked.connect(lambda: self.density_multi_handler.step_1())
-            print("DensityMultiRadius button connected successfully")
+            self.density_radius_handler = DensityRadiusHandler(self.ui, self.Box, self.Info)
+            btnNext.clicked.connect(lambda: self.density_radius_handler.step_1())
+            print("DensityRadius button connected successfully")
         elif self.method in ['Area', 'Gyration', 'Anisotropy']:
             print(f'{self.method} - Using unified handler')
             # 对于使用UnifiedAnalysisHandler的方法，创建对应的Handler实例
@@ -296,7 +301,7 @@ class AnalysisBtnClick:
             self.ui.VLayoutRightMain.addWidget(self.ui.stackedWidget_Analysis)
 
         # 如果方法不是DensityRadius、DensityMultiRadius、Area、Gyration、Anisotropy，则使用layout_strategies处理
-        if self.method not in ['DensityRadius', 'DensityMultiRadius', 'Area', 'Gyration', 'Anisotropy']:
+        if self.method not in ['DensityTime', 'DensityRadius', 'Area', 'Gyration', 'Anisotropy']:
             layout_strategies = {
                 'Height': HeightLayout
                 , 'SZ': SZLayout
@@ -312,7 +317,7 @@ class AnalysisBtnClick:
 
             self.ui.VLayoutRightMain.addWidget(self.ui.widgetUpNextBack)
             self.ui.VLayoutRightMain.addWidget(self.ui.stackedWidget_Analysis)
-        elif self.method in ['DensityRadius', 'DensityMultiRadius']:
+        elif self.method in ['DensityTime', 'DensityRadius']:
             # DensityRadius和DensityMultiRadius方法需要添加back/refresh按钮和stackedWidget_Analysis
             print(f"*** Adding buttons to main layout for {self.method} ***")
             self.ui.VLayoutRightMain.addWidget(self.ui.widgetUpNextBack)
@@ -334,10 +339,10 @@ class AnalysisBtnClick:
         # 对于使用AtomsLayoutUnified的方法，不需要额外的按钮，因为按钮已经在AtomsLayoutUnified中创建了
 
     def switchWidgetBack(self):
-        if self.method == 'DensityRadius' and self.density_handler:
+        if self.method == 'DensityTime' and self.density_handler:
             # DensityRadius的back功能
             self.density_handler.go_back()
-        elif self.method == 'DensityMultiRadius' and self.density_multi_handler:
+        elif self.method == 'DensityRadius' and self.density_multi_handler:
             # DensityMultiRadius的back功能
             self.density_multi_handler.go_back()
         elif self.method in ['Area', 'Gyration', 'Anisotropy']:
@@ -414,14 +419,14 @@ class AnalysisBtnClick:
             # 更新按钮图标
             if hasattr(self.ui, 'btnBack'):
                 self.ui.btnBack.setIcon(QIcon(back_icon_path))
-                print(f"Back按钮图标已更新: {back_icon_path}")
+                
             
             if hasattr(self.ui, 'btnRefresh'):
                 self.ui.btnRefresh.setIcon(QIcon(refresh_icon_path))
-                print(f"Refresh按钮图标已更新: {refresh_icon_path}")
+                
                 
         except Exception as e:
-            print(f"更新按钮图标时出错: {e}")
+            
             # 如果出错，使用默认的白天主题图标
             if hasattr(self.ui, 'btnBack'):
                 self.ui.btnBack.setIcon(QIcon('images/icons/houtui.png'))
@@ -429,22 +434,6 @@ class AnalysisBtnClick:
                 self.ui.btnRefresh.setIcon(QIcon('images/icons/shuaxin.png'))
 
     def refreshWidget(self):
-        print(f"*** refreshWidget() called for method: {self.method} ***")
-        print(f"*** Current time: {time.time()} ***")
-        
-        # 检查Handler实例是否存在
-        print(f"*** Checking Handler instances ***")
-        print(f"hasattr(self, 'area_handler'): {hasattr(self, 'area_handler')}")
-        print(f"hasattr(self, 'gyration_handler'): {hasattr(self, 'gyration_handler')}")
-        print(f"hasattr(self, 'anisotropy_handler'): {hasattr(self, 'anisotropy_handler')}")
-        
-        if hasattr(self, 'area_handler'):
-            print(f"self.area_handler: {self.area_handler}")
-        if hasattr(self, 'gyration_handler'):
-            print(f"self.gyration_handler: {self.gyration_handler}")
-        if hasattr(self, 'anisotropy_handler'):
-            print(f"self.anisotropy_handler: {self.anisotropy_handler}")
-        
         # 所有分析方法都使用相同的refresh功能：清空布局并重新读取文件
         def clearLayout(layout):
             """
@@ -460,13 +449,23 @@ class AnalysisBtnClick:
         
         # 对于Area、Gyration、Anisotropy，使用传统的refresh方式重新读取文件
         if self.method in ['Area', 'Gyration', 'Anisotropy']:
-            print(f"*** Using traditional refresh for {self.method} to re-read file ***")
             clearLayout(self.ui.VLayoutRightMain)
+            
+            # 清除figureTypeWidget属性，防止下次分析时跳过创建
+            if hasattr(self.ui, 'figureTypeWidget'):
+                self.ui.figureTypeWidget = None
+                delattr(self.ui, 'figureTypeWidget')
+            
             self.readFile()
         else:
             # 其他分析方法使用传统的refresh方式
-            print(f"*** Using traditional refresh for {self.method} ***")
             clearLayout(self.ui.VLayoutRightMain)
+            
+            # 清除figureTypeWidget属性，防止下次分析时跳过创建
+            if hasattr(self.ui, 'figureTypeWidget'):
+                self.ui.figureTypeWidget = None
+                delattr(self.ui, 'figureTypeWidget')
+            
             self.readFile()
 
 
@@ -604,18 +603,7 @@ class AnalysisLayout:
                     self.cls.plot_scatter()
                 else:
                     print(f"{type(self.cls).__name__} does not support plot_scatter method")
-            elif figure_type == 'Heatmap':
-                if hasattr(self.cls, 'plot_heatmap'):
-                    print("Calling plot_heatmap method...")
-                    self.cls.plot_heatmap()
-                else:
-                    print(f"{type(self.cls).__name__} does not support plot_heatmap method")
-            elif figure_type == '3D Surface':
-                if hasattr(self.cls, 'plot_3d_surface'):
-                    print("Calling plot_3d_surface method...")
-                    self.cls.plot_3d_surface()
-                else:
-                    print(f"{type(self.cls).__name__} does not support plot_3d_surface method")
+
             else:
                 print(f"Unknown figure type: {figure_type}")
         else:
@@ -909,28 +897,18 @@ class UnifiedAnalysisHandler:
         print(f"Step 2: Creating analysis class for {self.config_name}")
         self._create_analysis_class()
         
+        # 添加进度条
+        print(f"Step 3: Adding progress bar for {self.config_name}")
+        self._add_progress_bar()
+        
         # 启动分析
         print(f"Step 3: Starting analysis for {self.config_name}")
         self._start_analysis()
     
-    def _create_analysis_class(self):
-        """创建分析类 - 子类需要重写此方法"""
-        raise NotImplementedError("Subclasses must implement _create_analysis_class")
-    
-    def _start_analysis(self):
-        """启动分析"""
-        print(f"Checking if analysis class exists for {self.config_name}")
-        print(f"hasattr(self, 'cls'): {hasattr(self, 'cls')}")
-        if hasattr(self, 'cls'):
-            print(f"self.cls is not None: {self.cls is not None}")
-            print(f"self.cls type: {type(self.cls)}")
-        
-        if hasattr(self, 'cls') and self.cls is not None:
-            print(f"Creating progress bar for {self.config_name}")
-            # 添加进度条
-            if not hasattr(self.ui, 'progressBar'):
-                self.ui.progressBar = QProgressBar()
-                self.ui.progressBar.setStyleSheet("""
+    def _add_progress_bar(self):
+        """添加进度条"""
+        self.ui.progressBar = QProgressBar()
+        self.ui.progressBar.setStyleSheet("""
                                    QProgressBar {
                                        border: 2px solid grey;
                                        border-radius: 5px;
@@ -940,25 +918,19 @@ class UnifiedAnalysisHandler:
                                        width: 20px;
                                    }
                                """)
-                self.ui.VLayoutRightMain.addWidget(self.ui.progressBar)
-                print(f"Progress bar created for {self.config_name}")
-            else:
-                print(f"Progress bar already exists for {self.config_name}")
+        self.ui.VLayoutRightMain.addWidget(self.ui.progressBar)
+        self.start_time = time.time()
             
-            print(f"Creating Worker for {self.config_name}")
-            print(f"Worker parameters: frames={self.Info.frame_first}-{self.Info.frame_last}, step={self.Info.step}")
+    def _create_analysis_class(self):
+        """创建分析类 - 子类需要重写此方法"""
+        raise NotImplementedError("Subclasses must implement _create_analysis_class")
             
-            # 创建Worker并启动
-            worker = Worker(self.cls, self.Info.frame_first, self.Info.frame_last, self.Info.step)
-            worker.progressValueChanged.connect(self.updateProgressBar)
-            self.thread = Thread(target=worker.run)
-            self.thread.start()
-            print(f"{self.config_name} analysis started successfully")
-        else:
-            print(f"ERROR: {self.config_name} analysis class not created or is None")
-            print(f"hasattr(self, 'cls'): {hasattr(self, 'cls')}")
-            if hasattr(self, 'cls'):
-                print(f"self.cls value: {self.cls}")
+    def _start_analysis(self):
+        """启动分析"""
+        worker = Worker(self.cls, self.Info.frame_first, self.Info.frame_last, self.Info.step)
+        worker.progressValueChanged.connect(self.updateProgressBar)
+        self.thread = Thread(target=worker.run)
+        self.thread.start()
     
     def updateProgressBar(self, value):
         """更新进度条"""
@@ -1003,11 +975,9 @@ class UnifiedAnalysisHandler:
         # 获取分析类支持的图表类型
         if hasattr(self, 'cls') and self.cls and hasattr(self.cls, 'supported_figure_types'):
             figure_types = self.cls.supported_figure_types
-            print(f"Available figure types for {type(self.cls).__name__}: {figure_types}")
         else:
             # 默认图表类型
             figure_types = ['Line Chart', 'Bar Chart']
-            print(f"No supported_figure_types found, using default: {figure_types}")
         
         # 创建图表类型按钮
         for figure_type in figure_types:
@@ -1540,8 +1510,8 @@ class CLConfig(BaseConfig):
         self.ClusterHeadGroups = []
         self.ClusterCutoff = 12
 
-class DensityRadiusConfig(BaseConfig):
-    __slots__ = ('DensityHeadAtoms', 'DensityGroups', 'DensityMW', 'GasGroups', 'GasHeadAtoms', 'DensityRadius', 'DensityNumberSegments')
+class DensityTimeConfig(BaseConfig):
+    __slots__ = ('DensityHeadAtoms', 'DensityGroups', 'DensityMW', 'GasGroups', 'GasHeadAtoms', 'DensityRadius')
 
     def __init__(self):
         self.DensityHeadAtoms = {}
@@ -1550,10 +1520,9 @@ class DensityRadiusConfig(BaseConfig):
         self.GasGroups = []
         self.GasHeadAtoms = {}
         self.DensityRadius = 50
-        self.DensityNumberSegments = 5
 
 
-class DensityMultiRadiusConfig(BaseConfig):
+class DensityRadiusConfig(BaseConfig):
     __slots__ = ('DensityHeadAtoms', 'DensityGroups', 'DensityMW', 'GasGroups', 'GasHeadAtoms', 'DensityMaxRadius', 'DensityNumberSegments')
 
     def __init__(self):
@@ -1589,8 +1558,8 @@ class ConfigFactory:
         , 'Cluster': CLConfig
         , 'NCluster': NCLConfig
         , 'PCA': PCAConfig
+        , 'DensityTime': DensityTimeConfig
         , 'DensityRadius': DensityRadiusConfig
-        , 'DensityMultiRadius': DensityMultiRadiusConfig
     }
 
     @classmethod
@@ -1601,403 +1570,28 @@ class ConfigFactory:
 
 
 from .Analysis_Figure import *
-from functools import partial
 
-
-class AnalysisFigureWidget(QWidget):
-    TYPE_ID = {'Height': 0, 'SZ': 0, 'MeanCurvature': 0, 'Area': 0, 'Anisotropy': 1, 'RadialDistribution': 2,
-               'Gyration': 1, 'Pressure': 2}
-    FIGURE_TYPE = {0: ['Bar', 'Line', 'Scatter', 'Map'], 1: ['Bar', 'Line'], 2: ['Line']}
-
-    def __init__(self
-                 , ui
-                 , residues
-                 , runMethod
-                 , resultPath):
-
-        super().__init__()
-        self.ui_analysis = Ui_Form()
-        self.ui_analysis.setupUi(self)
-        self.ui = ui
-        self.residues = residues  # 获取得到所有的残基名称
-
-        self.runMethod = runMethod  # 获取得到当前使用的分析方法
-
-        self.resultPath = resultPath  # 获取得到结果的保存路径
-
-        # 参数设置
-        self.ui_analysis.FigureColorLayout = None
-        self.ui_analysis.FigureShapeWidget = None
-        self.btnLanguageClick()
-
-        # 储存信息
-        self.LineInfo = defaultdict(lambda: None)
-        self.BarInfo = defaultdict(lambda: None)
-        self.ScaInfo = defaultdict(lambda: None)
-
-        self.ColorInfo = defaultdict(lambda: None)
-        self.ShapeInfo = []
-
-        self.information, self.results = read_excel(self.resultPath)
-        self.description = self.information
-        self.lipids_type = self.results['Resname'].unique() if 'Resname' in self.results.columns else None
-        # 函数绑定
-        # Line
-        self.ui_analysis.figure_line_btn_color_2.clicked.connect(self.analysisBtnColor)
-        self.ui_analysis.figure_line_btn_color_2.clicked.connect(self.openCloseAnalysisColorBox)
-        # Bar
-        self.ui_analysis.figure_bar_btn_color_2.clicked.connect(self.analysisBtnColor)
-        self.ui_analysis.figure_bar_btn_color_2.clicked.connect(self.openCloseAnalysisColorBox)
-        self.ui_analysis.figure_bar_btn_trend_2.clicked.connect(partial(self.btnColorClicked,
-                                                                        self.ui_analysis.figure_bar_btn_trend_2,
-                                                                        self.BarInfo['trend_color']))
-        # Scatter
-        self.ui_analysis.figure_scatter_btn_shape_2.clicked.connect(self.analysisBtnShape)
-        self.ui_analysis.figure_scatter_btn_shape_2.clicked.connect(self.openCloseAnalysisShapeBox)
-        # Tab
-        self.ui_analysis.tabWidget.currentChanged.connect(self.openCloseAnalysisExtra)
-        # Language
-        self.ui.btn_language.clicked.connect(self.btnLanguageClick)
-        # Make Figure
-        self.ui_analysis.btn_figure_run.clicked.connect(self.analysisBtnMakeFigure)
-
-    def analysisBtnColor(self):
-        if self.TYPE_ID[self.runMethod] == 0 or self.TYPE_ID[self.runMethod] == 2:  # 如果是Lipids或者径向函数分布
-            if not getattr(self.ui_analysis, 'FigureColorLayout'):
-                self.ui_analysis.figure_color_extra_box.setStyleSheet(u"font: 15pt \"\u534e\u6587\u7ec6\u9ed1\";")
-                self.ui_analysis.FigureColorLayout = QVBoxLayout()
-                for id, residue in enumerate(self.residues):
-                    btn = QPushButton(residue)
-                    btn.clicked.connect(partial(self.cellResidueClicked, id, btn))
-                    self.ui_analysis.FigureColorLayout.addWidget(btn)
-                self.ui_analysis.figure_color_extra_box.setLayout(self.ui_analysis.FigureColorLayout)
-
-        elif self.TYPE_ID[self.runMethod] == 1:  # 如果是Bubble
-            if self.ui_analysis.tabWidget.currentIndex() == 0:
-                self.btnColorClicked(self.ui_analysis.figure_line_btn_color_2, self.LineInfo['bubble_color'])
-            elif self.ui_analysis.tabWidget.currentIndex() == 1:
-                self.btnColorClicked(self.ui_analysis.figure_bar_btn_color_2, self.BarInfo['bubble_color'])
-
-    def analysisBtnShape(self):
-        if not getattr(self.ui_analysis, 'FigureShapeWidget'):
-            self.ui_analysis.FigureShapeLayout = QVBoxLayout(self.ui_analysis.figure_shape_extra_box)
-            label_shape = UIItemsMake.make_label('Shape', color='rgb(33, 37, 43)')
-            self.ui_analysis.FigureShapeLayout.addWidget(label_shape)
-            scrollArea = QScrollArea()
-            scrollArea.setWidgetResizable(True)
-            self.ui_analysis.FigureShapeWidget = QWidget()
-            containerLayout = QVBoxLayout()
-            for sp in self.residues:
-                groupBox = UIItemsMake.make_group_box(sp, title_color='rgb(33, 37, 43)')
-                groupLayout = QVBoxLayout(groupBox)
-                for sh in ['o', 'p', 's', '^', '*', 'x', '+']:
-                    radio = UIItemsMake.make_radio_check(QRadioButton, sh, color='rgb(33, 37, 43)')
-                    groupLayout.addWidget(radio)
-                self.shapeInfo.append(groupBox)
-                containerLayout.addWidget(groupBox)
-            self.ui_analysis.FigureShapeWidget.setLayout(containerLayout)
-            scrollArea.setWidget(self.ui_analysis.FigureShapeWidget)
-            self.ui_analysis.FigureShapeLayout.addWidget(scrollArea)
-
-    def analysisBtnMakeFigure(self):
-        method = self.ui_analysis.tabWidget.currentIndex()
-        if method == 0:  # Line
-            FigureLine(self.description
-                       , self.results
-                       , self.getLine()).plot()
-        elif method == 1:  # Bar
-            FigureBar(self.description
-                      , self.results
-                      , self.getBar()).plot()
-        elif method == 2:  # Scatter
-            FigureScatter(self.description
-                          , self.results
-                          , self.getScatter()).plot()
-
-    def btnColorClicked(self, btn, info):
-        color = QColor()
-        new_color = QColorDialog.getColor(color)
-        if new_color.isValid():
-            btn.setStyleSheet(f'background-color: rgb({new_color.red()}, {new_color.green()}, {new_color.blue()});')
-            info.append((new_color.red() / 255, new_color.green() / 255, new_color.blue() / 255))
-
-    def cellResidueClicked(self, id, btn):
-        color = QColor()
-        # 打开颜色选择对话框并获取新颜色
-        new_color = QColorDialog.getColor(color)
-        if new_color.isValid():
-            # 将新颜色的RGB值存储到字典中
-            self.ColorInfo[self.residues[id]] = (new_color.red() / 255
-                                                 , new_color.green() / 255
-                                                 , new_color.blue() / 255
-                                                 )
-            # 设置单元格的背景颜色为新颜色的RGB值，忽略Alpha通道
-            btn.setStyleSheet(f'background-color: rgb({new_color.red()}, {new_color.green()}, {new_color.blue()});')
-
-    def getLine(self):
-        self.LineInfo.update({
-            'axis_scale': self.ui_analysis.figure_line_spin_axis_scale_2.value()
-            , 'axis_text': self.ui_analysis.figure_line_spin_axis_text_size_2.value()
-            , 'grid_size': self.ui_analysis.figure_line_spin_grid_size_2.value()
-            , 'x_title': self.ui_analysis.figure_line_edit_x_2.text() or "Frames"
-            , 'y_title': self.ui_analysis.figure_line_edit_y_2.text() or self.description
-            , 'x_min': self.ui_analysis.figure_line_spin_x_min_2.value()
-            , 'x_max': self.ui_analysis.figure_line_spin_x_max_2.value()
-            , 'y_min': self.ui_analysis.figure_line_spin_y_min_2.value()
-            , 'y_max': self.ui_analysis.figure_line_spin_y_max_2.value()
-            , 'marker_size': self.ui_analysis.figure_line_spin_marker_size_2.value()
-            , 'marker_shape': self.ui_analysis.figure_line_como_marker.currentText()
-            , 'color': self.ColorInfo
-        })
-
-        return self.LineInfo
-
-    def getBar(self):
-
-        self.BarInfo.update({
-            'axis_scale': self.ui_analysis.figure_bar_spin_axis_scale_2.value()
-            , 'axis_text': self.ui_analysis.figure_bar_spin_axis_text_size_2.value()
-            , 'x_title': self.ui_analysis.figure_bar_edit_x_2.text()
-            , 'y_title': self.ui_analysis.figure_bar_edit_y_2.text() or self.description
-            , 'y_min': self.ui_analysis.figure_bar_spin_y_min_2.value()
-            , 'y_max': self.ui_analysis.figure_bar_spin_y_max_2.value()
-            , 'trend_size': self.ui_analysis.figure_bar_spin_trend_2.value()
-            , 'up_bar_value': self.ui_analysis.figure_bar_spin_bar_2.value()
-            , 'error_deci': self.ui_analysis.figure_bar_radio_error_2.isChecked()
-            , 'color': self.ColorInfo
-        })
-
-        return self.BarInfo
-
-    def getScatter(self):
-        self.ScaInfo.update({
-            'grid_size': self.ui_analysis.figure_scatter_spin_grid_size_2.value()
-            , 'bar_min': self.ui_analysis.figure_scatter_color_min_2.value()
-            , 'bar_max': self.ui_analysis.figure_scatter_color_max_2.value()
-            , 'bar_color': self.ui_analysis.figure_scatter_como_color_2.currentText()
-            , 'shape_size': self.ui_analysis.figure_scatter_spin_shape_size_2.value()
-            , 'shape': {}
-        })
-        for group in self.ShapeInfo:
-            for radio in group.findChildren(QRadioButton):
-                if radio.isChecked():
-                    self.ScaInfo['shape'][group.title()] = radio.text()
-        return self.ScaInfo
-
-    def btnLanguageClick(self):
-            if self.ui.btn_language.text() == '中' and self.ui_analysis.figure_line_label_axis_title == 'Axis Tick Size':
-                font_style = "font: 16pt '华文细黑';"
-                # Figure
-                self.ui_analysis.btn_figure_run.setText('开始绘图！')
-                ## Liui_analysis.ne
-                self.ui_analysis.figure_line_label_axis_tick.setText('坐标刻度大小')
-                self.ui_analysis.figure_line_label_axis_tick.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_axis_title.setText('标题大小')
-                self.ui_analysis.figure_line_label_axis_title.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_legend.setText('图例大小')
-                self.ui_analysis.figure_line_label_legend.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_x.setText('X轴标题')
-                self.ui_analysis.figure_line_label_x.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_y.setText('Y轴标题')
-                self.ui_analysis.figure_line_label_y.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_x_range.setText('X轴显示范围')
-                self.ui_analysis.figure_line_label_x_range.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_y_range.setText('Y轴显示范围')
-                self.ui_analysis.figure_line_label_y_range.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_marker.setText('标记点大小')
-                self.ui_analysis.figure_line_label_marker.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_color.setText('颜色设置')
-                self.ui_analysis.figure_line_label_color.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_btn_color_2.setText('选择颜色')
-                ## Baui_analysis.r
-                self.ui_analysis.figure_bar_label_axis_tick.setText('坐标刻度大小')
-                self.ui_analysis.figure_bar_label_axis_tick.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_axis_title.setText('标题大小')
-                self.ui_analysis.figure_bar_label_axis_title.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_x.setText('X轴标题')
-                self.ui_analysis.figure_bar_label_x.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_y.setText('Y轴标题')
-                self.ui_analysis.figure_bar_label_y.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_y_range.setText('Y轴显示范围')
-                self.ui_analysis.figure_bar_label_y_range.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_trend.setText('趋势线设置')
-                self.ui_analysis.figure_bar_label_trend.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_bar.setText('柱图上数值设置')
-                self.ui_analysis.figure_bar_label_bar.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_color.setText('柱图颜色设置')
-                self.ui_analysis.figure_bar_label_color.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_error.setText('误差棒设置')
-                self.ui_analysis.figure_bar_label_error.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_btn_trend_2.setText('选择颜色')
-                self.ui_analysis.figure_bar_btn_color_2.setText('选择颜色')
-                ## Scui_analysis.atter
-                self.ui_analysis.figure_scatter_label_legend.setText('图例大小')
-                self.ui_analysis.figure_scatter_label_legend.setStyleSheet(font_style)
-                self.ui_analysis.figure_scatter_label_range.setText('数值显示范围')
-                self.ui_analysis.figure_scatter_label_range.setStyleSheet(font_style)
-                self.ui_analysis.figure_scatter_label_color.setText('颜色类型设置')
-                self.ui_analysis.figure_scatter_label_color.setStyleSheet(font_style)
-                self.ui_analysis.figure_scatter_label_shape.setText('形状设置')
-                self.ui_analysis.figure_scatter_label_shape.setStyleSheet(font_style)
-                self.ui_analysis.figure_scatter_label_shape_size.setText('形状大小')
-                self.ui_analysis.figure_scatter_label_shape_size.setStyleSheet(font_style)
-
-            elif self.ui.btn_language.text() == "ABC" and self.ui_analysis.figure_line_label_axis_title == '坐标刻度大小':
-                font_style = "font: 16pt '华文细黑';"
-                # Figure
-                self.ui_analysis.btn_figure_run.setText('Run！')
-                ## Line
-                self.ui_analysis.figure_line_label_axis_tick.setText('Axis Tick Size')
-                self.ui_analysis.figure_line_label_axis_tick.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_axis_title.setText('Axis Title Size')
-                self.ui_analysis.figure_line_label_axis_title.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_legend.setText('Legend Size')
-                self.ui_analysis.figure_line_label_legend.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_x.setText('X-Title')
-                self.ui_analysis.figure_line_label_x.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_y.setText('Y-Title')
-                self.ui_analysis.figure_line_label_y.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_x_range.setText('X-Range')
-                self.ui_analysis.figure_line_label_x_range.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_y_range.setText('Y-Range')
-                self.ui_analysis.figure_line_label_y_range.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_marker.setText('Marker Size')
-                self.ui_analysis.figure_line_label_marker.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_label_color.setText('Color')
-                self.ui_analysis.figure_line_label_color.setStyleSheet(font_style)
-                self.ui_analysis.figure_line_btn_color_2.setText('Select Color')
-                self.ui_analysis.figure_line_btn_color_2.setText('Select Color')
-                ## Bar
-                self.ui_analysis.figure_bar_label_axis_tick.setText('Axis Tick Size')
-                self.ui_analysis.figure_bar_label_axis_tick.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_axis_title.setText('Axis Title Size')
-                self.ui_analysis.figure_bar_label_axis_title.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_x.setText('X-Title')
-                self.ui_analysis.figure_bar_label_x.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_y.setText('Y-Title')
-                self.ui_analysis.figure_bar_label_y.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_y_range.setText('Y-Range')
-                self.ui_analysis.figure_bar_label_y_range.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_trend.setText('Trend Line')
-                self.ui_analysis.figure_bar_label_trend.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_bar.setText('Bar Value')
-                self.ui_analysis.figure_bar_label_bar.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_color.setText('Color')
-                self.ui_analysis.figure_bar_label_color.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_label_error.setText('Error Bar')
-                self.ui_analysis.figure_bar_label_error.setStyleSheet(font_style)
-                self.ui_analysis.figure_bar_btn_trend_2.setText('Select Color')
-                self.ui_analysis.figure_bar_btn_color_2.setText('Select Color')
-                ## Scatter
-                self.ui_analysis.figure_scatter_label_legend.setText('Legend Size')
-                self.ui_analysis.figure_scatter_label_legend.setStyleSheet(font_style)
-                self.ui_analysis.figure_scatter_label_range.setText('Value Range')
-                self.ui_analysis.figure_scatter_label_range.setStyleSheet(font_style)
-                self.ui_analysis.figure_scatter_label_color.setText('Color Type')
-                self.ui_analysis.figure_scatter_label_color.setStyleSheet(font_style)
-                self.ui_analysis.figure_scatter_label_shape.setText('Shape')
-                self.ui_analysis.figure_scatter_label_shape.setStyleSheet(font_style)
-                self.ui_analysis.figure_scatter_label_shape_size.setText('Shape Size')
-                self.ui_analysis.figure_scatter_label_shape_size.setStyleSheet(font_style)
-                self.ui_analysis.figure_scatter_btn_shape_2.setText('Select Shape')
-
-        # 底层的一些用法
-    def openCloseAnalysisColorBox(self):
-        if self.TYPE_ID[self.runMethod] == 0:
-            self.toggleAnalysisColorBox(True)
-
-    def openCloseAnalysisShapeBox(self):
-        self.toggleAnalysisShapeBox(True)
-
-    def openCloseAnalysisExtra(self, index):
-        if index == 0 or index == 1:
-            self.toggleAnalysisShapeBox(False)
-        if index == 2:
-            self.toggleAnalysisColorBox(False)
-
-    def toggleAnalysisColorBox(self, enable):
-        if enable:
-            # GET WIDTH
-            width = self.ui_analysis.figure_color_extra_box.width()
-            maxExtend = 240
-            standard = 0
-
-            # SET MAX WIDTH
-            if width == 0:
-                widthExtended = maxExtend
-            else:
-                widthExtended = standard
-
-            # ANIMATION
-            self.Figure_colorBox = QPropertyAnimation(self.ui_analysis.figure_color_extra_box, b"minimumWidth")
-            self.Figure_colorBox.setDuration(500)
-            self.Figure_colorBox.setStartValue(width)
-            self.Figure_colorBox.setEndValue(widthExtended)
-            self.Figure_colorBox.setEasingCurve(QEasingCurve.InOutQuart)
-            self.Figure_colorBox.start()
-        else:
-            if self.ui_analysis.figure_color_extra_box.width() != 0:
-                self.Figure_colorBox = QPropertyAnimation(self.ui_analysis.figure_color_extra_box, b"minimumWidth")
-                self.Figure_colorBox.setDuration(500)
-                self.Figure_colorBox.setStartValue(self.ui_analysis.figure_color_extra_box.width())
-                self.Figure_colorBox.setEndValue(0)
-                self.Figure_colorBox.setEasingCurve(QEasingCurve.InOutQuart)
-                self.Figure_colorBox.start()
-
-    def toggleAnalysisShapeBox(self, enable):
-        if enable:
-            # GET WIDTH
-            width = self.ui_analysis.figure_shape_extra_box.width()
-            maxExtend = 240
-            standard = 0
-
-            # SET MAX WIDTH
-            if width == 0:
-                widthExtended = maxExtend
-            else:
-                widthExtended = standard
-
-            # ANIMATION
-            self.Figure_shapeBox = QPropertyAnimation(self.ui_analysis.figure_shape_extra_box, b"minimumWidth")
-            self.Figure_shapeBox.setDuration(500)
-            self.Figure_shapeBox.setStartValue(width)
-            self.Figure_shapeBox.setEndValue(widthExtended)
-            self.Figure_shapeBox.setEasingCurve(QEasingCurve.InOutQuart)
-            self.Figure_shapeBox.start()
-        else:
-            if self.ui_analysis.figure_shape_extra_box.width() != 0:
-                self.Figure_shapeBox = QPropertyAnimation(self.ui_analysis.figure_shape_extra_box, b"minimumWidth")
-                self.Figure_shapeBox.setDuration(500)
-                self.Figure_shapeBox.setStartValue(self.ui_analysis.figure_shape_extra_box.width())
-                self.Figure_shapeBox.setEndValue(0)
-                self.Figure_shapeBox.setEasingCurve(QEasingCurve.InOutQuart)
-                self.Figure_shapeBox.start()
-
-
-class DensityRadiusHandler:
+class DensityTimeHandler:
     """专门处理DensityRadius分析流程的类，不继承AtomsLayout"""
     
     def __init__(self, ui, Box, Info):
         self.ui = ui
         self.Box = Box
         self.Info = Info
+        self.config_name = 'DensityTime'  # 添加config_name属性
         self.start_time = None
         self.current_step = 0
         self.step_widgets = []  # 存储每个步骤的widget
     
     def start(self):
         """开始DensityRadius分析流程"""
-        print("DensityRadiusHandler.start() called")
         self.step_1()
     
     def step_1_from_mw_radius(self):
         """从MW和Radius界面进入下一步"""
-        print("DensityRadiusHandler.step_1_from_mw_radius() called")
         # 保存MW和Radius参数
-        self.Box.get_config('DensityRadius').DensityMW = AnalysisUtils.get_spin_value(self.ui.widgetspinboxSpinBox0)
-        self.Box.get_config('DensityRadius').DensityRadius = AnalysisUtils.get_spin_value(self.ui.widgetspinboxSpinBox1)
-        
-        print(f"MW: {self.Box.get_config('DensityRadius').DensityMW}, Radius: {self.Box.get_config('DensityRadius').DensityRadius}")
+        self.Box.get_config('DensityTime').DensityMW = AnalysisUtils.get_spin_value(self.ui.widgetspinboxSpinBox0)
+        self.Box.get_config('DensityTime').DensityRadius = AnalysisUtils.get_spin_value(self.ui.widgetspinboxSpinBox1)
         
         # 更新步骤
         self.current_step = 1
@@ -2017,6 +1611,623 @@ class DensityRadiusHandler:
         # 设置widget属性
         self.ui.widgetResidueAtomDensity = widget
         self.ui.VLayoutResidueAtomDensity = layout
+        
+        # 添加标题
+        title_label = UIItemsMake.make_label('Select Residues Group')
+        title_label.setStyleSheet(f"font-size: {AnalysisBtnClick.FONT_SIZE}; font-weight: bold;")
+        layout.addWidget(title_label)
+        
+        # 创建滚动区域
+        scroll_area = QScrollArea()
+        scroll_widget = QWidget()
+        scroll_layout = QVBoxLayout(scroll_widget)
+        
+        # 为每个残基创建选择界面
+        self.Box.get_config('DensityTime').DensityGroups = []
+        for residue_name in self.Box.residues:
+            # 创建残基组
+            residue_group = QGroupBox(f"{residue_name}")
+            residue_group.setCheckable(True)
+            residue_group.setChecked(False)
+            residue_layout = QVBoxLayout(residue_group)
+            
+            # 获取该残基的所有原子
+            atoms = self.Box.residues_atoms[residue_name]
+            atom_checkboxes = []
+            
+            for atom_name in atoms:
+                atom_widget = QCheckBox(atom_name)
+                atom_widget.setEnabled(False)  # 默认禁用，只有选中残基时才启用
+                atom_layout = QHBoxLayout()
+                atom_layout.addWidget(atom_widget)
+                atom_layout.addStretch()
+                residue_layout.addLayout(atom_layout)
+                atom_checkboxes.append(atom_widget)
+            
+            # 当残基被选中时，启用原子选择
+            def make_residue_handler(residue_group, atom_checkboxes):
+                def handler():
+                    enabled = residue_group.isChecked()
+                    for checkbox in atom_checkboxes:
+                        checkbox.setEnabled(enabled)
+                return handler
+            
+            residue_group.toggled.connect(make_residue_handler(residue_group, atom_checkboxes))
+            
+            # 存储残基组信息
+            residue_group.atom_checkboxes = atom_checkboxes
+            residue_group.residue_name = residue_name
+            self.Box.get_config('DensityTime').DensityGroups.append(residue_group)
+            
+            scroll_layout.addWidget(residue_group)
+        
+        scroll_area.setWidget(scroll_widget)
+        scroll_area.setWidgetResizable(True)
+        layout.addWidget(scroll_area)
+        
+        # 添加Next按钮
+        btnNext = UIItemsMake.make_btn('Next')
+        layout.addWidget(btnNext)
+        
+        # 添加到stackedWidget
+        self.ui.stackedWidget_Analysis.addWidget(widget)
+        self.ui.stackedWidget_Analysis.setCurrentIndex(1)
+        
+        # 连接按钮事件
+        btnNext.clicked.connect(self.step_2_from_residue_atom)
+    
+    def step_2_from_residue_atom(self):
+        """从残基和原子选择界面进入下一步"""
+        print("DensityTimeHandler.step_2_from_residue_atom() called")
+        # 收集选中的残基和原子信息
+        self._collect_density_selections()
+        
+        # 更新步骤
+        self.current_step = 2
+        
+        # 创建气体组分选择界面
+        self._create_gas_group_selection_layout()
+        print("DensityTimeHandler.step_2_from_residue_atom() completed")
+    
+    def step_2(self):
+        """进入选择气体组分步骤（兼容性方法）"""
+        self.step_2_from_residue_atom()
+    
+    def _collect_density_selections(self):
+        """收集密度分析选中的残基和原子"""
+        print("_collect_density_selections() called")
+        density_groups = {}
+        density_head_atoms = {}
+        
+        current_groups = self.Box.get_config('DensityTime').DensityGroups
+        print(f"Total residue groups: {len(current_groups)}")
+        print(f"Type of DensityGroups: {type(current_groups)}")
+        
+        # 检查DensityGroups的类型
+        if isinstance(current_groups, list):
+            # 如果是QGroupBox对象列表
+            for residue_group in current_groups:
+                if hasattr(residue_group, 'residue_name') and hasattr(residue_group, 'isChecked'):
+                    print(f"Checking residue group: {residue_group.residue_name}, checked: {residue_group.isChecked()}")
+                    if residue_group.isChecked():
+                        residue_name = residue_group.residue_name
+                        selected_atoms = []
+                        
+                        for checkbox in residue_group.atom_checkboxes:
+                            if checkbox.isChecked():
+                                selected_atoms.append(checkbox.text())
+                        
+                        print(f"Selected atoms for {residue_name}: {selected_atoms}")
+                        if selected_atoms:  # 只有当选择了原子时才记录
+                            density_groups[residue_name] = selected_atoms
+                            density_head_atoms[residue_name] = selected_atoms
+        elif isinstance(current_groups, dict):
+            # 如果已经是字典格式，直接使用
+            print("DensityGroups is already a dictionary, using existing data")
+            density_groups = current_groups.copy()
+            density_head_atoms = self.Box.get_config('DensityTime').DensityHeadAtoms.copy()
+        
+        # 保存到配置中
+        self.Box.get_config('DensityTime').DensityGroups = density_groups
+        self.Box.get_config('DensityTime').DensityHeadAtoms = density_head_atoms
+        
+        print(f"Final selected density groups: {density_groups}")
+    
+    def _create_gas_group_selection_layout(self):
+        """创建气体组分选择界面"""
+        print("_create_gas_group_selection_layout() called")
+        widget = UIItemsMake.make_widget()
+        layout = QVBoxLayout(widget)
+        
+        # 设置widget属性
+        self.ui.widgetGasGroupDensity = widget
+        self.ui.VLayoutGasGroupDensity = layout
+        
+        # 添加标题
+        title_label = UIItemsMake.make_label('Select Gas Groups')
+        title_label.setStyleSheet(f"font-size: {AnalysisBtnClick.FONT_SIZE}; font-weight: bold;")
+        layout.addWidget(title_label)
+        
+        # 创建滚动区域
+        scroll_area = QScrollArea()
+        scroll_widget = QWidget()
+        scroll_layout = QVBoxLayout(scroll_widget)
+        
+        # 为每个残基创建选择界面
+        self.Box.get_config('DensityTime').GasGroups = []
+        for residue_name in self.Box.residues:
+            # 创建残基组
+            residue_group = QGroupBox(f"{residue_name}")
+            residue_group.setCheckable(True)
+            residue_group.setChecked(False)
+            residue_layout = QVBoxLayout(residue_group)
+            
+            # 获取该残基的所有原子
+            atoms = self.Box.residues_atoms[residue_name]
+            atom_checkboxes = []
+            
+            for atom_name in atoms:
+                atom_widget = QCheckBox(atom_name)
+                atom_widget.setEnabled(False)  # 默认禁用，只有选中残基时才启用
+                atom_layout = QHBoxLayout()
+                atom_layout.addWidget(atom_widget)
+                atom_layout.addStretch()
+                residue_layout.addLayout(atom_layout)
+                atom_checkboxes.append(atom_widget)
+            
+            # 当残基被选中时，启用原子选择
+            def make_residue_handler(residue_group, atom_checkboxes):
+                def handler():
+                    enabled = residue_group.isChecked()
+                    for checkbox in atom_checkboxes:
+                        checkbox.setEnabled(enabled)
+                return handler
+            
+            residue_group.toggled.connect(make_residue_handler(residue_group, atom_checkboxes))
+            
+            # 存储残基组信息
+            residue_group.atom_checkboxes = atom_checkboxes
+            residue_group.residue_name = residue_name
+            self.Box.get_config('DensityTime').GasGroups.append(residue_group)
+            
+            scroll_layout.addWidget(residue_group)
+        
+        scroll_area.setWidget(scroll_widget)
+        scroll_area.setWidgetResizable(True)
+        layout.addWidget(scroll_area)
+        
+        # 添加Run按钮（直接运行分析）
+        btnRun = UIItemsMake.make_btn('Run!')
+        layout.addWidget(btnRun)
+        
+        # 添加到stackedWidget
+        self.ui.stackedWidget_Analysis.addWidget(widget)
+        self.ui.stackedWidget_Analysis.setCurrentIndex(2)
+        
+        # 连接按钮事件
+        btnRun.clicked.connect(self.run)
+    
+    def _collect_gas_selections(self):
+        """收集气体组分选中的残基和原子"""
+        gas_groups = {}
+        gas_head_atoms = {}
+        
+        current_gas_groups = self.Box.get_config('DensityTime').GasGroups
+        print(f"Type of GasGroups: {type(current_gas_groups)}")
+        
+        # 检查GasGroups的类型
+        if isinstance(current_gas_groups, list):
+            # 如果是QGroupBox对象列表
+            for residue_group in current_gas_groups:
+                if hasattr(residue_group, 'residue_name') and hasattr(residue_group, 'isChecked'):
+                    if residue_group.isChecked():
+                        residue_name = residue_group.residue_name
+                        selected_atoms = []
+                        
+                        for checkbox in residue_group.atom_checkboxes:
+                            if checkbox.isChecked():
+                                selected_atoms.append(checkbox.text())
+                        
+                        if selected_atoms:  # 只有当选择了原子时才记录
+                            gas_groups[residue_name] = selected_atoms
+                            gas_head_atoms[residue_name] = selected_atoms
+        elif isinstance(current_gas_groups, dict):
+            # 如果已经是字典格式，直接使用
+            print("GasGroups is already a dictionary, using existing data")
+            gas_groups = current_gas_groups.copy()
+            gas_head_atoms = self.Box.get_config('DensityTime').GasHeadAtoms.copy()
+        
+        # 保存到配置中
+        self.Box.get_config('DensityTime').GasGroups = gas_groups
+        self.Box.get_config('DensityTime').GasHeadAtoms = gas_head_atoms
+        
+        print(f"Selected gas groups: {gas_groups}")
+    
+    def run(self):
+        """执行密度分析"""
+        # 记录开始时间
+        self.start_time = time.time()
+        
+        # 收集选中的气体组分信息
+        self._collect_gas_selections()
+        
+        # 检查是否选择了气体组分
+        if not self.Box.get_config('DensityTime').GasGroups:
+            create_warn_dialog("Please select at least one gas group!", "Error")
+            return
+        
+        # 获取分析参数
+        self.Info.get_text()
+        
+        # 添加进度条
+        self._add_progress_bar()
+        
+        # 创建Density分析实例
+        self.cls = DensityTime(self.Box.u
+                           , self.Box.get_config('DensityTime').DensityHeadAtoms
+                           , self.Box.get_config('DensityTime').GasHeadAtoms
+                           , self.Box.get_config('DensityTime').DensityMW
+                           , self.Box.get_config('DensityTime').DensityRadius
+                           , filePath=self.Info.path_result)
+        
+        # 启动分析
+        self._start_analysis()
+    
+    def _add_progress_bar(self):
+        """添加进度条"""
+        self.ui.progressBar = QProgressBar()
+        self.ui.progressBar.setStyleSheet("""
+                                   QProgressBar {
+                                       border: 2px solid grey;
+                                       border-radius: 5px;
+                                   }
+                                   QProgressBar::chunk {
+                                       background-color: #6272a4;
+                                       width: 20px;
+                                   }
+                               """)
+        self.ui.VLayoutRightMain.addWidget(self.ui.progressBar)
+        self.start_time = time.time()
+    
+    def _start_analysis(self):
+        """启动分析"""
+        worker = Worker(self.cls, self.Info.frame_first, self.Info.frame_last, self.Info.step)
+        worker.progressValueChanged.connect(self.updateProgressBar)
+        self.thread = Thread(target=worker.run)
+        self.thread.start()
+    
+    def updateProgressBar(self, value):
+        """更新进度条"""
+        # 检查进度条是否还存在，防止重复删除导致的RuntimeError
+        if not hasattr(self.ui, 'progressBar') or self.ui.progressBar is None:
+            return  # 如果进度条已被删除，直接返回
+        
+        self.ui.progressBar.setValue(value)
+        if value == 100:
+            if not hasattr(self.ui, 'figureTypeWidget'):
+                if hasattr(self.ui, 'btnAnalysisRun'):
+                    self.ui.btnAnalysisRun.deleteLater()
+                self._create_figure_type_selection()
+            
+            # 计算分析时间并显示成功消息
+            end_time = time.time()
+            elapsed_time = end_time - self.start_time
+            formatted_time = time.strftime('%M:%S', time.gmtime(elapsed_time))
+            success_message = (
+                'Analysis Completed\n'
+                f"Time taken: {formatted_time}\n"
+                "The gro file and topol file were saved at:\n"
+                f"{self.Info.path_result}"
+            )
+            create_warn_dialog(success_message, 'Analysis')
+            
+            # 删除进度条并设置为None，防止重复访问
+            if hasattr(self.ui, 'progressBar') and self.ui.progressBar is not None:
+                self.ui.progressBar.deleteLater()
+                self.ui.progressBar = None  # 设置为None，防止重复访问
+    
+    def _create_figure_type_selection(self):
+        """创建图表类型选择界面 - 参考UnifiedAnalysisHandler的实现"""
+        if not hasattr(self, 'cls') or self.cls is None:
+            print(f"No analysis class available for DensityTime")
+            return
+        
+        # 创建图表类型选择widget
+        self.ui.figureTypeWidget = QWidget()
+        layout = QVBoxLayout(self.ui.figureTypeWidget)
+        
+        # 添加标题
+        title_label = UIItemsMake.make_label('Select Figure Type')
+        title_label.setStyleSheet(f"font-size: {AnalysisBtnClick.FONT_SIZE}; font-weight: bold;")
+        layout.addWidget(title_label)
+        
+        # 获取分析类支持的图表类型 - 参考UnifiedAnalysisHandler的实现
+        if hasattr(self.cls, 'supported_figure_types'):
+            figure_types = self.cls.supported_figure_types
+            print(f"Available figure types for {type(self.cls).__name__}: {figure_types}")
+        else:
+            # 默认图表类型
+            figure_types = ['Line Chart', 'Bar Chart']
+            print(f"No supported_figure_types found, using default: {figure_types}")
+        
+        # 创建图表类型按钮
+        for figure_type in figure_types:
+            btn = UIItemsMake.make_btn(f'Create {figure_type}')
+            btn.clicked.connect(lambda checked, ft=figure_type: self._create_figure(ft))
+            layout.addWidget(btn)
+        
+        # 添加到主布局
+        self.ui.VLayoutRightMain.addWidget(self.ui.figureTypeWidget)
+
+    def _create_figure(self, figure_type):
+        """创建图表 - 参考UnifiedAnalysisHandler的实现"""
+        if hasattr(self, 'cls') and self.cls is not None:
+            if figure_type == 'Line Chart':
+                self.cls.plot_line()
+            elif figure_type == 'Bar Chart':
+                self.cls.plot_bar()
+            elif figure_type == 'Scatter Chart':
+                self.cls.plot_scatter()
+            elif figure_type == 'Heatmap':
+                self.cls.plot_heatmap()
+            else:
+                print(f"Unsupported figure type: {figure_type}")
+        else:
+            print(f"Analysis class not available for DensityTime")
+    
+    def makeFigure(self):
+        """创建图表"""
+        self.window = AnalysisFigureWidget(self.ui
+                                           , residues=self.Box.residue_click
+                                           , runMethod=self.Info.method_analysis
+                                           , resultPath=self.Info.path_result)
+        self.window.show()
+    
+    def go_back(self):
+        """返回上一步"""
+        if self.current_step > 0:
+            # 在返回前保存当前步骤的选择
+            if self.current_step == 1:
+                # 保存残基和原子选择
+                self._save_current_density_selections()
+            elif self.current_step == 2:
+                # 保存气体组分选择
+                self._save_current_gas_selections()
+            
+            self.current_step -= 1
+            if self.current_step == 0:
+                # 返回第一步：MW和Radius输入
+                self.ui.stackedWidget_Analysis.setCurrentIndex(0)
+            elif self.current_step == 1:
+                # 返回第二步：残基和原子选择
+                self.ui.stackedWidget_Analysis.setCurrentIndex(1)
+            elif self.current_step == 2:
+                # 返回第三步：气体组分选择
+                self.ui.stackedWidget_Analysis.setCurrentIndex(2)
+    
+    
+    def _create_mw_radius_layout(self):
+        """创建MW和Radius输入界面（用于refresh）"""
+        # 清空当前界面
+        current_widget = self.ui.stackedWidget_Analysis.widget(0)
+        if current_widget:
+            current_widget.deleteLater()
+        
+        # 重新创建界面
+        widget = UIItemsMake.make_widget()
+        layout = QVBoxLayout(widget)
+        self.ui.widgetspinbox = widget
+        self.ui.VLayoutspinbox = layout
+        
+        # 创建MW SpinBox
+        label_mw = UIItemsMake.make_label('MW(g/mol)')
+        spin_box_mw = UIItemsMake.make_spin_box(14, 0, 1000000)
+        self.ui.widgetspinboxLabel0 = label_mw
+        self.ui.widgetspinboxSpinBox0 = spin_box_mw
+        layout.addWidget(label_mw)
+        layout.addWidget(spin_box_mw)
+        
+        # 创建Radius SpinBox
+        label_radius = UIItemsMake.make_label('Radius(A)')
+        spin_box_radius = UIItemsMake.make_spin_box(50, 0, 1000000)
+        self.ui.widgetspinboxLabel1 = label_radius
+        self.ui.widgetspinboxSpinBox1 = spin_box_radius
+        layout.addWidget(label_radius)
+        layout.addWidget(spin_box_radius)
+        
+        # 创建Next按钮
+        btnNext = UIItemsMake.make_btn('Next')
+        layout.addWidget(btnNext)
+        
+        # 替换第一个widget
+        self.ui.stackedWidget_Analysis.insertWidget(0, widget)
+        self.ui.stackedWidget_Analysis.setCurrentIndex(0)
+        
+        # 重新连接按钮事件
+        btnNext.clicked.connect(self.step_1_from_mw_radius)
+    
+    def _save_current_density_selections(self):
+        """保存当前残基和原子选择"""
+        print("_save_current_density_selections() called")
+        density_groups = {}
+        density_head_atoms = {}
+        
+        current_groups = self.Box.get_config('DensityTime').DensityGroups
+        if isinstance(current_groups, list):
+            # 如果是QGroupBox对象列表，收集选择
+            for residue_group in current_groups:
+                if hasattr(residue_group, 'residue_name') and hasattr(residue_group, 'isChecked'):
+                    if residue_group.isChecked():
+                        residue_name = residue_group.residue_name
+                        selected_atoms = []
+                        
+                        for checkbox in residue_group.atom_checkboxes:
+                            if checkbox.isChecked():
+                                selected_atoms.append(checkbox.text())
+                        
+                        if selected_atoms:
+                            density_groups[residue_name] = selected_atoms
+                            density_head_atoms[residue_name] = selected_atoms
+        
+        # 保存到配置中
+        self.Box.get_config('DensityTime').DensityGroups = density_groups
+        self.Box.get_config('DensityTime').DensityHeadAtoms = density_head_atoms
+        
+        print(f"Saved density groups: {density_groups}")
+    
+    def _save_current_gas_selections(self):
+        """保存当前气体组分选择"""
+        print("_save_current_gas_selections() called")
+        gas_groups = {}
+        gas_head_atoms = {}
+        
+        current_gas_groups = self.Box.get_config('DensityTime').GasGroups
+        if isinstance(current_gas_groups, list):
+            # 如果是QGroupBox对象列表，收集选择
+            for residue_group in current_gas_groups:
+                if hasattr(residue_group, 'residue_name') and hasattr(residue_group, 'isChecked'):
+                    if residue_group.isChecked():
+                        residue_name = residue_group.residue_name
+                        selected_atoms = []
+                        
+                        for checkbox in residue_group.atom_checkboxes:
+                            if checkbox.isChecked():
+                                selected_atoms.append(checkbox.text())
+                        
+                        if selected_atoms:
+                            gas_groups[residue_name] = selected_atoms
+                            gas_head_atoms[residue_name] = selected_atoms
+        
+        # 保存到配置中
+        self.Box.get_config('DensityTime').GasGroups = gas_groups
+        self.Box.get_config('DensityTime').GasHeadAtoms = gas_head_atoms
+        
+        print(f"Saved gas groups: {gas_groups}")
+    
+    def _refresh_mw_radius_layout(self):
+        """刷新MW和Radius输入界面"""
+        print("_refresh_mw_radius_layout() called")
+        self._create_mw_radius_layout()
+    
+    def _refresh_residue_atom_layout(self):
+        """刷新残基和原子选择界面"""
+        print("_refresh_residue_atom_layout() called")
+        # 清空当前界面
+        current_widget = self.ui.stackedWidget_Analysis.widget(1)
+        if current_widget:
+            current_widget.deleteLater()
+        
+        # 重新创建界面
+        self._create_residue_atom_selection_layout()
+    
+    def _refresh_gas_group_layout(self):
+        """刷新气体组分选择界面"""
+        print("_refresh_gas_group_layout() called")
+        # 清空当前界面
+        current_widget = self.ui.stackedWidget_Analysis.widget(2)
+        if current_widget:
+            current_widget.deleteLater()
+        
+        # 重新创建界面
+        self._create_gas_group_selection_layout()
+
+class DensityRadiusHandler:
+    """专门处理DensityRadius分析流程的类，不继承AtomsLayout"""
+    
+    def __init__(self, ui, Box, Info):
+        self.ui = ui
+        self.Box = Box
+        self.Info = Info
+        self.config_name = 'DensityRadius'  # 添加config_name属性
+        self.current_step = 0
+        self.step_widgets = []
+    
+    def start(self):
+        """开始DensityMultiRadius分析流程"""
+        print("DensityRadiusHandler.start() called")
+        self.current_step = 0
+        self._create_mw_maxradius_segments_layout()
+    
+    def step_1_from_mw_maxradius_segments(self):
+        """从MW、MaxRadius、NumberSegments输入进入下一步"""
+        print("DensityRadiusHandler.step_1_from_mw_maxradius_segments() called")
+        
+        # 获取用户输入的参数
+        mw = self.ui.widgetspinboxSpinBox0.value()
+        max_radius = self.ui.widgetspinboxSpinBox1.value()
+        number_segments = self.ui.widgetspinboxSpinBox2.value()
+        
+        print(f"MW: {mw}, MaxRadius: {max_radius}, NumberSegments: {number_segments}")
+        
+        # 保存参数到配置
+        config = self.Box.get_config('DensityRadius')
+        config.DensityMW = mw
+        config.DensityMaxRadius = max_radius
+        config.DensityNumberSegments = number_segments
+        
+        # 进入下一步
+        self.current_step = 1
+        self._create_residue_atom_selection_layout()
+    
+    def step_1(self):
+        """兼容性方法"""
+        self.step_1_from_mw_maxradius_segments()
+    
+    def _create_mw_maxradius_segments_layout(self):
+        """创建MW、MaxRadius、NumberSegments输入界面"""
+        print("_create_mw_maxradius_segments_layout() called")
+        
+        # 创建界面
+        widget = UIItemsMake.make_widget()
+        layout = QVBoxLayout(widget)
+        
+        # 创建MW SpinBox
+        label_mw = UIItemsMake.make_label('MW(g/mol)')
+        spin_box_mw = UIItemsMake.make_spin_box(14, 0, 1000000)
+        layout.addWidget(label_mw)
+        layout.addWidget(spin_box_mw)
+        
+        # 创建MaxRadius SpinBox
+        label_max_radius = UIItemsMake.make_label('MaxRadius(A)')
+        spin_box_max_radius = UIItemsMake.make_spin_box(50, 0, 1000000)
+        layout.addWidget(label_max_radius)
+        layout.addWidget(spin_box_max_radius)
+        
+        # 创建NumberSegments SpinBox
+        label_number_segments = UIItemsMake.make_label('NumberSegments')
+        spin_box_number_segments = UIItemsMake.make_spin_box(5, 1, 1000)
+        layout.addWidget(label_number_segments)
+        layout.addWidget(spin_box_number_segments)
+        
+        # 创建Next按钮
+        btnNext = UIItemsMake.make_btn('Next')
+        layout.addWidget(btnNext)
+        
+        # 保存UI组件引用
+        self.ui.widgetspinbox = widget
+        self.ui.VLayoutspinbox = layout
+        self.ui.widgetspinboxLabel0 = label_mw
+        self.ui.widgetspinboxSpinBox0 = spin_box_mw
+        self.ui.widgetspinboxLabel1 = label_max_radius
+        self.ui.widgetspinboxSpinBox1 = spin_box_max_radius
+        self.ui.widgetspinboxLabel2 = label_number_segments
+        self.ui.widgetspinboxSpinBox2 = spin_box_number_segments
+        
+        # 添加到stackedWidget
+        self.ui.stackedWidget_Analysis.addWidget(widget)
+        self.ui.stackedWidget_Analysis.setCurrentIndex(0)
+        
+        # 连接按钮事件
+        btnNext.clicked.connect(lambda: self.step_1_from_mw_maxradius_segments())
+    
+    def _create_residue_atom_selection_layout(self):
+        """创建残基和原子选择界面"""
+        widget = UIItemsMake.make_widget()
+        layout = QVBoxLayout(widget)
+        
+        # 设置widget属性
+        self.ui.widgetResidueAtomDensityMulti = widget
+        self.ui.VLayoutResidueAtomDensityMulti = layout
         
         # 添加标题
         title_label = UIItemsMake.make_label('Select Residues Group')
@@ -2083,20 +2294,18 @@ class DensityRadiusHandler:
         btnNext.clicked.connect(self.step_2_from_residue_atom)
     
     def step_2_from_residue_atom(self):
-        """从残基和原子选择界面进入下一步"""
+        """从残基和原子选择进入下一步"""
         print("DensityRadiusHandler.step_2_from_residue_atom() called")
-        # 收集选中的残基和原子信息
+        
+        # 收集选择
         self._collect_density_selections()
         
-        # 更新步骤
+        # 进入下一步
         self.current_step = 2
-        
-        # 创建气体组分选择界面
         self._create_gas_group_selection_layout()
-        print("DensityRadiusHandler.step_2_from_residue_atom() completed")
     
     def step_2(self):
-        """进入选择气体组分步骤（兼容性方法）"""
+        """兼容性方法"""
         self.step_2_from_residue_atom()
     
     def _collect_density_selections(self):
@@ -2111,22 +2320,18 @@ class DensityRadiusHandler:
         
         # 检查DensityGroups的类型
         if isinstance(current_groups, list):
-            # 如果是QGroupBox对象列表
+            # 如果是QGroupBox列表，收集选择
             for residue_group in current_groups:
-                if hasattr(residue_group, 'residue_name') and hasattr(residue_group, 'isChecked'):
-                    print(f"Checking residue group: {residue_group.residue_name}, checked: {residue_group.isChecked()}")
-                    if residue_group.isChecked():
-                        residue_name = residue_group.residue_name
-                        selected_atoms = []
-                        
-                        for checkbox in residue_group.atom_checkboxes:
-                            if checkbox.isChecked():
-                                selected_atoms.append(checkbox.text())
-                        
-                        print(f"Selected atoms for {residue_name}: {selected_atoms}")
-                        if selected_atoms:  # 只有当选择了原子时才记录
-                            density_groups[residue_name] = selected_atoms
-                            density_head_atoms[residue_name] = selected_atoms
+                if residue_group.isChecked():
+                    residue_name = residue_group.residue_name
+                    selected_atoms = []
+                    for atom_checkbox in residue_group.atom_checkboxes:
+                        if atom_checkbox.isChecked():
+                            selected_atoms.append(atom_checkbox.text())
+                    
+                    if selected_atoms:
+                        density_groups[residue_name] = selected_atoms
+                        density_head_atoms[residue_name] = selected_atoms
         elif isinstance(current_groups, dict):
             # 如果已经是字典格式，直接使用
             print("DensityGroups is already a dictionary, using existing data")
@@ -2141,16 +2346,15 @@ class DensityRadiusHandler:
     
     def _create_gas_group_selection_layout(self):
         """创建气体组分选择界面"""
-        print("_create_gas_group_selection_layout() called")
         widget = UIItemsMake.make_widget()
         layout = QVBoxLayout(widget)
         
         # 设置widget属性
-        self.ui.widgetGasGroupDensity = widget
-        self.ui.VLayoutGasGroupDensity = layout
+        self.ui.widgetGasGroupDensityMulti = widget
+        self.ui.VLayoutGasGroupDensityMulti = layout
         
         # 添加标题
-        title_label = UIItemsMake.make_label('Select Gas Groups')
+        title_label = UIItemsMake.make_label('Select Gas group')
         title_label.setStyleSheet(f"font-size: {AnalysisBtnClick.FONT_SIZE}; font-weight: bold;")
         layout.addWidget(title_label)
         
@@ -2214,40 +2418,40 @@ class DensityRadiusHandler:
         btnRun.clicked.connect(self.run)
     
     def _collect_gas_selections(self):
-        """收集气体组分选中的残基和原子"""
+        """收集选中的气体组分信息"""
+        print("_collect_gas_selections() called")
         gas_groups = {}
         gas_head_atoms = {}
         
-        current_gas_groups = self.Box.get_config('DensityRadius').GasGroups
-        print(f"Type of GasGroups: {type(current_gas_groups)}")
+        current_groups = self.Box.get_config('DensityRadius').GasGroups
+        print(f"Total gas groups: {len(current_groups)}")
+        print(f"Type of GasGroups: {type(current_groups)}")
         
         # 检查GasGroups的类型
-        if isinstance(current_gas_groups, list):
-            # 如果是QGroupBox对象列表
-            for residue_group in current_gas_groups:
-                if hasattr(residue_group, 'residue_name') and hasattr(residue_group, 'isChecked'):
-                    if residue_group.isChecked():
-                        residue_name = residue_group.residue_name
-                        selected_atoms = []
-                        
-                        for checkbox in residue_group.atom_checkboxes:
-                            if checkbox.isChecked():
-                                selected_atoms.append(checkbox.text())
-                        
-                        if selected_atoms:  # 只有当选择了原子时才记录
-                            gas_groups[residue_name] = selected_atoms
-                            gas_head_atoms[residue_name] = selected_atoms
-        elif isinstance(current_gas_groups, dict):
+        if isinstance(current_groups, list):
+            # 如果是QGroupBox列表，收集选择
+            for residue_group in current_groups:
+                if residue_group.isChecked():
+                    residue_name = residue_group.residue_name
+                    selected_atoms = []
+                    for atom_checkbox in residue_group.atom_checkboxes:
+                        if atom_checkbox.isChecked():
+                            selected_atoms.append(atom_checkbox.text())
+                    
+                    if selected_atoms:
+                        gas_groups[residue_name] = selected_atoms
+                        gas_head_atoms[residue_name] = selected_atoms
+        elif isinstance(current_groups, dict):
             # 如果已经是字典格式，直接使用
             print("GasGroups is already a dictionary, using existing data")
-            gas_groups = current_gas_groups.copy()
+            gas_groups = current_groups.copy()
             gas_head_atoms = self.Box.get_config('DensityRadius').GasHeadAtoms.copy()
         
         # 保存到配置中
         self.Box.get_config('DensityRadius').GasGroups = gas_groups
         self.Box.get_config('DensityRadius').GasHeadAtoms = gas_head_atoms
         
-        print(f"Selected gas groups: {gas_groups}")
+        print(f"Final selected gas groups: {gas_groups}")
     
     def run(self):
         """执行密度分析"""
@@ -2268,12 +2472,13 @@ class DensityRadiusHandler:
         # 添加进度条
         self._add_progress_bar()
         
-        # 创建Density分析实例
-        self.cls = Density(self.Box.u
+        # 创建DensityMultiRadius分析实例
+        self.cls = DensityRadius(self.Box.u
                            , self.Box.get_config('DensityRadius').DensityHeadAtoms
                            , self.Box.get_config('DensityRadius').GasHeadAtoms
                            , self.Box.get_config('DensityRadius').DensityMW
-                           , self.Box.get_config('DensityRadius').DensityRadius
+                           , self.Box.get_config('DensityRadius').DensityMaxRadius
+                           , self.Box.get_config('DensityRadius').DensityNumberSegments
                            , filePath=self.Info.path_result)
         
         # 启动分析
@@ -2383,622 +2588,6 @@ class DensityRadiusHandler:
         else:
             print(f"Analysis class not available for DensityRadius")
     
-    def makeFigure(self):
-        """创建图表"""
-        self.window = AnalysisFigureWidget(self.ui
-                                           , residues=self.Box.residue_click
-                                           , runMethod=self.Info.method_analysis
-                                           , resultPath=self.Info.path_result)
-        self.window.show()
-    
-    def go_back(self):
-        """返回上一步"""
-        print(f"DensityRadiusHandler.go_back() called, current_step: {self.current_step}")
-        if self.current_step > 0:
-            # 在返回前保存当前步骤的选择
-            if self.current_step == 1:
-                # 保存残基和原子选择
-                self._save_current_density_selections()
-            elif self.current_step == 2:
-                # 保存气体组分选择
-                self._save_current_gas_selections()
-            
-            self.current_step -= 1
-            if self.current_step == 0:
-                # 返回第一步：MW和Radius输入
-                self.ui.stackedWidget_Analysis.setCurrentIndex(0)
-            elif self.current_step == 1:
-                # 返回第二步：残基和原子选择
-                self.ui.stackedWidget_Analysis.setCurrentIndex(1)
-            elif self.current_step == 2:
-                # 返回第三步：气体组分选择
-                self.ui.stackedWidget_Analysis.setCurrentIndex(2)
-        else:
-            print("Already at first step, cannot go back")
-    
-    
-    def _create_mw_radius_layout(self):
-        """创建MW和Radius输入界面（用于refresh）"""
-        # 清空当前界面
-        current_widget = self.ui.stackedWidget_Analysis.widget(0)
-        if current_widget:
-            current_widget.deleteLater()
-        
-        # 重新创建界面
-        widget = UIItemsMake.make_widget()
-        layout = QVBoxLayout(widget)
-        self.ui.widgetspinbox = widget
-        self.ui.VLayoutspinbox = layout
-        
-        # 创建MW SpinBox
-        label_mw = UIItemsMake.make_label('MW(g/mol)')
-        spin_box_mw = UIItemsMake.make_spin_box(14, 0, 1000000)
-        self.ui.widgetspinboxLabel0 = label_mw
-        self.ui.widgetspinboxSpinBox0 = spin_box_mw
-        layout.addWidget(label_mw)
-        layout.addWidget(spin_box_mw)
-        
-        # 创建Radius SpinBox
-        label_radius = UIItemsMake.make_label('Radius(A)')
-        spin_box_radius = UIItemsMake.make_spin_box(50, 0, 1000000)
-        self.ui.widgetspinboxLabel1 = label_radius
-        self.ui.widgetspinboxSpinBox1 = spin_box_radius
-        layout.addWidget(label_radius)
-        layout.addWidget(spin_box_radius)
-        
-        # 创建Next按钮
-        btnNext = UIItemsMake.make_btn('Next')
-        layout.addWidget(btnNext)
-        
-        # 替换第一个widget
-        self.ui.stackedWidget_Analysis.insertWidget(0, widget)
-        self.ui.stackedWidget_Analysis.setCurrentIndex(0)
-        
-        # 重新连接按钮事件
-        btnNext.clicked.connect(self.step_1_from_mw_radius)
-    
-    def _save_current_density_selections(self):
-        """保存当前残基和原子选择"""
-        print("_save_current_density_selections() called")
-        density_groups = {}
-        density_head_atoms = {}
-        
-        current_groups = self.Box.get_config('DensityRadius').DensityGroups
-        if isinstance(current_groups, list):
-            # 如果是QGroupBox对象列表，收集选择
-            for residue_group in current_groups:
-                if hasattr(residue_group, 'residue_name') and hasattr(residue_group, 'isChecked'):
-                    if residue_group.isChecked():
-                        residue_name = residue_group.residue_name
-                        selected_atoms = []
-                        
-                        for checkbox in residue_group.atom_checkboxes:
-                            if checkbox.isChecked():
-                                selected_atoms.append(checkbox.text())
-                        
-                        if selected_atoms:
-                            density_groups[residue_name] = selected_atoms
-                            density_head_atoms[residue_name] = selected_atoms
-        
-        # 保存到配置中
-        self.Box.get_config('DensityRadius').DensityGroups = density_groups
-        self.Box.get_config('DensityRadius').DensityHeadAtoms = density_head_atoms
-        
-        print(f"Saved density groups: {density_groups}")
-    
-    def _save_current_gas_selections(self):
-        """保存当前气体组分选择"""
-        print("_save_current_gas_selections() called")
-        gas_groups = {}
-        gas_head_atoms = {}
-        
-        current_gas_groups = self.Box.get_config('DensityRadius').GasGroups
-        if isinstance(current_gas_groups, list):
-            # 如果是QGroupBox对象列表，收集选择
-            for residue_group in current_gas_groups:
-                if hasattr(residue_group, 'residue_name') and hasattr(residue_group, 'isChecked'):
-                    if residue_group.isChecked():
-                        residue_name = residue_group.residue_name
-                        selected_atoms = []
-                        
-                        for checkbox in residue_group.atom_checkboxes:
-                            if checkbox.isChecked():
-                                selected_atoms.append(checkbox.text())
-                        
-                        if selected_atoms:
-                            gas_groups[residue_name] = selected_atoms
-                            gas_head_atoms[residue_name] = selected_atoms
-        
-        # 保存到配置中
-        self.Box.get_config('DensityRadius').GasGroups = gas_groups
-        self.Box.get_config('DensityRadius').GasHeadAtoms = gas_head_atoms
-        
-        print(f"Saved gas groups: {gas_groups}")
-    
-    def _refresh_mw_radius_layout(self):
-        """刷新MW和Radius输入界面"""
-        print("_refresh_mw_radius_layout() called")
-        self._create_mw_radius_layout()
-    
-    def _refresh_residue_atom_layout(self):
-        """刷新残基和原子选择界面"""
-        print("_refresh_residue_atom_layout() called")
-        # 清空当前界面
-        current_widget = self.ui.stackedWidget_Analysis.widget(1)
-        if current_widget:
-            current_widget.deleteLater()
-        
-        # 重新创建界面
-        self._create_residue_atom_selection_layout()
-    
-    def _refresh_gas_group_layout(self):
-        """刷新气体组分选择界面"""
-        print("_refresh_gas_group_layout() called")
-        # 清空当前界面
-        current_widget = self.ui.stackedWidget_Analysis.widget(2)
-        if current_widget:
-            current_widget.deleteLater()
-        
-        # 重新创建界面
-        self._create_gas_group_selection_layout()
-
-
-class DensityMultiRadiusHandler:
-    """专门处理DensityMultiRadius分析流程的类，不继承AtomsLayout"""
-    
-    def __init__(self, ui, Box, Info):
-        self.ui = ui
-        self.Box = Box
-        self.Info = Info
-        self.current_step = 0
-        self.step_widgets = []
-    
-    def start(self):
-        """开始DensityMultiRadius分析流程"""
-        print("DensityMultiRadiusHandler.start() called")
-        self.current_step = 0
-        self._create_mw_maxradius_segments_layout()
-    
-    def step_1_from_mw_maxradius_segments(self):
-        """从MW、MaxRadius、NumberSegments输入进入下一步"""
-        print("DensityMultiRadiusHandler.step_1_from_mw_maxradius_segments() called")
-        
-        # 获取用户输入的参数
-        mw = self.ui.widgetspinboxSpinBox0.value()
-        max_radius = self.ui.widgetspinboxSpinBox1.value()
-        number_segments = self.ui.widgetspinboxSpinBox2.value()
-        
-        print(f"MW: {mw}, MaxRadius: {max_radius}, NumberSegments: {number_segments}")
-        
-        # 保存参数到配置
-        config = self.Box.get_config('DensityMultiRadius')
-        config.DensityMW = mw
-        config.DensityMaxRadius = max_radius
-        config.DensityNumberSegments = number_segments
-        
-        # 进入下一步
-        self.current_step = 1
-        self._create_residue_atom_selection_layout()
-    
-    def step_1(self):
-        """兼容性方法"""
-        self.step_1_from_mw_maxradius_segments()
-    
-    def _create_mw_maxradius_segments_layout(self):
-        """创建MW、MaxRadius、NumberSegments输入界面"""
-        print("_create_mw_maxradius_segments_layout() called")
-        
-        # 创建界面
-        widget = UIItemsMake.make_widget()
-        layout = QVBoxLayout(widget)
-        
-        # 创建MW SpinBox
-        label_mw = UIItemsMake.make_label('MW(g/mol)')
-        spin_box_mw = UIItemsMake.make_spin_box(14, 0, 1000000)
-        layout.addWidget(label_mw)
-        layout.addWidget(spin_box_mw)
-        
-        # 创建MaxRadius SpinBox
-        label_max_radius = UIItemsMake.make_label('MaxRadius(A)')
-        spin_box_max_radius = UIItemsMake.make_spin_box(50, 0, 1000000)
-        layout.addWidget(label_max_radius)
-        layout.addWidget(spin_box_max_radius)
-        
-        # 创建NumberSegments SpinBox
-        label_number_segments = UIItemsMake.make_label('NumberSegments')
-        spin_box_number_segments = UIItemsMake.make_spin_box(5, 1, 1000)
-        layout.addWidget(label_number_segments)
-        layout.addWidget(spin_box_number_segments)
-        
-        # 创建Next按钮
-        btnNext = UIItemsMake.make_btn('Next')
-        layout.addWidget(btnNext)
-        
-        # 保存UI组件引用
-        self.ui.widgetspinbox = widget
-        self.ui.VLayoutspinbox = layout
-        self.ui.widgetspinboxLabel0 = label_mw
-        self.ui.widgetspinboxSpinBox0 = spin_box_mw
-        self.ui.widgetspinboxLabel1 = label_max_radius
-        self.ui.widgetspinboxSpinBox1 = spin_box_max_radius
-        self.ui.widgetspinboxLabel2 = label_number_segments
-        self.ui.widgetspinboxSpinBox2 = spin_box_number_segments
-        
-        # 添加到stackedWidget
-        self.ui.stackedWidget_Analysis.addWidget(widget)
-        self.ui.stackedWidget_Analysis.setCurrentIndex(0)
-        
-        # 连接按钮事件
-        btnNext.clicked.connect(lambda: self.step_1_from_mw_maxradius_segments())
-    
-    def _create_residue_atom_selection_layout(self):
-        """创建残基和原子选择界面"""
-        widget = UIItemsMake.make_widget()
-        layout = QVBoxLayout(widget)
-        
-        # 设置widget属性
-        self.ui.widgetResidueAtomDensityMulti = widget
-        self.ui.VLayoutResidueAtomDensityMulti = layout
-        
-        # 添加标题
-        title_label = UIItemsMake.make_label('Select Residues Group')
-        title_label.setStyleSheet(f"font-size: {AnalysisBtnClick.FONT_SIZE}; font-weight: bold;")
-        layout.addWidget(title_label)
-        
-        # 创建滚动区域
-        scroll_area = QScrollArea()
-        scroll_widget = QWidget()
-        scroll_layout = QVBoxLayout(scroll_widget)
-        
-        # 为每个残基创建选择界面
-        self.Box.get_config('DensityMultiRadius').DensityGroups = []
-        for residue_name in self.Box.residues:
-            # 创建残基组
-            residue_group = QGroupBox(f"{residue_name}")
-            residue_group.setCheckable(True)
-            residue_group.setChecked(False)
-            residue_layout = QVBoxLayout(residue_group)
-            
-            # 获取该残基的所有原子
-            atoms = self.Box.residues_atoms[residue_name]
-            atom_checkboxes = []
-            
-            for atom_name in atoms:
-                atom_widget = QCheckBox(atom_name)
-                atom_widget.setEnabled(False)  # 默认禁用，只有选中残基时才启用
-                atom_layout = QHBoxLayout()
-                atom_layout.addWidget(atom_widget)
-                atom_layout.addStretch()
-                residue_layout.addLayout(atom_layout)
-                atom_checkboxes.append(atom_widget)
-            
-            # 当残基被选中时，启用原子选择
-            def make_residue_handler(residue_group, atom_checkboxes):
-                def handler():
-                    enabled = residue_group.isChecked()
-                    for checkbox in atom_checkboxes:
-                        checkbox.setEnabled(enabled)
-                return handler
-            
-            residue_group.toggled.connect(make_residue_handler(residue_group, atom_checkboxes))
-            
-            # 存储残基组信息
-            residue_group.atom_checkboxes = atom_checkboxes
-            residue_group.residue_name = residue_name
-            self.Box.get_config('DensityMultiRadius').DensityGroups.append(residue_group)
-            
-            scroll_layout.addWidget(residue_group)
-        
-        scroll_area.setWidget(scroll_widget)
-        scroll_area.setWidgetResizable(True)
-        layout.addWidget(scroll_area)
-        
-        # 添加Next按钮
-        btnNext = UIItemsMake.make_btn('Next')
-        layout.addWidget(btnNext)
-        
-        # 添加到stackedWidget
-        self.ui.stackedWidget_Analysis.addWidget(widget)
-        self.ui.stackedWidget_Analysis.setCurrentIndex(1)
-        
-        # 连接按钮事件
-        btnNext.clicked.connect(self.step_2_from_residue_atom)
-    
-    def step_2_from_residue_atom(self):
-        """从残基和原子选择进入下一步"""
-        print("DensityMultiRadiusHandler.step_2_from_residue_atom() called")
-        
-        # 收集选择
-        self._collect_density_selections()
-        
-        # 进入下一步
-        self.current_step = 2
-        self._create_gas_group_selection_layout()
-    
-    def step_2(self):
-        """兼容性方法"""
-        self.step_2_from_residue_atom()
-    
-    def _collect_density_selections(self):
-        """收集密度分析选中的残基和原子"""
-        print("_collect_density_selections() called")
-        density_groups = {}
-        density_head_atoms = {}
-        
-        current_groups = self.Box.get_config('DensityMultiRadius').DensityGroups
-        print(f"Total residue groups: {len(current_groups)}")
-        print(f"Type of DensityGroups: {type(current_groups)}")
-        
-        # 检查DensityGroups的类型
-        if isinstance(current_groups, list):
-            # 如果是QGroupBox列表，收集选择
-            for residue_group in current_groups:
-                if residue_group.isChecked():
-                    residue_name = residue_group.residue_name
-                    selected_atoms = []
-                    for atom_checkbox in residue_group.atom_checkboxes:
-                        if atom_checkbox.isChecked():
-                            selected_atoms.append(atom_checkbox.text())
-                    
-                    if selected_atoms:
-                        density_groups[residue_name] = selected_atoms
-                        density_head_atoms[residue_name] = selected_atoms
-        elif isinstance(current_groups, dict):
-            # 如果已经是字典格式，直接使用
-            print("DensityGroups is already a dictionary, using existing data")
-            density_groups = current_groups.copy()
-            density_head_atoms = self.Box.get_config('DensityMultiRadius').DensityHeadAtoms.copy()
-        
-        # 保存到配置中
-        self.Box.get_config('DensityMultiRadius').DensityGroups = density_groups
-        self.Box.get_config('DensityMultiRadius').DensityHeadAtoms = density_head_atoms
-        
-        print(f"Final selected density groups: {density_groups}")
-    
-    def _create_gas_group_selection_layout(self):
-        """创建气体组分选择界面"""
-        widget = UIItemsMake.make_widget()
-        layout = QVBoxLayout(widget)
-        
-        # 设置widget属性
-        self.ui.widgetGasGroupDensityMulti = widget
-        self.ui.VLayoutGasGroupDensityMulti = layout
-        
-        # 添加标题
-        title_label = UIItemsMake.make_label('Select Gas group')
-        title_label.setStyleSheet(f"font-size: {AnalysisBtnClick.FONT_SIZE}; font-weight: bold;")
-        layout.addWidget(title_label)
-        
-        # 创建滚动区域
-        scroll_area = QScrollArea()
-        scroll_widget = QWidget()
-        scroll_layout = QVBoxLayout(scroll_widget)
-        
-        # 为每个残基创建选择界面
-        self.Box.get_config('DensityMultiRadius').GasGroups = []
-        for residue_name in self.Box.residues:
-            # 创建残基组
-            residue_group = QGroupBox(f"{residue_name}")
-            residue_group.setCheckable(True)
-            residue_group.setChecked(False)
-            residue_layout = QVBoxLayout(residue_group)
-            
-            # 获取该残基的所有原子
-            atoms = self.Box.residues_atoms[residue_name]
-            atom_checkboxes = []
-            
-            for atom_name in atoms:
-                atom_widget = QCheckBox(atom_name)
-                atom_widget.setEnabled(False)  # 默认禁用，只有选中残基时才启用
-                atom_layout = QHBoxLayout()
-                atom_layout.addWidget(atom_widget)
-                atom_layout.addStretch()
-                residue_layout.addLayout(atom_layout)
-                atom_checkboxes.append(atom_widget)
-            
-            # 当残基被选中时，启用原子选择
-            def make_residue_handler(residue_group, atom_checkboxes):
-                def handler():
-                    enabled = residue_group.isChecked()
-                    for checkbox in atom_checkboxes:
-                        checkbox.setEnabled(enabled)
-                return handler
-            
-            residue_group.toggled.connect(make_residue_handler(residue_group, atom_checkboxes))
-            
-            # 存储残基组信息
-            residue_group.atom_checkboxes = atom_checkboxes
-            residue_group.residue_name = residue_name
-            self.Box.get_config('DensityMultiRadius').GasGroups.append(residue_group)
-            
-            scroll_layout.addWidget(residue_group)
-        
-        scroll_area.setWidget(scroll_widget)
-        scroll_area.setWidgetResizable(True)
-        layout.addWidget(scroll_area)
-        
-        # 添加Run按钮（直接运行分析）
-        btnRun = UIItemsMake.make_btn('Run!')
-        layout.addWidget(btnRun)
-        
-        # 添加到stackedWidget
-        self.ui.stackedWidget_Analysis.addWidget(widget)
-        self.ui.stackedWidget_Analysis.setCurrentIndex(2)
-        
-        # 连接按钮事件
-        btnRun.clicked.connect(self.run)
-    
-    def _collect_gas_selections(self):
-        """收集选中的气体组分信息"""
-        print("_collect_gas_selections() called")
-        gas_groups = {}
-        gas_head_atoms = {}
-        
-        current_groups = self.Box.get_config('DensityMultiRadius').GasGroups
-        print(f"Total gas groups: {len(current_groups)}")
-        print(f"Type of GasGroups: {type(current_groups)}")
-        
-        # 检查GasGroups的类型
-        if isinstance(current_groups, list):
-            # 如果是QGroupBox列表，收集选择
-            for residue_group in current_groups:
-                if residue_group.isChecked():
-                    residue_name = residue_group.residue_name
-                    selected_atoms = []
-                    for atom_checkbox in residue_group.atom_checkboxes:
-                        if atom_checkbox.isChecked():
-                            selected_atoms.append(atom_checkbox.text())
-                    
-                    if selected_atoms:
-                        gas_groups[residue_name] = selected_atoms
-                        gas_head_atoms[residue_name] = selected_atoms
-        elif isinstance(current_groups, dict):
-            # 如果已经是字典格式，直接使用
-            print("GasGroups is already a dictionary, using existing data")
-            gas_groups = current_groups.copy()
-            gas_head_atoms = self.Box.get_config('DensityMultiRadius').GasHeadAtoms.copy()
-        
-        # 保存到配置中
-        self.Box.get_config('DensityMultiRadius').GasGroups = gas_groups
-        self.Box.get_config('DensityMultiRadius').GasHeadAtoms = gas_head_atoms
-        
-        print(f"Final selected gas groups: {gas_groups}")
-    
-    def run(self):
-        """执行密度分析"""
-        # 记录开始时间
-        self.start_time = time.time()
-        
-        # 收集选中的气体组分信息
-        self._collect_gas_selections()
-        
-        # 检查是否选择了气体组分
-        if not self.Box.get_config('DensityMultiRadius').GasGroups:
-            create_warn_dialog("Please select at least one gas group!", "Error")
-            return
-        
-        # 获取分析参数
-        self.Info.get_text()
-        
-        # 添加进度条
-        self._add_progress_bar()
-        
-        # 创建DensityMultiRadius分析实例
-        self.cls = DensityMultiRadius(self.Box.u
-                           , self.Box.get_config('DensityMultiRadius').DensityHeadAtoms
-                           , self.Box.get_config('DensityMultiRadius').GasHeadAtoms
-                           , self.Box.get_config('DensityMultiRadius').DensityMW
-                           , self.Box.get_config('DensityMultiRadius').DensityMaxRadius
-                           , self.Box.get_config('DensityMultiRadius').DensityNumberSegments
-                           , filePath=self.Info.path_result)
-        
-        # 启动分析
-        self._start_analysis()
-    
-    def _add_progress_bar(self):
-        """添加进度条"""
-        self.ui.progressBar = QProgressBar()
-        self.ui.progressBar.setStyleSheet("""
-                                   QProgressBar {
-                                       border: 2px solid grey;
-                                       border-radius: 5px;
-                                   }
-                                   QProgressBar::chunk {
-                                       background-color: #6272a4;
-                                       width: 20px;
-                                   }
-                               """)
-        self.ui.VLayoutRightMain.addWidget(self.ui.progressBar)
-        self.start_time = time.time()
-    
-    def _start_analysis(self):
-        """启动分析"""
-        worker = Worker(self.cls, self.Info.frame_first, self.Info.frame_last, self.Info.step)
-        worker.progressValueChanged.connect(self.updateProgressBar)
-        self.thread = Thread(target=worker.run)
-        self.thread.start()
-    
-    def updateProgressBar(self, value):
-        """更新进度条"""
-        # 检查进度条是否还存在，防止重复删除导致的RuntimeError
-        if not hasattr(self.ui, 'progressBar') or self.ui.progressBar is None:
-            return  # 如果进度条已被删除，直接返回
-        
-        self.ui.progressBar.setValue(value)
-        if value == 100:
-            if not hasattr(self.ui, 'figureTypeWidget'):
-                if hasattr(self.ui, 'btnAnalysisRun'):
-                    self.ui.btnAnalysisRun.deleteLater()
-                self._create_figure_type_selection()
-            
-            # 计算分析时间并显示成功消息
-            end_time = time.time()
-            elapsed_time = end_time - self.start_time
-            formatted_time = time.strftime('%M:%S', time.gmtime(elapsed_time))
-            success_message = (
-                'Analysis Completed\n'
-                f"Time taken: {formatted_time}\n"
-                "The gro file and topol file were saved at:\n"
-                f"{self.Info.path_result}"
-            )
-            create_warn_dialog(success_message, 'Analysis')
-            
-            # 删除进度条并设置为None，防止重复访问
-            if hasattr(self.ui, 'progressBar') and self.ui.progressBar is not None:
-                self.ui.progressBar.deleteLater()
-                self.ui.progressBar = None  # 设置为None，防止重复访问
-    
-    def _create_figure_type_selection(self):
-        """创建图表类型选择界面 - 参考UnifiedAnalysisHandler的实现"""
-        if not hasattr(self, 'cls') or self.cls is None:
-            print(f"No analysis class available for DensityMultiRadius")
-            return
-        
-        # 创建图表类型选择widget
-        self.ui.figureTypeWidget = QWidget()
-        layout = QVBoxLayout(self.ui.figureTypeWidget)
-        
-        # 添加标题
-        title_label = UIItemsMake.make_label('Select Figure Type')
-        title_label.setStyleSheet(f"font-size: {AnalysisBtnClick.FONT_SIZE}; font-weight: bold;")
-        layout.addWidget(title_label)
-        
-        # 获取分析类支持的图表类型 - 参考UnifiedAnalysisHandler的实现
-        if hasattr(self.cls, 'supported_figure_types'):
-            figure_types = self.cls.supported_figure_types
-            print(f"Available figure types for {type(self.cls).__name__}: {figure_types}")
-        else:
-            # 默认图表类型
-            figure_types = ['Line Chart', 'Bar Chart']
-            print(f"No supported_figure_types found, using default: {figure_types}")
-        
-        # 创建图表类型按钮
-        for figure_type in figure_types:
-            btn = UIItemsMake.make_btn(f'Create {figure_type}')
-            btn.clicked.connect(lambda checked, ft=figure_type: self._create_figure(ft))
-            layout.addWidget(btn)
-        
-        # 添加到主布局
-        self.ui.VLayoutRightMain.addWidget(self.ui.figureTypeWidget)
-
-    def _create_figure(self, figure_type):
-        """创建图表 - 参考UnifiedAnalysisHandler的实现"""
-        if hasattr(self, 'cls') and self.cls is not None:
-            if figure_type == 'Line Chart':
-                self.cls.plot_line()
-            elif figure_type == 'Bar Chart':
-                self.cls.plot_bar()
-            elif figure_type == 'Scatter Chart':
-                self.cls.plot_scatter()
-            elif figure_type == 'Heatmap':
-                self.cls.plot_heatmap()
-            elif figure_type == '3D Surface':
-                self.cls.plot_3d_surface()
-            else:
-                print(f"Unsupported figure type: {figure_type}")
-        else:
-            print(f"Analysis class not available for DensityMultiRadius")
-    
     def _make_figure(self):
         """创建图表"""
         if hasattr(self, 'cls') and self.cls:
@@ -3006,7 +2595,7 @@ class DensityMultiRadiusHandler:
     
     def go_back(self):
         """返回上一步"""
-        print(f"DensityMultiRadiusHandler.go_back() called, current_step: {self.current_step}")
+        print(f"DensityRadiusHandler.go_back() called, current_step: {self.current_step}")
         
         if self.current_step > 0:
             # 保存当前步骤的选择
@@ -3030,7 +2619,7 @@ class DensityMultiRadiusHandler:
         """保存当前残基和原子选择"""
         print("_save_current_density_selections() called")
         
-        config = self.Box.get_config('DensityMultiRadius')
+        config = self.Box.get_config('DensityRadius')
         
         if isinstance(config.DensityGroups, list):
             # 收集当前选择
@@ -3058,7 +2647,7 @@ class DensityMultiRadiusHandler:
         """保存当前气体组分选择"""
         print("_save_current_gas_selections() called")
         
-        config = self.Box.get_config('DensityMultiRadius')
+        config = self.Box.get_config('DensityRadius')
         
         if isinstance(config.GasGroups, list):
             # 收集当前选择

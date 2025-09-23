@@ -268,6 +268,7 @@ class WriteExcelBubble(WriteExcel):
     description: str
     parameters: str
     trajectory: object = None  # 添加轨迹对象用于获取时间信息
+    type_name: str = 'Bubble'  # 添加类型名称参数，默认为'Bubble'
     def run(self):
         # column_frame = [i * self.step for i in range(self.n_frames)]
         
@@ -280,7 +281,7 @@ class WriteExcelBubble(WriteExcel):
                 'Values': self.results.round(3)
             }
         )
-        comments = ['Created by LNB-MDT v1.0', self.description, 'TYPE:Bubble', 'Parameters:' + self.parameters]
+        comments = ['Created by LNB-MDT v1.0', self.description, f'TYPE:{self.type_name}', 'Parameters:' + self.parameters]
         self._write_to_csv(self.file_path, comments, df)
 
 

@@ -94,13 +94,13 @@ class Gyration(AnalysisBase):
 
         if self.parallel:
             print(f"Running in parallel on {self.n_jobs} jobs...")
-            verbose_level = 10 if verbose else 0
-            inputs_generator = self._get_inputs_generator()
-            results_list = Parallel(n_jobs=self.n_jobs, verbose=verbose_level)(
-                delayed(Gyration._calculate_gyration_for_frame)(*inputs) for inputs in inputs_generator
-            )
-            if results_list:
-                self.results.Gyration = np.array(results_list)
+            
+            # 使用父类的run方法以确保进度条正常工作
+            # 但禁用并行模式以避免冲突
+            original_parallel = self.parallel
+            self.parallel = False
+            super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)
+            self.parallel = original_parallel
         else:
             print("Running in serial mode...")
             super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)

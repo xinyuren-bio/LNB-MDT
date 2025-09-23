@@ -71,7 +71,7 @@ python analysis/density_multi_radius.py \
 ### Python API使用
 
 ```python
-from analysis.density_multi_radius import DensityMultiRadius, DensityVisualizer
+from analysis.density import DensityRadius, DensityVisualizer
 import MDAnalysis as mda
 
 # 1. 加载轨迹
@@ -84,7 +84,7 @@ max_radius = 50
 number_segments = 5
 
 # 3. 运行分析
-density_analysis = DensityMultiRadius(
+density_analysis = DensityRadius(
     u,
     ResiudeGroup=residues_group,
     GasGroup=gas_group,

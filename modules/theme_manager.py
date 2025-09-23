@@ -25,10 +25,6 @@ class ThemeManager:
         self.current_theme = "light"  # 默认主题为白天
         self.theme_path = os.path.join(os.path.dirname(__file__), "..", "themes")
         
-        # 调试信息
-        print(f"主题文件路径: {self.theme_path}")
-        print(f"主题文件是否存在: {os.path.exists(self.theme_path)}")
-        
         # 加载保存的主题设置
         self.load_theme_setting()
         
@@ -56,25 +52,18 @@ class ThemeManager:
         theme_file = os.path.join(self.theme_path, f"py_dracula_{theme_name}.qss")
         
         if not os.path.exists(theme_file):
-            print(f"主题文件不存在: {theme_file}")
             return False
             
         try:
-            # +++ 添加下面这两行代码来打印路径 +++
-            # import os as os
-            print(f"--- [DEBUG] 正在尝试加载QSS文件, 绝对路径是: {os.path.abspath(theme_file)}")
-            # +++++++++++++++++++++++++++++++++++++
             with open(theme_file, 'r', encoding='utf-8') as f:
                 style_sheet = f.read()
                 
             # 应用主题到UI的styleSheet组件
             if hasattr(self.main_window.ui, 'styleSheet'):
                 self.main_window.ui.styleSheet.setStyleSheet(style_sheet)
-                print(f"主题已切换到: {theme_name}")
             else:
                 # 如果没有styleSheet组件，则应用到主窗口
                 self.main_window.setStyleSheet(style_sheet)
-                print(f"主题已切换到: {theme_name} (应用到主窗口)")
             
             # 主题切换完成，样式由QSS文件控制
             self.current_theme = theme_name
@@ -88,7 +77,6 @@ class ThemeManager:
             return True
             
         except Exception as e:
-            print(f"加载主题失败: {e}")
             return False
     
     def notify_theme_change(self):
@@ -115,9 +103,8 @@ class ThemeManager:
             if hasattr(self.main_window.ui, 'btnBack') and hasattr(self.main_window.ui, 'btnRefresh'):
                 self.update_direct_buttons()
             
-            print(f"主题变更通知已发送")
         except Exception as e:
-            print(f"发送主题变更通知时出错: {e}")
+            pass  # 发送主题变更通知时出错
     
     def update_direct_buttons(self):
         """
@@ -136,14 +123,12 @@ class ThemeManager:
             # 更新按钮图标
             if hasattr(self.main_window.ui, 'btnBack'):
                 self.main_window.ui.btnBack.setIcon(QIcon(back_icon_path))
-                print(f"直接更新Back按钮图标: {back_icon_path}")
             
             if hasattr(self.main_window.ui, 'btnRefresh'):
                 self.main_window.ui.btnRefresh.setIcon(QIcon(refresh_icon_path))
-                print(f"直接更新Refresh按钮图标: {refresh_icon_path}")
                 
         except Exception as e:
-            print(f"直接更新按钮图标时出错: {e}")
+            pass  # 直接更新按钮图标时出错
     
     def update_buttons_in_widget(self, widget):
         """
@@ -156,7 +141,6 @@ class ThemeManager:
                     # 如果找到了按钮，尝试调用update_button_icons方法
                     if hasattr(obj, 'update_button_icons'):
                         obj.update_button_icons()
-                        print("已更新按钮图标")
                         return True
                 
                 # 递归查找子对象
@@ -167,7 +151,7 @@ class ThemeManager:
             
             find_and_update_buttons(widget)
         except Exception as e:
-            print(f"更新widget中的按钮图标时出错: {e}")
+            pass  # 更新widget中的按钮图标时出错
     
     def toggle_theme(self):
         """切换主题"""
@@ -306,8 +290,7 @@ def add_theme_button_to_top_menu(ui_instance, main_window):
         if layout:
             # 在EN按钮之前添加主题切换按钮
             layout.insertWidget(0, theme_button)
-            print("主题切换按钮已添加到顶部按钮区域")
     else:
-        print("未找到rightButtons组件")
+        pass  # 未找到rightButtons组件
     
     return theme_manager
