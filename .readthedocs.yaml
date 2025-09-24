@@ -14,24 +14,14 @@ build:
     - pip install --upgrade pip
     - pip install -r docs/requirements.txt
     - pip install -r requirements.txt
+    # Build the documentation
+    - cd docs && sphinx-build -b html source build
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
   configuration: docs/source/conf.py
-
-# Build documentation with MkDocs
-# mkdocs:
-#   configuration: mkdocs.yml
+  fail_on_warning: false
 
 # Optionally build your docs in additional formats such as PDF and ePub
 formats:
   - htmlzip
-  - pdf
-  - epub
-
-# Optional but recommended, read below for more information
-# https://docs.readthedocs.io/en/stable/automation-rules.html
-# python:
-#   install:
-#     - requirements: docs/requirements.txt
-#     - requirements: requirements.txt

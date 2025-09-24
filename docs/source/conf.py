@@ -23,7 +23,6 @@ extensions = [
     'sphinx.ext.intersphinx',  # 链接到其他项目的文档
     'sphinx.ext.todo',         # 支持 todo 指令
     'sphinx.ext.coverage',     # 文档覆盖率检查
-    'myst_parser',             # 支持 Markdown 文件
     'sphinx_copybutton',       # 复制代码按钮
 ]
 
@@ -43,7 +42,6 @@ html_static_path = ['_static']
 html_theme_options = {
     'analytics_id': '',  # 如果需要，添加 Google Analytics ID
     'logo_only': False,
-    'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': True,
     'vcs_pageview_mode': '',
@@ -93,18 +91,18 @@ napoleon_preprocess_types = False
 napoleon_type_aliases = None
 napoleon_attr_annotations = True
 
-# MyST 配置
-myst_enable_extensions = [
-    "colon_fence",
-    "deflist",
-    "dollarmath",
-    "html_admonition",
-    "html_image",
-    "linkify",
-    "replacements",
-    "smartquotes",
-    "substitution",
-]
+# MyST 配置 (已移除myst_parser扩展，暂时注释)
+# myst_enable_extensions = [
+#     "colon_fence",
+#     "deflist",
+#     "dollarmath",
+#     "html_admonition",
+#     "html_image",
+#     "linkify",
+#     "replacements",
+#     "smartquotes",
+#     "substitution",
+# ]
 
 # Intersphinx 配置
 intersphinx_mapping = {
@@ -113,7 +111,6 @@ intersphinx_mapping = {
     'pandas': ('https://pandas.pydata.org/docs/', None),
     'matplotlib': ('https://matplotlib.org/stable/', None),
     'scipy': ('https://docs.scipy.org/doc/scipy/', None),
-    'sklearn': ('https://scikit-learn.org/stable/', None),
 }
 
 # Todo 配置

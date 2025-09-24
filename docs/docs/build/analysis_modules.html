@@ -1,0 +1,764 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>分析模块详解 &mdash; LNB-MDT Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b87f379a" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b87f379a" />
+
+  
+    <link rel="shortcut icon" href="_static/icon.ico"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e160b93e"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/custom.js?v=5951da7b"></script>
+      <script src="_static/custom.js?v=5951da7b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API参考" href="api_reference.html" />
+    <link rel="prev" title="快速开始指南" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LNB-MDT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">安装指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">快速开始指南</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">分析模块详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id2">命令行参数详解</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id3">参数对照表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">简化格式说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">基本格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">传统格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">模块概览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">详细模块说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pca-pca-py">PCA分析 (pca.py)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#area-py">面积分析 (area.py)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#curvature-py">曲率分析 (curvature.py)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#height-py">高度分析 (height.py)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cluster-py">聚类分析 (cluster.py)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#anisotropy-py">各向异性分析 (anisotropy.py)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gyration-py">回转半径分析 (gyration.py)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sz-sz-py">Sz序参数分析 (sz.py)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#n-n-cluster-py">N-聚类分析 (n_cluster.py)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rad-py">径向分布分析 (rad.py)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">参数优化建议</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#k">k值选择</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">截止距离选择</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">并行处理优化</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API参考</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LNB-MDT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">分析模块详解</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/analysis_modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>分析模块详解<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>LNB-MDT提供了丰富的分子动力学分析模块，每个模块都针对特定的物理性质进行分析。</p>
+</section>
+<section id="id2">
+<h1>命令行参数详解<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
+<p>LNB-MDT提供了丰富的命令行参数，支持简化的输入格式和短参数别名。</p>
+<section id="id3">
+<h2>参数对照表<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>所有命令行参数都有对应的短别名，让命令行更加简洁：</p>
+<table class="docutils align-default" id="id14">
+<caption><span class="caption-text">参数对照表</span><a class="headerlink" href="#id14" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 8.0%" />
+<col style="width: 15.0%" />
+<col style="width: 25.0%" />
+<col style="width: 20.0%" />
+<col style="width: 32.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>短参数</p></th>
+<th class="head"><p>长参数</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>默认值</p></th>
+<th class="head"><p>示例</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-g</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--gro-file</span></code></p></td>
+<td><p>GRO文件路径</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-g</span> <span class="pre">cases/lnb.gro</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-x</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--xtc-file</span></code></p></td>
+<td><p>XTC文件路径</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-x</span> <span class="pre">cases/md.xtc</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-o</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--output-csv</span></code></p></td>
+<td><p>输出CSV文件路径</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cases/csv/results.csv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">results.csv</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-r</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--residues</span></code></p></td>
+<td><p>残基组定义</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DPPC:PO4,CHOL:ROH</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-r</span> <span class="pre">DPPC:PO4</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-a</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--gas-group</span></code></p></td>
+<td><p>气体组定义</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">N2:N2</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-a</span> <span class="pre">N2:N2</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-m</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--MW</span></code></p></td>
+<td><p>分子量 (g/mol)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">14</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">14</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-R</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--radius</span></code></p></td>
+<td><p>半径 (Å)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-R</span> <span class="pre">50</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-p</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--parallel</span></code></p></td>
+<td><p>启用并行处理</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-p</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-j</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--n-jobs</span></code></p></td>
+<td><p>并行任务数</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-j</span> <span class="pre">4</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-s</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--start-frame</span></code></p></td>
+<td><p>起始帧</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">0</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-e</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--stop-frame</span></code></p></td>
+<td><p>结束帧</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">全部帧</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-e</span> <span class="pre">100</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-t</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--step-frame</span></code></p></td>
+<td><p>帧步长</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-v</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code></p></td>
+<td><p>详细输出</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-v</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-k</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--k-value</span></code></p></td>
+<td><p>k值</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">20</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-k</span> <span class="pre">20</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-M</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--method</span></code></p></td>
+<td><p>计算方法</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mean</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-M</span> <span class="pre">mean</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-T</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--threshold</span></code></p></td>
+<td><p>阈值</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.5</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-T</span> <span class="pre">0.5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-P</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--plot-type</span></code></p></td>
+<td><p>图表类型</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">all</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-P</span> <span class="pre">line</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-d</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--plot-dir</span></code></p></td>
+<td><p>图表目录</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">plots/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-d</span> <span class="pre">plots/</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id4">
+<h2>简化格式说明<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>residues和gas-group参数现在支持更直观的输入格式：</p>
+<section id="id5">
+<h3>基本格式<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p><strong>简单格式（推荐）:</strong>
+.. code-block:: bash</p>
+<blockquote>
+<div><p># 基本格式: RESIDUE:ATOM
+-r DPPC:PO4,CHOL:ROH
+-a N2:N2</p>
+<p># 多个残基/气体
+-r DPPC:PO4,DUPC:PO4,CHOL:ROH
+-a N2:N2,O2:O2</p>
+</div></blockquote>
+<p><strong>多原子格式:</strong>
+.. code-block:: bash</p>
+<blockquote>
+<div><p># 多原子: RESIDUE:ATOM1+ATOM2
+-r DPPC:PO4+GLY,CHOL:ROH
+-r DPPC:PO4+GLY+CH2,CHOL:ROH</p>
+</div></blockquote>
+<p><strong>只有名称格式:</strong>
+.. code-block:: bash</p>
+<blockquote>
+<div><p># 只有残基/气体名（原子名与名称相同）
+-r DPPC
+-a N2</p>
+</div></blockquote>
+</section>
+<section id="id6">
+<h3>传统格式<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p><strong>字典字符串格式（仍然支持）:</strong>
+.. code-block:: bash</p>
+<blockquote>
+<div><p># 传统字典格式
+-r “{‘DPPC’: [‘PO4’], ‘CHOL’: [‘ROH’]}”
+-a “{‘N2’: [‘N2’]}”</p>
+</div></blockquote>
+</section>
+</section>
+<section id="id7">
+<h2>模块概览<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0;">
+
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px;">
+<h3 style="margin-top: 0;">📐 PCA分析</h3>
+<p>主成分分析，研究分子构象变化</p>
+<ul style="margin-bottom: 0;">
+<li>降维分析</li>
+<li>构象变化</li>
+<li>运动模式</li>
+</ul>
+</div>
+
+<div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 10px;">
+<h3 style="margin-top: 0;">📏 面积分析</h3>
+<p>APL面积计算</p>
+<ul style="margin-bottom: 0;">
+<li>分子面积</li>
+<li>密度分布</li>
+<li>包装效率</li>
+</ul>
+</div>
+
+<div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 10px;">
+<h3 style="margin-top: 0;">🌊 曲率分析</h3>
+<p>膜曲率计算（平均/高斯）</p>
+<ul style="margin-bottom: 0;">
+<li>平均曲率</li>
+<li>高斯曲率</li>
+<li>膜形变</li>
+</ul>
+</div>
+
+<div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 20px; border-radius: 10px;">
+<h3 style="margin-top: 0;">📊 高度分析</h3>
+<p>分子高度分布分析</p>
+<ul style="margin-bottom: 0;">
+<li>Z坐标分布</li>
+<li>膜厚度</li>
+<li>表面粗糙度</li>
+</ul>
+</div>
+
+<div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 20px; border-radius: 10px;">
+<h3 style="margin-top: 0;">🔗 聚类分析</h3>
+<p>分子聚集行为分析</p>
+<ul style="margin-bottom: 0;">
+<li>聚集模式</li>
+<li>聚类大小</li>
+<li>相互作用</li>
+</ul>
+</div>
+
+<div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; padding: 20px; border-radius: 10px;">
+<h3 style="margin-top: 0;">🎯 各向异性分析</h3>
+<p>分子取向各向异性计算</p>
+<ul style="margin-bottom: 0;">
+<li>取向分布</li>
+<li>有序参数</li>
+<li>分子排列</li>
+</ul>
+</div>
+
+</div></section>
+<section id="id8">
+<h2>详细模块说明<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<section id="pca-pca-py">
+<h3>PCA分析 (pca.py)<a class="headerlink" href="#pca-pca-py" title="Link to this heading"></a></h3>
+<p><strong>功能描述</strong>
+主成分分析用于研究脂质分子的构象变化和运动模式。</p>
+<p><strong>算法原理</strong>
+- 对分子坐标进行主成分分析
+- 提取主要的运动模式
+- 降维到主要成分空间</p>
+<p><strong>关键参数</strong></p>
+<dl class="simple">
+<dt>residues <em>residue-definition</em></dt><dd><p>残基组定义，指定要分析的分子类型和原子。支持简化格式如 <code class="docutils literal notranslate"><span class="pre">DPPC:PO4,CHOL:ROH</span></code></p>
+</dd>
+<dt>n_components <em>number</em></dt><dd><p>主成分数量，默认值为 <code class="docutils literal notranslate"><span class="pre">3</span></code></p>
+</dd>
+<dt>start_frame <em>frame-number</em></dt><dd><p>起始帧，默认值为 <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+<dt>stop_frame <em>frame-number</em></dt><dd><p>结束帧，默认值为 <a href="#id9"><span class="problematic" id="id10">``</span></a>-1``（表示分析到最后）</p>
+</dd>
+<dt>step_frame <em>frame-step</em></dt><dd><p>帧步长，默认值为 <code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+</dl>
+<p><strong>使用示例</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>analysis/pca.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-g<span class="w"> </span>cases/lnb.gro<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-x<span class="w"> </span>cases/md.xtc<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>results/pca_results.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>DPPC:PO4,CHOL:ROH<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--n-components<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v
+</pre></div>
+</div>
+<p><strong>输出结果</strong>
+- CSV文件包含每个帧的主成分值
+- 可用于分析分子构象变化趋势
+- 支持可视化分析结果</p>
+</section>
+<section id="area-py">
+<h3>面积分析 (area.py)<a class="headerlink" href="#area-py" title="Link to this heading"></a></h3>
+<p><strong>功能描述</strong>
+使用Voronoi镶嵌方法计算脂质分子的面积分布。</p>
+<p><strong>算法原理</strong>
+- 构建Voronoi图
+- 计算每个分子的Voronoi面积
+- 分析面积分布和变化</p>
+<p><strong>关键参数</strong></p>
+<dl class="simple">
+<dt>k-value <em>number</em></dt><dd><p>Voronoi镶嵌的k值，默认值为 <code class="docutils literal notranslate"><span class="pre">20</span></code></p>
+</dd>
+<dt>max-normal-angle <em>angle</em></dt><dd><p>最大法线角度，默认值为 <code class="docutils literal notranslate"><span class="pre">140</span></code> 度</p>
+</dd>
+<dt>residues <em>residue-definition</em></dt><dd><p>残基组定义，指定要分析的分子类型和原子</p>
+</dd>
+</dl>
+<p><strong>使用示例</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>analysis/area.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-g<span class="w"> </span>cases/lnb.gro<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-x<span class="w"> </span>cases/md.xtc<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>results/area_results.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>DPPC:PO4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-k<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-normal-angle<span class="w"> </span><span class="m">140</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v
+</pre></div>
+</div>
+<p><strong>输出结果</strong>
+- 每个分子的Voronoi面积
+- 面积分布统计信息
+- 可用于分析膜密度和包装</p>
+</section>
+<section id="curvature-py">
+<h3>曲率分析 (curvature.py)<a class="headerlink" href="#curvature-py" title="Link to this heading"></a></h3>
+<p><strong>功能描述</strong>
+计算脂质膜的平均曲率和高斯曲率。</p>
+<p><strong>算法原理</strong>
+- 基于局部表面拟合
+- 计算曲率张量
+- 提取平均曲率和高斯曲率</p>
+<p><strong>关键参数</strong></p>
+<dl class="simple">
+<dt>method <em>curvature-type</em></dt><dd><p>曲率类型，可选值为 <code class="docutils literal notranslate"><span class="pre">mean</span></code> 或 <code class="docutils literal notranslate"><span class="pre">gaussian</span></code>，默认值为 <code class="docutils literal notranslate"><span class="pre">mean</span></code></p>
+</dd>
+<dt>k-value <em>number</em></dt><dd><p>曲率计算的k值，默认值为 <code class="docutils literal notranslate"><span class="pre">20</span></code></p>
+</dd>
+<dt>residues <em>residue-definition</em></dt><dd><p>残基组定义，指定要分析的分子类型和原子</p>
+</dd>
+</dl>
+<p><strong>使用示例</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>analysis/curvature.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-g<span class="w"> </span>cases/lnb.gro<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-x<span class="w"> </span>cases/md.xtc<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>results/curvature_results.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>DPPC:PO4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-k<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-M<span class="w"> </span>mean<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v
+</pre></div>
+</div>
+<p><strong>输出结果</strong>
+- 每个分子的曲率值
+- 曲率分布统计
+- 可用于分析膜形变和稳定性</p>
+</section>
+<section id="height-py">
+<h3>高度分析 (height.py)<a class="headerlink" href="#height-py" title="Link to this heading"></a></h3>
+<p><strong>功能描述</strong>
+分析脂质分子的高度分布和膜厚度。</p>
+<p><strong>算法原理</strong>
+- 计算分子在Z方向的位置
+- 分析高度分布
+- 计算膜厚度和表面粗糙度</p>
+<p><strong>关键参数</strong></p>
+<dl class="simple">
+<dt>k-value <em>number</em></dt><dd><p>高度计算的k值，默认值为 <code class="docutils literal notranslate"><span class="pre">20</span></code></p>
+</dd>
+<dt>residues <em>residue-definition</em></dt><dd><p>残基组定义，指定要分析的分子类型和原子，支持多组原子</p>
+</dd>
+</dl>
+<p><strong>使用示例</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>analysis/height.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-g<span class="w"> </span>cases/lnb.gro<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-x<span class="w"> </span>cases/md.xtc<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>results/height_results.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>DPPC:PO4,CHOL:ROH<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-k<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v
+</pre></div>
+</div>
+<p><strong>输出结果</strong>
+- 每个分子的高度值
+- 高度分布统计
+- 膜厚度分析</p>
+</section>
+<section id="cluster-py">
+<h3>聚类分析 (cluster.py)<a class="headerlink" href="#cluster-py" title="Link to this heading"></a></h3>
+<p><strong>功能描述</strong>
+分析脂质分子的聚集行为和聚类模式。</p>
+<p><strong>算法原理</strong>
+- 基于距离的聚类算法
+- 识别分子聚集
+- 分析聚类大小和分布</p>
+<p><strong>关键参数</strong></p>
+<dl class="simple">
+<dt>cutoff <em>distance</em></dt><dd><p>聚类截止距离，默认值为 <code class="docutils literal notranslate"><span class="pre">8.0</span></code> 埃</p>
+</dd>
+<dt>residues <em>residue-definition</em></dt><dd><p>残基组定义，指定要分析的分子类型和原子</p>
+</dd>
+</dl>
+<p><strong>使用示例</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>analysis/cluster.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-g<span class="w"> </span>cases/lnb.gro<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-x<span class="w"> </span>cases/md.xtc<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>results/cluster_results.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>DPPC:PO4,CHOL:ROH<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cutoff<span class="w"> </span><span class="m">8</span>.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v
+</pre></div>
+</div>
+<p><strong>输出结果</strong>
+- 聚类大小分布
+- 聚类数量统计
+- 聚集行为分析</p>
+</section>
+<section id="anisotropy-py">
+<h3>各向异性分析 (anisotropy.py)<a class="headerlink" href="#anisotropy-py" title="Link to this heading"></a></h3>
+<p><strong>功能描述</strong>
+计算分子取向的各向异性参数。</p>
+<p><strong>算法原理</strong>
+- 计算分子取向向量
+- 分析取向分布
+- 计算各向异性参数</p>
+<p><strong>关键参数</strong></p>
+<dl class="simple">
+<dt>residues <em>residue-definition</em></dt><dd><p>残基组定义，指定要分析的分子类型和原子</p>
+</dd>
+</dl>
+<p><strong>使用示例</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>analysis/anisotropy.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-g<span class="w"> </span>cases/lnb.gro<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-x<span class="w"> </span>cases/md.xtc<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>results/anisotropy_results.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>DPPC:PO4,CHOL:ROH<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v
+</pre></div>
+</div>
+<p><strong>输出结果</strong>
+- 各向异性参数
+- 取向分布统计
+- 分子排列分析</p>
+</section>
+<section id="gyration-py">
+<h3>回转半径分析 (gyration.py)<a class="headerlink" href="#gyration-py" title="Link to this heading"></a></h3>
+<p><strong>功能描述</strong>
+计算分子的回转半径，反映分子的紧凑程度。</p>
+<p><strong>算法原理</strong>
+- 计算分子质心
+- 计算回转半径
+- 分析分子形状变化</p>
+<p><strong>关键参数</strong></p>
+<dl class="simple">
+<dt>residues <em>residue-definition</em></dt><dd><p>残基组定义，指定要分析的分子类型和原子</p>
+</dd>
+</dl>
+<p><strong>使用示例</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>analysis/gyration.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-g<span class="w"> </span>cases/lnb.gro<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-x<span class="w"> </span>cases/md.xtc<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>results/gyration_results.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>DPPC:PO4,CHOL:ROH<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v
+</pre></div>
+</div>
+<p><strong>输出结果</strong>
+- 回转半径值
+- 形状变化分析
+- 分子紧凑度</p>
+</section>
+<section id="sz-sz-py">
+<h3>Sz序参数分析 (sz.py)<a class="headerlink" href="#sz-sz-py" title="Link to this heading"></a></h3>
+<p><strong>功能描述</strong>
+计算脂质链的Sz序参数，反映链的有序程度。</p>
+<p><strong>算法原理</strong>
+- 计算链取向向量
+- 计算Sz序参数
+- 分析链有序性</p>
+<p><strong>关键参数</strong></p>
+<dl class="simple">
+<dt>chain <em>chain-type</em></dt><dd><p>链类型，可选值为 <code class="docutils literal notranslate"><span class="pre">sn1</span></code>、<code class="docutils literal notranslate"><span class="pre">sn2</span></code> 或 <code class="docutils literal notranslate"><span class="pre">both</span></code></p>
+</dd>
+<dt>k-value <em>number</em></dt><dd><p>Sz计算的k值，默认值为 <code class="docutils literal notranslate"><span class="pre">15</span></code></p>
+</dd>
+<dt>residues <em>residue-definition</em></dt><dd><p>残基组定义，指定要分析的分子类型和原子</p>
+</dd>
+</dl>
+<p><strong>使用示例</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>analysis/sz.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-g<span class="w"> </span>cases/lnb.gro<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-x<span class="w"> </span>cases/md.xtc<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>results/sz_results.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>DPPC:PO4,DUPC:PO4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--chain<span class="w"> </span>sn1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-k<span class="w"> </span><span class="m">15</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v
+</pre></div>
+</div>
+<p><strong>输出结果</strong>
+- Sz序参数值
+- 链有序性分析
+- 相变行为</p>
+</section>
+<section id="n-n-cluster-py">
+<h3>N-聚类分析 (n_cluster.py)<a class="headerlink" href="#n-n-cluster-py" title="Link to this heading"></a></h3>
+<p><strong>功能描述</strong>
+统计聚类数量，分析聚集模式。</p>
+<p><strong>算法原理</strong>
+- 基于距离的聚类
+- 统计聚类数量
+- 分析聚集模式</p>
+<p><strong>关键参数</strong></p>
+<dl class="simple">
+<dt>cutoff <em>distance</em></dt><dd><p>聚类截止距离，默认值为 <code class="docutils literal notranslate"><span class="pre">12.0</span></code> 埃</p>
+</dd>
+<dt>n-cutoff <em>number</em></dt><dd><p>最小聚类大小阈值，默认值为 <code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+<dt>residues <em>residue-definition</em></dt><dd><p>残基组定义，指定要分析的分子类型和原子</p>
+</dd>
+</dl>
+<p><strong>使用示例</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>analysis/n_cluster.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-g<span class="w"> </span>cases/lnb.gro<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-x<span class="w"> </span>cases/md.xtc<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>results/ncluster_results.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>DAPC:GL1+GL2,DPPC:PO4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cutoff<span class="w"> </span><span class="m">12</span>.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--n-cutoff<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v
+</pre></div>
+</div>
+<p><strong>输出结果</strong>
+- 聚类数量统计
+- 聚集模式分析
+- 相互作用强度</p>
+</section>
+<section id="rad-py">
+<h3>径向分布分析 (rad.py)<a class="headerlink" href="#rad-py" title="Link to this heading"></a></h3>
+<p><strong>功能描述</strong>
+计算径向分布函数，分析分子间的距离分布。</p>
+<p><strong>算法原理</strong>
+- 计算分子间距离
+- 构建径向分布函数
+- 分析相互作用</p>
+<p><strong>关键参数</strong></p>
+<dl class="simple">
+<dt>n-circle <em>number</em></dt><dd><p>径向分析的同心圆数量，默认值为 <code class="docutils literal notranslate"><span class="pre">50</span></code></p>
+</dd>
+<dt>residues <em>residue-definition</em></dt><dd><p>残基组定义，指定要分析的分子类型和原子</p>
+</dd>
+</dl>
+<p><strong>使用示例</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>analysis/rad.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-g<span class="w"> </span>cases/lnb.gro<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-excel<span class="w"> </span>results/radial_distribution.xlsx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>DPPC:NC3,CHOL:ROH<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--n-circle<span class="w"> </span><span class="m">50</span>
+</pre></div>
+</div>
+<p><strong>输出结果</strong>
+- Excel文件包含径向分布数据
+- 距离分布统计
+- 相互作用分析</p>
+</section>
+</section>
+<section id="id11">
+<h2>参数优化建议<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<section id="k">
+<h3>k值选择<a class="headerlink" href="#k" title="Link to this heading"></a></h3>
+<div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;"><p><strong>k值选择原则：</strong></p>
+<ul class="simple">
+<li><p><strong>小系统</strong>: k = 10-15</p></li>
+<li><p><strong>中等系统</strong>: k = 15-25</p></li>
+<li><p><strong>大系统</strong>: k = 25-35</p></li>
+<li><p><strong>高密度</strong>: 增加k值</p></li>
+<li><p><strong>低密度</strong>: 减少k值</p></li>
+</ul>
+<p><strong>优化方法：</strong>
+通过多次测试不同k值来找到最佳参数</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+</section>
+<section id="id12">
+<h3>截止距离选择<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;"><p><strong>截止距离选择：</strong></p>
+<ul class="simple">
+<li><p><strong>聚类分析</strong>: 8-12埃</p></li>
+<li><p><strong>相互作用</strong>: 5-8埃</p></li>
+<li><p><strong>长程相互作用</strong>: 12-20埃</p></li>
+</ul>
+<p><strong>选择依据：</strong>
+- 分子大小
+- 相互作用强度
+- 系统密度</p>
+</section>
+<section id="id13">
+<h3>并行处理优化<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50;"><p><strong>并行处理建议：</strong></p>
+<ul class="simple">
+<li><p><strong>CPU核心数</strong>: 使用 <cite>–n-jobs -1</cite> 自动检测</p></li>
+<li><p><strong>内存考虑</strong>: 大系统减少并行数</p></li>
+<li><p><strong>I/O限制</strong>: SSD硬盘可增加并行数</p></li>
+</ul>
+<p><strong>性能优化：</strong>
+- 使用SSD存储轨迹文件
+- 增加系统内存
+- 优化网络文件系统</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="快速开始指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api_reference.html" class="btn btn-neutral float-right" title="API参考" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, XinyuRen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

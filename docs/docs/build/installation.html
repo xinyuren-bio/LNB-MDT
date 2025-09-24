@@ -1,0 +1,170 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>安装指南 &mdash; LNB-MDT Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b87f379a" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b87f379a" />
+
+  
+    <link rel="shortcut icon" href="_static/icon.ico"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e160b93e"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/custom.js?v=5951da7b"></script>
+      <script src="_static/custom.js?v=5951da7b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="快速开始指南" href="quickstart.html" />
+    <link rel="prev" title="LNB-MDT: Lipid NanoBubble Molecular Dynamics Toolbox" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LNB-MDT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">安装指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#conda">Conda安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pypi">PyPI安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">依赖项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">系统要求</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">安装完成</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">快速开始指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis_modules.html">分析模块详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis_modules.html#id2">命令行参数详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API参考</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LNB-MDT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">安装指南</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>安装指南<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="conda">
+<h2>Conda安装<a class="headerlink" href="#conda" title="Link to this heading"></a></h2>
+<p>安装LNB-MDT最简单的方法是通过Conda环境管理器：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>config<span class="w"> </span>--add<span class="w"> </span>channels<span class="w"> </span>conda-forge
+conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>LNB-MDT<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
+conda<span class="w"> </span>activate<span class="w"> </span>LNB-MDT
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/xinyuren-bio/LNB-MDT.git
+<span class="nb">cd</span><span class="w"> </span>LNB-MDT
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+<p>这将在一个新的虚拟环境中安装LNB-MDT及其所有依赖项。</p>
+<p>如果您还没有安装Conda，我们建议下载并安装Miniconda，这是Conda的轻量级版本。</p>
+</section>
+<section id="pypi">
+<h2>PyPI安装<a class="headerlink" href="#pypi" title="Link to this heading"></a></h2>
+<p>也可以从Python包索引安装LNB-MDT：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>LNB-MDT
+</pre></div>
+</div>
+<p>或者安装开发版本：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>https://github.com/xinyuren-bio/LNB-MDT/archive/main.zip
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2>依赖项<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>LNB-MDT使用MDAnalysis进行所有分析计算，使用NumPy进行数值计算。</p>
+<p>如上所述，安装这些包以及LNB-MDT的最简单方法是使用Conda。但是，也可以使用pip或从源码安装MDAnalysis和NumPy。</p>
+</section>
+<section id="id3">
+<h2>系统要求<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Windows</strong>: Windows 10/11 (64位)</p></li>
+<li><p><strong>macOS</strong>: macOS 10.15 (Catalina) 或更高版本</p></li>
+<li><p><strong>Linux</strong>: Ubuntu 18.04+, CentOS 7+, 或其他主流发行版</p></li>
+</ul>
+</section>
+<section id="id4">
+<h2>安装完成<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>恭喜！您已成功安装LNB-MDT。现在可以开始使用这个强大的分子动力学分析工具箱了。</p>
+<p>下一步：查看 <a class="reference internal" href="quickstart.html"><span class="doc">快速开始指南</span></a> 学习基本用法。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="LNB-MDT: Lipid NanoBubble Molecular Dynamics Toolbox" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quickstart.html" class="btn btn-neutral float-right" title="快速开始指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, XinyuRen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

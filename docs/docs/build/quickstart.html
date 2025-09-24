@@ -1,0 +1,574 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>快速开始指南 &mdash; LNB-MDT Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b87f379a" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b87f379a" />
+
+  
+    <link rel="shortcut icon" href="_static/icon.ico"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e160b93e"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/custom.js?v=5951da7b"></script>
+      <script src="_static/custom.js?v=5951da7b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="分析模块详解" href="analysis_modules.html" />
+    <link rel="prev" title="安装指南" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LNB-MDT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">安装指南</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">快速开始指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#vmd">配置VMD路径</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">启动程序</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">图形界面启动</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">命令行启动</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">基本分析流程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">准备数据文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">选择分析类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">配置参数</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id9">简化参数输入</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">运行分析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id11">图形界面运行</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">命令行运行</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">查看结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">实际示例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pca">PCA分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">面积分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">曲率分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">密度分析</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id18">VMD集成</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id19">VMD路径配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id20">启动VMD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id21">可视化操作</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id22">下一步</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analysis_modules.html">分析模块详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis_modules.html#id2">命令行参数详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API参考</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LNB-MDT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">快速开始指南</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>快速开始指南<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>本指南将帮助您在5分钟内开始使用LNB-MDT进行脂质纳米泡分析。</p>
+<section id="vmd">
+<h2>配置VMD路径<a class="headerlink" href="#vmd" title="Link to this heading"></a></h2>
+<p>首次使用LNB-MDT需要配置VMD路径。VMD用于分子可视化和轨迹分析。</p>
+<ol class="arabic">
+<li><p><strong>编辑配置文件</strong></p>
+<p>打开项目根目录的 <cite>config.ini</cite> 文件，修改 <cite>vmd_path</cite> 为您的VMD实际安装路径：</p>
+</li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># 常见路径示例
+Windows: C:/Program Files/VMD/vmd.exe
+macOS:   /Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64
+Linux:   /usr/local/bin/vmd
+</pre></div>
+</div>
+<ol class="arabic" start="2">
+<li><p><strong>保存并重启</strong></p>
+<p>保存配置文件后重新启动程序。</p>
+</li>
+</ol>
+</section>
+<section id="id2">
+<h2>启动程序<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>图形界面启动<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>使用图形界面是开始使用LNB-MDT最简单的方式：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 激活环境</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">LNB</span><span class="o">-</span><span class="n">MDT</span>
+
+<span class="c1"># 启动主程序</span>
+<span class="n">python</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>启动后您将看到LNB-MDT的主界面，包含以下功能模块：</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+
+<div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
+<h4 style="margin-center: 0;">🧬 Generation Module</h4>
+</div>
+
+<div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
+<h4 style="margin-center: 0;">📊 Analysis Module</h4>
+</div>
+
+<div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
+<h4 style="margin-center: 0;">📈 Figure Module</h4>
+</div>
+
+<div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
+<h4 style="margin-center: 0;">🔧 VMD Module</h4>
+</div>
+
+</div></section>
+<section id="id4">
+<h3>命令行启动<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>对于批量处理和自动化分析，可以使用命令行工具：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 激活环境</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">LNB</span><span class="o">-</span><span class="n">MDT</span>
+
+<span class="c1"># 查看帮助信息</span>
+<span class="n">python</span> <span class="n">analysis</span><span class="o">/</span><span class="n">pca</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id5">
+<h2>基本分析流程<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<section id="id6">
+<h3>准备数据文件<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>LNB-MDT需要以下文件进行分析：</p>
+<ul class="simple">
+<li><p><strong>GRO文件</strong>: 分子拓扑结构文件</p></li>
+<li><p><strong>XTC文件</strong>: 分子动力学轨迹文件</p></li>
+</ul>
+<p>项目包含示例数据文件：
+- <cite>cases/lnb.gro</cite> - 示例拓扑文件
+- <cite>cases/md.xtc</cite> - 示例轨迹文件</p>
+</section>
+<section id="id7">
+<h3>选择分析类型<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>LNB-MDT提供多种分析类型：</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
+
+<div style="background-color: #f3e5f5; padding: 15px; border-radius: 8px;">
+<h4 style="margin-top: 0; color: #7b1fa2;">📐 Anisotropy</h4>
+<p style="margin-bottom: 0;">主成分分析，研究分子构象变化</p>
+</div>
+
+<div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px;">
+<h4 style="margin-top: 0; color: #388e3c;">📏 APL</h4>
+<p style="margin-bottom: 0;">Voronoi镶嵌面积计算</p>
+</div>
+
+<div style="background-color: #fff3e0; padding: 15px; border-radius: 8px;">
+<h4 style="margin-top: 0; color: #f57c00;">🌊 SZ</h4>
+<p style="margin-bottom: 0;">膜曲率计算（平均/高斯）</p>
+</div>
+
+<div style="background-color: #fce4ec; padding: 15px; border-radius: 8px;">
+<h4 style="margin-top: 0; color: #c2185b;">📊 Cluster</h4>
+<p style="margin-bottom: 0;">分子聚集行为分析</p>
+</div>
+
+</div></section>
+<section id="id8">
+<h3>配置参数<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p>关键参数包括：</p>
+<ul class="simple">
+<li><p><strong>残基组</strong>: 指定要分析的分子类型和原子</p></li>
+<li><p><strong>帧范围</strong>: 选择分析的时间范围</p></li>
+<li><p><strong>计算参数</strong>: k值、截止距离等</p></li>
+<li><p><strong>并行处理</strong>: 启用多核加速</p></li>
+</ul>
+<section id="id9">
+<h4>简化参数输入<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<p>LNB-MDT现在支持更简单的参数输入方式，让命令行使用更加便捷：</p>
+<p><strong>短参数别名:</strong>
+.. code:: text</p>
+<blockquote>
+<div><dl class="option-list">
+<dt><kbd><span class="option">-g</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--gro-file</span></kbd></dt>
+<dd><p>GRO文件路径</p>
+</dd>
+</dl>
+</dd>
+<dt><kbd><span class="option">-x</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--xtc-file</span></kbd></dt>
+<dd><p>XTC文件路径</p>
+</dd>
+</dl>
+</dd>
+<dt><kbd><span class="option">-o</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--output-csv</span></kbd></dt>
+<dd><p>输出CSV文件路径</p>
+</dd>
+</dl>
+</dd>
+<dt><kbd><span class="option">-r</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--residues</span></kbd></dt>
+<dd><p>残基组定义</p>
+</dd>
+</dl>
+</dd>
+<dt><kbd><span class="option">-a</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--gas-group</span></kbd></dt>
+<dd><p>气体组定义</p>
+</dd>
+</dl>
+</dd>
+<dt><kbd><span class="option">-m</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--MW</span></kbd></dt>
+<dd><p>分子量</p>
+</dd>
+</dl>
+</dd>
+<dt><kbd><span class="option">-R</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--radius</span></kbd></dt>
+<dd><p>半径</p>
+</dd>
+</dl>
+</dd>
+<dt><kbd><span class="option">-p</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--parallel</span></kbd></dt>
+<dd><p>启用并行处理</p>
+</dd>
+</dl>
+</dd>
+<dt><kbd><span class="option">-j</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--n-jobs</span></kbd></dt>
+<dd><p>并行任务数</p>
+</dd>
+</dl>
+</dd>
+<dt><kbd><span class="option">-s</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--start-frame</span></kbd></dt>
+<dd><p>起始帧</p>
+</dd>
+</dl>
+</dd>
+<dt><kbd><span class="option">-e</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--stop-frame</span></kbd></dt>
+<dd><p>结束帧</p>
+</dd>
+</dl>
+</dd>
+<dt><kbd><span class="option">-t</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--step-frame</span></kbd></dt>
+<dd><p>帧步长</p>
+</dd>
+</dl>
+</dd>
+<dt><kbd><span class="option">-v</span></kbd></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--verbose</span></kbd></dt>
+<dd><p>详细输出</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>简化的residues和gas-group格式:</strong>
+.. code:: text</p>
+<blockquote>
+<div><p># 简单格式（推荐）
+-r DPPC:PO4,CHOL:ROH
+-a N2:N2</p>
+<p># 多原子格式
+-r DPPC:PO4+GLY,CHOL:ROH</p>
+<p># 传统字典格式（仍然支持）
+-r “{‘DPPC’: [‘PO4’], ‘CHOL’: [‘ROH’]}”</p>
+</div></blockquote>
+</section>
+</section>
+<section id="id10">
+<h3>运行分析<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<section id="id11">
+<h4>图形界面运行<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>在界面中加载GRO和XTC文件</p></li>
+<li><p>选择分析类型</p></li>
+<li><p>配置参数</p></li>
+<li><p>点击”运行”按钮</p></li>
+<li><p>查看结果</p></li>
+</ol>
+</section>
+<section id="id12">
+<h4>命令行运行<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<p>LNB-MDT支持简化的命令行参数输入，让您更轻松地使用命令行工具：</p>
+<p><strong>传统方式（仍然支持）:</strong>
+.. code-block:: python</p>
+<blockquote>
+<div><p># PCA分析示例
+python analysis/pca.py </p>
+<blockquote>
+<div><p>–gro-file cases/lnb.gro –xtc-file cases/md.xtc –output-csv results/pca_results.csv –residues “{‘DPPC’: [‘PO4’]}” –parallel –verbose</p>
+</div></blockquote>
+</div></blockquote>
+<p><strong>新的简化方式（推荐）:</strong>
+.. code-block:: python</p>
+<blockquote>
+<div><p># 使用短参数和简单格式
+python analysis/pca.py </p>
+<blockquote>
+<div><p>-g cases/lnb.gro -x cases/md.xtc -o results/pca_results.csv -r DPPC:PO4 -p -v</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+</section>
+<section id="id13">
+<h3>查看结果<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<p>分析完成后，LNB-MDT会生成以下输出：</p>
+<ul class="simple">
+<li><p><strong>CSV文件</strong>: 包含分析结果的数值数据</p></li>
+<li><p><strong>图表</strong>: 可视化分析结果</p></li>
+<li><p><strong>日志</strong>: 分析过程的详细信息</p></li>
+</ul>
+<p>结果解读：</p>
+<ul class="simple">
+<li><p>查看CSV文件中的数值结果</p></li>
+<li><p>使用图表模块可视化数据</p></li>
+<li><p>结合VMD进行分子可视化</p></li>
+</ul>
+</section>
+</section>
+<section id="id14">
+<h2>实际示例<a class="headerlink" href="#id14" title="Link to this heading"></a></h2>
+<section id="pca">
+<h3>PCA分析<a class="headerlink" href="#pca" title="Link to this heading"></a></h3>
+<p>分析脂质分子的构象变化：</p>
+<p><strong>传统方式:</strong>
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="simple">
+<dt>python analysis/pca.py </dt><dd><p>–gro-file cases/lnb.gro –xtc-file cases/md.xtc –output-csv results/pca_test.csv –residues “{‘DPPC’: [‘PO4’], ‘CHOL’: [‘ROH’]}” –start-frame 0 –stop-frame 100 –parallel –verbose</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>简化方式:</strong>
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="simple">
+<dt>python analysis/pca.py </dt><dd><p>-g cases/lnb.gro -x cases/md.xtc -o results/pca_test.csv -r DPPC:PO4,CHOL:ROH -s 0 -e 100 -p -v</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id15">
+<h3>面积分析<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<p>计算脂质分子的Voronoi镶嵌面积：</p>
+<p><strong>传统方式:</strong>
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="simple">
+<dt>python analysis/area.py </dt><dd><p>–gro-file cases/lnb.gro –xtc-file cases/md.xtc –output-csv results/area_test.csv –residues “{‘DPPC’: [‘PO4’]}” –k-value 20 –max-normal-angle 140 –parallel –verbose</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>简化方式:</strong>
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="simple">
+<dt>python analysis/area.py </dt><dd><p>-g cases/lnb.gro -x cases/md.xtc -o results/area_test.csv -r DPPC:PO4 -k 20 –max-normal-angle 140 -p -v</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id16">
+<h3>曲率分析<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<p>计算脂质膜的曲率特性：</p>
+<p><strong>传统方式:</strong>
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="simple">
+<dt>python analysis/curvature.py </dt><dd><p>–gro-file cases/lnb.gro –xtc-file cases/md.xtc –output-csv results/curvature_test.csv –residues “{‘DPPC’: [‘PO4’]}” –k-value 20 –method mean –parallel –verbose</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>简化方式:</strong>
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="simple">
+<dt>python analysis/curvature.py </dt><dd><p>-g cases/lnb.gro -x cases/md.xtc -o results/curvature_test.csv -r DPPC:PO4 -k 20 -M mean -p -v</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id17">
+<h3>密度分析<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<p>分析气泡中气体密度随时间的变化：</p>
+<p><strong>简化方式（推荐）:</strong>
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="simple">
+<dt>python analysis/densitywithframe.py </dt><dd><p>-g cases/lnb.gro -x cases/md.xtc -o results/density_test.csv -r DPPC:PO4,CHOL:ROH -a N2:N2 -m 14 -R 50 -p -v</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</section>
+<section id="id18">
+<h2>VMD集成<a class="headerlink" href="#id18" title="Link to this heading"></a></h2>
+<p>LNB-MDT支持与VMD的无缝集成，用于分子可视化和轨迹分析。</p>
+<section id="id19">
+<h3>VMD路径配置<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<p>首次使用需要配置VMD路径：</p>
+<ol class="arabic simple">
+<li><p><strong>找到VMD安装路径</strong></p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Windows: 通常在 C:/Program Files/VMD/vmd.exe
+macOS:   通常在 /Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64
+Linux:   通常在 /usr/local/bin/vmd
+</pre></div>
+</div>
+<ol class="arabic" start="2">
+<li><p><strong>编辑配置文件</strong></p>
+<p>打开项目根目录的 <cite>config.ini</cite> 文件，修改 <cite>vmd_path</cite> 为您的VMD实际安装路径：</p>
+</li>
+</ol>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[VMD]</span>
+<span class="na">vmd_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64</span>
+</pre></div>
+</div>
+<ol class="arabic" start="3">
+<li><p><strong>验证配置</strong></p>
+<p>保存配置文件后重新启动LNB-MDT程序。</p>
+</li>
+</ol>
+</section>
+<section id="id20">
+<h3>启动VMD<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
+<p>图形界面启动：</p>
+<ol class="arabic simple">
+<li><p>点击”Start VMD”按钮</p></li>
+<li><p>等待VMD启动</p></li>
+<li><p>拖拽CSV文件到VMD窗口</p></li>
+<li><p>选择分子进行可视化</p></li>
+</ol>
+<p>命令行启动：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 启动VMD</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;from modules.vmd_control import VMDTcp; vmd = VMDTcp(); vmd.start()&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id21">
+<h3>可视化操作<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
+<p>操作步骤：</p>
+<ol class="arabic simple">
+<li><p>在LNB-MDT中加载分析结果</p></li>
+<li><p>选择要可视化的帧和分子</p></li>
+<li><p>VMD自动跳转到对应帧</p></li>
+<li><p>高亮显示选中的分子</p></li>
+<li><p>调整可视化参数</p></li>
+</ol>
+</section>
+</section>
+<section id="id22">
+<h2>下一步<a class="headerlink" href="#id22" title="Link to this heading"></a></h2>
+<p>恭喜！您已经成功完成了LNB-MDT的快速开始！</p>
+<p>接下来可以：</p>
+<ul class="simple">
+<li><p>学习 <a class="reference internal" href="analysis_modules.html"><span class="doc">分析模块详解</span></a> 的深度使用</p></li>
+<li><p>查看 <a class="reference internal" href="api_reference.html"><span class="doc">API参考</span></a> 了解API详情</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="安装指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="analysis_modules.html" class="btn btn-neutral float-right" title="分析模块详解" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, XinyuRen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,857 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API参考 &mdash; LNB-MDT Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b87f379a" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b87f379a" />
+
+  
+    <link rel="shortcut icon" href="_static/icon.ico"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e160b93e"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/custom.js?v=5951da7b"></script>
+      <script src="_static/custom.js?v=5951da7b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="分析模块详解" href="analysis_modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LNB-MDT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">安装指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">快速开始指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis_modules.html">分析模块详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis_modules.html#id2">命令行参数详解</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API参考</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">分析模块API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">分析基类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pca">PCA分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">面积分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">曲率分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">高度分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">聚类分析</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#vmdapi">VMD控制模块API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vmd">VMD连接器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">VMD命令</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">图表模块API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">图表生成器</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">工具函数API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id11">文件工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">分析工具</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">错误处理API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id14">异常类</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">使用示例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id16">基本使用</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">VMD集成使用</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id18">错误处理使用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LNB-MDT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API参考</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api_reference.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api">
+<h1>API参考<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
+<p>LNB-MDT的完整API参考文档。</p>
+<section id="id1">
+<h2>分析模块API<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3>分析基类<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;"><p><strong>AnalysisBase</strong></p>
+<p>所有分析模块的基类，提供通用的分析功能。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">AnalysisBase</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    分析基类</span>
+
+<span class="sd">    所有分析模块都继承自此类，提供通用的分析功能。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gro_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">,</span> <span class="n">residues</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初始化分析器</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - gro_file (str): GRO拓扑文件路径</span>
+<span class="sd">        - xtc_file (str): XTC轨迹文件路径</span>
+<span class="sd">        - residues (dict): 残基组字典</span>
+<span class="sd">        - **kwargs: 其他参数</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_frame</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop_frame</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">step_frame</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        运行分析</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - start_frame (int): 起始帧</span>
+<span class="sd">        - stop_frame (int): 结束帧</span>
+<span class="sd">        - step_frame (int): 帧步长</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - dict: 分析结果</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        保存分析结果</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - output_file (str): 输出文件路径</span>
+<span class="sd">        - results (dict): 分析结果</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="pca">
+<h3>PCA分析<a class="headerlink" href="#pca" title="Link to this heading"></a></h3>
+<div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;"><p><strong>PCA类</strong></p>
+<p>主成分分析类，用于分析分子构象变化。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PCA</span><span class="p">(</span><span class="n">AnalysisBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    主成分分析类</span>
+
+<span class="sd">    用于分析脂质分子的构象变化和运动模式。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gro_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">,</span> <span class="n">residues</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初始化PCA分析器</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - gro_file (str): GRO拓扑文件路径</span>
+<span class="sd">        - xtc_file (str): XTC轨迹文件路径</span>
+<span class="sd">        - residues (dict): 残基组字典</span>
+<span class="sd">        - n_components (int): 主成分数量，默认3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_frame</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop_frame</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">step_frame</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        运行PCA分析</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - dict: 包含主成分值的字典</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_explained_variance_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        获取解释方差比</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - numpy.ndarray: 解释方差比数组</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3>面积分析<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50;"><p><strong>Area类</strong></p>
+<p>Voronoi镶嵌面积分析类。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Area</span><span class="p">(</span><span class="n">AnalysisBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Voronoi镶嵌面积分析类</span>
+
+<span class="sd">    计算脂质分子的Voronoi镶嵌面积。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gro_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">,</span> <span class="n">residues</span><span class="p">,</span> <span class="n">k_value</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                 <span class="n">max_normal_angle</span><span class="o">=</span><span class="mi">140</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初始化面积分析器</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - gro_file (str): GRO拓扑文件路径</span>
+<span class="sd">        - xtc_file (str): XTC轨迹文件路径</span>
+<span class="sd">        - residues (dict): 残基组字典</span>
+<span class="sd">        - k_value (int): Voronoi镶嵌的k值，默认20</span>
+<span class="sd">        - max_normal_angle (float): 最大法线角度，默认140度</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_frame</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop_frame</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">step_frame</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        运行面积分析</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - dict: 包含面积值的字典</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_voronoi_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">k_value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        计算Voronoi面积</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - coordinates (numpy.ndarray): 分子坐标</span>
+<span class="sd">        - k_value (int): k值</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - numpy.ndarray: Voronoi面积数组</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>曲率分析<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;"><p><strong>Curvature类</strong></p>
+<p>膜曲率分析类。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Curvature</span><span class="p">(</span><span class="n">AnalysisBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    膜曲率分析类</span>
+
+<span class="sd">    计算脂质膜的平均曲率和高斯曲率。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gro_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">,</span> <span class="n">residues</span><span class="p">,</span> <span class="n">k_value</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                 <span class="n">method</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初始化曲率分析器</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - gro_file (str): GRO拓扑文件路径</span>
+<span class="sd">        - xtc_file (str): XTC轨迹文件路径</span>
+<span class="sd">        - residues (dict): 残基组字典</span>
+<span class="sd">        - k_value (int): 曲率计算的k值，默认20</span>
+<span class="sd">        - method (str): 曲率类型，&#39;mean&#39;或&#39;gaussian&#39;，默认&#39;mean&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_frame</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop_frame</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">step_frame</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        运行曲率分析</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - dict: 包含曲率值的字典</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_mean_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">k_value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        计算平均曲率</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - coordinates (numpy.ndarray): 分子坐标</span>
+<span class="sd">        - k_value (int): k值</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - numpy.ndarray: 平均曲率数组</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_gaussian_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">k_value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        计算高斯曲率</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - coordinates (numpy.ndarray): 分子坐标</span>
+<span class="sd">        - k_value (int): k值</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - numpy.ndarray: 高斯曲率数组</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>高度分析<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<div style="background-color: #f3e5f5; padding: 15px; border-radius: 8px; border-left: 4px solid #9c27b0;"><p><strong>Height类</strong></p>
+<p>分子高度分析类。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Height</span><span class="p">(</span><span class="n">AnalysisBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    分子高度分析类</span>
+
+<span class="sd">    分析脂质分子的高度分布和膜厚度。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gro_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">,</span> <span class="n">residues</span><span class="p">,</span> <span class="n">k_value</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初始化高度分析器</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - gro_file (str): GRO拓扑文件路径</span>
+<span class="sd">        - xtc_file (str): XTC轨迹文件路径</span>
+<span class="sd">        - residues (dict): 残基组字典，支持多组原子</span>
+<span class="sd">        - k_value (int): 高度计算的k值，默认20</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_frame</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop_frame</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">step_frame</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        运行高度分析</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - dict: 包含高度值的字典</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">reference_atoms</span><span class="p">,</span> <span class="n">k_value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        计算分子高度</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - coordinates (numpy.ndarray): 分子坐标</span>
+<span class="sd">        - reference_atoms (list): 参考原子列表</span>
+<span class="sd">        - k_value (int): k值</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - numpy.ndarray: 高度值数组</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>聚类分析<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<div style="background-color: #fce4ec; padding: 15px; border-radius: 8px; border-left: 4px solid #e91e63;"><p><strong>Cluster类</strong></p>
+<p>分子聚类分析类。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Cluster</span><span class="p">(</span><span class="n">AnalysisBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    分子聚类分析类</span>
+
+<span class="sd">    分析脂质分子的聚集行为和聚类模式。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gro_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">,</span> <span class="n">residues</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初始化聚类分析器</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - gro_file (str): GRO拓扑文件路径</span>
+<span class="sd">        - xtc_file (str): XTC轨迹文件路径</span>
+<span class="sd">        - residues (dict): 残基组字典</span>
+<span class="sd">        - cutoff (float): 聚类截止距离，默认8.0埃</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_frame</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop_frame</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">step_frame</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        运行聚类分析</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - dict: 包含聚类信息的字典</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_clusters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        寻找聚类</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - coordinates (numpy.ndarray): 分子坐标</span>
+<span class="sd">        - cutoff (float): 截止距离</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - list: 聚类列表</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="vmdapi">
+<h2>VMD控制模块API<a class="headerlink" href="#vmdapi" title="Link to this heading"></a></h2>
+<section id="vmd">
+<h3>VMD连接器<a class="headerlink" href="#vmd" title="Link to this heading"></a></h3>
+<div style="background-color: #e1f5fe; padding: 15px; border-radius: 8px; border-left: 4px solid #03a9f4;"><p><strong>VMDTcp类</strong></p>
+<p>VMD TCP连接器。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">VMDTcp</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    VMD TCP连接器</span>
+
+<span class="sd">    通过TCP连接控制VMD程序。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rctl_path</span><span class="p">,</span> <span class="n">vmd_path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初始化VMD连接器</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - rctl_path (str): 远程控制脚本路径</span>
+<span class="sd">        - vmd_path (str): VMD程序路径</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        启动VMD</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - int: 连接状态码</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        停止VMD</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">send_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        发送命令到VMD</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - command (str): VMD命令</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - str: VMD响应</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>VMD命令<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;"><p><strong>VMDCommands类</strong></p>
+<p>VMD命令集合。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">VMDCommands</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    VMD命令集合</span>
+
+<span class="sd">    提供常用的VMD命令。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loadTopology</span><span class="p">(</span><span class="n">gro_file</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        加载拓扑文件</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - gro_file (str): GRO文件路径</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - str: VMD命令</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loadTrajectory</span><span class="p">(</span><span class="n">xtc_file</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        加载轨迹文件</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - xtc_file (str): XTC文件路径</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - str: VMD命令</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gotoFrame</span><span class="p">(</span><span class="n">frame</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        跳转到指定帧</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - frame (str): 帧号</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - str: VMD命令</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">highlightResid</span><span class="p">(</span><span class="n">resids</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        高亮指定残基</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - resids (list): 残基ID列表</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - str: VMD命令</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setRepresentation</span><span class="p">(</span><span class="n">style</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        设置显示样式</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - style (str): 显示样式</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - str: VMD命令</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setColoringMethod</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        设置着色方法</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - method (str): 着色方法</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        - str: VMD命令</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id8">
+<h2>图表模块API<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<section id="id9">
+<h3>图表生成器<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;"><p><strong>FigurePage类</strong></p>
+<p>图表页面类。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">FigurePage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    图表页面类</span>
+
+<span class="sd">    提供图表生成和可视化功能。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">figureBtnMakeFigure</span><span class="p">(</span><span class="n">ui</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        生成图表按钮处理</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - ui: 用户界面对象</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">figureBtnColor</span><span class="p">(</span><span class="n">ui</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        颜色选择按钮处理</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - ui: 用户界面对象</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">figureBtnShape</span><span class="p">(</span><span class="n">ui</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        形状选择按钮处理</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - ui: 用户界面对象</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id10">
+<h2>工具函数API<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<section id="id11">
+<h3>文件工具<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50;"><p><strong>BtnGetPath类</strong></p>
+<p>文件路径获取工具。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BtnGetPath</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    文件路径获取工具</span>
+
+<span class="sd">    提供文件选择对话框功能。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">edit_widget</span><span class="p">,</span> <span class="n">file_type</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        运行文件选择对话框</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - edit_widget: 编辑控件</span>
+<span class="sd">        - file_type (str): 文件类型</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h3>分析工具<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;"><p><strong>NextClick函数</strong></p>
+<p>下一步按钮处理函数。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">NextClick</span><span class="p">(</span><span class="n">ui</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    下一步按钮处理函数</span>
+
+<span class="sd">    参数:</span>
+<span class="sd">    - ui: 用户界面对象</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div style="background-color: #f3e5f5; padding: 15px; border-radius: 8px; border-left: 4px solid #9c27b0;"><p><strong>BtnGeneClick函数</strong></p>
+<p>生成按钮处理函数。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">BtnGeneClick</span><span class="p">(</span><span class="n">ui</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    生成按钮处理函数</span>
+
+<span class="sd">    参数:</span>
+<span class="sd">    - ui: 用户界面对象</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div style="background-color: #fce4ec; padding: 15px; border-radius: 8px; border-left: 4px solid #e91e63;"><p><strong>lipidsSelect函数</strong></p>
+<p>脂质选择函数。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">lipidsSelect</span><span class="p">(</span><span class="n">ui</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    脂质选择函数</span>
+
+<span class="sd">    参数:</span>
+<span class="sd">    - ui: 用户界面对象</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id13">
+<h2>错误处理API<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
+<section id="id14">
+<h3>异常类<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<div style="background-color: #ffebee; padding: 15px; border-radius: 8px; border-left: 4px solid #f44336;"><p><strong>LNBException类</strong></p>
+<p>LNB-MDT自定义异常类。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">LNBException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    LNB-MDT自定义异常类</span>
+
+<span class="sd">    用于处理LNB-MDT特定的错误。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初始化异常</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - message (str): 错误消息</span>
+<span class="sd">        - error_code (str): 错误代码</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_code</span> <span class="o">=</span> <span class="n">error_code</span>
+</pre></div>
+</div>
+<div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;"><p><strong>AnalysisError类</strong></p>
+<p>分析错误异常类。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">AnalysisError</span><span class="p">(</span><span class="n">LNBException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    分析错误异常类</span>
+
+<span class="sd">    用于处理分析过程中的错误。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初始化分析错误</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - message (str): 错误消息</span>
+<span class="sd">        - analysis_type (str): 分析类型</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_type</span> <span class="o">=</span> <span class="n">analysis_type</span>
+</pre></div>
+</div>
+<div style="background-color: #f3e5f5; padding: 15px; border-radius: 8px; border-left: 4px solid #9c27b0;"><p><strong>VMDError类</strong></p>
+<p>VMD错误异常类。</p>
+<blockquote>
+<div><p>&lt;/div&gt;</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">VMDError</span><span class="p">(</span><span class="n">LNBException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    VMD错误异常类</span>
+
+<span class="sd">    用于处理VMD相关的错误。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">vmd_command</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初始化VMD错误</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        - message (str): 错误消息</span>
+<span class="sd">        - vmd_command (str): VMD命令</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vmd_command</span> <span class="o">=</span> <span class="n">vmd_command</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id15">
+<h2>使用示例<a class="headerlink" href="#id15" title="Link to this heading"></a></h2>
+<section id="id16">
+<h3>基本使用<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 基本分析使用示例</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">analysis.pca</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+
+<span class="c1"># 创建PCA分析器</span>
+<span class="n">analyzer</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span>
+    <span class="n">gro_file</span><span class="o">=</span><span class="s2">&quot;cases/lnb.gro&quot;</span><span class="p">,</span>
+    <span class="n">xtc_file</span><span class="o">=</span><span class="s2">&quot;cases/md.xtc&quot;</span><span class="p">,</span>
+    <span class="n">residues</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;DPPC&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;PO4&#39;</span><span class="p">]},</span>
+    <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span>
+<span class="p">)</span>
+
+<span class="c1"># 运行分析</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">start_frame</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop_frame</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># 保存结果</span>
+<span class="n">analyzer</span><span class="o">.</span><span class="n">save_results</span><span class="p">(</span><span class="s2">&quot;results/pca_results.csv&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id17">
+<h3>VMD集成使用<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># VMD集成使用示例</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modules.vmd_control</span><span class="w"> </span><span class="kn">import</span> <span class="n">VMDTcp</span><span class="p">,</span> <span class="n">VMDCommands</span>
+
+<span class="c1"># 创建VMD连接</span>
+<span class="n">vmd</span> <span class="o">=</span> <span class="n">VMDTcp</span><span class="p">(</span><span class="s2">&quot;./remote_ctl.tcl&quot;</span><span class="p">,</span> <span class="s2">&quot;C:/Program Files/VMD/vmd.exe&quot;</span><span class="p">)</span>
+
+<span class="c1"># 启动VMD</span>
+<span class="n">vmd</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="c1"># 发送命令</span>
+<span class="n">vmd</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">VMDCommands</span><span class="o">.</span><span class="n">loadTopology</span><span class="p">(</span><span class="s2">&quot;cases/lnb.gro&quot;</span><span class="p">))</span>
+<span class="n">vmd</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">VMDCommands</span><span class="o">.</span><span class="n">loadTrajectory</span><span class="p">(</span><span class="s2">&quot;cases/md.xtc&quot;</span><span class="p">))</span>
+<span class="n">vmd</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">VMDCommands</span><span class="o">.</span><span class="n">gotoFrame</span><span class="p">(</span><span class="s2">&quot;100&quot;</span><span class="p">))</span>
+
+<span class="c1"># 停止VMD</span>
+<span class="n">vmd</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="id18">
+<h3>错误处理使用<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 错误处理使用示例</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">_exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnalysisError</span><span class="p">,</span> <span class="n">VMDError</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># 运行分析</span>
+    <span class="n">analyzer</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">gro_file</span><span class="o">=</span><span class="s2">&quot;invalid.gro&quot;</span><span class="p">,</span> <span class="n">xtc_file</span><span class="o">=</span><span class="s2">&quot;invalid.xtc&quot;</span><span class="p">,</span> <span class="n">residues</span><span class="o">=</span><span class="p">{})</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="k">except</span> <span class="n">AnalysisError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;分析错误: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;分析类型: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">analysis_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">VMDError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VMD错误: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VMD命令: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">vmd_command</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;未知错误: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="analysis_modules.html" class="btn btn-neutral float-left" title="分析模块详解" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, XinyuRen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
