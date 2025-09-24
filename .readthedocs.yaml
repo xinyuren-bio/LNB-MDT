@@ -1,24 +1,27 @@
-# .readthedocs.yaml
+# Read the Docs configuration file
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
 
-# 使用配置文件的版本 2
+# Required
 version: 2
 
-# 定义构建过程
+# Set the OS, Python version and other tools you might need
 build:
   os: ubuntu-22.04
   tools:
-    python: "3.10"  # 指定你希望使用的 Python 版本
+    python: "3.11"
+  commands:
+    # Install dependencies
+    - pip install --upgrade pip
+    - pip install -r docs/requirements.txt
+    - pip install -r requirements.txt
+    # Build the documentation
+    - cd docs && sphinx-build -b html source build
 
-# 告诉 RTD 你的 Sphinx 配置文件在哪里
+# Build documentation in the docs/ directory with Sphinx
 sphinx:
-   configuration: docs/source/conf.py
+  configuration: docs/source/conf.py
+  fail_on_warning: false
 
-# 定义需要安装的 Python 依赖
-python:
-   install:
-     # 1. (关键) 安装你自己的项目包，这样 Sphinx 的 autodoc 才能导入它
-     - method: pip
-       path: .
-
-     # 2. 安装构建文档所需的工具 (指向我们上一步创建的文件)
-     - requirements: docs/requirements.txt
+# Optionally build your docs in additional formats such as PDF and ePub
+formats:
+  - htmlzip
