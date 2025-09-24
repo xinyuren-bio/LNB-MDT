@@ -631,7 +631,13 @@ k值选择
 - **低密度**: 减少k值
 
 **优化方法：**
-通过多次测试不同k值来找到最佳参数
+使用机器学习模块的k值优化器：
+
+.. code:: python
+
+   from machine_learning import KValueOptimizer
+   optimizer = KValueOptimizer('area')
+   best_k = optimizer.optimize()
 
    </div>
 

@@ -4,7 +4,7 @@
 本指南将帮助您在5分钟内开始使用LNB-MDT进行脂质纳米泡分析。
 
 配置VMD路径
------------
+----------
 
 首次使用LNB-MDT需要配置VMD路径。VMD用于分子可视化和轨迹分析。
 
@@ -198,7 +198,6 @@ LNB-MDT支持简化的命令行参数输入，让您更轻松地使用命令行�
      --verbose
 
 **新的简化方式（推荐）:**
-
 .. code-block:: python
 
    # 使用短参数和简单格式
@@ -340,6 +339,63 @@ PCA分析
      -p \
      -v
 
+机器学习功能
+------------
+
+LNB-MDT集成了强大的机器学习功能，包括参数优化、异常检测和属性预测。
+
+参数优化
+~~~~~~~~
+
+自动参数优化功能可以帮助找到最佳的分析参数：
+
+.. code:: python
+
+   from machine_learning import AnalysisParameterOptimizer
+   
+   # 创建优化器
+   optimizer = AnalysisParameterOptimizer('area')
+   
+   # 运行优化
+   results = optimizer.optimize()
+   print(f"最佳参数: {results['best_parameters']}")
+
+异常检测
+~~~~~~~~
+
+异常模式检测可以识别轨迹中的异常行为：
+
+.. code:: python
+
+   from machine_learning import MDAnomalyDetector
+   
+   # 创建检测器
+   detector = MDAnomalyDetector(method='isolation_forest')
+   
+   # 分析轨迹
+   results = detector.analyze_trajectory(
+       gro_file="cases/lnb.gro",
+       xtc_file="cases/md.xtc",
+       residues={'DPPC': ['PO4']}
+   )
+
+属性预测
+~~~~~~~~
+
+分子属性预测可以基于轨迹数据预测分子的物理化学性质：
+
+.. code:: python
+
+   from machine_learning import MDPropertyPredictor
+   
+   # 创建预测器
+   predictor = MDPropertyPredictor(
+       model_type='random_forest',
+       target_property='diffusion_coefficient'
+   )
+   
+   # 训练模型
+   results = predictor.fit(X_train, y_train)
 
 VMD集成
 --------
@@ -408,4 +464,5 @@ VMD路径配置
 接下来可以：
 
 - 学习 :doc:`analysis_modules` 的深度使用  
+- 探索 :doc:`machine_learning` 功能
 - 查看 :doc:`api_reference` 了解API详情

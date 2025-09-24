@@ -339,9 +339,572 @@ Voronoi镶嵌面积分析类。
            - list: 聚类列表
            """
 
+机器学习模块API
+---------------
+
+参数优化器
+~~~~~~~~~~
+
+.. raw:: html
+
+   <div style="background-color: #e1f5fe; padding: 15px; border-radius: 8px; border-left: 4px solid #03a9f4;">
+
+**ParameterOptimizer类**
+
+贝叶斯参数优化器。
+
+   </div>
+
+.. code:: python
+
+   class ParameterOptimizer:
+       """
+       参数优化器基类
+       
+       使用贝叶斯优化自动寻找最佳分析参数。
+       """
+       
+       def __init__(self, parameter_bounds, objective_function, 
+                    n_initial_points=10, n_iterations=50, random_state=42):
+           """
+           初始化参数优化器
+           
+           参数:
+           - parameter_bounds (dict): 参数边界字典
+           - objective_function (callable): 目标函数
+           - n_initial_points (int): 初始随机点数，默认10
+           - n_iterations (int): 优化迭代次数，默认50
+           - random_state (int): 随机种子，默认42
+           """
+       
+       def optimize(self):
+           """
+           运行优化过程
+           
+           返回:
+           - dict: 包含最佳参数、最佳得分和优化历史
+           """
+       
+       def save_model(self, filepath):
+           """
+           保存优化模型
+           
+           参数:
+           - filepath (str): 保存路径
+           """
+       
+       def load_model(self, filepath):
+           """
+           加载优化模型
+           
+           参数:
+           - filepath (str): 加载路径
+           """
+
+.. raw:: html
+
+   <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
+
+**AnalysisParameterOptimizer类**
+
+分析参数优化器。
+
+   </div>
+
+.. code:: python
+
+   class AnalysisParameterOptimizer(ParameterOptimizer):
+       """
+       分析参数优化器
+       
+       针对特定分析类型的参数优化器。
+       """
+       
+       def __init__(self, analysis_type, **kwargs):
+           """
+           初始化分析参数优化器
+           
+           参数:
+           - analysis_type (str): 分析类型 ('pca', 'area', 'curvature', ...)
+           - **kwargs: 其他参数
+           """
+       
+       def get_parameter_bounds(self, analysis_type):
+           """
+           获取参数边界
+           
+           参数:
+           - analysis_type (str): 分析类型
+           
+           返回:
+           - dict: 参数边界字典
+           """
+
+.. raw:: html
+
+   <div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50;">
+
+**KValueOptimizer类**
+
+k值优化器。
+
+   </div>
+
+.. code:: python
+
+   class KValueOptimizer:
+       """
+       k值优化器
+       
+       专门用于优化k值的工具。
+       """
+       
+       def __init__(self, analysis_type, **kwargs):
+           """
+           初始化k值优化器
+           
+           参数:
+           - analysis_type (str): 分析类型
+           - **kwargs: 其他参数
+           """
+       
+       def optimize(self, gro_file, xtc_file, residues, **kwargs):
+           """
+           优化k值
+           
+           参数:
+           - gro_file (str): GRO文件路径
+           - xtc_file (str): XTC文件路径
+           - residues (dict): 残基组字典
+           
+           返回:
+           - int: 最佳k值
+           """
+
+异常检测器
+~~~~~~~~~~
+
+.. raw:: html
+
+   <div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;">
+
+**AnomalyDetector类**
+
+异常检测器基类。
+
+   </div>
+
+.. code:: python
+
+   class AnomalyDetector:
+       """
+       异常检测器基类
+       
+       检测数据中的异常模式。
+       """
+       
+       def __init__(self, method='isolation_forest', contamination=0.1, **kwargs):
+           """
+           初始化异常检测器
+           
+           参数:
+           - method (str): 检测方法 ('isolation_forest', 'lof', 'elliptic_envelope')
+           - contamination (float): 预期异常比例，默认0.1
+           - **kwargs: 其他参数
+           """
+       
+       def fit(self, data):
+           """
+           拟合异常检测模型
+           
+           参数:
+           - data (numpy.ndarray): 训练数据
+           """
+       
+       def predict(self, data):
+           """
+           预测异常
+           
+           参数:
+           - data (numpy.ndarray): 测试数据
+           
+           返回:
+           - numpy.ndarray: 预测结果 (-1: 异常, 1: 正常)
+           """
+       
+       def predict_proba(self, data):
+           """
+           预测异常概率
+           
+           参数:
+           - data (numpy.ndarray): 测试数据
+           
+           返回:
+           - numpy.ndarray: 异常概率数组
+           """
+
+.. raw:: html
+
+   <div style="background-color: #f3e5f5; padding: 15px; border-radius: 8px; border-left: 4px solid #9c27b0;">
+
+**MDAnomalyDetector类**
+
+分子动力学异常检测器。
+
+   </div>
+
+.. code:: python
+
+   class MDAnomalyDetector(AnomalyDetector):
+       """
+       分子动力学异常检测器
+       
+       检测分子动力学轨迹中的异常。
+       """
+       
+       def __init__(self, method='isolation_forest', contamination=0.1, **kwargs):
+           """
+           初始化MD异常检测器
+           
+           参数:
+           - method (str): 检测方法
+           - contamination (float): 预期异常比例
+           - **kwargs: 其他参数
+           """
+       
+       def analyze_trajectory(self, gro_file, xtc_file, residues, 
+                             start_frame=0, stop_frame=-1, step_frame=1, **kwargs):
+           """
+           分析轨迹中的异常
+           
+           参数:
+           - gro_file (str): GRO文件路径
+           - xtc_file (str): XTC文件路径
+           - residues (dict): 残基组字典
+           - start_frame (int): 起始帧
+           - stop_frame (int): 结束帧
+           - step_frame (int): 帧步长
+           
+           返回:
+           - dict: 异常检测结果
+           """
+       
+       def plot_anomalies(self, results, save_path=None):
+           """
+           可视化异常检测结果
+           
+           参数:
+           - results (dict): 异常检测结果
+           - save_path (str): 保存路径
+           """
+
+属性预测器
+~~~~~~~~~~
+
+.. raw:: html
+
+   <div style="background-color: #e1f5fe; padding: 15px; border-radius: 8px; border-left: 4px solid #03a9f4;">
+
+**PropertyPredictor类**
+
+属性预测器基类。
+
+   </div>
+
+.. code:: python
+
+   class PropertyPredictor:
+       """
+       属性预测器基类
+       
+       使用机器学习模型预测分子属性。
+       """
+       
+       def __init__(self, model_type='random_forest', target_property='diffusion_coefficient', **kwargs):
+           """
+           初始化属性预测器
+           
+           参数:
+           - model_type (str): 模型类型 ('random_forest', 'gradient_boosting', 'neural_network', 'svr')
+           - target_property (str): 预测目标属性
+           - **kwargs: 其他参数
+           """
+       
+       def fit(self, X, y, test_size=0.2, random_state=42):
+           """
+           训练模型
+           
+           参数:
+           - X (numpy.ndarray): 特征数据
+           - y (numpy.ndarray): 目标数据
+           - test_size (float): 测试集比例，默认0.2
+           - random_state (int): 随机种子，默认42
+           
+           返回:
+           - dict: 训练结果和性能指标
+           """
+       
+       def predict(self, X):
+           """
+           预测新数据
+           
+           参数:
+           - X (numpy.ndarray): 特征数据
+           
+           返回:
+           - numpy.ndarray: 预测结果
+           """
+       
+       def get_feature_importance(self):
+           """
+           获取特征重要性
+           
+           返回:
+           - dict: 特征重要性字典
+           """
+
+.. raw:: html
+
+   <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
+
+**MDPropertyPredictor类**
+
+分子动力学属性预测器。
+
+   </div>
+
+.. code:: python
+
+   class MDPropertyPredictor(PropertyPredictor):
+       """
+       分子动力学属性预测器
+       
+       从轨迹数据预测分子属性。
+       """
+       
+       def __init__(self, model_type='random_forest', target_property='diffusion_coefficient', **kwargs):
+           """
+           初始化MD属性预测器
+           
+           参数:
+           - model_type (str): 模型类型
+           - target_property (str): 预测目标属性
+           - **kwargs: 其他参数
+           """
+       
+       def extract_features(self, gro_file, xtc_file, residues, **kwargs):
+           """
+           从轨迹中提取特征
+           
+           参数:
+           - gro_file (str): GRO文件路径
+           - xtc_file (str): XTC文件路径
+           - residues (dict): 残基组字典
+           
+           返回:
+           - numpy.ndarray: 提取的特征
+           """
+       
+       def plot_results(self, results, save_path=None):
+           """
+           可视化预测结果
+           
+           参数:
+           - results (dict): 预测结果
+           - save_path (str): 保存路径
+           """
+
+模式识别器
+~~~~~~~~~~
+
+.. raw:: html
+
+   <div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50;">
+
+**PatternRecognizer类**
+
+模式识别器。
+
+   </div>
+
+.. code:: python
+
+   class PatternRecognizer:
+       """
+       模式识别器
+       
+       识别分子动力学中的模式和结构特征。
+       """
+       
+       def __init__(self, method='kmeans', **kwargs):
+           """
+           初始化模式识别器
+           
+           参数:
+           - method (str): 识别方法 ('kmeans', 'dbscan', 'hierarchical')
+           - **kwargs: 其他参数
+           """
+       
+       def analyze_patterns(self, gro_file, xtc_file, residues, **kwargs):
+           """
+           分析轨迹模式
+           
+           参数:
+           - gro_file (str): GRO文件路径
+           - xtc_file (str): XTC文件路径
+           - residues (dict): 残基组字典
+           
+           返回:
+           - dict: 模式分析结果
+           """
+       
+       def plot_patterns(self, patterns, save_path=None):
+           """
+           可视化模式
+           
+           参数:
+           - patterns (dict): 模式分析结果
+           - save_path (str): 保存路径
+           """
+
+数据处理模块API
+---------------
+
+特征提取器
+~~~~~~~~~~
+
+.. raw:: html
+
+   <div style="background-color: #f3e5f5; padding: 15px; border-radius: 8px; border-left: 4px solid #9c27b0;">
+
+**FeatureExtractor类**
+
+特征提取器。
+
+   </div>
+
+.. code:: python
+
+   class FeatureExtractor:
+       """
+       特征提取器
+       
+       从分子动力学轨迹中提取有意义的特征。
+       """
+       
+       def __init__(self, **kwargs):
+           """
+           初始化特征提取器
+           
+           参数:
+           - **kwargs: 其他参数
+           """
+       
+       def extract_features(self, gro_file, xtc_file, residues, **kwargs):
+           """
+           提取特征
+           
+           参数:
+           - gro_file (str): GRO文件路径
+           - xtc_file (str): XTC文件路径
+           - residues (dict): 残基组字典
+           
+           返回:
+           - numpy.ndarray: 提取的特征
+           """
+       
+       def extract_geometric_features(self, coordinates):
+           """
+           提取几何特征
+           
+           参数:
+           - coordinates (numpy.ndarray): 分子坐标
+           
+           返回:
+           - numpy.ndarray: 几何特征
+           """
+       
+       def extract_dynamic_features(self, coordinates, velocities):
+           """
+           提取动力学特征
+           
+           参数:
+           - coordinates (numpy.ndarray): 分子坐标
+           - velocities (numpy.ndarray): 分子速度
+           
+           返回:
+           - numpy.ndarray: 动力学特征
+           """
+
+数据处理器
+~~~~~~~~~~
+
+.. raw:: html
+
+   <div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;">
+
+**DataProcessor类**
+
+数据处理器。
+
+   </div>
+
+.. code:: python
+
+   class DataProcessor:
+       """
+       数据处理器
+       
+       对原始数据进行清洗和预处理。
+       """
+       
+       def __init__(self, **kwargs):
+           """
+           初始化数据处理器
+           
+           参数:
+           - **kwargs: 其他参数
+           """
+       
+       def preprocess(self, X, y, scale=True, select_features=True, test_size=0.2):
+           """
+           预处理数据
+           
+           参数:
+           - X (numpy.ndarray): 特征数据
+           - y (numpy.ndarray): 目标数据
+           - scale (bool): 是否缩放特征，默认True
+           - select_features (bool): 是否选择特征，默认True
+           - test_size (float): 测试集比例，默认0.2
+           
+           返回:
+           - tuple: 处理后的特征和目标数据
+           """
+       
+       def clean_data(self, data):
+           """
+           清洗数据
+           
+           参数:
+           - data (numpy.ndarray): 原始数据
+           
+           返回:
+           - numpy.ndarray: 清洗后的数据
+           """
+       
+       def scale_features(self, X):
+           """
+           缩放特征
+           
+           参数:
+           - X (numpy.ndarray): 特征数据
+           
+           返回:
+           - numpy.ndarray: 缩放后的特征
+           """
 
 VMD控制模块API
---------------
+-------------
 
 VMD连接器
 ~~~~~~~~~
@@ -493,7 +1056,7 @@ VMD命令集合。
            """
 
 图表模块API
------------
+----------
 
 图表生成器
 ~~~~~~~~~~
@@ -545,7 +1108,7 @@ VMD命令集合。
            """
 
 工具函数API
------------
+----------
 
 文件工具
 ~~~~~~~~
@@ -643,7 +1206,7 @@ VMD命令集合。
        """
 
 错误处理API
------------
+----------
 
 异常类
 ~~~~~~
@@ -763,6 +1326,25 @@ VMD错误异常类。
    # 保存结果
    analyzer.save_results("results/pca_results.csv", results)
 
+机器学习使用
+~~~~~~~~~~~~
+
+.. code:: python
+
+   # 机器学习使用示例
+   from machine_learning import AnalysisParameterOptimizer, MDAnomalyDetector
+   
+   # 参数优化
+   optimizer = AnalysisParameterOptimizer('area')
+   results = optimizer.optimize()
+   
+   # 异常检测
+   detector = MDAnomalyDetector(method='isolation_forest')
+   anomalies = detector.analyze_trajectory(
+       gro_file="cases/lnb.gro",
+       xtc_file="cases/md.xtc",
+       residues={'DPPC': ['PO4']}
+   )
 
 VMD集成使用
 ~~~~~~~~~~~
