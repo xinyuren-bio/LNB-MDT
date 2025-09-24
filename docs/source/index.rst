@@ -20,14 +20,6 @@ Molecular Dynamics Analysis
 * **N-Cluster Analysis**: Cluster count statistics
 * **Radial Distribution Analysis**: Radial distribution function calculation
 
-Machine Learning Integration
-----------------------------
-
-* **Automatic Parameter Optimization**: Bayesian optimization for finding optimal analysis parameters
-* **Anomaly Detection**: Identify unusual patterns in molecular dynamics trajectories
-* **Property Prediction**: Predict molecular properties using machine learning models
-* **Feature Engineering**: Advanced feature extraction from trajectory data
-* **Model Evaluation**: Comprehensive model performance assessment and visualization
 
 Graphical User Interface
 ------------------------
@@ -60,7 +52,6 @@ Contents
    installation
    quickstart
    analysis_modules
-   machine_learning
    api_reference
 
 Indices and tables

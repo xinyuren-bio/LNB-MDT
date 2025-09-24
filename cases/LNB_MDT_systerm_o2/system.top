@@ -1,0 +1,37 @@
+;
+;  
+; Example topology file for MARTINI 3 
+;  
+
+; First include the file containing all particle definitions,  
+; the interaction matrix, plus the topology for water.  
+
+
+; Then include the file(s) containing the topologies of other  
+; molecules present in your system.  
+
+#include "toppar/martini_v3.0.0.itp"
+#include "toppar/martini_v3.0.0_ions.itp"  
+#include "toppar/martini_v3.0.0_phospholipids.itp"
+#include "toppar/martini_v3.0.0_gas.itp" 
+#include "toppar/martini_v3.0.0_solvents.itp"
+
+
+; Define a name for your system  
+
+[ system ]  
+Lipid-Nanobubble  
+
+; Define the composition of your system  
+; The molecule names should correspond to those defined in the itp file(s).  
+
+[ molecules ]
+DAPC           376
+DPPC           627
+CHOL           251
+W           136653
+NA            1504
+CL            1504
+O2            6644
+  
+

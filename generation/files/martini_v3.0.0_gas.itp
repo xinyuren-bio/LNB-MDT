@@ -1,0 +1,23 @@
+; Martini 3.0 Coarse-Grained O2 model
+; Validated by Davoudi et al., JCTC 2025, 21, 428-439
+; The model uses a single TC3 bead.
+
+[ moleculetype ]
+; molname   nrexcl
+O2          1
+
+[ atoms ]
+; id    type    resnr   residu  atom    cgnr    charge  mass
+1       TC3     1       O2      O2      1       0       32.00
+
+
+; Martini 3.0 Coarse-Grained N2 model
+; Validated by XiuLi.
+
+[ moleculetype ]
+; molname   nrexcl
+N2          1
+
+[ atoms ]
+; id    type    resnr   residu  atom    cgnr    charge  mass
+1       N       1       N2      N      1       0       14.00

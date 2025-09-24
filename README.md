@@ -31,12 +31,6 @@
 - **N-Cluster Analysis**: Cluster count statistics
 - **Radial Distribution Analysis**: Radial distribution function calculation
 
-### 🤖 Machine Learning Integration
-- **Automatic Parameter Optimization**: Bayesian optimization for finding optimal analysis parameters
-- **Anomaly Detection**: Identify unusual patterns in molecular dynamics trajectories
-- **Property Prediction**: Predict molecular properties using machine learning models
-- **Feature Engineering**: Advanced feature extraction from trajectory data
-- **Model Evaluation**: Comprehensive model performance assessment and visualization
 
 ### 🖥️ Graphical User Interface
 - Modern Qt6 interface design
@@ -60,8 +54,6 @@
 - **Python**: 3.11 or higher
 - **Conda**: Miniconda or Anaconda
 - **VMD**: 1.9.4 or higher (optional, for visualization)
-- **Scikit-learn**: 1.5.2 or higher (for machine learning features)
-- **Additional ML packages**: seaborn, joblib (automatically installed)
 
 ### Hardware Requirements
 - **Memory**: Minimum 8GB RAM, recommended 16GB+

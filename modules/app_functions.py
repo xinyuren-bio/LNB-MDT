@@ -283,9 +283,9 @@ class BtnGetPath:
 }
         ,'gene_gro':{
             'Qtype': QFileDialog.getSaveFileName
-            , 'caption': "Save gro file"
-            , 'dir': QDir.currentPath() + "/untitled.gro"
-            , 'filter': "Gro Files (*gro)"
+            , 'caption': "Save Gromacs file"
+            , 'dir': QDir.currentPath() + "/systerm"
+            , 'filter': "All Files (*)"
         }
         ,'figure_xlsx':{
             'Qtype': QFileDialog.getOpenFileName

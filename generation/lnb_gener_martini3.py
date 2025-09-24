@@ -25,35 +25,7 @@ lipidsx[moltype] = (    0, .5,  0,  0, .5,  0,  0, .5,  0,  0,  0,  0,  0,  0,  
 lipidsy[moltype] = (    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0)
 lipidsz[moltype] = (   10,  9,  9,  8,  8,  7,  6,  6,  5,  4,  3,  2,  1,  0,  5,  4,  3,  2,  1,  0)
 lipidsa.update({
-    "CDGDG": (moltype, "   GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  D3B  C4B   -    "),
-    "CDGDG": (moltype, "  GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  D3B  C4B   -   "),
-    "CDGDG": (moltype, " GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  D3B  C4B   -  "),
-    "CHOL": (moltype, "     -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1     C2    -   -   -  -    "),
-    "CHOL": (moltype, "    -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1     C2    -   -   -  -   "),
-    "CHOL": (moltype, "   -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1     C2    -   -   -  -  "),
-    "CHOL0": (moltype, "    -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1      -    -   -   -  -    "),
-    "CHOL0": (moltype, "   -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1      -    -   -   -  -   "),
-    "CHOL0": (moltype, "  -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1      -    -   -   -  -  "),
-    "CHOL1": (moltype, "    -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1      C2   C3  -   -  -   "),
-    "CHOL1": (moltype, "   -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1      C2   C3  -   -  -  "),
-    "CHOL1": (moltype, "  -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1      C2   C3  -   -  - "),
-    "CHOL2": (moltype, "    -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1      C2   C3  C4  -  -   "),
-    "CHOL2": (moltype, "   -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1      C2   C3  C4  -  -  "),
-    "CHOL2": (moltype, "  -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1      C2   C3  C4  -  - "),
-    "CLINC": (moltype, "    -   -     VOH   V2     V3    V1  ROH    R1    R2    R3    R4  R5       C1      C2   -   -   -  -    "),
-    "CLINC": (moltype, "   -   -     VOH   V2     V3    V1  ROH    R1    R2    R3    R4  R5       C1      C2   -   -   -  -   "),
-    "CLINC": (moltype, "  -   -     VOH   V2     V3    V1  ROH    R1    R2    R3    R4  R5       C1      C2   -   -   -  -  "),
-    "CMGDG": (moltype, "    C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  D3B  C4B   -    "),
-    "CMGDG": (moltype, "   C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  D3B  C4B   -   "),
-    "CMGDG": (moltype, "  C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  D3B  C4B   -  "),
-    "CSQDB": (moltype, "    S1   C1   C2   C3    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  D3B  C4B   -    "),
-    "CSQDB": (moltype, "   S1   C1   C2   C3    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  D3B  C4B   -   "),
-    "CSQDB": (moltype, "  S1   C1   C2   C3    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  D3B  C4B   -  "),
-    "CSQDG": (moltype, "    S1   C1   C2   C3    -   -    -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -    "),
-    "CSQDG": (moltype, "   S1   C1   C2   C3    -   -    -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -   "),
-    "CSQDG": (moltype, "  S1   C1   C2   C3    -   -    -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -  "),
-    "D3PC": (moltype, "    -   -   -  NC3  -  PO4 GL1 GL2 D1A D2A D3A C4A C5A  -  D1B D2B D3B C4B C5B  -    "),
-    "D6PC": (moltype, "    -   -   -  NC3  -  PO4 GL1 GL2 C1A C2A C3A C4A C5A C6A C1B C2B C3B C4B C5B C6B   "),
+
     "DAPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  D1A  D2A  D3A  C4A    -    -    -  D1B  D2B  D3B  C4B    -    -   "),
     "DAPC": (moltype, "    -    -  NC3    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  C4A    -    -  D1B  D2B  D3B  D4B  C4B    - "),
     "DAPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  D1A  D2A  D3A  C4A    -    -    -  D1B  D2B  D3B  C4B    -    -   "),
@@ -64,157 +36,134 @@ lipidsa.update({
     "DBPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "DBPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "DBPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
-    "DDPC": (moltype, "    -   -   -  NC3  -  PO4 GL1 GL2 D1A D2A D3A D4A D5A  -  D1B D2B D3B D4B D5B  -    "),
-    "DEPC": (moltype, "    -   -   -  NC3  -  PO4 GL1 GL2 C1A C2A C3A D4A C5A C6A C1B C2B C3B D4B C5B C6B   "),
+
     "DFPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  D2A  D3A  D4A    -    -    -  C1B  D2B  D3B  D4B    -    -   "),
     "DFPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  D2A  D3A  D4A    -    -    -  C1B  D2B  D3B  D4B    -    -   "),
     "DFPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  D2A  D3A  D4A    -    -    -  C1B  D2B  D3B  D4B    -    -   "),
     "DFPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  D2A  D3A  D4A    -    -    -  C1B  D2B  D3B  D4B    -    -   "),
     "DFPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  D2A  D3A  D4A    -    -    -  C1B  D2B  D3B  D4B    -    -   "),
-    "DGDG": (moltype, "   GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -    "),
-    "DGDG": (moltype, "  GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -   "),
-    "DGDG": (moltype, " GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -  "),
+
     "DGPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  D3B  C4B    -    -   "),
     "DGPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  D3B  C4B    -    -   "),
     "DGPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  D3B  C4B    -    -   "),
     "DGPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  D3B  C4B    -    -   "),
     "DGPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  D3B  C4B    -    -   "),
-    "DHPC": (moltype, "    -   -   -  NC3  -  PO4 GL1 GL2 C1A C2A  -   -   -   -  C1B C2B  -   -   -   -    "),
-    "DHPE": (moltype, "    -   -   -  NH3  -  PO4 GL1 GL2 C1A C2A  -   -   -   -  C1B C2B  -   -   -   -    "),
+
     "DIPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  D2A  D3A  C4A    -    -    -  C1B  D2B  D3B  C4B    -    -   "),
     "DIPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  D2A  D3A  C4A    -    -    -  C1B  D2B  D3B  C4B    -    -   "),
     "DIPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  D2A  D3A  C4A    -    -    -  C1B  D2B  D3B  C4B    -    -   "),
     "DIPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  D2A  D3A  C4A    -    -    -  C1B  D2B  D3B  C4B    -    -   "),
     "DIPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  D2A  D3A  C4A    -    -    -  C1B  D2B  D3B  C4B    -    -   "),
     "DLPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  C2A  C3A    -    -    -    -  C1B  C2B  C3B    -    -    -   "),
+
     "DLPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  C2A  C3A    -    -    -    -  C1B  C2B  C3B    -    -    -   "),
     "DLPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  C2A  C3A    -    -    -    -  C1B  C2B  C3B    -    -    -   "),
     "DLPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  C2A  C3A    -    -    -    -  C1B  C2B  C3B    -    -    -   "),
     "DLPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  C2A  C3A    -    -    -    -  C1B  C2B  C3B    -    -    -   "),
+    
     "DMPC": (moltype, "    -   -   -  NC3  -  PO4 GL1 GL2 C1A C2A C3A  -   -   -  C1B C2B C3B  -   -   -    "),
     "DMPE": (moltype, "    -   -   -  NH3  -  PO4 GL1 GL2 C1A C2A C3A  -   -   -  C1B C2B C3B  -   -   -    "),
+    
     "DNPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -  C6A    -  C1B  C2B  C3B  C4B    -  C6B   "),
     "DNPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -  C6A    -  C1B  C2B  C3B  C4B    -  C6B   "),
     "DNPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -  C6A    -  C1B  C2B  C3B  C4B    -  C6B   "),
     "DNPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -  C6A    -  C1B  C2B  C3B  C4B    -  C6B   "),
     "DNPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -  C6A    -  C1B  C2B  C3B  C4B    -  C6B   "),
+    
     "DOPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  D2A  C3A  C4A    -    -    -  C1B  D2B  C3B  C4B    -    -   "),
     "DOPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  D2A  C3A  C4A    -    -    -  C1B  D2B  C3B  C4B    -    -   "),
     "DOPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  D2A  C3A  C4A    -    -    -  C1B  D2B  C3B  C4B    -    -   "),
     "DOPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  D2A  C3A  C4A    -    -    -  C1B  D2B  C3B  C4B    -    -   "),
     "DOPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  D2A  C3A  C4A    -    -    -  C1B  D2B  C3B  C4B    -    -   "),
+    
     "DPPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "DPPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "DPPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "DPPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
-    "DPPI": (moltype, "    C1   C2   C3    -   CP   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -    "),
-    "DPPI": (moltype, "   C1   C2   C3    -   CP   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -   "),
-    "DPPI": (moltype, "  C1   C2   C3    -   CP   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -  "),
     "DPPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
+
     "DRPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A  D6A    -  D1B  D2B  D3B  D4B  D5B  D6B   "),
     "DRPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A  D6A    -  D1B  D2B  D3B  D4B  D5B  D6B   "),
     "DRPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A  D6A    -  D1B  D2B  D3B  D4B  D5B  D6B   "),
     "DRPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A  D6A    -  D1B  D2B  D3B  D4B  D5B  D6B   "),
     "DRPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A  D6A    -  D1B  D2B  D3B  D4B  D5B  D6B   "),
-    "DSDG": (moltype, "   C61 C41 C11 C62 C42 C12 GL1 GL2 C1A C2A C3A C4A C5A  -  C1B C2B C3B C4B C5B  -    "),
-    "DSMG": (moltype, "    -   -   -  C6   C4 C1  GL1 GL2 C1A C2A C3A C4A C5A  -  C1B C2B C3B C4B C5B  -    "),
+
     "DSPC": (moltype, "    -   -   -  NC3  -  PO4 GL1 GL2 C1A C2A C3A C4A C5A  -  C1B C2B C3B C4B C5B  -    "),
     "DSPE": (moltype, "    -   -   -  NH3  -  PO4 GL1 GL2 C1A C2A C3A C4A C5A  -  C1B C2B C3B C4B C5B  -    "),
-    "DSSQ": (moltype, "    -   -   S6 C6   C4 C1  GL1 GL2 C1A C2A C3A C4A C5A  -  C1B C2B C3B C4B C5B  -    "),
+
     "DTPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  C2A    -    -    -    -    -  C1B  C2B    -    -    -    -   "),
     "DTPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  C2A    -    -    -    -    -  C1B  C2B    -    -    -    -   "),
     "DTPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  C2A    -    -    -    -    -  C1B  C2B    -    -    -    -   "),
     "DTPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  C2A    -    -    -    -    -  C1B  C2B    -    -    -    -   "),
     "DTPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  C2A    -    -    -    -    -  C1B  C2B    -    -    -    -   "),
+    
     "DUPC": (moltype, "    -   -   -  NC3  -  PO4 GL1 GL2 C1A D2A D3A C4A  -   -  C1B D2B D3B C4B  -   -    "),
     "DUPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A    -    -  D1B  D2B  D3B  D4B  D5B    -   "),
     "DUPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A    -    -  D1B  D2B  D3B  D4B  D5B    -   "),
+    
     "DVPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  D3B  C4B    -    -   "),
     "DVPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  D3B  C4B    -    -   "),
     "DVPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  D3B  C4B    -    -   "),
     "DVPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  D3B  C4B    -    -   "),
     "DVPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  D3B  C4B    -    -   "),
+    
     "DXPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -  C6A    -  C1B  C2B  C3B  C4B    -  C6B   "),
     "DXPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -  C6A    -  C1B  C2B  C3B  C4B    -  C6B   "),
     "DXPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -  C6A    -  C1B  C2B  C3B  C4B    -  C6B   "),
     "DXPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -  C6A    -  C1B  C2B  C3B  C4B    -  C6B   "),
     "DXPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -  C6A    -  C1B  C2B  C3B  C4B    -  C6B   "),
+    
     "DYPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  D2A  C3A    -    -    -    -  C1B  D2B  C3B    -    -    -   "),
     "DYPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  D2A  C3A    -    -    -    -  C1B  D2B  C3B    -    -    -   "),
     "DYPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  D2A  C3A    -    -    -    -  C1B  D2B  C3B    -    -    -   "),
     "DYPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  D2A  C3A    -    -    -    -  C1B  D2B  C3B    -    -    -   "),
     "DYPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  D2A  C3A    -    -    -    -  C1B  D2B  C3B    -    -    -   "),
-    "GCER": (moltype, "    C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   AM1   AM2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -    "),
-    "GCER": (moltype, "   C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   AM1   AM2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -   "),
-    "GCER": (moltype, "  C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   AM1   AM2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -  "),
+
     "LPPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B    -    -    -   "),
     "LPPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B    -    -    -   "),
     "LPPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B    -    -    -   "),
     "LPPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B    -    -    -   "),
     "LPPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  C2A  C3A  C4A    -    -    -  C1B  C2B  C3B    -    -    -   "),
-    "MGDG": (moltype, "    C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -    "),
-    "MGDG": (moltype, "   C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -   "),
-    "MGDG": (moltype, "  C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -  "),
-    "ODPC": (moltype, "    -   -   -  NC3  -  PO4 GL1 GL2 C1A C2A D3A C4A C5A  -  D1B D2B D3B D4B D5B  -    "),
+
     "PAPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  D1A  D2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PAPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  D1A  D2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PAPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  D1A  D2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PAPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  D1A  D2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PAPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  D1A  D2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
-    "PDGDG": (moltype, "   GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  D2B  D3B  D4B   -    "),
-    "PDGDG": (moltype, "  GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  D2B  D3B  D4B   -   "),
-    "PDGDG": (moltype, " GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  D2B  D3B  D4B   -  "),
-    "PDGDT": (moltype, "   GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  D2A  D3A  D4A   -   C1B  D2B  D3B  D4B   -    "),
-    "PDGDT": (moltype, "  GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  D2A  D3A  D4A   -   C1B  D2B  D3B  D4B   -   "),
-    "PDGDT": (moltype, " GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  D2A  D3A  D4A   -   C1B  D2B  D3B  D4B   -  "),
-    "PDPC": (moltype, "    -   -   -  NC3  -  PO4 GL1 GL2 C1A C2A C3A C4A  -   -  D1B D2B D3B D4B D5B  -    "),
+
     "PEPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PGPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PGPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PGPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PGPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PGPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  C2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
-    "PI34": (moltype, "    C1   C2   C3    -   CP PO1 PO2   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   CU1  CU2  CU3  CU4  CU5   "),
-    "PI34": (moltype, "   C1   C2   C3    -   CP PO1 PO2   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   CU1  CU2  CU3  CU4  CU5  "),
-    "PI34": (moltype, "  C1   C2   C3    -   CP PO1 PO2   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   CU1  CU2  CU3  CU4  CU5 "),
-    "PI45": (moltype, "   C1 C2 C3 CP P1 P2 GL1 GL2 C1A C2A C3A C4A  -  D1B D2B D3B D4B C5B   "),
-    "PI45": (moltype, "  C1 C2 C3 CP P1 P2 GL1 GL2 C1A C2A C3A C4A  -  D1B D2B D3B D4B C5B  "),
-    "PI45": (moltype, " C1 C2 C3 CP P1 P2 GL1 GL2 C1A C2A C3A C4A  -  D1B D2B D3B D4B C5B "),
+
     "PIPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  D2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PIPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  D2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PIPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  D2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PIPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  D2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PIPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  D2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
-    "PMGDG": (moltype, "    C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  D2B  D3B  D4B   -    "),
-    "PMGDG": (moltype, "   C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  D2B  D3B  D4B   -   "),
-    "PMGDG": (moltype, "  C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  D2B  D3B  D4B   -  "),
-    "PMGDT": (moltype, "    C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  D2A  D3A  D4A   -   C1B  D2B  D3B  D4B   -    "),
-    "PMGDT": (moltype, "   C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  D2A  D3A  D4A   -   C1B  D2B  D3B  D4B   -   "),
-    "PMGDT": (moltype, "  C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  D2A  D3A  D4A   -   C1B  D2B  D3B  D4B   -  "),
-    "POP5": (moltype, "    -   -   -  NC3  -  PO4 GL1 GL2 C1A C2A C3A C4A  -   -  C1B D2B C3B C4B  -   -    "),
+
     "POPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  C1A  D2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "POPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  C1A  D2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "POPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  D2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "POPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  C1A  D2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "POPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  D2A  C3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
-    "PPCS": (moltype, "    -   -   -  NC3  -  PO4 AM1 AM2 C1A C2A C3A C4A  -   -  D1B C2B C3B C4B  -   -    "),
+
     "PQPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  C1A  D2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PQPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  C1A  D2A  D3A  C4A    -    -    -  C1B  C2B  C3B  C4B    -    -   "),
+    
     "PRPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A  D6A    -  C1B  C2B  C3B  C4B    -    -   "),
     "PRPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A  D6A    -  C1B  C2B  C3B  C4B    -    -   "),
     "PRPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A  D6A    -  C1B  C2B  C3B  C4B    -    -   "),
     "PRPG": (moltype, "      -    -  GL0    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A  D6A    -  C1B  C2B  C3B  C4B    -    -   "),
     "PRPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A  D6A    -  C1B  C2B  C3B  C4B    -    -   "),
-    "PSQDG": (moltype, "    S1   C1   C2   C3    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  D2B  D3B  D4B   -    "),
-    "PSQDG": (moltype, "   S1   C1   C2   C3    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  D2B  D3B  D4B   -   "),
-    "PSQDG": (moltype, "  S1   C1   C2   C3    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  D2B  D3B  D4B   -  "),
+
     "PUPA": (moltype, "      -    -    -    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PUPC": (moltype, "      -    -  NC3    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PUPE": (moltype, "      -    -  NH3    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A    -    -  C1B  C2B  C3B  C4B    -    -   "),
     "PUPS": (moltype, "      -    -  CNO    -  PO4  GL1  GL2  D1A  D2A  D3A  D4A  D5A    -    -  C1B  C2B  C3B  C4B    -    -   "),
-    "SQDG": (moltype, "    S1   C1   C2   C3    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -    "),
-    "SQDG": (moltype, "   S1   C1   C2   C3    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -   "),
-    "SQDG": (moltype, "  S1   C1   C2   C3    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   -  "),
+
 })
 
 # PI45P2
@@ -223,7 +172,7 @@ lipidsx[moltype] = (    0, .5,  0,  0, .5,  0,  0, .5,  1,  1,  1,  1,  1,  0,  
 lipidsy[moltype] = (    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0)
 lipidsz[moltype] = (    7,  8,  8,  6,  9,  9,  5,  5,  4,  3,  2,  1,  0,  4,  3,  2,  1,  0)
 lipidsa.update({      # 1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18
-    "PI45": (moltype, "C1 C2 C3 CP P1 P2 GL1 GL2 C1A C2A C3A C4A  -  D1B D2B D3B D4B C5B"),
+
 })
 
 #Prototopology for longer and branched glycosil and ceramide based glycolipids
@@ -241,27 +190,16 @@ lipidsy[moltype] = (    0,   0,   0,   0,   0,  0,  0,  0,  0,    0,    0,    0,
 lipidsz[moltype] = (    6,   7,   7,   8,   9,  9, 10, 11, 11,   12,   13,   13,   10,    9,  10,    8,   11,    5,    5,   4,   3,   2,   1,   0,   4,   3,   2,   1,   0)
 lipidsa.update({      # 1     2    3    4    5   6   7   8   9    10    11    12    13    14   15    16    17    18    19   20   21   22   23   24   25   26   27   28   29
     "GM1" : (moltype, "GM1  GM2  GM3  GM4  GM5 GM6 GM7 GM8 GM9  GM10  GM11  GM12  GM13  GM14 GM15  GM16  GM17  GM18  GM19 GM20 GM21 GM22 GM23 GM24 GM25 GM26 GM27 GM28   - "), 
-    "DGDG": (moltype, "GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   - "),
-    "MGDG": (moltype, " C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   - "),
-    "SQDG": (moltype, " S1   C1   C2   C3    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   - "),
-    "CER" : (moltype, "  -    -    -    -    -   -   -   -   -     -     -     -     -     -    -     -     -   AM1   AM2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   - "),
-    "GCER": (moltype, " C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   AM1   AM2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   - "),
-    "DPPI": (moltype, " C1   C2   C3    -   CP   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   - "),
-    "PI"  : (moltype, " C1   C2   C3    -   CP   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   CU1  CU2  CU3  CU4  CU5"),
-    "PI34": (moltype, " C1   C2   C3    -   CP PO1 PO2   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   CU1  CU2  CU3  CU4  CU5"),
-#lipids for thylakoid membrane of cyanobacteria: oleoyl tail at sn1 and palmiotyl chain at sn2. SQDG no double bonds
-   "CDGDG": (moltype, "GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  D3B  C4B   - "),
-   "CMGDG": (moltype, " C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  D3B  C4B   - "),
-   "CSQDG": (moltype, " S1   C1   C2   C3    -   -    -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   - "),
-   "CSQDB": (moltype, " S1   C1   C2   C3    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  C2B  D3B  C4B   - "),
-#lipids for thylakoid membrane of spinach: for the *T both chains are triple unsaturated and the *G have a triple unsaturated chain at sn1 and a palmitoyl chain at sn2. 
-   "PDGDG": (moltype, "GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  D2B  D3B  D4B   - "),
-   "PDGDT": (moltype, "GB2  GB3  GB1  GA1  GA2 GA3   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  D2A  D3A  D4A   -   C1B  D2B  D3B  D4B   - "),
-   "PMGDG": (moltype, " C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  D2B  D3B  D4B   - "),
-   "PMGDT": (moltype, " C1   C2   C3    -    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  D2A  D3A  D4A   -   C1B  D2B  D3B  D4B   - "),
-   "PSQDG": (moltype, " S1   C1   C2   C3    -   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   C1B  D2B  D3B  D4B   - "),
-})
 
+    "CER" : (moltype, "  -    -    -    -    -   -   -   -   -     -     -     -     -     -    -     -     -   AM1   AM2  C1A  C2A  C3A  C4A   -   C1B  C2B  C3B  C4B   - "),
+
+    "PI"  : (moltype, " C1   C2   C3    -   CP   -   -   -   -     -     -     -     -     -    -     -     -   GL1   GL2  C1A  C2A  C3A  C4A   -   CU1  CU2  CU3  CU4  CU5"),
+
+#lipids for thylakoid membrane of cyanobacteria: oleoyl tail at sn1 and palmiotyl chain at sn2. SQDG no double bonds
+
+#lipids for thylakoid membrane of spinach: for the *T both chains are triple unsaturated and the *G have a triple unsaturated chain at sn1 and a palmitoyl chain at sn2. 
+
+})
 
 # Prototopology for mycolic acid(s)
 #
@@ -274,29 +212,14 @@ lipidsa.update({      # 1     2    3    4    5   6   7   8   9    10    11    12
 # 32-31-30-29-28-27-25-26
 #
 
-moltype = "MYCOLIC ACIDS"
-lipidsx[moltype] = (      0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,    0,    1,    1,    1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,  1,   1,   1)
-lipidsy[moltype] = (      0,   0,   0,   0,   0,   0,   0,   0,   1,   1,   1,   1,   1,   1,   1,    1,    1,    1,    1,   1,   1,   1,   1,   1,   0,   0,   0,   0,   0,  0,   0,   0)
-lipidsz[moltype] = (      7,   6,   5,   4,   3,   2,   1,   0,   0,   1,   2,   3,   4,   5,   6,    7,    7,    6,    5,   4,   3,   2,   1,   0,   1,   0,   2,   3,   4,  5,   6,   7)
-lipidsa.update({        # 1    2    3    4    5    6    7    8    9   10   11   12   13   14   15    16    17    18    19   20   21   22   23   24   25   26   27   28   29   30   31   32
-    "AMA":   (moltype, "  -    -    -  C1A  C2A  C3A  C4A  C5A  M1A  C1B  C2B  C3B  C4B    -    -     -     -     -   M1B  C1C  C2C  C3C    -    -  COH  OOH  C1D  C2D  C3D  C4D  C5D  C6D"),
-    "AMA.w": (moltype, "  -    -    -  C1A  C2A  C3A  C4A  C5A  M1A  C1B  C2B  C3B  C4B    -    -     -     -     -   M1B  C1C  C2C  C3C    -    -  COH  OOH  C1D  C2D  C3D  C4D  C5D  C6D"),
-    "KMA":   (moltype, "  -    -    -  C1A  C2A  C3A  C4A  C5A  M1A  C1B  C2B  C3B  C4B    -    -     -     -     -   M1B  C1C  C2C  C3C    -    -  COH  OOH  C1D  C2D  C3D  C4D  C5D  C6D"),
-    "MMA":   (moltype, "  -    -    -  C1A  C2A  C3A  C4A  C5A  M1A  C1B  C2B  C3B  C4B    -    -     -     -     -   M1B  C1C  C2C  C3C    -    -  COH  OOH  C1D  C2D  C3D  C4D  C5D  C6D"),
-})
-
 
 # Sterols
 moltype = "sterol"
-lipidsx[moltype] = (     0,  0,   .5,   .5,   .5,   .5,    0,    0,    1,    0,   1,    0,      0,     0,   0,   0,  0, 0)
-lipidsy[moltype] = (     0,  0,    0,    0,    0,    0,    0,    0,    0,    0,   0,    0,      0,     0,   0,   0,  0, 0)
-lipidsz[moltype] = (     0,  0,  7.3,  5.9,  5.3,  3.4,  7.3,  6.5,  5.9,  5.3,   5,  4.6,    3.4,     2,   1,   0,  0, 0)
+lipidsx[moltype] = (      0,   1,   0,   0,  1,   0, 0.5, 0.5,   0,  0)
+lipidsy[moltype] = (      0,   0,   0,   0,  0,   0,   0,   0,   0,  0)
+lipidsz[moltype] = (    5.3, 4.5, 3.9, 3.3,  3, 2.6, 4.5, 2.6, 1.4,  0)
 lipidsa.update({
-    "CHOL": (moltype, "  -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1     C2    -   -   -  - "),
-    "CHOL0": (moltype, " -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1      -    -   -   -  - "),
-    "CHOL1": (moltype, " -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1      C2   C3  -   -  -"),
-    "CHOL2": (moltype, " -   -     -     -      -     -   ROH    R1    R2    R3    R4  R5       C1      C2   C3  C4  -  -"),
-    "CLINC": (moltype, " -   -     VOH   V2     V3    V1  ROH    R1    R2    R3    R4  R5       C1      C2   -   -   -  - ")
+    "CHOL": (moltype, " ROH  R1  R2  R3  R4   -  R5  R6  C1  C2 "),
 })
 
 # Lists for automatic charge determination
@@ -479,7 +402,6 @@ def trans3(z, r):
     phi = zz[1]
     theta = 2*math.atan(r/zr)
     return(phi,theta)
-
 
 # Create a plural
 def trans4(x,y):
@@ -796,7 +718,6 @@ if '-h' in args or '--help' in args:
             print(thing)
     sys.exit()
 
-
 # Convert the option list to a dictionary, discarding all comments
 options = dict([i for i in options if not type(i) == str])
 
@@ -809,7 +730,6 @@ while args:
 tm    = [ Structure(i) for i in tm ]
 
 absoluteNumbers = not options["-d"]
-
 
 # HII edit - lipid definition
 # Add specified lipid definition to insane lipid library
@@ -865,7 +785,6 @@ for name, head, link, tail in zip(usrmols,usrheads,usrlinks,usrtails):
     lipidsa[name] = (moltype,lipidDefString)
 # End user lipid definition
 
-
 # HII edit - lipid definition, had to move this one below the user lipid definitions to scale them to.
 # First all X/Y coordinates of templates are centered and scaled (magic numbers!)
 for i in lipidsx.keys():
@@ -873,7 +792,6 @@ for i in lipidsx.keys():
     lipidsx[i] = [0.25*(j-cx) for j in lipidsx[i]]
     cy = (min(lipidsy[i])+max(lipidsy[i]))/2
     lipidsy[i] = [0.25*(j-cy) for j in lipidsy[i]]
-
 
 # Periodic boundary conditions
 
@@ -902,15 +820,11 @@ if type(options["-z"].value) in (list,tuple):
 elif options["-z"].value:
     pbcSetZ = [0,0,options["-z"].value]
 
-
 a  = options["-a"].value
-
-
 
 ################
 ## I. PROTEIN ##
 ################
-
 
 protein  = Structure()
 wholecenter = []
@@ -938,13 +852,11 @@ if not tm:
     pbcx = pbcSetX and pbcSetX[0] or pbcx
     pbcy = pbcSetY and pbcSetY[1] or pbcy
     pbcz = pbcSetZ and pbcSetZ[2] or pbcz
-            
 
 ## B. PROTEIN ---
 else:
 
     for prot in tm:
-
 
         ## a. NO MEMBRANE --
         if not lipL:
@@ -974,17 +886,14 @@ else:
             # Do not set an exclusion range for solvent
             options["-excl"].value = -1
 
-
         ## b. PROTEIN AND MEMBRANE --
         else:
         
             # Have to build a membrane around the protein. 
             # So first put the protein in properly.
 
-
             # Center the protein and store the shift
             shift = prot.center((0,0,0))
-
 
             ## 1. Orient with respect to membrane
             # Orient the protein according to the TM region, if requested
@@ -1054,7 +963,6 @@ else:
 
                 # Rotate the coordinates
                 prot.coord = [(ux*i+uy*j+uz*k,vx*i+vy*j+vz*k,wx*i+wy*j+wz*k) for i,j,k in prot.coord]
-        
 
             ## 4. Orient the protein in the xy-plane
             ## i. According to principal axes and unit cell
@@ -1108,8 +1016,6 @@ else:
                 uy   = math.sin(float(options["-rotate"].value)*math.pi/180.)
                 prot.coord = [(ux*i+uy*j,ux*j-uy*i,k) for i,j,k in prot.coord]
 
-
-            
             ## 5. Determine the minimum and maximum x and y of the protein 
             pmin, pmax = prot.fun(min), prot.fun(max)
             prng       = (pmax[0]-pmin[0],pmax[1]-pmin[1],pmax[2]-pmin[2])
@@ -1117,13 +1023,11 @@ else:
 
             wholecenter.append((center,prng))
 
-
             # Set the z-dimension
             pbcz  = pbcSetZ and pbcSetZ[2]
             # If it is not set, set pbcz to the dimension of the protein
             pbcz  = pbcz or prng[2]
             pbcz += options["-dz"].value or options["-d"].value or 0
-
 
             # At this point we should shift the subsequent proteins such that they end up
             # at the specified distance, in case we have a number of them to do
@@ -1131,7 +1035,6 @@ else:
             # x-shift is -xmin+distance+xmax(current)
             xshft, yshft = shift[-1]-pmin[0]+(options["-d"].value or 0), -center[1]
             shift.append(shift[-1]+pmax[0]+(options["-d"].value or 0))
-
 
             ## 6. Set box (brick) dimensions
             pbcx = (options["-d"].value or 0) + prng[0]
@@ -1143,7 +1046,6 @@ else:
                 # This goes for a hexagonal cell as well as for the optimal arrangement
                 # The latter is hexagonal in the membrane plane anyway...
                 pbcy  = math.cos(math.pi/6)*pbcx
-                
 
             ## 7. Adjust PBC for hole
             # If we need to add a hole, we have to scale the system
@@ -1159,7 +1061,6 @@ else:
 
             pbcx = pbcSetX and pbcSetX[0] or pbcx
             pbcy = pbcSetY and pbcSetY[1] or pbcy
-
 
             ## 2. Shift of protein relative to the membrane center
             if options["-dm"]:
@@ -1183,7 +1084,6 @@ else:
         protein.atoms.extend(prot.atoms)
         protein.coord.extend(rescoord)
 
-
     # Extract the parts of the protein that are in either leaflet
     prot_up,prot_lo = [],[]
     for ix,iy,iz in protein.coord:
@@ -1191,7 +1091,6 @@ else:
             prot_up.append((ix,iy))
         elif iz < 0 and iz > -2.4:
             prot_lo.append((ix,iy))
-
 
     # Current residue ID is set to that of the last atom
     resi = protein.atoms[-1][2]
@@ -1228,7 +1127,6 @@ grobox = (box[0][0],box[1][1],box[2][2],
 pbcx, pbcy, pbcz = box[0][0], box[1][1], box[2][2]
 
 rx, ry, rz = pbcx+1e-8, pbcy+1e-8, pbcz+1e-8
-
 
 #################
 ## 2. MEMBRANE ##
@@ -1552,7 +1450,6 @@ if solv:
     # This is fine for simple salt solutions, but may not be optimal for complex mixtures
     # (like when mixing a 1M solution of this with a 1M solution of that
 
-
     # Set the number of ions to add
     nna, ncl = 0, 0
     if options["-salt"]:
@@ -1583,18 +1480,17 @@ if solv:
 
     # Add salt to solnames and num_sol
     if nna:
-        solnames.append("NA+")
+        solnames.append("NA")
         num_sol.append(nna)
-        solv.append("NA+")
+        solv.append("NA")
     if ncl:
-        solnames.append("CL-")
+        solnames.append("CL")
         num_sol.append(ncl)
-        solv.append("CL-")
+        solv.append("CL")
 
     # Names and grid positions for solvent molecules
     solvent    = list(zip([s for i,s in zip(num_sol,solnames) for j in range(i)],grid))
     gasin      = list(zip([s for i,s in zip(num_gas,gasnames) for j in range(i)],gridg))
-
 
     # Extend the list of molecules (for the topology)
     molecules.extend(list(zip(solnames,num_sol)))
@@ -1623,7 +1519,6 @@ if solv:
             sol.append(("%5d%-5s%5s%5d"%(resi%1e5,resn,solmol and solmol[0][0] or resn,atid%1e5),(x,y,z)))
             atid += 1
 
-
     for resn,(rndm,x,y,z) in gasin:
         resi += 1
         solmol = solventParticles.get(resn)
@@ -1643,7 +1538,6 @@ if solv:
         else:
             sol.append(("%5d%-5s%5s%5d" % (resi % 1e5, resn, solmol and solmol[0][0] or resn, atid % 1e5), (x, y, z)))
             atid += 1
-
 
 #Write the output
 slen = solvent and len(sol) or 0
@@ -1686,7 +1580,6 @@ if sol:
     print("\n".join([i[0]+"%8.3f%8.3f%8.3f"%i[1] for i in sol]),file = oStream)
 
 print("%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f\n"%grobox,file = oStream)
-
 
 if options["-p"].value:
      # Write a rudimentary topology file

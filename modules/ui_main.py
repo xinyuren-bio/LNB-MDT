@@ -933,6 +933,7 @@ class Ui_MainWindow(object):
 
         self.como_gas = QComboBox(self.frame_3)
         self.como_gas.addItem("")
+        self.como_gas.addItem("")
         self.como_gas.setObjectName(u"como_gas")
         self.como_gas.setMinimumSize(QSize(30, 0))
         # self.como_gas.setStyleSheet(
@@ -1387,6 +1388,7 @@ class Ui_MainWindow(object):
         self.label_gene_z.setText(QCoreApplication.translate("MainWindow", u"Box Z Length(nm)", None))
         self.label_gene_gas.setText(QCoreApplication.translate("MainWindow", u"Gas type", None))
         self.como_gas.setItemText(0, QCoreApplication.translate("MainWindow", u"N2", None))
+        self.como_gas.setItemText(1, QCoreApplication.translate("MainWindow", u"O2", None))
 
         self.label_gene_gden.setText(QCoreApplication.translate("MainWindow", u"Gas density", None))
         self.label_gene_a.setText(QCoreApplication.translate("MainWindow", u"Area per lipid", None))
