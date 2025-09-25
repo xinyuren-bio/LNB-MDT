@@ -26,6 +26,7 @@ TYPE = {
                , 'Density Radius': 3  # DensityRadius类型
                , 'Anisotropy': 1
                , 'Gyration(nm)': 1
+               , 'Gyration (nm)': 1
                , 'Cluster': 1
                , 'PCA': 1
                , 'RadialDistribution': 2
@@ -36,6 +37,7 @@ TYPE = {
                , 'Bubble Mean Curvature(nm -1)': 1
                , 'Bubble Area(nm^2)': 1
                , 'Number of Cluster': 1
+               , 'Largest Cluster Size': 1
            }
 
 class Figure(ABC):
@@ -46,6 +48,7 @@ class Figure(ABC):
         :param excel_data: # 读取excel数据结果
         :param figure_settings: # 参数信息
         """
+        self.description = description
         self.data_type = TYPE[description]
         self.excel_data = excel_data
         self.figure_settings = figure_settings
@@ -435,6 +438,7 @@ class BubbleFigure(Figure):
             print("错误：数据列数不足，无法绘制图表")
             return
             
+        
         # 对于简单的Time-Values格式，使用前两列
         if len(self.excel_data.columns) == 2:
             # 简单格式：Time, Values
@@ -455,6 +459,7 @@ class BubbleFigure(Figure):
                 markersize=self.figure_settings.get('marker_size', 0),
                 color=bubble_color,
                 label='Bubble')
+        
         
         # 设置轴标题
         x_title = self.figure_settings.get('x_title')
@@ -480,15 +485,18 @@ class BubbleFigure(Figure):
         plt.legend()
         self._set_axes()
         plt.gca().xaxis.set_major_locator(AutoLocator())
+        
         plt.show()
 
     def plot_bar(self):
         """绘制气泡数据的条形图"""
+        
         # 检查数据格式
         if len(self.excel_data.columns) < 2:
             print("错误：数据列数不足，无法绘制图表")
             return
             
+        
         # 对于简单的Time-Values格式，使用前两列
         if len(self.excel_data.columns) == 2:
             # 简单格式：Time, Values
@@ -511,6 +519,7 @@ class BubbleFigure(Figure):
         bars = plt.bar([0], [overall_mean], color=bubble_color,
                       yerr=[overall_std] if error_bar_enabled else None,
                       capsize=5)
+        
         
         # 设置x轴标签
         plt.xticks([0], ['Bubble'])
@@ -539,6 +548,8 @@ class BubbleFigure(Figure):
         # 添加图例
         handles = [plt.Rectangle((0,0),1,1, color=bubble_color)]
         plt.legend(handles, ['Bubble'])
+        
+        plt.show()
 
 
 # 工厂类已删除 - 现在直接使用LipidsFigure和BubbleFigure类
@@ -548,7 +559,7 @@ def read_excel(file_path):
     """读取Excel文件并返回描述、数据和时间单位"""
     try:
         comments = []
-        time_unit = "frame"  # 默认时间单位
+        time_unit = "ns"  # 默认时间单位
         
         with open(file_path, 'r') as f:
             for line in f:

@@ -25,7 +25,7 @@ if __name__ == '__main__':
 from analysis.analysis_base import *
 from analysis.parameter_utils import parse_residues_simple, parse_gas_group_simple 
 
-__all__ = ['Density', 'DensityMultiRadius', 'DensityVisualizer']
+__all__ = ['DensityTime', 'DensityRadius', 'DensityVisualizer']
 
 class DensityTime(AnalysisBase):
     """单半径密度分析类"""
@@ -61,51 +61,19 @@ class DensityTime(AnalysisBase):
         self.resnames = self.headAtoms.resnames
         self.parameters = f"{ResiudeGroup}, {GasGroup}, Radius:{radius}, MW:{MW}"
 
+    def _prepare(self):
+        """准备分析所需的数组"""
+        # 初始化DensityWithtimes数组
+        self.results.DensityWithtimes = np.zeros(self.n_frames)
+
     def _single_frame(self):
-        """计算单帧的密度"""
-        # 获取当前帧的原子位置
-        head_positions = self.headAtoms.positions
-        
-        density_values = np.zeros(self._n_residues)
-        
-        for i, head_pos in enumerate(head_positions):
-            # 检查位置是否有效
-            if head_pos is None or np.any(np.isnan(head_pos)):
-                density_values[i] = 0
-                continue
-                
-            # 使用MDAnalysis的point选择语句
-            x, y, z = head_pos
-            selection_string = f"point {x:.3f} {y:.3f} {z:.3f} {self.radius:.3f}"
-            
-            try:
-                # 选择半径内的气体原子
-                selected_gas = self.gas_atoms.select_atoms(selection_string)
-                n_atoms = selected_gas.n_atoms
-                
-                if n_atoms > 0:
-                    # 计算体积 (球体体积)
-                    volume = (4/3) * np.pi * (self.radius ** 3) * 1e-30  # 转换为m³
-                    
-                    # 计算质量 (假设气体分子量为MW)
-                    mass = n_atoms * self.MW * 1.66054e-27  # 转换为kg
-                    
-                    # 计算密度
-                    if volume > 0:
-                        density_values[i] = mass / volume
-                    else:
-                        density_values[i] = 0
-                else:
-                    density_values[i] = 0
-            except Exception as e:
-                print(f"Warning: Selection failed for residue {i}: {e}")
-                density_values[i] = 0
-        
-        # 存储结果
-        if self.results.DensityWithtimes is None:
-            self.results.DensityWithtimes = np.zeros((self._n_residues, self.n_frames))
-        
-        self.results.DensityWithtimes[:, self._frame_index] = density_values
+        center_of_mass = self.headAtoms.center_of_mass()
+        gas_atom = self.u.select_atoms(f'point {center_of_mass[0]:.3f} {center_of_mass[1]:.3f} {center_of_mass[2]:.3f} {self.radius:.3f}')
+        n_atoms = gas_atom.n_residues
+        volume = (4/3) * np.pi * (self.radius ** 3) * 1e-30
+        mass = n_atoms * self.MW * 1.66054e-27
+        density = mass / volume
+        self.results.DensityWithtimes[self._frame_index] = density
 
     def run(self, start=None, stop=None, step=None, frames=None,
             verbose=None, *, progressbar_kwargs={}, callBack=None):
@@ -135,50 +103,18 @@ class DensityTime(AnalysisBase):
         # 跳转到指定帧
         self._trajectory[ts.frame]
         
-        # 获取当前帧的原子位置
-        head_positions = self.headAtoms.positions
+        center = self.headAtoms.center_of_mass()
+        gas_atom = self.u.select_atoms(f'point {center[0]:.3f} {center[1]:.3f} {center[2]:.3f} {self.radius:.3f}')
+        n_atoms = gas_atom.n_residues
+        volume = (4/3) * np.pi * (self.radius ** 3) * 1e-30
+        mass = n_atoms * self.MW * 1.66054e-27
+        density = mass / volume
+        self.results.DensityWithtimes[frame_idx] = density
         
-        density_values = np.zeros(self._n_residues)
-        
-        for i, head_pos in enumerate(head_positions):
-            # 检查位置是否有效
-            if head_pos is None or np.any(np.isnan(head_pos)):
-                density_values[i] = 0
-                continue
-                
-            # 使用MDAnalysis的point选择语句
-            x, y, z = head_pos
-            selection_string = f"point {x:.3f} {y:.3f} {z:.3f} {self.radius:.3f}"
-            
-            try:
-                # 选择半径内的气体原子
-                selected_gas = self.gas_atoms.select_atoms(selection_string)
-                n_atoms = selected_gas.n_atoms
-                
-                if n_atoms > 0:
-                    # 计算体积 (球体体积)
-                    volume = (4/3) * np.pi * (self.radius ** 3) * 1e-30
-                    
-                    # 计算质量 (假设气体分子量为MW)
-                    mass = n_atoms * self.MW * 1.66054e-27
-                    
-                    # 计算密度
-                    if volume > 0:
-                        density_values[i] = mass / volume
-                    else:
-                        density_values[i] = 0
-                else:
-                    density_values[i] = 0
-            except Exception as e:
-                print(f"Warning: Selection failed for residue {i}: {e}")
-                density_values[i] = 0
-        
-        return density_values
-
     def _conclude(self):
         if self.file_path:
             # 计算平均密度
-            mean_density = np.mean(self.results.DensityWithtimes, axis=0)
+            mean_density = np.mean(self.results.DensityWithtimes)
             dict_parameter = {
                 'frames': list(range(self.start, self.stop, self.step)),
                 'results': mean_density,
@@ -205,7 +141,7 @@ class DensityTime(AnalysisBase):
         data = []
         
         # Density是整体数据，不是按残基分组
-        mean_density = np.mean(self.results.DensityWithtimes, axis=0)
+        mean_density = self.results.DensityWithtimes
         for j, frame in enumerate(frames):
             row = {
                 'Time(ns)': frame * self._trajectory.dt / 1000,  # 转换为ns
@@ -720,6 +656,10 @@ class DensityRadius(AnalysisBase):
         # 创建半径层数据框
         data_rows = []
         
+        # 获取帧数并转换为时间单位（ns）
+        frames = list(range(self.start, self.stop, self.step))
+        time_values = [frame * self._trajectory.dt / 1000 for frame in frames]  # 转换为ns
+        
         for radius_idx in range(len(self.radii) - 1):
             inner_radius = self.radii[radius_idx]
             outer_radius = self.radii[radius_idx + 1]
@@ -737,14 +677,13 @@ class DensityRadius(AnalysisBase):
                 'Radius_Range': f"{inner_radius:.1f}-{outer_radius:.1f}Å"
             }
             
-            # 添加每一帧的该半径层密度作为列
-            frames = list(range(self.start, self.stop, self.step))
-            for frame_idx, frame in enumerate(frames):
+            # 添加每一帧的该半径层密度作为列，使用时间单位
+            for frame_idx, time_val in enumerate(time_values):
                 if self.results.DensityMultiRadius is not None:
                     layer_density = self.results.DensityMultiRadius[radius_idx, frame_idx]
                 else:
                     layer_density = 0.0
-                row_data[str(frame)] = layer_density
+                row_data[str(time_val)] = layer_density
             
             data_rows.append(row_data)
         

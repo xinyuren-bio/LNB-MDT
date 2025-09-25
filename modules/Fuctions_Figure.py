@@ -467,20 +467,14 @@ class FigurePage:
         # 优先使用已保存的文件类型检测结果
         if hasattr(ui, 'detected_file_type') and ui.detected_file_type:
             file_type = ui.detected_file_type
-            print(f"DEBUG: Using cached file_type: {file_type}")
         else:
             # 如果没有保存的结果，则进行文件检测
-            print(f"DEBUG: Detecting file type from path: {ui.FigureInfo.path_figure}")
             from .file_detection import FileTypeDetector
             file_type = FileTypeDetector.detect_file_type(ui.FigureInfo.path_figure)
-            print(f"DEBUG: Detected file_type: {file_type}")
             
         # 如果文件检测器返回unknown，则回退到description判断
         if file_type in ['unknown_csv_format', 'unknown_csv_type']:
-            print(f"DEBUG: File type unknown, using description fallback")
-            print(f"DEBUG: Description: {ui.FigureInfo.description}")
             file_type = cls._get_file_type_from_data(ui.FigureInfo.description)
-            print(f"DEBUG: Fallback file_type: {file_type}")
         
         if file_type == 'lipids':
             from figure.figure import LipidsFigure
@@ -499,6 +493,7 @@ class FigurePage:
         elif file_type == 'bubble':
             from figure.figure import BubbleFigure
             chart_settings = cls._get_chart_settings(ui, chart_type)
+            
             bubble_figure = BubbleFigure(ui.FigureInfo.description, ui.FigureInfo.results, chart_settings)
             
             if chart_type == 'Line':

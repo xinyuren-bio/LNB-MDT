@@ -100,73 +100,53 @@ LNB-MDT提供多种分析类型：
 
    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
 
-   <div style="background-color: #f3e5f5; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0; color: #7b1fa2;">📐 Anisotropy</h4>
+   <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">📐 PCA分析</h4>
    <p style="margin-bottom: 0;">主成分分析，研究分子构象变化</p>
    </div>
 
-   <div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0; color: #388e3c;">📏 APL</h4>
+   <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">📏 面积分析</h4>
    <p style="margin-bottom: 0;">Voronoi镶嵌面积计算</p>
    </div>
 
-   <div style="background-color: #fff3e0; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0; color: #f57c00;">🌊 SZ</h4>
+   <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">🌊 曲率分析</h4>
    <p style="margin-bottom: 0;">膜曲率计算（平均/高斯）</p>
    </div>
 
-   <div style="background-color: #fce4ec; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0; color: #c2185b;">📊 Cluster</h4>
+   <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">📊 高度分析</h4>
+   <p style="margin-bottom: 0;">分子高度分布分析</p>
+   </div>
+
+   <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">🔗 聚类分析</h4>
    <p style="margin-bottom: 0;">分子聚集行为分析</p>
    </div>
 
+   <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">🎯 各向异性分析</h4>
+   <p style="margin-bottom: 0;">分子取向各向异性计算</p>
    </div>
 
-配置参数
-~~~~~~~~
+   <div style="background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); color: #333; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">🔄 回转半径分析</h4>
+   <p style="margin-bottom: 0;">分子紧凑程度分析</p>
+   </div>
 
-关键参数包括：
+   <div style="background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">📈 Sz序参数分析</h4>
+   <p style="margin-bottom: 0;">脂质链有序性分析</p>
+   </div>
 
-- **残基组**: 指定要分析的分子类型和原子
-- **帧范围**: 选择分析的时间范围  
-- **计算参数**: k值、截止距离等
-- **并行处理**: 启用多核加速
+   <div style="background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">📊 密度分析</h4>
+   <p style="margin-bottom: 0;">分子密度分布分析</p>
+   </div>
 
-简化参数输入
-^^^^^^^^^^^^
+   </div>
 
-LNB-MDT现在支持更简单的参数输入方式，让命令行使用更加便捷：
-
-**短参数别名:**
-.. code:: text
-
-   -g  --gro-file      GRO文件路径
-   -x  --xtc-file      XTC文件路径  
-   -o  --output-csv    输出CSV文件路径
-   -r  --residues      残基组定义
-   -a  --gas-group     气体组定义
-   -m  --MW           分子量
-   -R  --radius       半径
-   -p  --parallel     启用并行处理
-   -j  --n-jobs       并行任务数
-   -s  --start-frame   起始帧
-   -e  --stop-frame    结束帧
-   -t  --step-frame    帧步长
-   -v  --verbose       详细输出
-
-**简化的residues和gas-group格式:**
-.. code:: text
-
-   # 简单格式（推荐）
-   -r DPPC:PO4,CHOL:ROH
-   -a N2:N2
-   
-   # 多原子格式
-   -r DPPC:PO4+GLY,CHOL:ROH
-   
-   
-   # 传统字典格式（仍然支持）
-   -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
 
 运行分析
 ~~~~~~~~
@@ -185,7 +165,54 @@ LNB-MDT现在支持更简单的参数输入方式，让命令行使用更加便�
 
 LNB-MDT支持简化的命令行参数输入，让您更轻松地使用命令行工具：
 
+**短参数别名对照表**
+
++-------------------------------+-------------------------------+----------------------------+
+| 短参数                        | 长参数                        | 说明                       |
++===============================+===============================+============================+
+| ``-g``                        | ``--gro-file``                | GRO文件路径                |
++-------------------------------+-------------------------------+----------------------------+
+| ``-x``                        | ``--xtc-file``                | XTC文件路径                |
++-------------------------------+-------------------------------+----------------------------+
+| ``-o``                        | ``--output-csv``              | 输出CSV文件路径            |
++-------------------------------+-------------------------------+----------------------------+
+| ``-r``                        | ``--residues``                | 残基组定义                 |
++-------------------------------+-------------------------------+----------------------------+
+| ``-a``                        | ``--gas-group``               | 气体组定义                 |
++-------------------------------+-------------------------------+----------------------------+
+| ``-m``                        | ``--MW``                      | 分子量 (g/mol)             |
++-------------------------------+-------------------------------+----------------------------+
+| ``-R``                        | ``--radius``                  | 半径 (Å)                   |
++-------------------------------+-------------------------------+----------------------------+
+| ``-p``                        | ``--parallel``                | 启用并行处理               |
++-------------------------------+-------------------------------+----------------------------+
+| ``-j``                        | ``--n-jobs``                  | 并行任务数                 |
++-------------------------------+-------------------------------+----------------------------+
+| ``-s``                        | ``--start-frame``             | 起始帧                     |
++-------------------------------+-------------------------------+----------------------------+
+| ``-e``                        | ``--stop-frame``              | 结束帧                     |
++-------------------------------+-------------------------------+----------------------------+
+| ``-t``                        | ``--step-frame``              | 帧步长                     |
++-------------------------------+-------------------------------+----------------------------+
+| ``-v``                        | ``--verbose``                 | 详细输出                   |
++-------------------------------+-------------------------------+----------------------------+
+
+**简化的residues和gas-group格式**
+
+.. code-block:: python
+
+   # 简单格式（推荐）
+   -r DPPC:PO4,CHOL:ROH
+   -a N2:N2
+   
+   # 多原子格式
+   -r DPPC:PO4+GLY,CHOL:ROH
+   
+   # 传统字典格式（仍然支持）
+   -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
+
 **传统方式（仍然支持）:**
+
 .. code-block:: python
 
    # PCA分析示例
@@ -234,6 +261,7 @@ PCA分析
 分析脂质分子的构象变化：
 
 **传统方式:**
+
 .. code-block:: python
 
    python analysis/pca.py \
@@ -247,6 +275,7 @@ PCA分析
      --verbose
 
 **简化方式:**
+
 .. code-block:: python
 
    python analysis/pca.py \
@@ -265,6 +294,7 @@ PCA分析
 计算脂质分子的Voronoi镶嵌面积：
 
 **传统方式:**
+
 .. code-block:: python
 
    python analysis/area.py \
@@ -278,6 +308,7 @@ PCA分析
      --verbose
 
 **简化方式:**
+
 .. code-block:: python
 
    python analysis/area.py \
@@ -296,6 +327,7 @@ PCA分析
 计算脂质膜的曲率特性：
 
 **传统方式:**
+
 .. code-block:: python
 
    python analysis/curvature.py \
@@ -309,6 +341,7 @@ PCA分析
      --verbose
 
 **简化方式:**
+
 .. code-block:: python
 
    python analysis/curvature.py \
@@ -327,6 +360,7 @@ PCA分析
 分析气泡中气体密度随时间的变化：
 
 **简化方式（推荐）:**
+
 .. code-block:: python
 
    python analysis/densitywithframe.py \
