@@ -82,8 +82,8 @@ class Height(AnalysisBase):
 
         self._n_residues = self.headAtoms.n_residues
         self.resids = self.headAtoms.resids
-        self.resnames = self.headAtoms.resnames
         self.resArrange = np.argsort(np.argsort(self.headAtoms.resindices))
+        self.resnames = self.headAtoms.resnames[self.resArrange]
         self.results.Height = None
 
         self.parameters = str(residuesGroup) + 'K:' + str(self.k)
