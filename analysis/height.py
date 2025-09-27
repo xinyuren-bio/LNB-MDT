@@ -103,7 +103,7 @@ class Height(AnalysisBase):
 
     def _single_frame(self):
         head_pos = self.headAtoms.positions
-        tail_pos = self.tailAtoms.center_of_geometry(compound='residues')
+        tail_pos = self.tailAtoms.center_of_geometry(compound='residues')[self.resArrange]
         heights = Height._calculate_height_for_frame(head_pos, tail_pos, self.k, self.resArrange)
         self.results.Height[:, self._frame_index] = heights
 
