@@ -1,262 +1,262 @@
-分析模块详解
-============
+Analysis Modules Details
+========================
 
-LNB-MDT提供了丰富的分子动力学分析模块，每个模块都针对特定的物理性质进行分析。
+LNB-MDT provides rich molecular dynamics analysis modules, each targeting specific physical properties for analysis.
 
-命令行参数详解
-==============
+Command Line Parameters Details
+===============================
 
-LNB-MDT提供了丰富的命令行参数，支持简化的输入格式和短参数别名。
+LNB-MDT provides rich command-line parameters with support for simplified input formats and short parameter aliases.
 
-参数对照表
-----------
+Parameter Reference Table
+-------------------------
 
-所有命令行参数都有对应的短别名，让命令行更加简洁：
+All command-line parameters have corresponding short aliases to make the command line more concise:
 
-.. list-table:: 参数对照表
+.. list-table:: Parameter Reference Table
    :header-rows: 1
    :widths: 8 15 25 20 32
 
-   * - 短参数
-     - 长参数
-     - 说明
-     - 默认值
-     - 示例
+   * - Short Parameter
+     - Long Parameter
+     - Description
+     - Default Value
+     - Example
    * - ``-g``
      - ``--gro-file``
-     - GRO文件路径
+     - GRO file path
      - -
      - ``-g cases/lnb.gro``
    * - ``-x``
      - ``--xtc-file``
-     - XTC文件路径
+     - XTC file path
      - -
      - ``-x cases/md.xtc``
    * - ``-o``
      - ``--output-csv``
-     - 输出CSV文件路径
+     - Output CSV file path
      - ``cases/csv/results.csv``
      - ``-o results.csv``
    * - ``-r``
      - ``--residues``
-     - 残基组定义
+     - Residue group definition
      - ``DPPC:PO4,CHOL:ROH``
      - ``-r DPPC:PO4``
    * - ``-a``
      - ``--gas-group``
-     - 气体组定义
+     - Gas group definition
      - ``N2:N2``
      - ``-a N2:N2``
    * - ``-m``
      - ``--MW``
-     - 分子量 (g/mol)
+     - Molecular weight (g/mol)
      - ``14``
      - ``-m 14``
    * - ``-R``
      - ``--radius``
-     - 半径 (Å)
+     - Radius (Å)
      - ``50``
      - ``-R 50``
    * - ``-p``
      - ``--parallel``
-     - 启用并行处理
+     - Enable parallel processing
      - ``False``
      - ``-p``
    * - ``-j``
      - ``--n-jobs``
-     - 并行任务数
+     - Number of parallel jobs
      - ``2``
      - ``-j 4``
    * - ``-s``
      - ``--start-frame``
-     - 起始帧
+     - Start frame
      - ``0``
      - ``-s 0``
    * - ``-e``
      - ``--stop-frame``
-     - 结束帧
-     - ``全部帧``
+     - Stop frame
+     - ``All frames``
      - ``-e 100``
    * - ``-t``
      - ``--step-frame``
-     - 帧步长
+     - Frame step
      - ``1``
      - ``-t 5``
    * - ``-v``
      - ``--verbose``
-     - 详细输出
+     - Verbose output
      - ``False``
      - ``-v``
    * - ``-k``
      - ``--k-value``
-     - k值
+     - k value
      - ``20``
      - ``-k 20``
    * - ``-M``
      - ``--method``
-     - 计算方法
+     - Calculation method
      - ``mean``
      - ``-M mean``
    * - ``-T``
      - ``--threshold``
-     - 阈值
+     - Threshold
      - ``0.5``
      - ``-T 0.5``
    * - ``-P``
      - ``--plot-type``
-     - 图表类型
+     - Plot type
      - ``all``
      - ``-P line``
    * - ``-d``
      - ``--plot-dir``
-     - 图表目录
+     - Plot directory
      - ``plots/``
      - ``-d plots/``
 
-简化格式说明
-------------
+Simplified Format Description
+-----------------------------
 
-residues和gas-group参数现在支持更直观的输入格式：
+The residues and gas-group parameters now support more intuitive input formats:
 
-基本格式
-~~~~~~~~
+Basic Format
+~~~~~~~~~~~~
 
-**简单格式（推荐）:**
+**Simple format (recommended):**
 .. code-block:: bash
 
-   # 基本格式: RESIDUE:ATOM
+   # Basic format: RESIDUE:ATOM
    -r DPPC:PO4,CHOL:ROH
    -a N2:N2
    
-   # 多个残基/气体
+   # Multiple residues/gases
    -r DPPC:PO4,DUPC:PO4,CHOL:ROH
    -a N2:N2,O2:O2
 
-**多原子格式:**
+**Multi-atom format:**
 .. code-block:: bash
 
-   # 多原子: RESIDUE:ATOM1+ATOM2
+   # Multi-atom: RESIDUE:ATOM1+ATOM2
    -r DPPC:PO4+GLY,CHOL:ROH
    -r DPPC:PO4+GLY+CH2,CHOL:ROH
 
-**只有名称格式:**
+**Name-only format:**
 .. code-block:: bash
 
-   # 只有残基/气体名（原子名与名称相同）
+   # Only residue/gas name (atom name same as name)
    -r DPPC
    -a N2
 
-传统格式
-~~~~~~~~
+Traditional Format
+~~~~~~~~~~~~~~~~~~
 
-**字典字符串格式（仍然支持）:**
+**Dictionary string format (still supported):**
 .. code-block:: bash
 
-   # 传统字典格式
+   # Traditional dictionary format
    -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
    -a "{'N2': ['N2']}"
 
-模块概览
---------
+Module Overview
+---------------
 
 .. raw:: html
 
    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0;">
 
    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">📐 PCA分析</h3>
-   <p>主成分分析，研究分子构象变化</p>
+   <h3 style="margin-top: 0;">📐 PCA Analysis</h3>
+   <p>Principal Component Analysis for studying molecular conformational changes</p>
    <ul style="margin-bottom: 0;">
-   <li>降维分析</li>
-   <li>构象变化</li>
-   <li>运动模式</li>
+   <li>Dimensionality reduction</li>
+   <li>Conformational changes</li>
+   <li>Motion patterns</li>
    </ul>
    </div>
 
    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">📏 面积分析</h3>
-   <p>APL面积计算</p>
+   <h3 style="margin-top: 0;">📏 Area Analysis</h3>
+   <p>APL area calculation</p>
    <ul style="margin-bottom: 0;">
-   <li>分子面积</li>
-   <li>密度分布</li>
-   <li>包装效率</li>
+   <li>Molecular area</li>
+   <li>Density distribution</li>
+   <li>Packing efficiency</li>
    </ul>
    </div>
 
    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">🌊 曲率分析</h3>
-   <p>膜曲率计算（平均/高斯）</p>
+   <h3 style="margin-top: 0;">🌊 Curvature Analysis</h3>
+   <p>Membrane curvature calculation (mean/Gaussian)</p>
    <ul style="margin-bottom: 0;">
-   <li>平均曲率</li>
-   <li>高斯曲率</li>
-   <li>膜形变</li>
+   <li>Mean curvature</li>
+   <li>Gaussian curvature</li>
+   <li>Membrane deformation</li>
    </ul>
    </div>
 
    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">📊 高度分析</h3>
-   <p>分子高度分布分析</p>
+   <h3 style="margin-top: 0;">📊 Height Analysis</h3>
+   <p>Molecular height distribution analysis</p>
    <ul style="margin-bottom: 0;">
-   <li>Z坐标分布</li>
-   <li>膜厚度</li>
-   <li>表面粗糙度</li>
+   <li>Z-coordinate distribution</li>
+   <li>Membrane thickness</li>
+   <li>Surface roughness</li>
    </ul>
    </div>
 
    <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">🔗 聚类分析</h3>
-   <p>分子聚集行为分析</p>
+   <h3 style="margin-top: 0;">🔗 Cluster Analysis</h3>
+   <p>Molecular aggregation behavior analysis</p>
    <ul style="margin-bottom: 0;">
-   <li>聚集模式</li>
-   <li>聚类大小</li>
-   <li>相互作用</li>
+   <li>Aggregation patterns</li>
+   <li>Cluster size</li>
+   <li>Interactions</li>
    </ul>
    </div>
 
    <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">🎯 各向异性分析</h3>
-   <p>分子取向各向异性计算</p>
+   <h3 style="margin-top: 0;">🎯 Anisotropy Analysis</h3>
+   <p>Molecular orientation anisotropy calculation</p>
    <ul style="margin-bottom: 0;">
-   <li>取向分布</li>
-   <li>有序参数</li>
-   <li>分子排列</li>
+   <li>Orientation distribution</li>
+   <li>Order parameter</li>
+   <li>Molecular alignment</li>
    </ul>
    </div>
 
    </div>
 
-详细模块说明
-------------
+Detailed Module Description
+----------------------------
 
-PCA分析 (pca.py)
-~~~~~~~~~~~~~~~~
+PCA Analysis (pca.py)
+~~~~~~~~~~~~~~~~~~~~~
 
-**功能描述**
-主成分分析用于研究脂质分子的构象变化和运动模式。
+**Function Description**
+Principal Component Analysis is used to study conformational changes and motion patterns of lipid molecules.
 
-**算法原理**
-- 对分子坐标进行主成分分析
-- 提取主要的运动模式
-- 降维到主要成分空间
+**Algorithm Principle**
+- Perform principal component analysis on molecular coordinates
+- Extract main motion patterns
+- Reduce dimensionality to principal component space
 
-**关键参数**
+**Key Parameters**
 
 residues *residue-definition*
-    残基组定义，指定要分析的分子类型和原子。支持简化格式如 ``DPPC:PO4,CHOL:ROH``
+    Residue group definition, specifying molecular types and atoms to analyze. Supports simplified format like ``DPPC:PO4,CHOL:ROH``
 
 n_components *number*
-    主成分数量，默认值为 ``3``
+    Number of principal components, default value is ``3``
 
 start_frame *frame-number*
-    起始帧，默认值为 ``0``
+    Start frame, default value is ``0``
 
 stop_frame *frame-number*
-    结束帧，默认值为 ``-1``（表示分析到最后）
+    Stop frame, default value is ``-1`` (means analyze to the end)
 
 step_frame *frame-step*
-    帧步长，默认值为 ``1``
+    Frame step, default value is ``1``
 
-**使用示例**
+**Usage Example**
 
 .. code-block:: bash
 
@@ -269,34 +269,34 @@ step_frame *frame-step*
      -p \
      -v
 
-**输出结果**
-- CSV文件包含每个帧的主成分值
-- 可用于分析分子构象变化趋势
-- 支持可视化分析结果
+**Output Results**
+- CSV file contains principal component values for each frame
+- Can be used to analyze molecular conformational change trends
+- Supports visualization of analysis results
 
-面积分析 (area.py)
-~~~~~~~~~~~~~~~~~~
+Area Analysis (area.py)
+~~~~~~~~~~~~~~~~~~~~~~~
 
-**功能描述**
-使用Voronoi镶嵌方法计算脂质分子的面积分布。
+**Function Description**
+Uses Voronoi tessellation method to calculate area distribution of lipid molecules.
 
-**算法原理**
-- 构建Voronoi图
-- 计算每个分子的Voronoi面积
-- 分析面积分布和变化
+**Algorithm Principle**
+- Construct Voronoi diagram
+- Calculate Voronoi area for each molecule
+- Analyze area distribution and changes
 
-**关键参数**
+**Key Parameters**
 
 k-value *number*
-    Voronoi镶嵌的k值，默认值为 ``20``
+    k-value for Voronoi tessellation, default value is ``20``
 
 max-normal-angle *angle*
-    最大法线角度，默认值为 ``140`` 度
+    Maximum normal angle, default value is ``140`` degrees
 
 residues *residue-definition*
-    残基组定义，指定要分析的分子类型和原子
+    Residue group definition, specifying molecular types and atoms to analyze
 
-**使用示例**
+**Usage Example**
 
 .. code-block:: bash
 
@@ -310,34 +310,34 @@ residues *residue-definition*
      -p \
      -v
 
-**输出结果**
-- 每个分子的Voronoi面积
-- 面积分布统计信息
-- 可用于分析膜密度和包装
+**Output Results**
+- Voronoi area for each molecule
+- Area distribution statistics
+- Can be used to analyze membrane density and packing
 
-曲率分析 (curvature.py)
-~~~~~~~~~~~~~~~~~~~~~~~
+Curvature Analysis (curvature.py)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**功能描述**
-计算脂质膜的平均曲率和高斯曲率。
+**Function Description**
+Calculates mean curvature and Gaussian curvature of lipid membranes.
 
-**算法原理**
-- 基于局部表面拟合
-- 计算曲率张量
-- 提取平均曲率和高斯曲率
+**Algorithm Principle**
+- Based on local surface fitting
+- Calculate curvature tensor
+- Extract mean curvature and Gaussian curvature
 
-**关键参数**
+**Key Parameters**
 
 method *curvature-type*
-    曲率类型，可选值为 ``mean`` 或 ``gaussian``，默认值为 ``mean``
+    Curvature type, options are ``mean`` or ``gaussian``, default value is ``mean``
 
 k-value *number*
-    曲率计算的k值，默认值为 ``20``
+    k-value for curvature calculation, default value is ``20``
 
 residues *residue-definition*
-    残基组定义，指定要分析的分子类型和原子
+    Residue group definition, specifying molecular types and atoms to analyze
 
-**使用示例**
+**Usage Example**
 
 .. code-block:: bash
 
@@ -351,10 +351,10 @@ residues *residue-definition*
      -p \
      -v
 
-**输出结果**
-- 每个分子的曲率值
-- 曲率分布统计
-- 可用于分析膜形变和稳定性
+**Output Results**
+- Curvature values for each molecule
+- Curvature distribution statistics
+- Can be used to analyze membrane deformation and stability
 
 高度分析 (height.py)
 ~~~~~~~~~~~~~~~~~~~~~
@@ -612,26 +612,26 @@ residues *residue-definition*
 - 距离分布统计
 - 相互作用分析
 
-参数优化建议
-------------
+Parameter Optimization Recommendations
+----------------------------------------
 
-k值选择
-~~~~~~~~
+k-value Selection
+~~~~~~~~~~~~~~~~~
 
 .. raw:: html
 
    <div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;">
 
-**k值选择原则：**
+**k-value Selection Principles:**
 
-- **小系统**: k = 10-15
-- **中等系统**: k = 15-25  
-- **大系统**: k = 25-35
-- **高密度**: 增加k值
-- **低密度**: 减少k值
+- **Small systems**: k = 10-15
+- **Medium systems**: k = 15-25  
+- **Large systems**: k = 25-35
+- **High density**: Increase k-value
+- **Low density**: Decrease k-value
 
-**优化方法：**
-使用机器学习模块的k值优化器：
+**Optimization Method:**
+Use the k-value optimizer from the machine learning module:
 
 .. code:: python
 
@@ -641,39 +641,39 @@ k值选择
 
    </div>
 
-截止距离选择
-~~~~~~~~~~~~
+Cutoff Distance Selection
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. raw:: html
 
    <div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;">
 
-**截止距离选择：**
+**Cutoff Distance Selection:**
 
-- **聚类分析**: 8-12埃
-- **相互作用**: 5-8埃
-- **长程相互作用**: 12-20埃
+- **Cluster analysis**: 8-12 Å
+- **Interactions**: 5-8 Å
+- **Long-range interactions**: 12-20 Å
 
-**选择依据：**
-- 分子大小
-- 相互作用强度
-- 系统密度
+**Selection Criteria:**
+- Molecular size
+- Interaction strength
+- System density
 
 
-并行处理优化
-~~~~~~~~~~~~
+Parallel Processing Optimization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. raw:: html
 
    <div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50;">
 
-**并行处理建议：**
+**Parallel Processing Recommendations:**
 
-- **CPU核心数**: 使用 `--n-jobs -1` 自动检测
-- **内存考虑**: 大系统减少并行数
-- **I/O限制**: SSD硬盘可增加并行数
+- **CPU cores**: Use `--n-jobs -1` for automatic detection
+- **Memory considerations**: Reduce parallel jobs for large systems
+- **I/O limitations**: SSD drives allow more parallel jobs
 
-**性能优化：**
-- 使用SSD存储轨迹文件
-- 增加系统内存
-- 优化网络文件系统
+**Performance Optimization:**
+- Use SSD storage for trajectory files
+- Increase system memory
+- Optimize network file systems

@@ -1,13 +1,13 @@
-API参考
-========
+API Reference
+=============
 
-LNB-MDT的完整API参考文档。
+Complete API reference documentation for LNB-MDT.
 
-分析模块API
------------
+Analysis Module API
+-------------------
 
-分析基类
-~~~~~~~~
+Analysis Base Class
+~~~~~~~~~~~~~~~~~~~
 
 .. raw:: html
 
@@ -15,7 +15,7 @@ LNB-MDT的完整API参考文档。
 
 **AnalysisBase**
 
-所有分析模块的基类，提供通用的分析功能。
+Base class for all analysis modules, providing common analysis functionality.
 
    </div>
 
@@ -23,54 +23,54 @@ LNB-MDT的完整API参考文档。
 
    class AnalysisBase:
        """
-       分析基类
+       Analysis Base Class
        
-       所有分析模块都继承自此类，提供通用的分析功能。
+       All analysis modules inherit from this class, providing common analysis functionality.
        """
        
        def __init__(self, gro_file, xtc_file, residues, **kwargs):
            """
-           初始化分析器
+           Initialize analyzer
            
-           参数:
-           - gro_file (str): GRO拓扑文件路径
-           - xtc_file (str): XTC轨迹文件路径
-           - residues (dict): 残基组字典
-           - **kwargs: 其他参数
+           Parameters:
+           - gro_file (str): GRO topology file path
+           - xtc_file (str): XTC trajectory file path
+           - residues (dict): Residue group dictionary
+           - **kwargs: Other parameters
            """
        
        def run(self, start_frame=0, stop_frame=-1, step_frame=1, **kwargs):
            """
-           运行分析
+           Run analysis
            
-           参数:
-           - start_frame (int): 起始帧
-           - stop_frame (int): 结束帧
-           - step_frame (int): 帧步长
+           Parameters:
+           - start_frame (int): Start frame
+           - stop_frame (int): Stop frame
+           - step_frame (int): Frame step
            
-           返回:
-           - dict: 分析结果
+           Returns:
+           - dict: Analysis results
            """
        
        def save_results(self, output_file, results):
            """
-           保存分析结果
+           Save analysis results
            
-           参数:
-           - output_file (str): 输出文件路径
-           - results (dict): 分析结果
+           Parameters:
+           - output_file (str): Output file path
+           - results (dict): Analysis results
            """
 
-PCA分析
-~~~~~~~
+PCA Analysis
+~~~~~~~~~~~~
 
 .. raw:: html
 
    <div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;">
 
-**PCA类**
+**PCA Class**
 
-主成分分析类，用于分析分子构象变化。
+Principal Component Analysis class for analyzing molecular conformational changes.
 
    </div>
 
@@ -642,19 +642,19 @@ VMD命令集合。
        - ui: 用户界面对象
        """
 
-错误处理API
------------
+Error Handling API
+------------------
 
-异常类
-~~~~~~
+Exception Classes
+~~~~~~~~~~~~~~~~~
 
 .. raw:: html
 
    <div style="background-color: #ffebee; padding: 15px; border-radius: 8px; border-left: 4px solid #f44336;">
 
-**LNBException类**
+**LNBException Class**
 
-LNB-MDT自定义异常类。
+LNB-MDT custom exception class.
 
    </div>
 
@@ -662,18 +662,18 @@ LNB-MDT自定义异常类。
 
    class LNBException(Exception):
        """
-       LNB-MDT自定义异常类
+       LNB-MDT Custom Exception Class
        
-       用于处理LNB-MDT特定的错误。
+       Used to handle LNB-MDT specific errors.
        """
        
        def __init__(self, message, error_code=None):
            """
-           初始化异常
+           Initialize exception
            
-           参数:
-           - message (str): 错误消息
-           - error_code (str): 错误代码
+           Parameters:
+           - message (str): Error message
+           - error_code (str): Error code
            """
            super().__init__(message)
            self.error_code = error_code
@@ -738,18 +738,18 @@ VMD错误异常类。
            super().__init__(message)
            self.vmd_command = vmd_command
 
-使用示例
---------
+Usage Examples
+--------------
 
-基本使用
-~~~~~~~~
+Basic Usage
+~~~~~~~~~~~
 
 .. code:: python
 
-   # 基本分析使用示例
+   # Basic analysis usage example
    from analysis.pca import PCA
    
-   # 创建PCA分析器
+   # Create PCA analyzer
    analyzer = PCA(
        gro_file="cases/lnb.gro",
        xtc_file="cases/md.xtc",
@@ -757,52 +757,52 @@ VMD错误异常类。
        n_components=3
    )
    
-   # 运行分析
+   # Run analysis
    results = analyzer.run(start_frame=0, stop_frame=100)
    
-   # 保存结果
+   # Save results
    analyzer.save_results("results/pca_results.csv", results)
 
 
-VMD集成使用
-~~~~~~~~~~~
+VMD Integration Usage
+~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-   # VMD集成使用示例
+   # VMD integration usage example
    from modules.vmd_control import VMDTcp, VMDCommands
    
-   # 创建VMD连接
+   # Create VMD connection
    vmd = VMDTcp("./remote_ctl.tcl", "C:/Program Files/VMD/vmd.exe")
    
-   # 启动VMD
+   # Start VMD
    vmd.start()
    
-   # 发送命令
+   # Send commands
    vmd.send_command(VMDCommands.loadTopology("cases/lnb.gro"))
    vmd.send_command(VMDCommands.loadTrajectory("cases/md.xtc"))
    vmd.send_command(VMDCommands.gotoFrame("100"))
    
-   # 停止VMD
+   # Stop VMD
    vmd.stop()
 
-错误处理使用
-~~~~~~~~~~~~
+Error Handling Usage
+~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-   # 错误处理使用示例
+   # Error handling usage example
    from _exception import AnalysisError, VMDError
    
    try:
-       # 运行分析
+       # Run analysis
        analyzer = PCA(gro_file="invalid.gro", xtc_file="invalid.xtc", residues={})
        results = analyzer.run()
    except AnalysisError as e:
-       print(f"分析错误: {e}")
-       print(f"分析类型: {e.analysis_type}")
+       print(f"Analysis error: {e}")
+       print(f"Analysis type: {e.analysis_type}")
    except VMDError as e:
-       print(f"VMD错误: {e}")
-       print(f"VMD命令: {e.vmd_command}")
+       print(f"VMD error: {e}")
+       print(f"VMD command: {e.vmd_command}")
    except Exception as e:
-       print(f"未知错误: {e}")
+       print(f"Unknown error: {e}")

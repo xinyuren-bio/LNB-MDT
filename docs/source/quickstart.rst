@@ -1,45 +1,45 @@
-快速开始指南
-============
+Quick Start Guide
+=================
 
-本指南将帮助您在5分钟内开始使用LNB-MDT进行脂质纳米泡分析。
+This guide will help you get started with LNB-MDT for lipid nanobubble analysis in 5 minutes.
 
-配置VMD路径
------------
+Configure VMD Path
+------------------
 
-首次使用LNB-MDT需要配置VMD路径。VMD用于分子可视化和轨迹分析。
+First-time use of LNB-MDT requires configuring the VMD path. VMD is used for molecular visualization and trajectory analysis.
 
-1. **编辑配置文件**
+1. **Edit Configuration File**
    
-   打开项目根目录的 `config.ini` 文件，修改 `vmd_path` 为您的VMD实际安装路径：
+   Open the `config.ini` file in the project root directory and modify `vmd_path` to your actual VMD installation path:
 
 .. code:: text
 
-   # 常见路径示例
+   # Common path examples
    Windows: C:/Program Files/VMD/vmd.exe
    macOS:   /Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64
    Linux:   /usr/local/bin/vmd
 
-2. **保存并重启**
+2. **Save and Restart**
    
-   保存配置文件后重新启动程序。
+   Save the configuration file and restart the program.
 
-启动程序
---------
+Starting the Program
+--------------------
 
-图形界面启动
-~~~~~~~~~~~~
+Graphical Interface Launch
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-使用图形界面是开始使用LNB-MDT最简单的方式：
+Using the graphical interface is the easiest way to start using LNB-MDT:
 
 .. code:: python
 
-   # 激活环境
+   # Activate environment
    conda activate LNB-MDT
    
-   # 启动主程序
+   # Start main program
    python main.py
 
-启动后您将看到LNB-MDT的主界面，包含以下功能模块：
+After launching, you will see the LNB-MDT main interface with the following functional modules:
 
 .. raw:: html
 
@@ -63,86 +63,78 @@
 
    </div>
 
-命令行启动
-~~~~~~~~~~
+Command Line Launch
+~~~~~~~~~~~~~~~~~~~
 
-对于批量处理和自动化分析，可以使用命令行工具：
+For batch processing and automated analysis, you can use command-line tools:
 
 .. code:: python
 
-   # 激活环境
+   # Activate environment
    conda activate LNB-MDT
    
-   # 查看帮助信息
+   # View help information
    python analysis/pca.py --help
 
-基本分析流程
-------------
+Basic Analysis Workflow
+-----------------------
 
-准备数据文件
-~~~~~~~~~~~~
+Prepare Data Files
+~~~~~~~~~~~~~~~~~~
 
-LNB-MDT需要以下文件进行分析：
+LNB-MDT requires the following files for analysis:
 
-- **GRO文件**: 分子拓扑结构文件
-- **XTC文件**: 分子动力学轨迹文件
+- **GRO file**: Molecular topology structure file
+- **XTC file**: Molecular dynamics trajectory file
 
-项目包含示例数据文件：
-- `cases/lnb.gro` - 示例拓扑文件  
-- `cases/md.xtc` - 示例轨迹文件
+The project includes sample data files:
+- `cases/lnb.gro` - Sample topology file  
+- `cases/md.xtc` - Sample trajectory file
 
-选择分析类型
-~~~~~~~~~~~~
+Select Analysis Type
+~~~~~~~~~~~~~~~~~~~~
 
-LNB-MDT提供多种分析类型：
+LNB-MDT provides various analysis types:
 
 .. raw:: html
 
    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
 
-   <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0;">📐 PCA分析</h4>
-   <p style="margin-bottom: 0;">主成分分析，研究分子构象变化</p>
-   </div>
 
    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0;">📏 面积分析</h4>
-   <p style="margin-bottom: 0;">Voronoi镶嵌面积计算</p>
+   <h4 style="margin-top: 0;">📏 Area Analysis</h4>
+   <p style="margin-bottom: 0;">Voronoi tessellation area calculation</p>
    </div>
-
-   <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0;">🌊 曲率分析</h4>
-   <p style="margin-bottom: 0;">膜曲率计算（平均/高斯）</p>
-   </div>
+   
 
    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0;">📊 高度分析</h4>
-   <p style="margin-bottom: 0;">分子高度分布分析</p>
+   <h4 style="margin-top: 0;">📊 Height Analysis</h4>
+   <p style="margin-bottom: 0;">Molecular height distribution analysis</p>
    </div>
 
    <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0;">🔗 聚类分析</h4>
-   <p style="margin-bottom: 0;">分子聚集行为分析</p>
+   <h4 style="margin-top: 0;">🔗 Cluster Analysis</h4>
+   <p style="margin-bottom: 0;">Molecular aggregation behavior analysis</p>
    </div>
 
    <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0;">🎯 各向异性分析</h4>
-   <p style="margin-bottom: 0;">分子取向各向异性计算</p>
+   <h4 style="margin-top: 0;">🎯 Anisotropy Analysis</h4>
+   <p style="margin-bottom: 0;">Molecular orientation anisotropy calculation</p>
    </div>
 
    <div style="background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); color: #333; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0;">🔄 回转半径分析</h4>
-   <p style="margin-bottom: 0;">分子紧凑程度分析</p>
+   <h4 style="margin-top: 0;">🔄 Gyration Analysis</h4>
+   <p style="margin-bottom: 0;">Molecular compactness analysis</p>
    </div>
 
    <div style="background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); color: white; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0;">📈 Sz序参数分析</h4>
-   <p style="margin-bottom: 0;">脂质链有序性分析</p>
+   <h4 style="margin-top: 0;">📈 Sz Order Parameter Analysis</h4>
+   <p style="margin-bottom: 0;">Lipid chain ordering analysis</p>
    </div>
 
    <div style="background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%); color: white; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0;">📊 密度分析</h4>
-   <p style="margin-bottom: 0;">分子密度分布分析</p>
+   <h4 style="margin-top: 0;">📊 Density Analysis</h4>
+   <p style="margin-bottom: 0;">Molecular density distribution analysis</p>
    </div>
 
    </div>
@@ -197,25 +189,25 @@ LNB-MDT支持简化的命令行参数输入，让您更轻松地使用命令行�
 | ``-v``                        | ``--verbose``                 | 详细输出                   |
 +-------------------------------+-------------------------------+----------------------------+
 
-**简化的residues和gas-group格式**
+**Simplified residues and gas-group formats**
 
 .. code-block:: python
 
-   # 简单格式（推荐）
+   # Simple format (recommended)
    -r DPPC:PO4,CHOL:ROH
    -a N2:N2
    
-   # 多原子格式
+   # Multi-atom format
    -r DPPC:PO4+GLY,CHOL:ROH
    
-   # 传统字典格式（仍然支持）
+   # Traditional dictionary format (still supported)
    -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
 
-**传统方式（仍然支持）:**
+**Traditional approach (still supported):**
 
 .. code-block:: python
 
-   # PCA分析示例
+   # PCA analysis example
    python analysis/pca.py \
      --gro-file cases/lnb.gro \
      --xtc-file cases/md.xtc \
@@ -224,11 +216,11 @@ LNB-MDT支持简化的命令行参数输入，让您更轻松地使用命令行�
      --parallel \
      --verbose
 
-**新的简化方式（推荐）:**
+**New simplified approach (recommended):**
 
 .. code-block:: python
 
-   # 使用短参数和简单格式
+   # Using short parameters and simple format
    python analysis/pca.py \
      -g cases/lnb.gro \
      -x cases/md.xtc \
@@ -237,30 +229,30 @@ LNB-MDT支持简化的命令行参数输入，让您更轻松地使用命令行�
      -p \
      -v
 
-查看结果
-~~~~~~~~
+Viewing Results
+~~~~~~~~~~~~~~~
 
-分析完成后，LNB-MDT会生成以下输出：
+After analysis completion, LNB-MDT generates the following outputs:
 
-- **CSV文件**: 包含分析结果的数值数据
-- **图表**: 可视化分析结果  
-- **日志**: 分析过程的详细信息
+- **CSV files**: Numerical data containing analysis results
+- **Charts**: Visualization of analysis results  
+- **Logs**: Detailed information about the analysis process
 
-结果解读：
+Result interpretation:
 
-- 查看CSV文件中的数值结果
-- 使用图表模块可视化数据
-- 结合VMD进行分子可视化
+- View numerical results in CSV files
+- Use chart module to visualize data
+- Combine with VMD for molecular visualization
 
-实际示例
---------
+Practical Examples
+-------------------
 
-PCA分析
-~~~~~~~
+PCA Analysis
+~~~~~~~~~~~~
 
-分析脂质分子的构象变化：
+Analyze conformational changes of lipid molecules:
 
-**传统方式:**
+**Traditional approach:**
 
 .. code-block:: python
 
@@ -274,7 +266,7 @@ PCA分析
      --parallel \
      --verbose
 
-**简化方式:**
+**Simplified approach:**
 
 .. code-block:: python
 
@@ -288,12 +280,12 @@ PCA分析
      -p \
      -v
 
-面积分析
-~~~~~~~~
+Area Analysis
+~~~~~~~~~~~~~
 
-计算脂质分子的Voronoi镶嵌面积：
+Calculate Voronoi tessellation area of lipid molecules:
 
-**传统方式:**
+**Traditional approach:**
 
 .. code-block:: python
 
@@ -307,7 +299,7 @@ PCA分析
      --parallel \
      --verbose
 
-**简化方式:**
+**Simplified approach:**
 
 .. code-block:: python
 
@@ -321,12 +313,12 @@ PCA分析
      -p \
      -v
 
-曲率分析
-~~~~~~~~
+Curvature Analysis
+~~~~~~~~~~~~~~~~~~
 
-计算脂质膜的曲率特性：
+Calculate curvature properties of lipid membranes:
 
-**传统方式:**
+**Traditional approach:**
 
 .. code-block:: python
 
@@ -340,7 +332,7 @@ PCA分析
      --parallel \
      --verbose
 
-**简化方式:**
+**Simplified approach:**
 
 .. code-block:: python
 
@@ -354,12 +346,12 @@ PCA分析
      -p \
      -v
 
-密度分析
-~~~~~~~~
+Density Analysis
+~~~~~~~~~~~~~~~~
 
-分析气泡中气体密度随时间的变化：
+Analyze gas density changes over time in bubbles:
 
-**简化方式（推荐）:**
+**Simplified approach (recommended):**
 
 .. code-block:: python
 
@@ -375,71 +367,71 @@ PCA分析
      -v
 
 
-VMD集成
---------
+VMD Integration
+---------------
 
-LNB-MDT支持与VMD的无缝集成，用于分子可视化和轨迹分析。
+LNB-MDT supports seamless integration with VMD for molecular visualization and trajectory analysis.
 
-VMD路径配置
-~~~~~~~~~~~
+VMD Path Configuration
+~~~~~~~~~~~~~~~~~~~~~~
 
-首次使用需要配置VMD路径：
+First-time use requires configuring the VMD path:
 
-1. **找到VMD安装路径**
+1. **Find VMD Installation Path**
 
 .. code:: text
 
-   Windows: 通常在 C:/Program Files/VMD/vmd.exe
-   macOS:   通常在 /Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64
-   Linux:   通常在 /usr/local/bin/vmd
+   Windows: Usually at C:/Program Files/VMD/vmd.exe
+   macOS:   Usually at /Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64
+   Linux:   Usually at /usr/local/bin/vmd
 
-2. **编辑配置文件**
+2. **Edit Configuration File**
    
-   打开项目根目录的 `config.ini` 文件，修改 `vmd_path` 为您的VMD实际安装路径：
+   Open the `config.ini` file in the project root directory and modify `vmd_path` to your actual VMD installation path:
 
 .. code:: ini
 
    [VMD]
    vmd_path = /Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64
 
-3. **验证配置**
+3. **Verify Configuration**
    
-   保存配置文件后重新启动LNB-MDT程序。
+   Save the configuration file and restart the LNB-MDT program.
 
-启动VMD
-~~~~~~~
+Starting VMD
+~~~~~~~~~~~~
 
-图形界面启动：
+Graphical interface launch:
 
-1. 点击"Start VMD"按钮
-2. 等待VMD启动
-3. 拖拽CSV文件到VMD窗口
-4. 选择分子进行可视化
+1. Click the "Start VMD" button
+2. Wait for VMD to start
+3. Drag CSV files to the VMD window
+4. Select molecules for visualization
 
-命令行启动：
+Command line launch:
 
 .. code:: python
 
-   # 启动VMD
+   # Start VMD
    python -c "from modules.vmd_control import VMDTcp; vmd = VMDTcp(); vmd.start()"
 
-可视化操作
-~~~~~~~~~~
+Visualization Operations
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-操作步骤：
+Operation steps:
 
-1. 在LNB-MDT中加载分析结果
-2. 选择要可视化的帧和分子
-3. VMD自动跳转到对应帧
-4. 高亮显示选中的分子
-5. 调整可视化参数
+1. Load analysis results in LNB-MDT
+2. Select frames and molecules to visualize
+3. VMD automatically jumps to the corresponding frame
+4. Highlight selected molecules
+5. Adjust visualization parameters
 
-下一步
-------
+Next Steps
+----------
 
-恭喜！您已经成功完成了LNB-MDT的快速开始！
+Congratulations! You have successfully completed the LNB-MDT quick start!
 
-接下来可以：
+What you can do next:
 
-- 学习 :doc:`analysis_modules` 的深度使用  
-- 查看 :doc:`api_reference` 了解API详情
+- Learn advanced usage of :doc:`analysis_modules`  
+- Check :doc:`api_reference` for API details
