@@ -356,26 +356,26 @@ residues *residue-definition*
 - Curvature distribution statistics
 - Can be used to analyze membrane deformation and stability
 
-高度分析 (height.py)
-~~~~~~~~~~~~~~~~~~~~~
+Height Analysis (height.py)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**功能描述**
-分析脂质分子的高度分布和膜厚度。
+**Function Description**
+Analyzes height distribution and membrane thickness of lipid molecules.
 
-**算法原理**
-- 计算分子在Z方向的位置
-- 分析高度分布
-- 计算膜厚度和表面粗糙度
+**Algorithm Principle**
+- Calculate molecular positions in Z direction
+- Analyze height distribution
+- Calculate membrane thickness and surface roughness
 
-**关键参数**
+**Key Parameters**
 
 k-value *number*
-    高度计算的k值，默认值为 ``20``
+    k-value for height calculation, default value is ``20``
 
 residues *residue-definition*
-    残基组定义，指定要分析的分子类型和原子，支持多组原子
+    Residue group definition, specifying molecular types and atoms to analyze, supports multiple atom groups
 
-**使用示例**
+**Usage Example**
 
 .. code-block:: bash
 
@@ -388,31 +388,31 @@ residues *residue-definition*
      -p \
      -v
 
-**输出结果**
-- 每个分子的高度值
-- 高度分布统计
-- 膜厚度分析
+**Output Results**
+- Height values for each molecule
+- Height distribution statistics
+- Membrane thickness analysis
 
-聚类分析 (cluster.py)
-~~~~~~~~~~~~~~~~~~~~~~
+Cluster Analysis (cluster.py)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**功能描述**
-分析脂质分子的聚集行为和聚类模式。
+**Function Description**
+Analyzes aggregation behavior and clustering patterns of lipid molecules.
 
-**算法原理**
-- 基于距离的聚类算法
-- 识别分子聚集
-- 分析聚类大小和分布
+**Algorithm Principle**
+- Distance-based clustering algorithm
+- Identify molecular aggregations
+- Analyze cluster size and distribution
 
-**关键参数**
+**Key Parameters**
 
 cutoff *distance*
-    聚类截止距离，默认值为 ``8.0`` 埃
+    Clustering cutoff distance, default value is ``8.0`` Å
 
 residues *residue-definition*
-    残基组定义，指定要分析的分子类型和原子
+    Residue group definition, specifying molecular types and atoms to analyze
 
-**使用示例**
+**Usage Example**
 
 .. code-block:: bash
 
@@ -425,28 +425,28 @@ residues *residue-definition*
      -p \
      -v
 
-**输出结果**
-- 聚类大小分布
-- 聚类数量统计
-- 聚集行为分析
+**Output Results**
+- Cluster size distribution
+- Cluster count statistics
+- Aggregation behavior analysis
 
-各向异性分析 (anisotropy.py)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Anisotropy Analysis (anisotropy.py)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**功能描述**
-计算分子取向的各向异性参数。
+**Function Description**
+Calculates anisotropy parameters of molecular orientation.
 
-**算法原理**
-- 计算分子取向向量
-- 分析取向分布
-- 计算各向异性参数
+**Algorithm Principle**
+- Calculate molecular orientation vectors
+- Analyze orientation distribution
+- Calculate anisotropy parameters
 
-**关键参数**
+**Key Parameters**
 
 residues *residue-definition*
-    残基组定义，指定要分析的分子类型和原子
+    Residue group definition, specifying molecular types and atoms to analyze
 
-**使用示例**
+**Usage Example**
 
 .. code-block:: bash
 
@@ -458,28 +458,28 @@ residues *residue-definition*
      -p \
      -v
 
-**输出结果**
-- 各向异性参数
-- 取向分布统计
-- 分子排列分析
+**Output Results**
+- Anisotropy parameters
+- Orientation distribution statistics
+- Molecular alignment analysis
 
-回转半径分析 (gyration.py)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Gyration Analysis (gyration.py)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**功能描述**
-计算分子的回转半径，反映分子的紧凑程度。
+**Function Description**
+Calculates molecular radius of gyration, reflecting molecular compactness.
 
-**算法原理**
-- 计算分子质心
-- 计算回转半径
-- 分析分子形状变化
+**Algorithm Principle**
+- Calculate molecular center of mass
+- Calculate radius of gyration
+- Analyze molecular shape changes
 
-**关键参数**
+**Key Parameters**
 
 residues *residue-definition*
-    残基组定义，指定要分析的分子类型和原子
+    Residue group definition, specifying molecular types and atoms to analyze
 
-**使用示例**
+**Usage Example**
 
 .. code-block:: bash
 
@@ -491,34 +491,34 @@ residues *residue-definition*
      -p \
      -v
 
-**输出结果**
-- 回转半径值
-- 形状变化分析
-- 分子紧凑度
+**Output Results**
+- Radius of gyration values
+- Shape change analysis
+- Molecular compactness
 
-Sz序参数分析 (sz.py)
-~~~~~~~~~~~~~~~~~~~~~
+Sz Order Parameter Analysis (sz.py)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**功能描述**
-计算脂质链的Sz序参数，反映链的有序程度。
+**Function Description**
+Calculates Sz order parameter of lipid chains, reflecting chain ordering degree.
 
-**算法原理**
-- 计算链取向向量
-- 计算Sz序参数
-- 分析链有序性
+**Algorithm Principle**
+- Calculate chain orientation vectors
+- Calculate Sz order parameter
+- Analyze chain ordering
 
-**关键参数**
+**Key Parameters**
 
 chain *chain-type*
-    链类型，可选值为 ``sn1``、``sn2`` 或 ``both``
+    Chain type, options are ``sn1``, ``sn2`` or ``both``
 
 k-value *number*
-    Sz计算的k值，默认值为 ``15``
+    k-value for Sz calculation, default value is ``15``
 
 residues *residue-definition*
-    残基组定义，指定要分析的分子类型和原子
+    Residue group definition, specifying molecular types and atoms to analyze
 
-**使用示例**
+**Usage Example**
 
 .. code-block:: bash
 
@@ -532,34 +532,34 @@ residues *residue-definition*
      -p \
      -v
 
-**输出结果**
-- Sz序参数值
-- 链有序性分析
-- 相变行为
+**Output Results**
+- Sz order parameter values
+- Chain ordering analysis
+- Phase transition behavior
 
-N-聚类分析 (n_cluster.py)
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+N-Cluster Analysis (n_cluster.py)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**功能描述**
-统计聚类数量，分析聚集模式。
+**Function Description**
+Counts cluster numbers and analyzes aggregation patterns.
 
-**算法原理**
-- 基于距离的聚类
-- 统计聚类数量
-- 分析聚集模式
+**Algorithm Principle**
+- Distance-based clustering
+- Count cluster numbers
+- Analyze aggregation patterns
 
-**关键参数**
+**Key Parameters**
 
 cutoff *distance*
-    聚类截止距离，默认值为 ``12.0`` 埃
+    Clustering cutoff distance, default value is ``12.0`` Å
 
 n-cutoff *number*
-    最小聚类大小阈值，默认值为 ``10``
+    Minimum cluster size threshold, default value is ``10``
 
 residues *residue-definition*
-    残基组定义，指定要分析的分子类型和原子
+    Residue group definition, specifying molecular types and atoms to analyze
 
-**使用示例**
+**Usage Example**
 
 .. code-block:: bash
 
@@ -573,31 +573,31 @@ residues *residue-definition*
      -p \
      -v
 
-**输出结果**
-- 聚类数量统计
-- 聚集模式分析
-- 相互作用强度
+**Output Results**
+- Cluster count statistics
+- Aggregation pattern analysis
+- Interaction strength
 
-径向分布分析 (rad.py)
-~~~~~~~~~~~~~~~~~~~~~~
+Radial Distribution Analysis (rad.py)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**功能描述**
-计算径向分布函数，分析分子间的距离分布。
+**Function Description**
+Calculates radial distribution function and analyzes distance distribution between molecules.
 
-**算法原理**
-- 计算分子间距离
-- 构建径向分布函数
-- 分析相互作用
+**Algorithm Principle**
+- Calculate intermolecular distances
+- Construct radial distribution function
+- Analyze interactions
 
-**关键参数**
+**Key Parameters**
 
 n-circle *number*
-    径向分析的同心圆数量，默认值为 ``50``
+    Number of concentric circles for radial analysis, default value is ``50``
 
 residues *residue-definition*
-    残基组定义，指定要分析的分子类型和原子
+    Residue group definition, specifying molecular types and atoms to analyze
 
-**使用示例**
+**Usage Example**
 
 .. code-block:: bash
 
@@ -607,10 +607,10 @@ residues *residue-definition*
      -r DPPC:NC3,CHOL:ROH \
      --n-circle 50
 
-**输出结果**
-- Excel文件包含径向分布数据
-- 距离分布统计
-- 相互作用分析
+**Output Results**
+- Excel file containing radial distribution data
+- Distance distribution statistics
+- Interaction analysis
 
 Parameter Optimization Recommendations
 ----------------------------------------

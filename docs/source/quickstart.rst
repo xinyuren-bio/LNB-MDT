@@ -75,53 +75,53 @@ Select Analysis Type
 LNB-MDT provides comprehensive analysis capabilities for lipid nanobubbles. For detailed information about each analysis type, see the main Features section on the homepage.
 
 
-运行分析
-~~~~~~~~
+Running Analysis
+~~~~~~~~~~~~~~~~
 
-图形界面运行
-^^^^^^^^^^^^
+Graphical Interface Execution
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. 在界面中加载GRO和XTC文件
-2. 选择分析类型
-3. 配置参数
-4. 点击"运行"按钮
-5. 查看结果
+1. Load GRO and XTC files in the interface
+2. Select analysis type
+3. Configure parameters
+4. Click the "Run" button
+5. View results
 
-命令行运行
-^^^^^^^^^^
+Command Line Execution
+^^^^^^^^^^^^^^^^^^^^^^
 
-LNB-MDT支持简化的命令行参数输入，让您更轻松地使用命令行工具：
+LNB-MDT supports simplified command-line parameter input, making it easier to use command-line tools:
 
-**短参数别名对照表**
+**Short Parameter Alias Reference Table**
 
 +-------------------------------+-------------------------------+----------------------------+
-| 短参数                        | 长参数                        | 说明                       |
+| Short Parameter               | Long Parameter                | Description                |
 +===============================+===============================+============================+
-| ``-g``                        | ``--gro-file``                | GRO文件路径                |
+| ``-g``                        | ``--gro-file``                | GRO file path               |
 +-------------------------------+-------------------------------+----------------------------+
-| ``-x``                        | ``--xtc-file``                | XTC文件路径                |
+| ``-x``                        | ``--xtc-file``                | XTC file path               |
 +-------------------------------+-------------------------------+----------------------------+
-| ``-o``                        | ``--output-csv``              | 输出CSV文件路径            |
+| ``-o``                        | ``--output-csv``              | Output CSV file path        |
 +-------------------------------+-------------------------------+----------------------------+
-| ``-r``                        | ``--residues``                | 残基组定义                 |
+| ``-r``                        | ``--residues``                | Residue group definition    |
 +-------------------------------+-------------------------------+----------------------------+
-| ``-a``                        | ``--gas-group``               | 气体组定义                 |
+| ``-a``                        | ``--gas-group``               | Gas group definition        |
 +-------------------------------+-------------------------------+----------------------------+
-| ``-m``                        | ``--MW``                      | 分子量 (g/mol)             |
+| ``-m``                        | ``--MW``                      | Molecular weight (g/mol)    |
 +-------------------------------+-------------------------------+----------------------------+
-| ``-R``                        | ``--radius``                  | 半径 (Å)                   |
+| ``-R``                        | ``--radius``                  | Radius (Å)                  |
 +-------------------------------+-------------------------------+----------------------------+
-| ``-p``                        | ``--parallel``                | 启用并行处理               |
+| ``-p``                        | ``--parallel``                | Enable parallel processing  |
 +-------------------------------+-------------------------------+----------------------------+
-| ``-j``                        | ``--n-jobs``                  | 并行任务数                 |
+| ``-j``                        | ``--n-jobs``                  | Number of parallel jobs     |
 +-------------------------------+-------------------------------+----------------------------+
-| ``-s``                        | ``--start-frame``             | 起始帧                     |
+| ``-s``                        | ``--start-frame``             | Start frame                 |
 +-------------------------------+-------------------------------+----------------------------+
-| ``-e``                        | ``--stop-frame``              | 结束帧                     |
+| ``-e``                        | ``--stop-frame``              | Stop frame                  |
 +-------------------------------+-------------------------------+----------------------------+
-| ``-t``                        | ``--step-frame``              | 帧步长                     |
+| ``-t``                        | ``--step-frame``              | Frame step                  |
 +-------------------------------+-------------------------------+----------------------------+
-| ``-v``                        | ``--verbose``                 | 详细输出                   |
+| ``-v``                        | ``--verbose``                 | Verbose output              |
 +-------------------------------+-------------------------------+----------------------------+
 
 **Simplified residues and gas-group formats**
