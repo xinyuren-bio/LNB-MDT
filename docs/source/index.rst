@@ -9,16 +9,58 @@ Features
 Molecular Dynamics Analysis
 ----------------------------
 
-* **PCA Analysis**: Principal Component Analysis for analyzing lipid molecular conformational changes
-* **Area Analysis**: Voronoi tessellation area calculation  
-* **Curvature Analysis**: Mean and Gaussian curvature calculation
-* **Height Analysis**: Lipid molecular height distribution analysis
-* **Cluster Analysis**: Lipid molecular aggregation behavior analysis
-* **Anisotropy Analysis**: Molecular orientation anisotropy calculation
-* **Gyration Analysis**: Molecular radius of gyration calculation
-* **Sz Order Parameter Analysis**: Lipid chain order parameter analysis
-* **N-Cluster Analysis**: Cluster count statistics
-* **Radial Distribution Analysis**: Radial distribution function calculation
+LNB-MDT provides various analysis types:
+
+.. raw:: html
+
+   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
+
+   <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">📐 PCA Analysis</h4>
+   <p style="margin-bottom: 0;">Principal Component Analysis for studying molecular conformational changes</p>
+   </div>
+
+   <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">📏 Area Analysis</h4>
+   <p style="margin-bottom: 0;">Voronoi tessellation area calculation</p>
+   </div>
+
+   <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">🌊 Curvature Analysis</h4>
+   <p style="margin-bottom: 0;">Membrane curvature calculation (mean/Gaussian)</p>
+   </div>
+
+   <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">📊 Height Analysis</h4>
+   <p style="margin-bottom: 0;">Molecular height distribution analysis</p>
+   </div>
+
+   <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">🔗 Cluster Analysis</h4>
+   <p style="margin-bottom: 0;">Molecular aggregation behavior analysis</p>
+   </div>
+
+   <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">🎯 Anisotropy Analysis</h4>
+   <p style="margin-bottom: 0;">Molecular orientation anisotropy calculation</p>
+   </div>
+
+   <div style="background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); color: #333; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">🔄 Gyration Analysis</h4>
+   <p style="margin-bottom: 0;">Molecular compactness analysis</p>
+   </div>
+
+   <div style="background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">📈 Sz Order Parameter Analysis</h4>
+   <p style="margin-bottom: 0;">Lipid chain ordering analysis</p>
+   </div>
+
+   <div style="background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%); color: white; padding: 15px; border-radius: 8px;">
+   <h4 style="margin-top: 0;">📊 Density Analysis</h4>
+   <p style="margin-bottom: 0;">Molecular density distribution analysis</p>
+   </div>
+
+   </div>
 
 
 Graphical User Interface
