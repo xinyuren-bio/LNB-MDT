@@ -6,6 +6,33 @@ LNB-MDT: Lipid NanoBubble Molecular Dynamics Toolbox
 Features
 ========
 
+Graphical User Interface Modules
+--------------------------------
+
+LNB-MDT provides four main functional modules:
+
+.. raw:: html
+
+   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+
+   <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
+   <h4 style="margin-center: 0;">🧬 Generation Module</h4>
+   </div>
+
+   <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
+   <h4 style="margin-center: 0;">📊 Analysis Module</h4>
+   </div>
+
+   <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
+   <h4 style="margin-center: 0;">📈 Figure Module</h4>
+   </div>
+
+   <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
+   <h4 style="margin-center: 0;">🔧 VMD Module</h4>
+   </div>
+
+   </div>
+
 Molecular Dynamics Analysis
 ----------------------------
 
@@ -15,19 +42,9 @@ LNB-MDT provides various analysis types:
 
    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
 
-   <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0;">📐 PCA Analysis</h4>
-   <p style="margin-bottom: 0;">Principal Component Analysis for studying molecular conformational changes</p>
-   </div>
-
    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 15px; border-radius: 8px;">
    <h4 style="margin-top: 0;">📏 Area Analysis</h4>
    <p style="margin-bottom: 0;">Voronoi tessellation area calculation</p>
-   </div>
-
-   <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 15px; border-radius: 8px;">
-   <h4 style="margin-top: 0;">🌊 Curvature Analysis</h4>
-   <p style="margin-bottom: 0;">Membrane curvature calculation (mean/Gaussian)</p>
    </div>
 
    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 15px; border-radius: 8px;">
@@ -58,33 +75,6 @@ LNB-MDT provides various analysis types:
    <div style="background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%); color: white; padding: 15px; border-radius: 8px;">
    <h4 style="margin-top: 0;">📊 Density Analysis</h4>
    <p style="margin-bottom: 0;">Molecular density distribution analysis</p>
-   </div>
-
-   </div>
-
-Graphical User Interface Modules
---------------------------------
-
-LNB-MDT provides four main functional modules:
-
-.. raw:: html
-
-   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
-
-   <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-center: 0;">🧬 Generation Module</h4>
-   </div>
-
-   <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-center: 0;">📊 Analysis Module</h4>
-   </div>
-
-   <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-center: 0;">📈 Figure Module</h4>
-   </div>
-
-   <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-center: 0;">🔧 VMD Module</h4>
    </div>
 
    </div>
