@@ -91,7 +91,7 @@ class DensityTime(AnalysisBase):
                 for i, ts in enumerate(self._sliced_trajectory)
             )
             if results_list:
-                self.results.DensityWithtimes = np.array(results_list).T
+                self.results.DensityWithtimes = np.array(results_list)
         else:
             print("Running in serial mode...")
             super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)
@@ -109,28 +109,51 @@ class DensityTime(AnalysisBase):
         volume = (4/3) * np.pi * (self.radius ** 3) * 1e-30
         mass = n_atoms * self.MW * 1.66054e-27
         density = mass / volume
-        self.results.DensityWithtimes[frame_idx] = density
+        return density  # 返回计算结果，而不是直接修改共享数组
         
     def _conclude(self):
         if self.file_path:
-            # 计算平均密度
-            mean_density = np.mean(self.results.DensityWithtimes)
-            dict_parameter = {
-                'frames': list(range(self.start, self.stop, self.step)),
-                'results': mean_density,
-                'file_path': self.file_path,
-                'description': 'Density With Time',
-                'parameters': self.parameters,
-                'trajectory': self._trajectory,
-                'type_name': 'Density With Time'
-            }
-            # Assuming WriteExcelBubble is defined and available
-            WriteExcelBubble(**dict_parameter).run()
+            # 保存每一帧的密度数据，而不是只保存平均值
+            self._save_density_data()
             
             # 准备绘图数据
             self._prepare_plot_data()
         else:
             return self.results.DensityWithtimes
+    
+    def _save_density_data(self):
+        """保存密度数据到CSV文件"""
+        import pandas as pd
+        
+        # 创建数据框
+        frames = list(range(self.start, self.stop, self.step))
+        time_values = [frame * self._trajectory.dt / 1000 for frame in frames]  # 转换为ns
+        
+        data = []
+        for i, (frame, time_val) in enumerate(zip(frames, time_values)):
+            row_data = {
+                'Frame': frame,
+                'Time(ns)': time_val,
+                'Density': self.results.DensityWithtimes[i] if i < len(self.results.DensityWithtimes) else 0.0
+            }
+            data.append(row_data)
+        
+        df = pd.DataFrame(data)
+        
+        # 保存到CSV
+        with open(self.file_path, 'w') as f:
+            f.write(f"# Created by LNB-MDT v1.0\n")
+            f.write(f"# Density Analysis - Time Series\n")
+            f.write(f"# Parameters: {self.parameters}\n")
+            f.write(f"# TYPE: Density With Time\n")
+            f.write(f"# Radius: {self.radius}Å\n")
+            f.write(f"# MW: {self.MW}g/mol\n")
+            f.write(f"\n")
+            
+            # 写入数据
+            df.to_csv(f, index=False)
+        
+        print(f"Density data saved to: {self.file_path}")
     
     def _prepare_plot_data(self):
         """准备绘图数据，格式化为DataFrame"""
@@ -141,11 +164,11 @@ class DensityTime(AnalysisBase):
         data = []
         
         # Density是整体数据，不是按残基分组
-        mean_density = self.results.DensityWithtimes
+        density_values = self.results.DensityWithtimes
         for j, frame in enumerate(frames):
             row = {
                 'Time(ns)': frame * self._trajectory.dt / 1000,  # 转换为ns
-                'Value': mean_density[j]
+                'Value': density_values[j] if j < len(density_values) else 0.0
             }
             data.append(row)
         
