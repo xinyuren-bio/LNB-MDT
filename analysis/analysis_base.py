@@ -225,6 +225,8 @@ class WriteExcelLipids(WriteExcel):
     description: str
     lipids_type: dict
     trajectory: object = None  # 添加轨迹对象用于获取时间信息
+    gro_file: str = None  # 添加gro文件路径
+    xtc_file: str = None  # 添加xtc文件路径
 
     def run(self):
         # column_frame = [i * self.step for i in range(self.n_frames)]
@@ -232,12 +234,22 @@ class WriteExcelLipids(WriteExcel):
         lipids_ratio = ':'.join(self.lipids_type) + '=' + ':'.join(map(str, self.lipids_type.values()))
         comments = ['Created by LNB-MDT v1.0', self.description, lipids_ratio, 'TYPE:Lipids', 'Parameters:' + self.parameters]
         
+        # 添加gro和xtc文件路径信息
+        if self.gro_file:
+            comments.append(f'GRO_FILE:{self.gro_file}')
+        if self.xtc_file:
+            comments.append(f'XTC_FILE:{self.xtc_file}')
+        
         # 转换帧数为时间单位
         time_values, time_unit = self._convert_frames_to_time(self.frames, self.trajectory)
         
-        # 添加时间单位信息到注释中
-        comments_with_time = comments + [f'TIME_UNIT:{time_unit}']
+        # 添加时间单位信息和Frame信息到注释中
+        # 为了与Time列对齐，需要在Frame信息前添加与列标题对应的占位符
+        frame_info_list = ['', '', ''] + [str(frame) for frame in self.frames]  # 前3个空字符串对应Resid,Resname,Coordinates列
+        frame_info_str = ','.join(frame_info_list)
+        comments_with_time = comments + [f'TIME_UNIT:{time_unit}', f'FRAME_INFO:{frame_info_str}']
         
+        # 创建传统的残基数据表格
         df_lipid = pd.DataFrame({
             'Resid': self.resids.astype(int),
             'Resname': self.resnames,
@@ -245,9 +257,11 @@ class WriteExcelLipids(WriteExcel):
             **{f"{time_val:.2f}": self.results[:, i].round(3)
                for i, time_val in enumerate(time_values)},
         })
+        
         # FRAME
         df_frames = pd.DataFrame(
             {
+                'Frame': self.frames,
                 f'Time ({time_unit})': time_values,
                 'Values': np.mean(self.results, axis=0).round(3)
             }
@@ -256,6 +270,8 @@ class WriteExcelLipids(WriteExcel):
         # 储存表头的信息
         # 储存每一帧的数据信息，残基号，残基名称等
         self._write_to_csv(self.file_path, comments_with_time, df_lipid)
+        
+        # 保存frames文件（包含Frame和Time信息）
         comments_frames = ['Created by LNB-MDT v1.0', 'Bubble ' + self.description, lipids_ratio, 'TYPE:Bubble', 'Parameters:' + self.parameters, f'TIME_UNIT:{time_unit}']
         self._write_to_csv(self.file_path, comments_frames, df_frames, 'frames')
 
@@ -277,6 +293,7 @@ class WriteExcelBubble(WriteExcel):
         
         df = pd.DataFrame(
             {
+                'Frame': self.frames,
                 f'Time ({time_unit})': time_values,
                 'Values': self.results.round(3)
             }

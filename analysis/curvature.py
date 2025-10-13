@@ -26,7 +26,8 @@ class Curvature(AnalysisBase):
     A class for calculating the mean and Gaussian curvature of a lipid bilayer.
     """
     def __init__(self, universe, residueGroup: dict, k: int = 20, filePath: str = None,
-                 method: str = 'mean', parallel: bool = False, n_jobs: int = -1):
+                 method: str = 'mean', parallel: bool = False, n_jobs: int = -1, 
+                 gro_file: str = None, xtc_file: str = None):
         super().__init__(universe.trajectory)
         self.u = universe
         self.residues = list(residueGroup)
@@ -35,6 +36,8 @@ class Curvature(AnalysisBase):
         self.method = method.lower()
         self.parallel = parallel
         self.n_jobs = n_jobs
+        self.gro_file = gro_file
+        self.xtc_file = xtc_file
 
         self.headSp = {sp: ' '.join(residueGroup[sp]) for sp in residueGroup}
         print("Head atoms:", self.headSp)
@@ -197,7 +200,9 @@ class Curvature(AnalysisBase):
                 'description': description,
                 'parameters': self.parameters,
                 'lipids_type': lipids_ratio,
-                'trajectory': self._trajectory
+                'trajectory': self._trajectory,
+                'gro_file': self.gro_file,
+                'xtc_file': self.xtc_file
             }
             WriteExcelLipids(**dict_parameter).run()
             print(f"Analysis complete. Results for '{self.method}' curvature will be saved to {self.file_path}")
@@ -305,6 +310,9 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print(f"\n--- Running {args.method.capitalize()} Curvature Analysis ---")
+    print(f"DEBUG: Curvature analysis - gro_file: {args.gro_file}")
+    print(f"DEBUG: Curvature analysis - xtc_file: {args.xtc_file}")
+    
     curvature_analysis = Curvature(
         u,
         residues_group_parsed,
@@ -312,7 +320,9 @@ if __name__ == "__main__":
         filePath=args.output_csv,
         method=args.method,
         parallel=args.parallel,
-        n_jobs=args.n_jobs
+        n_jobs=args.n_jobs,
+        gro_file=args.gro_file,
+        xtc_file=args.xtc_file
     )
     curvature_analysis.run(
         start=args.start_frame,

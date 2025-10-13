@@ -17,8 +17,76 @@ class VMDCommands:
 
     @staticmethod
     def highlightResid(resids):
+        """
+        高亮显示选中的resid，使用VDW和Beta着色
+        注意：这不会影响背景representation的coloring method
+        """
         resid_str = " ".join(map(str, resids))
-        return f"mol delrep 1 0; mol selection resid {resid_str}; mol representation VDW; mol color ColorID 1; mol addrep 0"
+        # 使用rep 1来高亮，不影响rep 0的背景
+        return f"mol delrep 1 0; mol selection resid {resid_str}; mol representation VDW; mol color Beta; mol addrep 0"
+    
+    @staticmethod
+    def setBetaValues(resid_value_dict):
+        """
+        设置每个resid的beta值
+        resid_value_dict: {resid: value, ...}
+        """
+        commands = []
+        for resid, value in resid_value_dict.items():
+            # 为每个resid设置beta值
+            cmd = f"set sel [atomselect top \"resid {resid}\"]; $sel set beta {value}; $sel delete"
+            commands.append(cmd)
+        
+        # 添加详细的调试信息
+        print(f"DEBUG: VMDCommands.setBetaValues - Setting beta for {len(resid_value_dict)} resids")
+        if resid_value_dict:
+            sample_items = list(resid_value_dict.items())[:5]  # 显示前5个样本
+            print(f"DEBUG: VMDCommands.setBetaValues - Sample values: {sample_items}")
+            min_val = min(resid_value_dict.values())
+            max_val = max(resid_value_dict.values())
+            print(f"DEBUG: VMDCommands.setBetaValues - Value range in this frame: {min_val} to {max_val}")
+        
+        return "; ".join(commands)
+    
+    @staticmethod
+    def setupInitialDisplay():
+        """
+        设置VMD初始显示：白色背景、红色Points作为背景
+        """
+        commands = [
+            "color Display Background white",  # 设置背景为白色
+            "display projection orthographic",  # 设置为正交投影
+            "display depthcue off",  # 关闭深度提示
+            "mol delrep 0 0",  # 删除默认representation
+            "mol representation Points",  # 使用Points表示
+            "mol color ColorID 1",  # 红色
+            "mol selection all",  # 选择所有atoms
+            "mol material Opaque",  # 使用不透明材质
+            "mol addrep 0"  # 添加representation
+        ]
+        print(f"DEBUG: VMDCommands.setupInitialDisplay - Commands: {'; '.join(commands)}")
+        return "; ".join(commands)
+    
+    @staticmethod
+    def setupBetaColoring(min_value, max_value):
+        """
+        设置VMD使用beta值进行着色
+        min_value, max_value: 用于设置颜色范围
+        颜色映射：蓝色(小值) → 白色(中值) → 红色(大值)
+        """
+        commands = [
+            "mol delrep 0 0",  # 删除当前representation
+            "mol representation Points",  # 使用Points表示
+            "mol color Beta",  # 使用beta着色
+            "mol selection all",  # 选择所有atoms
+            "mol material Opaque",  # 使用不透明材质
+            "mol addrep 0",  # 添加representation
+            "color scale method RWB",  # 设置颜色刻度为Red-White-Blue
+            f"mol scaleminmax 0 0 {min_value} {max_value}"  # 设置beta值的范围：min对应蓝色，max对应红色
+        ]
+        print(f"DEBUG: VMDCommands.setupBetaColoring - min_value: {min_value}, max_value: {max_value}")
+        print(f"DEBUG: VMDCommands.setupBetaColoring - Commands: {'; '.join(commands)}")
+        return "; ".join(commands)
 
 # VMD TCP 控制类
 class VMDTcp:
@@ -53,7 +121,10 @@ class VMDTcp:
 
     def send_command(self, cmd):
         if self.tcpClientSocket:
+            print(f"DEBUG: Sending command to VMD: {cmd}")
             self.tcpClientSocket.send((cmd + "\n").encode())
+            # VMD命令通常是异步的，不需要等待响应
+            return "sent"
 
     def stop(self):
         if self.tcpClientSocket:
@@ -66,19 +137,42 @@ class VMDTcp:
 def read_excel_vmd(file_path):
     try:
         comments = []
+        frame_info = None
+        gro_file = None
+        xtc_file = None
+        print(f"DEBUG: Reading CSV file: {file_path}")
+        
         with open(file_path, 'r') as f:
             for line in f:
                 if line.startswith('#'):
-                    comments.append(line.strip()[2:])
+                    comment = line.strip()[2:]
+                    comments.append(comment)
+                    print(f"DEBUG: Found comment: {comment}")
+                    # 提取FRAME_INFO
+                    if comment.startswith('FRAME_INFO:'):
+                        frame_info = comment.split(':', 1)[1].split(',')
+                        print(f"DEBUG: Extracted frame_info: {frame_info}")
+                    # 提取GRO_FILE
+                    elif comment.startswith('GRO_FILE:'):
+                        gro_file = comment.split(':', 1)[1]
+                        print(f"DEBUG: Extracted gro_file: {gro_file}")
+                    # 提取XTC_FILE
+                    elif comment.startswith('XTC_FILE:'):
+                        xtc_file = comment.split(':', 1)[1]
+                        print(f"DEBUG: Extracted xtc_file: {xtc_file}")
                 else:
                     break
 
+        print(f"DEBUG: Total comments found: {len(comments)}")
         df = pd.read_csv(file_path, skiprows=len(comments), header=0)
+        print(f"DEBUG: DataFrame columns: {list(df.columns)}")
+        print(f"DEBUG: DataFrame shape: {df.shape}")
+        
         valid_comments = comments[1] if len(comments) > 1 else ""
-        return valid_comments, df
+        return valid_comments, df, frame_info, gro_file, xtc_file
     except Exception as e:
         print(f"Error reading CSV: {e}")
-        return None, None
+        return None, None, None
 
 class VMDControlPanel(QWidget):
     def __init__(self, parent=None):
@@ -133,6 +227,7 @@ class VMDControlPanel(QWidget):
         self.vmd_tcp = None
         self.df = None
         self.valid_comments = None
+        self.frame_info = None
 
     def pushStartVMD(self):
         try:
@@ -170,13 +265,27 @@ class VMDControlPanel(QWidget):
 
     def onSelectionChanged(self, selected, deselected):
         selected_rows = [index.row() for index in self.table.selectionModel().selectedRows()]
-        print(f"Selected rows: {selected_rows}")
+        selected_cols = [index.column() for index in self.table.selectionModel().selectedIndexes()]
+        print(f"DEBUG: Selected rows: {selected_rows}, Selected columns: {selected_cols}")
+        
         if self.vmd_running and self.vmd_tcp and self.df is not None:
+            print(f"DEBUG: DataFrame columns: {list(self.df.columns)}")
             for row in selected_rows:
-                frame = int(self.df.iloc[row]["Frame"])
-                resids = list(map(int, self.df.iloc[row]["Resid"].split()))
-                self.vmd_tcp.send_command(VMDCommands.gotoFrame(frame))
-                self.vmd_tcp.send_command(VMDCommands.highlightResid(resids))
+                for col in selected_cols:
+                    if col > 0:  # 跳过第一列（resid列）
+                        # 直接从列标题获取frame号
+                        col_name = self.df.columns[col]
+                        print(f"DEBUG: Column {col} name: {col_name}")
+                        if col_name.startswith("Frame_"):
+                            frame = int(col_name.split("_")[1])
+                            resid = self.df.iloc[row]["Resid"]
+                            print(f"DEBUG: Jumping to frame {frame} for resid {resid}")
+                            self.vmd_tcp.send_command(VMDCommands.gotoFrame(frame))
+                            self.vmd_tcp.send_command(VMDCommands.highlightResid([int(resid)]))
+                        else:
+                            print(f"DEBUG: Column {col_name} does not start with 'Frame_', skipping")
+        else:
+            print(f"DEBUG: VMD not ready - running: {self.vmd_running}, tcp: {self.vmd_tcp is not None}, df: {self.df is not None}")
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls():
@@ -212,18 +321,44 @@ class VMDControlPanel(QWidget):
                 self.infoLabel.setText("CSV file not found!")
                 return
 
-            self.valid_comments, self.df = read_excel_vmd(file_path)
+            self.valid_comments, self.df, self.frame_info = read_excel_vmd(file_path)
             if self.df is None:
                 self.infoLabel.setText("Error: Failed to read CSV file.")
                 return
 
             # 调整列名以匹配文件中的大小写
-            self.df.rename(columns={'Resid': 'resid', 'Resname': 'resname'}, inplace=True)
-            # 忽略 resname 和 coordinations 列
-            self.df = self.df.drop(columns=['resname', 'coordinations'], errors='ignore')
-            frame_cols = [col for col in self.df.columns if col != 'resid']
+            self.df.rename(columns={'Resid': 'Resid', 'Resname': 'Resname', 'Coordinates': 'Coordinates'}, inplace=True)
+            # 忽略 resname 和 coordinates 列（保留原始列名）
+            self.df = self.df.drop(columns=['Resname', 'Coordinates'], errors='ignore')
+            
+            # 如果有frame_info，将Time列标题替换为Frame列标题
+            if self.frame_info:
+                print(f"DEBUG: Found frame_info: {self.frame_info}")
+                frame_cols = [col for col in self.df.columns if col != 'Resid']
+                print(f"DEBUG: Original frame_cols: {frame_cols}")
+                
+                # 创建新的列名映射：Time列 -> Frame列
+                column_mapping = {}
+                for i, time_col in enumerate(frame_cols):
+                    if i < len(self.frame_info) and self.frame_info[i]:
+                        frame_value = self.frame_info[i]
+                        column_mapping[time_col] = f"Frame_{frame_value}"
+                        print(f"DEBUG: Mapping {time_col} -> Frame_{frame_value}")
+                
+                print(f"DEBUG: Column mapping: {column_mapping}")
+                
+                # 重命名列
+                self.df.rename(columns=column_mapping, inplace=True)
+                frame_cols = [col for col in self.df.columns if col != 'Resid']
+                print(f"DEBUG: New frame_cols after rename: {frame_cols}")
+            else:
+                print("DEBUG: No frame_info found, keeping original column names")
+                frame_cols = [col for col in self.df.columns if col != 'Resid']
+            
             self.displayData(frame_cols)
-            self.infoLabel.setText(f"CSV loaded successfully. Valid comment: {self.valid_comments}")
+            
+            frame_count = len(self.frame_info) if self.frame_info else 0
+            self.infoLabel.setText(f"CSV loaded successfully. {frame_count} frames detected. Valid comment: {self.valid_comments}")
         except Exception as e:
             self.infoLabel.setText(f"Error loading CSV: {str(e)}")
             print(f"Error loading CSV: {e}")
@@ -233,10 +368,10 @@ class VMDControlPanel(QWidget):
         self.table.clear()
         self.table.setRowCount(len(self.df))
         self.table.setColumnCount(len(frame_cols) + 1)
-        self.table.setHorizontalHeaderLabels(['resid'] + frame_cols)
+        self.table.setHorizontalHeaderLabels(['Resid'] + frame_cols)
 
         for i, row in self.df.iterrows():
-            self.table.setItem(i, 0, QTableWidgetItem(str(row['resid'])))
+            self.table.setItem(i, 0, QTableWidgetItem(str(row['Resid'])))
             for j, frame in enumerate(frame_cols):
                 self.table.setItem(i, j + 1, QTableWidgetItem(str(row[frame])))
 

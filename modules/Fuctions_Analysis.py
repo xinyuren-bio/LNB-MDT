@@ -1229,10 +1229,16 @@ class HeightLayout(AnalysisLayout):
               , 'tail'
               , self.Box.HeightTailAtoms)
 
+        # 添加debug信息
+        print(f"DEBUG: Height analysis - gro_file: {self.Info.path_structure}")
+        print(f"DEBUG: Height analysis - xtc_file: {self.Info.path_trajectory}")
+        
         self.cls = Height(self.Box.u
                           , dictHeadTail
                           , filePath=self.Info.path_result
-                          , k=self.Info.K)
+                          , k=self.Info.K
+                          , gro_file=self.Info.path_structure
+                          , xtc_file=self.Info.path_trajectory)
 
 
 class SZLayout(AnalysisLayout):
@@ -1294,11 +1300,17 @@ class SZLayout(AnalysisLayout):
         self.Info.get_text()
         self.setValueChain(self.Box.get_config('SZ').SZChainGroups)
         if self.FF_TYPE == 'Coarse-Atom':
+            # 添加debug信息
+            print(f"DEBUG: SZ analysis - gro_file: {self.Info.path_structure}")
+            print(f"DEBUG: SZ analysis - xtc_file: {self.Info.path_trajectory}")
+            
             self.cls = SZ(self.Box.u
                           , self.Box.get_config('SZ').SZHeadAtoms
                           , self.CHAIN
                           , filePath=self.Info.path_result
-                          , k=self.Info.K)
+                          , k=self.Info.K
+                          , gro_file=self.Info.path_structure
+                          , xtc_file=self.Info.path_trajectory)
         else:
             print('暂时不支持%s力场' % self.FF_TYPE)
 
@@ -1331,10 +1343,16 @@ class AreaHandler(UnifiedAnalysisHandler):
         
         print("Creating Area analysis class")
         try:
+            # 添加debug信息
+            print(f"DEBUG: Area analysis - gro_file: {self.Info.path_structure}")
+            print(f"DEBUG: Area analysis - xtc_file: {self.Info.path_trajectory}")
+            
             self.cls = Area(universe=self.Box.u
                             , residueGroup=area_head_atoms
                             , filePath=self.Info.path_result
-                            , k=self.Info.K)
+                            , k=self.Info.K
+                            , gro_file=self.Info.path_structure
+                            , xtc_file=self.Info.path_trajectory)
             print("Area analysis class created successfully")
             print(f"self.cls: {self.cls}")
             print(f"self.cls type: {type(self.cls)}")

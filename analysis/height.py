@@ -53,7 +53,7 @@ class Height(AnalysisBase):
     """
 
     def __init__(self, universe, residuesGroup: dict, k: int = 20, filePath: str = None, 
-                 parallel: bool = False, n_jobs: int = -1):
+                 parallel: bool = False, n_jobs: int = -1, gro_file: str = None, xtc_file: str = None):
         super().__init__(universe.trajectory)
         self.u = universe
         self.residues = list(residuesGroup)
@@ -61,6 +61,8 @@ class Height(AnalysisBase):
         self.file_path = filePath
         self.parallel = parallel
         self.n_jobs = n_jobs
+        self.gro_file = gro_file
+        self.xtc_file = xtc_file
         
         # Height分析支持的图表类型
         self.supported_figure_types = ['Line Chart', 'Bar Chart']
@@ -152,7 +154,9 @@ class Height(AnalysisBase):
                 'description': 'Height (nm)',
                 'parameters': self.parameters,
                 'lipids_type': lipids_ratio,
-                'trajectory': self._trajectory
+                'trajectory': self._trajectory,
+                'gro_file': self.gro_file,
+                'xtc_file': self.xtc_file
             }
             # Assuming WriteExcelLipids is defined and available
             WriteExcelLipids(**dict_parameter).run()
@@ -418,13 +422,18 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print("\n--- Running Height Analysis ---")
+    print(f"DEBUG: Height analysis - gro_file: {args.gro_file}")
+    print(f"DEBUG: Height analysis - xtc_file: {args.xtc_file}")
+    
     height_analysis = Height(
         u,
         residues_group_parsed,
         k=args.k_value,
         filePath=args.output_csv,
         parallel=args.parallel,
-        n_jobs=args.n_jobs
+        n_jobs=args.n_jobs,
+        gro_file=args.gro_file,
+        xtc_file=args.xtc_file
     )
     height_analysis.run(
         start=args.start_frame,

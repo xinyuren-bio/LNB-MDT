@@ -115,6 +115,8 @@ class MainWindow(QMainWindow):
         self.connected = False
         self.data = None
         self.valid_comments = None
+        self.gro_file = None
+        self.xtc_file = None
 
         # 设置表格选择模式
         self.ui.vmd_tablewidget.setSelectionMode(QTableWidget.ExtendedSelection)
@@ -130,6 +132,9 @@ class MainWindow(QMainWindow):
         # 初始化 UI 状态
         self.ui.vmd_btn_stop.setEnabled(False)
         self.ui.vmd_label.setText("Click 'Start VMD' to launch VMD, then drag and drop a CSV file")
+        
+        # VMD状态标志
+        self.beta_coloring_enabled = False  # 是否已启用beta着色
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
         # ///////////////////////////////////////////////////////////////
         Settings.ENABLE_CUSTOM_TITLE_BAR = True
@@ -251,26 +256,92 @@ class MainWindow(QMainWindow):
             self.ui.vmd_label.setText("CSV file not found!")
             return
         try:
-            self.valid_comments, self.data = read_excel(csv_path)
+            # 使用VMD控制模块的read_excel_vmd函数
+            from modules.vmd_control import read_excel_vmd
+            self.valid_comments, self.data, self.frame_info, self.gro_file, self.xtc_file = read_excel_vmd(csv_path)
+            
             if self.data is not None:
-                self.data.rename(columns={'Resid': 'resid', 'Resname': 'resname'}, inplace=True)
-                # self.data = self.data.drop(columns=['resname', 'coordinations'], errors='ignore')
-                frame_cols = [col for col in self.data.columns if col != 'resid']
+                # 调整列名以匹配文件中的大小写
+                self.data.rename(columns={'Resid': 'Resid', 'Resname': 'Resname', 'Coordinates': 'Coordinates'}, inplace=True)
+                
+                # 如果有frame_info，将Time列标题替换为Frame列标题
+                if self.frame_info:
+                    print(f"DEBUG: Found frame_info: {self.frame_info}")
+                    print(f"DEBUG: Original DataFrame columns: {list(self.data.columns)}")
+                    
+                    # 创建新的列名映射：所有列 -> Frame列（除了Resid）
+                    column_mapping = {}
+                    for i, col_name in enumerate(self.data.columns):
+                        if col_name != 'Resid' and i < len(self.frame_info):
+                            frame_value = self.frame_info[i]
+                            if frame_value:  # 只有当frame_value不为空时才替换
+                                column_mapping[col_name] = f"Frame_{frame_value}"
+                                print(f"DEBUG: Mapping {col_name} -> Frame_{frame_value}")
+                            else:
+                                print(f"DEBUG: Skipping empty frame_value for column {col_name}")
+                    
+                    print(f"DEBUG: Column mapping: {column_mapping}")
+                    
+                    # 重命名列
+                    self.data.rename(columns=column_mapping, inplace=True)
+                    print(f"DEBUG: New DataFrame columns after rename: {list(self.data.columns)}")
+                    
+                    # 忽略 resname 和 coordinates 列（现在应该是Frame列了）
+                    self.data = self.data.drop(columns=['Resname', 'Coordinates'], errors='ignore')
+                    frame_cols = [col for col in self.data.columns if col != 'Resid']
+                    print(f"DEBUG: Final frame_cols: {frame_cols}")
+                else:
+                    print("DEBUG: No frame_info found, keeping original column names")
+                    # 忽略 resname 和 coordinates 列（保留原始列名）
+                    self.data = self.data.drop(columns=['Resname', 'Coordinates'], errors='ignore')
+                    frame_cols = [col for col in self.data.columns if col != 'Resid']
+                
                 self.displayData(frame_cols)
-                self.ui.vmd_label.setText(f"CSV loaded successfully. Valid comment: {self.valid_comments}")
+                
+                # 计算CSV中所有数值的最大值和最小值（用于beta着色）
+                self.csv_min_value = None
+                self.csv_max_value = None
+                try:
+                    # 获取所有数值列（除了Resid列）
+                    numeric_data = self.data.select_dtypes(include=['number'])
+                    print(f"DEBUG: main.py - Numeric columns found: {list(numeric_data.columns)}")
+                    print(f"DEBUG: main.py - Numeric data shape: {numeric_data.shape}")
+                    
+                    if not numeric_data.empty:
+                        self.csv_min_value = float(numeric_data.min().min())
+                        self.csv_max_value = float(numeric_data.max().max())
+                        print(f"DEBUG: main.py - CSV value range: {self.csv_min_value} to {self.csv_max_value}")
+                        
+                        # 显示每列的最小/最大值
+                        for col in numeric_data.columns:
+                            col_min = numeric_data[col].min()
+                            col_max = numeric_data[col].max()
+                            print(f"DEBUG: main.py - Column '{col}' range: {col_min} to {col_max}")
+                    else:
+                        print("DEBUG: main.py - No numeric data found in CSV")
+                        self.csv_min_value = 0.0
+                        self.csv_max_value = 1.0
+                except Exception as e:
+                    print(f"DEBUG: main.py - Error calculating CSV min/max values: {e}")
+                    self.csv_min_value = 0.0
+                    self.csv_max_value = 1.0
+                
+                frame_count = len(self.frame_info) if self.frame_info else 0
+                self.ui.vmd_label.setText(f"CSV loaded successfully. {frame_count} frames detected. Valid comment: {self.valid_comments}")
             else:
                 self.ui.vmd_label.setText("Failed to load CSV data")
         except Exception as e:
             self.ui.vmd_label.setText(f"Error loading CSV: {e}")
+            print(f"Error loading CSV: {e}")
 
     def displayData(self, frame_cols):
         self.ui.vmd_tablewidget.clear()
         self.ui.vmd_tablewidget.setRowCount(len(self.data))
         self.ui.vmd_tablewidget.setColumnCount(len(frame_cols) + 1)
-        self.ui.vmd_tablewidget.setHorizontalHeaderLabels(['resid'] + frame_cols)
+        self.ui.vmd_tablewidget.setHorizontalHeaderLabels(['Resid'] + frame_cols)
 
         for i, row in self.data.iterrows():
-            self.ui.vmd_tablewidget.setItem(i, 0, QTableWidgetItem(str(row['resid'])))
+            self.ui.vmd_tablewidget.setItem(i, 0, QTableWidgetItem(str(row['Resid'])))
             for j, frame in enumerate(frame_cols):
                 self.ui.vmd_tablewidget.setItem(i, j + 1, QTableWidgetItem(str(row[frame])))
 
@@ -287,6 +358,54 @@ class MainWindow(QMainWindow):
             else:
                 self.ui.vmd_label.setText("VMD started and connected")
                 self.connected = True
+                
+                # 自动加载gro和xtc文件
+                if self.gro_file and self.xtc_file:
+                    print(f"DEBUG: Auto-loading gro file: {self.gro_file}")
+                    print(f"DEBUG: Auto-loading xtc file: {self.xtc_file}")
+                    
+                    # 检查文件是否存在
+                    gro_exists = os.path.exists(self.gro_file)
+                    xtc_exists = os.path.exists(self.xtc_file)
+                    print(f"DEBUG: gro file exists: {gro_exists}")
+                    print(f"DEBUG: xtc file exists: {xtc_exists}")
+                    
+                    if gro_exists and xtc_exists:
+                        # 1. 先加载gro文件获取拓扑信息
+                        print(f"DEBUG: Sending VMD command: mol new {self.gro_file}")
+                        self.vmd.send_command(f"mol new {self.gro_file}")
+                        
+                        # 2. 加载xtc文件，使用waitfor all选项一次性加载所有帧
+                        print(f"DEBUG: Sending VMD command: mol addfile {self.xtc_file} waitfor all")
+                        self.vmd.send_command(f"mol addfile {self.xtc_file} waitfor all")
+                        
+                        # 3. 删除gro文件的第一帧（frame 0）
+                        print("DEBUG: Sending VMD command: animate delete beg 0 end 0")
+                        self.vmd.send_command("animate delete beg 0 end 0")
+                        
+                        # 4. 设置初始显示：白色背景、透明红色atoms
+                        print("DEBUG: Setting up initial display (white background, transparent red)")
+                        self.vmd.send_command(VMDCommands.setupInitialDisplay())
+                        
+                        self.ui.vmd_label.setText(f"VMD started and loaded: {os.path.basename(self.xtc_file)}")
+                    else:
+                        self.ui.vmd_label.setText("VMD started, but gro/xtc files not found")
+                        print(f"DEBUG: gro file exists: {gro_exists}")
+                        print(f"DEBUG: xtc file exists: {xtc_exists}")
+                        
+                        # 即使文件不存在，也尝试加载（可能路径问题）
+                        print("DEBUG: Attempting to load files anyway (path might be correct)...")
+                        print(f"DEBUG: Sending VMD command: mol new {self.gro_file}")
+                        self.vmd.send_command(f"mol new {self.gro_file}")
+                        
+                        print(f"DEBUG: Sending VMD command: mol addfile {self.xtc_file} waitfor all")
+                        self.vmd.send_command(f"mol addfile {self.xtc_file} waitfor all")
+                        
+                        print("DEBUG: Sending VMD command: animate delete beg 0 end 0")
+                        self.vmd.send_command("animate delete beg 0 end 0")
+                else:
+                    self.ui.vmd_label.setText("VMD started, no gro/xtc files to load")
+                    print("DEBUG: No gro/xtc files found in CSV")
         except FileNotFoundError as e:
             self.ui.vmd_label.setText(str(e))
 
@@ -317,7 +436,21 @@ class MainWindow(QMainWindow):
             self.ui.vmd_label.setText("Please select cells in a frame column (not resid)")
             return
 
-        frame = self.ui.vmd_tablewidget.horizontalHeaderItem(column).text()
+        col_name = self.ui.vmd_tablewidget.horizontalHeaderItem(column).text()
+        print(f"DEBUG: Selected column {column}, name: {col_name}")
+        
+        # 检查是否是Frame列
+        if col_name.startswith("Frame_"):
+            frame = int(col_name.split("_")[1])
+            print(f"DEBUG: Extracted frame number: {frame}")
+        else:
+            # 兼容旧格式，直接使用列标题作为frame
+            try:
+                frame = int(float(col_name))
+                print(f"DEBUG: Using column name as frame: {frame}")
+            except ValueError:
+                self.ui.vmd_label.setText(f"Invalid frame column: {col_name}")
+                return
 
         resids = []
         for item in selected_items:
@@ -326,9 +459,48 @@ class MainWindow(QMainWindow):
             if resid not in resids:
                 resids.append(resid)
 
+        # 获取该帧所有resid的数值，用于设置beta值
+        resid_value_dict = {}
+        if self.data is not None:
+            for row_idx in range(len(self.data)):
+                resid = self.ui.vmd_tablewidget.item(row_idx, 0).text()
+                value_item = self.ui.vmd_tablewidget.item(row_idx, column)
+                if value_item is not None:
+                    try:
+                        value = float(value_item.text())
+                        resid_value_dict[resid] = value
+                    except ValueError:
+                        print(f"DEBUG: Could not convert value to float for resid {resid}")
+        
+        print(f"DEBUG: Sending VMD commands - frame: {frame}, resids: {resids}")
+        print(f"DEBUG: Setting beta values for {len(resid_value_dict)} residues")
+        
+        # 1. 跳转到指定帧
         self.vmd.send_command(VMDCommands.gotoFrame(frame))
+        
+        # 2. 如果是第一次点击，切换到beta着色模式
+        if not self.beta_coloring_enabled and hasattr(self, 'csv_min_value') and hasattr(self, 'csv_max_value'):
+            if self.csv_min_value is not None and self.csv_max_value is not None:
+                print(f"DEBUG: main.py - Switching to beta coloring mode (range: {self.csv_min_value} to {self.csv_max_value})")
+                self.vmd.send_command(VMDCommands.setupBetaColoring(self.csv_min_value, self.csv_max_value))
+                self.beta_coloring_enabled = True
+            else:
+                print(f"DEBUG: main.py - CSV min/max values are None: min={self.csv_min_value}, max={self.csv_max_value}")
+        else:
+            print(f"DEBUG: main.py - Beta coloring already enabled: {self.beta_coloring_enabled}")
+        
+        # 3. 设置所有resid的beta值
+        if resid_value_dict:
+            print(f"DEBUG: main.py - Calling setBetaValues with {len(resid_value_dict)} resids")
+            self.vmd.send_command(VMDCommands.setBetaValues(resid_value_dict))
+        else:
+            print("DEBUG: main.py - No resid_value_dict to set beta values")
+        
+        # 4. 高亮显示选中的resid
+        print(f"DEBUG: main.py - Highlighting resids: {resids}")
         self.vmd.send_command(VMDCommands.highlightResid(resids))
-        self.ui.vmd_label.setText(f"Showing resids {', '.join(resids)} at frame {frame}")
+        
+        self.ui.vmd_label.setText(f"Showing resids {', '.join(resids)} at frame {frame} (colored by value)")
 
     # INITIAL SETTINGS
     # Post here your directions for your main UI
@@ -520,18 +692,22 @@ class MainWindow(QMainWindow):
             """)
             
             # 设置默认内容（包含标题）
-            default_content = """📊 Supported Plot Types
+            default_content = """📊 Supported Analysis Types & Plot Options
 
-📈 LIPIDS Analysis:
+🔬 LIPIDS Analysis:
 • Line Chart: Time series analysis of lipid properties
 • Bar Chart: Statistical comparison of lipid groups  
-• Scatter Plot: Correlation analysis between lipid parameters
+• Scatter Plot: 3D scatter plot visualization
+• Map: Spatial distribution visualization
 
 🫧 BUBBLE Analysis:
 • Line Chart: Bubble size evolution over time
 • Bar Chart: Bubble distribution statistics
 
-💡 Usage: Import CSV file with TYPE:Lipids or TYPE:Bubble in line 4"""
+🌊 DENSITY Analysis:
+• Line Chart: Density evolution over time/radius
+• Heatmap: Density distribution visualization
+"""
             
             info_textbox.setText(default_content)
             

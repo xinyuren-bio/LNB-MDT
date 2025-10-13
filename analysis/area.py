@@ -181,7 +181,8 @@ def polygon_area(vertices):
 
 class Area(AnalysisBase):
     def __init__(self, universe, residueGroup: dict, k: int = None, filePath: str = None, 
-                 max_normal_angle_deg: float = 140, parallel: bool = False, n_jobs: int = -1):
+                 max_normal_angle_deg: float = 140, parallel: bool = False, n_jobs: int = -1, 
+                 gro_file: str = None, xtc_file: str = None):
         super().__init__(universe.trajectory)
         self.u = universe
         self.residues = list(residueGroup)
@@ -190,6 +191,8 @@ class Area(AnalysisBase):
         self.max_normal_angle_deg = max_normal_angle_deg
         self.parallel = parallel
         self.n_jobs = n_jobs
+        self.gro_file = gro_file
+        self.xtc_file = xtc_file
 
         self.headSp = {sp: ' '.join(residueGroup[sp]) for sp in residueGroup}
         print("Head atoms:", self.headSp)
@@ -423,6 +426,8 @@ class Area(AnalysisBase):
                 , 'parameters': self.parameters
                 , 'lipids_type': lipids_ratio
                 , 'trajectory': self._trajectory
+                , 'gro_file': self.gro_file
+                , 'xtc_file': self.xtc_file
             }
             WriteExcelLipids(**dict_parameter).run()
             print(f"Analysis complete. Results saved to {self.file_path}")
@@ -643,6 +648,9 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print("\n--- Running Area Analysis ---")
+    print(f"DEBUG: Area analysis - gro_file: {args.gro_file}")
+    print(f"DEBUG: Area analysis - xtc_file: {args.xtc_file}")
+    
     area_analysis = Area(
         u,
         residues_group_parsed,
@@ -650,7 +658,9 @@ if __name__ == "__main__":
         max_normal_angle_deg=args.max_normal_angle,
         filePath=args.output_csv,
         parallel=args.parallel,
-        n_jobs=args.n_jobs
+        n_jobs=args.n_jobs,
+        gro_file=args.gro_file,
+        xtc_file=args.xtc_file
     )
     area_analysis.run(
         start=args.start_frame,

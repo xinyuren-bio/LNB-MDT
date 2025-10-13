@@ -60,7 +60,7 @@ class SZ(AnalysisBase):
     """
     
     def __init__(self, universe, residues_group: dict, chain: str = 'both', k: int = 15, filePath: str = None,
-                 parallel: bool = False, n_jobs: int = -1):
+                 parallel: bool = False, n_jobs: int = -1, gro_file: str = None, xtc_file: str = None):
         super().__init__(universe.trajectory)
         self.u = universe
         self.residues = list(residues_group)
@@ -69,6 +69,8 @@ class SZ(AnalysisBase):
         self.file_path = filePath
         self.parallel = parallel
         self.n_jobs = n_jobs
+        self.gro_file = gro_file
+        self.xtc_file = xtc_file
         
         # SZ分析支持的图表类型
         self.supported_figure_types = ['Line Chart', 'Bar Chart']
@@ -244,7 +246,9 @@ class SZ(AnalysisBase):
                 'description': f'Sz Order Parameter (chain: {self.chain})',
                 'parameters': self.parameters,
                 'lipids_type': lipids_ratio,
-                'trajectory': self._trajectory
+                'trajectory': self._trajectory,
+                'gro_file': self.gro_file,
+                'xtc_file': self.xtc_file
             }
             # Assuming WriteExcelLipids is a defined class and available
             WriteExcelLipids(**dict_parameter).run()
@@ -517,6 +521,9 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print(f"\n--- Running Sz Order Parameter Analysis (chain: {args.chain}) ---")
+    print(f"DEBUG: SZ analysis - gro_file: {args.gro_file}")
+    print(f"DEBUG: SZ analysis - xtc_file: {args.xtc_file}")
+    
     sz_analysis = SZ(
         u,
         residues_group_parsed,
@@ -524,7 +531,9 @@ if __name__ == "__main__":
         k=args.k_value,
         filePath=args.output_csv,
         parallel=args.parallel,
-        n_jobs=args.n_jobs
+        n_jobs=args.n_jobs,
+        gro_file=args.gro_file,
+        xtc_file=args.xtc_file
     )
     sz_analysis.run(
         start=args.start_frame,
