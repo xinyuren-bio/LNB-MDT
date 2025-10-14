@@ -117,10 +117,6 @@ python --version
 python -c "import MDAnalysis, numpy, pandas, PySide6; print('All dependencies installed successfully!')"
 ```
 
-### 📖 Quick Start
-
-If you're using LNB-MDT for the first time, we recommend checking the [QUICKSTART.md](QUICKSTART.md) quick start guide.
-
 ## 🎯 Quick Start
 
 ### Launch Graphical Interface
@@ -160,27 +156,21 @@ python analysis/area.py --gro-file cases/lnb.gro --xtc-file cases/md.xtc --resid
 #### 🧬 Generation Module
 - Lipid nanobubble structure generation
 - Custom parameter configuration
-- Batch generation support
 
 #### 📊 Analysis Module
 - Multiple physical property analysis
 - Real-time progress display
 - Result visualization
 
-#### 📈 Figure Module
+#### 📈 Visualization Module
 - Multiple chart types
 - Custom styles
-- Export functionality
-
-#### 🔧 Data Processing Module
-- Data cleaning
-- Format conversion
-- Batch processing
+- Interactive with VMD
 
 ### VMD Integration
 
-1. **Start VMD**: Click "Start VMD" in the interface
-2. **Load Trajectory**: Drag and drop CSV files to VMD window
+1. **Load Trajectory**: Drag and drop CSV files to Visualization Module
+2. **Start VMD**: Click "Start VMD" in the interface
 3. **Visualization**: Use VMD for molecular visualization
 
 ## 🖥️ Command Line Tools
