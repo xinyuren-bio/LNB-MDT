@@ -521,8 +521,6 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print(f"\n--- Running Sz Order Parameter Analysis (chain: {args.chain}) ---")
-    print(f"DEBUG: SZ analysis - gro_file: {args.gro_file}")
-    print(f"DEBUG: SZ analysis - xtc_file: {args.xtc_file}")
     
     sz_analysis = SZ(
         u,

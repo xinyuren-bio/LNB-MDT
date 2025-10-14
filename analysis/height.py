@@ -422,8 +422,6 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print("\n--- Running Height Analysis ---")
-    print(f"DEBUG: Height analysis - gro_file: {args.gro_file}")
-    print(f"DEBUG: Height analysis - xtc_file: {args.xtc_file}")
     
     height_analysis = Height(
         u,

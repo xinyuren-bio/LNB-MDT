@@ -37,15 +37,6 @@ class VMDCommands:
             cmd = f"set sel [atomselect top \"resid {resid}\"]; $sel set beta {value}; $sel delete"
             commands.append(cmd)
         
-        # 添加详细的调试信息
-        print(f"DEBUG: VMDCommands.setBetaValues - Setting beta for {len(resid_value_dict)} resids")
-        if resid_value_dict:
-            sample_items = list(resid_value_dict.items())[:5]  # 显示前5个样本
-            print(f"DEBUG: VMDCommands.setBetaValues - Sample values: {sample_items}")
-            min_val = min(resid_value_dict.values())
-            max_val = max(resid_value_dict.values())
-            print(f"DEBUG: VMDCommands.setBetaValues - Value range in this frame: {min_val} to {max_val}")
-        
         return "; ".join(commands)
     
     @staticmethod
@@ -64,7 +55,6 @@ class VMDCommands:
             "mol material Opaque",  # 使用不透明材质
             "mol addrep 0"  # 添加representation
         ]
-        print(f"DEBUG: VMDCommands.setupInitialDisplay - Commands: {'; '.join(commands)}")
         return "; ".join(commands)
     
     @staticmethod
@@ -84,8 +74,6 @@ class VMDCommands:
             "color scale method RWB",  # 设置颜色刻度为Red-White-Blue
             f"mol scaleminmax 0 0 {min_value} {max_value}"  # 设置beta值的范围：min对应蓝色，max对应红色
         ]
-        print(f"DEBUG: VMDCommands.setupBetaColoring - min_value: {min_value}, max_value: {max_value}")
-        print(f"DEBUG: VMDCommands.setupBetaColoring - Commands: {'; '.join(commands)}")
         return "; ".join(commands)
 
 # VMD TCP 控制类
@@ -121,7 +109,6 @@ class VMDTcp:
 
     def send_command(self, cmd):
         if self.tcpClientSocket:
-            print(f"DEBUG: Sending command to VMD: {cmd}")
             self.tcpClientSocket.send((cmd + "\n").encode())
             # VMD命令通常是异步的，不需要等待响应
             return "sent"
@@ -140,33 +127,25 @@ def read_excel_vmd(file_path):
         frame_info = None
         gro_file = None
         xtc_file = None
-        print(f"DEBUG: Reading CSV file: {file_path}")
         
         with open(file_path, 'r') as f:
             for line in f:
                 if line.startswith('#'):
                     comment = line.strip()[2:]
                     comments.append(comment)
-                    print(f"DEBUG: Found comment: {comment}")
                     # 提取FRAME_INFO
                     if comment.startswith('FRAME_INFO:'):
                         frame_info = comment.split(':', 1)[1].split(',')
-                        print(f"DEBUG: Extracted frame_info: {frame_info}")
                     # 提取GRO_FILE
                     elif comment.startswith('GRO_FILE:'):
                         gro_file = comment.split(':', 1)[1]
-                        print(f"DEBUG: Extracted gro_file: {gro_file}")
                     # 提取XTC_FILE
                     elif comment.startswith('XTC_FILE:'):
                         xtc_file = comment.split(':', 1)[1]
-                        print(f"DEBUG: Extracted xtc_file: {xtc_file}")
                 else:
                     break
 
-        print(f"DEBUG: Total comments found: {len(comments)}")
         df = pd.read_csv(file_path, skiprows=len(comments), header=0)
-        print(f"DEBUG: DataFrame columns: {list(df.columns)}")
-        print(f"DEBUG: DataFrame shape: {df.shape}")
         
         valid_comments = comments[1] if len(comments) > 1 else ""
         return valid_comments, df, frame_info, gro_file, xtc_file
@@ -266,26 +245,22 @@ class VMDControlPanel(QWidget):
     def onSelectionChanged(self, selected, deselected):
         selected_rows = [index.row() for index in self.table.selectionModel().selectedRows()]
         selected_cols = [index.column() for index in self.table.selectionModel().selectedIndexes()]
-        print(f"DEBUG: Selected rows: {selected_rows}, Selected columns: {selected_cols}")
         
         if self.vmd_running and self.vmd_tcp and self.df is not None:
-            print(f"DEBUG: DataFrame columns: {list(self.df.columns)}")
             for row in selected_rows:
                 for col in selected_cols:
                     if col > 0:  # 跳过第一列（resid列）
                         # 直接从列标题获取frame号
                         col_name = self.df.columns[col]
-                        print(f"DEBUG: Column {col} name: {col_name}")
                         if col_name.startswith("Frame_"):
                             frame = int(col_name.split("_")[1])
                             resid = self.df.iloc[row]["Resid"]
-                            print(f"DEBUG: Jumping to frame {frame} for resid {resid}")
                             self.vmd_tcp.send_command(VMDCommands.gotoFrame(frame))
                             self.vmd_tcp.send_command(VMDCommands.highlightResid([int(resid)]))
                         else:
-                            print(f"DEBUG: Column {col_name} does not start with 'Frame_', skipping")
+                            pass
         else:
-            print(f"DEBUG: VMD not ready - running: {self.vmd_running}, tcp: {self.vmd_tcp is not None}, df: {self.df is not None}")
+            pass
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls():
@@ -333,9 +308,7 @@ class VMDControlPanel(QWidget):
             
             # 如果有frame_info，将Time列标题替换为Frame列标题
             if self.frame_info:
-                print(f"DEBUG: Found frame_info: {self.frame_info}")
                 frame_cols = [col for col in self.df.columns if col != 'Resid']
-                print(f"DEBUG: Original frame_cols: {frame_cols}")
                 
                 # 创建新的列名映射：Time列 -> Frame列
                 column_mapping = {}
@@ -343,16 +316,12 @@ class VMDControlPanel(QWidget):
                     if i < len(self.frame_info) and self.frame_info[i]:
                         frame_value = self.frame_info[i]
                         column_mapping[time_col] = f"Frame_{frame_value}"
-                        print(f"DEBUG: Mapping {time_col} -> Frame_{frame_value}")
                 
-                print(f"DEBUG: Column mapping: {column_mapping}")
                 
                 # 重命名列
                 self.df.rename(columns=column_mapping, inplace=True)
                 frame_cols = [col for col in self.df.columns if col != 'Resid']
-                print(f"DEBUG: New frame_cols after rename: {frame_cols}")
             else:
-                print("DEBUG: No frame_info found, keeping original column names")
                 frame_cols = [col for col in self.df.columns if col != 'Resid']
             
             self.displayData(frame_cols)

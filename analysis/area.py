@@ -648,8 +648,6 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print("\n--- Running Area Analysis ---")
-    print(f"DEBUG: Area analysis - gro_file: {args.gro_file}")
-    print(f"DEBUG: Area analysis - xtc_file: {args.xtc_file}")
     
     area_analysis = Area(
         u,

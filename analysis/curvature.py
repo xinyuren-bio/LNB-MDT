@@ -310,8 +310,6 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print(f"\n--- Running {args.method.capitalize()} Curvature Analysis ---")
-    print(f"DEBUG: Curvature analysis - gro_file: {args.gro_file}")
-    print(f"DEBUG: Curvature analysis - xtc_file: {args.xtc_file}")
     
     curvature_analysis = Curvature(
         u,
