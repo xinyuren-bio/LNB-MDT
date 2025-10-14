@@ -952,7 +952,7 @@ class UnifiedAnalysisHandler:
             success_message = (
                 'Analysis Completed\n'
                 f"Time taken: {formatted_time}\n"
-                "The gro file and topol file were saved at:\n"
+                "The result file were saved at:\n"
                 f"{self.Info.path_result}"
             )
             create_warn_dialog(success_message, 'Analysis')
