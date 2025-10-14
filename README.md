@@ -2,7 +2,7 @@
 
 ![LNB-MDT Logo](LNB-MDT.jpg)
 
-**LNB-MDT** (Lipid NanoBubble Molecular Dynamics Toolkit) is a comprehensive toolkit designed for molecular dynamics analysis of lipid nanobubbles.
+**LNB-MDT** (Lipid NanoBubble Molecular Dynamics Toolkit) is a comprehensive toolkit designed for molecular dynamics simulations of lipid nanobubbles.
 
 ## 📋 Table of Contents
 
@@ -276,11 +276,6 @@ LNB-MDT/
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📞 Contact
-
-- **Project Maintainer**: XinyuRen
-- **Email**: [zy2310205@buaa.edu.cn]
-
 ---
 
-**LNB-MDT v1.0** - Making lipid nanobubble analysis simpler and more efficient!
+**LNB-MDT v1.0** - Making lipid nanobubble simulations simpler and more efficient!
