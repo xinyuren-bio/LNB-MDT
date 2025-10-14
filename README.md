@@ -267,9 +267,9 @@ LNB-MDT/
 │   └── README_COMMAND_LINE.md  # Command line usage guide
 ├── generation/            # Generation module
 ├── cases/                 # Example data
-│   ├── lnb.gro           # Example topology file
-│   ├── md.xtc            # Example trajectory file
-│   └── csv/              # Results file directory
+    ├── lnb.gro           # Example topology file
+    ├── md.xtc            # Example trajectory file
+    └── csv/              # Results file directory
 ```
 
 ## 📄 License
