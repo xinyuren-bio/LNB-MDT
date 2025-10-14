@@ -2,7 +2,7 @@
 
 ![LNB-MDT Logo](LNB-MDT.jpg)
 
-**LNB-MDT** (Lipid NanoBubble Molecular Dynamics Toolbox) is a comprehensive toolbox designed for molecular dynamics analysis of lipid nanobubbles.
+**LNB-MDT** (Lipid NanoBubble Molecular Dynamics Toolkit) is a comprehensive toolkit designed for molecular dynamics analysis of lipid nanobubbles.
 
 ## 📋 Table of Contents
 
@@ -253,8 +253,6 @@ For detailed usage instructions, please refer to [analysis/README_COMMAND_LINE.m
 LNB-MDT/
 ├── main.py                 # Main program entry
 ├── requirements.txt        # Python dependencies
-├── README.md              # Project documentation
-├── LICENSE                # License file
 ├── analysis/              # Analysis modules
 │   ├── pca.py            # PCA analysis
 │   ├── area.py           # Area analysis
@@ -267,21 +265,11 @@ LNB-MDT/
 │   ├── n_cluster.py      # N-cluster analysis
 │   ├── rad.py            # Radial distribution analysis
 │   └── README_COMMAND_LINE.md  # Command line usage guide
-├── modules/               # Core modules
-│   ├── ui_main.py        # Main interface
-│   ├── Fuctions_Analysis.py  # Analysis functions
-│   ├── Fuctions_Figure.py    # Figure functions
-│   ├── Fuctions_Generation.py # Generation functions
-│   └── vmd_control.py    # VMD control
-├── widgets/               # Interface components
-├── figure/                # Figure module
 ├── generation/            # Generation module
 ├── cases/                 # Example data
 │   ├── lnb.gro           # Example topology file
 │   ├── md.xtc            # Example trajectory file
 │   └── csv/              # Results file directory
-├── themes/                # Interface themes
-└── images/                # Image resources
 ```
 
 ## 📄 License
