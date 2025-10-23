@@ -47,6 +47,8 @@ def get_normals(k, points):
     return normals
 
 
+
+
 class Height(AnalysisBase):
     """
     A class for calculating the height of lipid molecules in LNB system.
@@ -98,7 +100,9 @@ class Height(AnalysisBase):
     def _calculate_height_for_frame(head_pos, tail_pos, k, res_arrange):
         if head_pos.shape[0] == 0:
             return np.array([])
+        
         normals = get_normals(k, head_pos)
+        
         head_to_tail = head_pos - tail_pos
         distance = (np.abs(np.einsum('ij,ij->i', normals, head_to_tail)))[res_arrange]
         return distance * 0.1
@@ -415,7 +419,15 @@ if __name__ == "__main__":
 
     print("\n--- Initializing MDAnalysis Universe ---")
     try:
-        u = mda.Universe(args.gro_file, args.xtc_file)
+        # 如果提供了xtc文件，则同时加载gro和xtc文件
+        if args.xtc_file and os.path.exists(args.xtc_file):
+            u = mda.Universe(args.gro_file, args.xtc_file)
+            print(f"Loaded both GRO and XTC files: {args.gro_file}, {args.xtc_file}")
+        else:
+            # 只使用gro文件
+            u = mda.Universe(args.gro_file)
+            print(f"Loaded only GRO file: {args.gro_file}")
+            print(f"Note: Analyzing single frame (frame 0) from GRO file")
     except Exception as e:
         print(f"Error loading MDAnalysis Universe: {e}")
         print("Please check if GRO/XTC files exist and are valid.")

@@ -181,7 +181,7 @@ def polygon_area(vertices):
 
 class Area(AnalysisBase):
     def __init__(self, universe, residueGroup: dict, k: int = None, filePath: str = None, 
-                 max_normal_angle_deg: float = 140, parallel: bool = False, n_jobs: int = -1, 
+                 max_normal_angle_deg: float = 360, parallel: bool = False, n_jobs: int = -1, 
                  gro_file: str = None, xtc_file: str = None):
         super().__init__(universe.trajectory)
         self.u = universe
@@ -562,8 +562,8 @@ def parse_args():
     parser.add_argument(
         "--xtc-file", "-x",
         type=str,
-        default="cases/md.xtc",
-        help="Path to the XTC file (trajectory file)."
+        default=None,
+        help="Path to the XTC file (trajectory file). If not provided, only GRO file will be used."
     )
     parser.add_argument(
         "--output-csv", "-o",
@@ -641,7 +641,15 @@ if __name__ == "__main__":
 
     print("\n--- Initializing MDAnalysis Universe ---")
     try:
-        u = mda.Universe(args.gro_file, args.xtc_file)
+        # 如果提供了xtc文件，则同时加载gro和xtc文件
+        if args.xtc_file and os.path.exists(args.xtc_file):
+            u = mda.Universe(args.gro_file, args.xtc_file)
+            print(f"Loaded both GRO and XTC files: {args.gro_file}, {args.xtc_file}")
+        else:
+            # 只使用gro文件
+            u = mda.Universe(args.gro_file)
+            print(f"Loaded only GRO file: {args.gro_file}")
+            print(f"Note: Analyzing single frame (frame 0) from GRO file")
     except Exception as e:
         print(f"Error loading MDAnalysis Universe: {e}")
         print("Please check if GRO/XTC files exist and are valid.")
