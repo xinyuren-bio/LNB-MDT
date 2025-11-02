@@ -437,13 +437,24 @@ class BubbleFigure(Figure):
         if len(self.excel_data.columns) < 2:
             print("错误：数据列数不足，无法绘制图表")
             return
-            
         
-        # 对于简单的Time-Values格式，使用前两列
-        if len(self.excel_data.columns) == 2:
+        # 检查是否有Time和Values列
+        if 'Time (ns)' in self.excel_data.columns and 'Values' in self.excel_data.columns:
+            # 标准格式：Frame, Time (ns), Values
+            x_axis = self.excel_data['Time (ns)'].astype(float).to_numpy()
+            y_values = self.excel_data['Values'].astype(float).to_numpy()
+        elif 'Time' in self.excel_data.columns and 'Values' in self.excel_data.columns:
+            # 标准格式：Frame, Time, Values
+            x_axis = self.excel_data['Time'].astype(float).to_numpy()
+            y_values = self.excel_data['Values'].astype(float).to_numpy()
+        elif len(self.excel_data.columns) == 2:
             # 简单格式：Time, Values
             x_axis = self.excel_data.iloc[:, 0].astype(float).to_numpy()
             y_values = self.excel_data.iloc[:, 1].astype(float).to_numpy()
+        elif len(self.excel_data.columns) == 3:
+            # 三列格式：Frame, Time, Values - 使用后两列
+            x_axis = self.excel_data.iloc[:, 1].astype(float).to_numpy()
+            y_values = self.excel_data.iloc[:, 2].astype(float).to_numpy()
         else:
             # 复杂格式：从第4列开始是时间数据
             time_columns = self.excel_data.columns[3:]
@@ -495,12 +506,26 @@ class BubbleFigure(Figure):
         if len(self.excel_data.columns) < 2:
             print("错误：数据列数不足，无法绘制图表")
             return
-            
         
-        # 对于简单的Time-Values格式，使用前两列
-        if len(self.excel_data.columns) == 2:
+        # 检查是否有Time和Values列
+        if 'Time (ns)' in self.excel_data.columns and 'Values' in self.excel_data.columns:
+            # 标准格式：Frame, Time (ns), Values
+            y_values = self.excel_data['Values'].astype(float).to_numpy()
+            overall_mean = y_values.mean()
+            overall_std = y_values.std()
+        elif 'Time' in self.excel_data.columns and 'Values' in self.excel_data.columns:
+            # 标准格式：Frame, Time, Values
+            y_values = self.excel_data['Values'].astype(float).to_numpy()
+            overall_mean = y_values.mean()
+            overall_std = y_values.std()
+        elif len(self.excel_data.columns) == 2:
             # 简单格式：Time, Values
             y_values = self.excel_data.iloc[:, 1].astype(float).to_numpy()
+            overall_mean = y_values.mean()
+            overall_std = y_values.std()
+        elif len(self.excel_data.columns) == 3:
+            # 三列格式：Frame, Time, Values - 使用Values列
+            y_values = self.excel_data.iloc[:, 2].astype(float).to_numpy()
             overall_mean = y_values.mean()
             overall_std = y_values.std()
         else:
