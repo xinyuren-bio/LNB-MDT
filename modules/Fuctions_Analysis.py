@@ -121,12 +121,11 @@ class AnalysisBtnClick:
         # 创建顶部窗口，储存Next和Back按钮
         self.ui.widgetUpNextBack = QWidget()
         # 创建顶部布局用来刷新事件
-        # 创建带图标的Back按钮
-        self.ui.btnBack = QPushButton()
+        # 创建带图标的Back按钮 - 使用make_btn统一样式
+        self.ui.btnBack = UIItemsMake.make_btn('')  # 空文字，只显示图标
         self.update_button_icons()  # 根据当前主题设置图标
         self.ui.btnBack.setIconSize(QSize(24, 24))
         self.ui.btnBack.setToolTip('Back')
-        self.ui.btnBack.setCursor(QCursor(Qt.PointingHandCursor))
         
         # 添加测试连接
         def test_back_click():
@@ -137,13 +136,12 @@ class AnalysisBtnClick:
         self.ui.btnBack.clicked.connect(self.switchWidgetBack)
         print(f"*** Back button created and connected ***")
         
-        # 创建带图标的Refresh按钮
+        # 创建带图标的Refresh按钮 - 使用make_btn统一样式
         print(f"*** Creating Refresh button ***")
-        self.ui.btnRefresh = QPushButton()
+        self.ui.btnRefresh = UIItemsMake.make_btn('')  # 空文字，只显示图标
         self.update_button_icons()  # 根据当前主题设置图标
         self.ui.btnRefresh.setIconSize(QSize(24, 24))
         self.ui.btnRefresh.setToolTip('Refresh')
-        self.ui.btnRefresh.setCursor(QCursor(Qt.PointingHandCursor))
         
         # 添加测试连接
         def test_refresh_click():

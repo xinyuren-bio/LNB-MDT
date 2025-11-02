@@ -831,10 +831,11 @@ class Ui_Form(object):
         self.btn_figure_run.setFont(font)
         self.btn_figure_run.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_figure_run.setLayoutDirection(Qt.LeftToRight)
-        self.btn_figure_run.setStyleSheet(u"background-color: rgb(189,147,249);\n"
-"color:white;\n"
-"font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"")
+        # 内联样式已移除，使用外部样式表统一控制按钮样式
+        # self.btn_figure_run.setStyleSheet(u"background-color: rgb(189,147,249);\n"
+# "color:white;\n"
+# "font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "")
 
         self.verticalLayout.addWidget(self.btn_figure_run)
 

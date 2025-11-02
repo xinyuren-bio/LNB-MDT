@@ -7,7 +7,7 @@
 
 import os
 from PySide6.QtWidgets import QPushButton, QHBoxLayout, QWidget, QApplication
-from PySide6.QtCore import Qt, QSettings
+from PySide6.QtCore import Qt, QSettings, QObject
 from PySide6.QtGui import QIcon, QPixmap
 
 
@@ -57,13 +57,17 @@ class ThemeManager:
         try:
             with open(theme_file, 'r', encoding='utf-8') as f:
                 style_sheet = f.read()
-                
+            
             # 应用主题到UI的styleSheet组件
             if hasattr(self.main_window.ui, 'styleSheet'):
                 self.main_window.ui.styleSheet.setStyleSheet(style_sheet)
             else:
                 # 如果没有styleSheet组件，则应用到主窗口
                 self.main_window.setStyleSheet(style_sheet)
+            
+            # 延迟应用按钮背景色，确保QSS已经加载完成
+            from PySide6.QtCore import QTimer
+            QTimer.singleShot(200, self._apply_button_backgrounds)
             
             # 主题切换完成，样式由QSS文件控制
             self.current_theme = theme_name
@@ -78,6 +82,72 @@ class ThemeManager:
             
         except Exception as e:
             return False
+    
+    def _apply_button_backgrounds(self):
+        """强制应用按钮背景色 - 确保背景色在macOS上显示（排除左侧和顶部按钮）"""
+        try:
+            from PySide6.QtWidgets import QPushButton
+            from PySide6.QtGui import QPalette, QColor
+            from PySide6.QtCore import QObject
+            
+            # 需要排除的按钮ID列表（左侧菜单和顶部控制按钮保持原始样式）
+            excluded_object_names = {
+                'btn_home', 'btn_generate', 'btn_figure', 'btn_analysis', 'btn_data_process',
+                'toggleButton', 'btn_language', 'minimizeAppBtn', 'maximizeRestoreAppBtn', 
+                'closeAppBtn', 'themeSwitchButton'
+            }
+            
+            # 需要排除的父容器（包含这些按钮的容器）
+            excluded_parents = set()
+            # 查找 topMenu 和 rightButtons 容器中的按钮
+            top_menu = self.main_window.findChild(QObject, "topMenu")
+            right_buttons = self.main_window.findChild(QObject, "rightButtons")
+            if top_menu:
+                excluded_parents.add(top_menu)
+            if right_buttons:
+                excluded_parents.add(right_buttons)
+            
+            # 目标背景色和边框色
+            target_bg = "#9faeda"
+            
+            for button in self.main_window.findChildren(QPushButton):
+                # 跳过左侧菜单按钮和顶部控制按钮
+                if button.objectName() in excluded_object_names:
+                    continue
+                # 跳过 topMenu 和 rightButtons 容器中的按钮
+                parent = button.parent()
+                if parent and parent in excluded_parents:
+                    continue
+                
+                # 获取按钮的当前样式表
+                current_style = button.styleSheet()
+                
+                # 确保按钮填充背景（macOS必需）
+                button.setAutoFillBackground(True)
+                
+                # 使用QPalette设置背景色（macOS需要）
+                palette = button.palette()
+                palette.setColor(button.backgroundRole(), QColor(target_bg))
+                button.setPalette(palette)
+                
+                # 重新应用样式表以保持border-radius等样式
+                # 如果当前样式为空或不符合make_btn的样式，使用默认样式
+                if current_style and ('!important' in current_style or 'border-radius' in current_style):
+                    button.setStyleSheet(current_style)
+                else:
+                    # 使用make_btn的默认样式
+                    default_style = (
+                        f"background-color: {target_bg} !important;"
+                        f"color: black !important;"
+                        f"border: 2px solid {target_bg} !important;"
+                        f"border-radius: 5px !important;"
+                        f"font: 12pt \"华文细黑\";"
+                        f"padding: 5px;"
+                    )
+                    button.setStyleSheet(default_style)
+                
+        except Exception as e:
+            print(f"[Theme Manager] 应用按钮背景色时出错: {e}")
     
     def notify_theme_change(self):
         """

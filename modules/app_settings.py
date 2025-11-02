@@ -13,8 +13,8 @@ class Settings():
     BTN_RIGHT_BOX_COLOR = "background-color: #ff79c6;"
 
     # MENU SELECTED STYLESHEET
+    # 左侧菜单按钮保持原始样式（透明背景），只添加边框渐变效果
     MENU_SELECTED_STYLESHEET = """
     border-left: 22px solid qlineargradient(spread:pad, x1:0.034, y1:0, x2:0.216, y2:0, stop:0.499 rgba(255, 121, 198, 255), stop:0.5 rgba(85, 170, 255, 0));
-    background-color: #6272a4;
     """
 

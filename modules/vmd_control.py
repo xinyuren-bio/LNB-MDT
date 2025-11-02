@@ -18,12 +18,12 @@ class VMDCommands:
     @staticmethod
     def highlightResid(resids):
         """
-        高亮显示选中的resid，使用VDW和Beta着色
+        高亮显示选中的resid，使用licorice风格和Beta着色
         注意：这不会影响背景representation的coloring method
         """
         resid_str = " ".join(map(str, resids))
         # 使用rep 1来高亮，不影响rep 0的背景
-        return f"mol delrep 1 0; mol selection resid {resid_str}; mol representation VDW; mol color Beta; mol addrep 0"
+        return f"mol delrep 1 0; mol selection resid {resid_str}; mol representation Licorice; mol color Beta; mol addrep 0"
     
     @staticmethod
     def setBetaValues(resid_value_dict):
@@ -32,6 +32,9 @@ class VMDCommands:
         resid_value_dict: {resid: value, ...}
         """
         commands = []
+        # 首先清除所有beta值
+        commands.append("set sel [atomselect top \"all\"]; $sel set beta 0; $sel delete")
+        
         for resid, value in resid_value_dict.items():
             # 为每个resid设置beta值
             cmd = f"set sel [atomselect top \"resid {resid}\"]; $sel set beta {value}; $sel delete"
@@ -75,6 +78,36 @@ class VMDCommands:
             f"mol scaleminmax 0 0 {min_value} {max_value}"  # 设置beta值的范围：min对应蓝色，max对应红色
         ]
         return "; ".join(commands)
+    
+    @staticmethod
+    def showBetaInfo(column_name, min_val, max_val, resid_values):
+        """
+        在VMD控制台显示beta值信息
+        """
+        info_commands = [
+            f'puts "=== Beta值信息 - {column_name} ==="',
+            f'puts "数值范围: {min_val:.6f} 到 {max_val:.6f}"',
+            f'puts "已设置 {len(resid_values)} 个resid的beta值"',
+            'puts "颜色映射: 蓝色(最小值) → 白色(中值) → 红色(最大值)"',
+            'puts "=========================================="'
+        ]
+        return "; ".join(info_commands)
+    
+    @staticmethod
+    def setColumnBetaValues(column_data, resid_column):
+        """
+        设置某一列的beta值，直接使用原始数值
+        column_data: 某一列的数值数据
+        resid_column: resid列的数据
+        返回resid_value_dict
+        """
+        # 直接使用原始数值，不进行归一化
+        resid_values = {}
+        for resid, value in zip(resid_column, column_data):
+            if pd.notna(value) and isinstance(value, (int, float)):
+                resid_values[resid] = value
+        
+        return resid_values
 
 # VMD TCP 控制类
 class VMDTcp:
@@ -247,18 +280,53 @@ class VMDControlPanel(QWidget):
         selected_cols = [index.column() for index in self.table.selectionModel().selectedIndexes()]
         
         if self.vmd_running and self.vmd_tcp and self.df is not None:
-            for row in selected_rows:
-                for col in selected_cols:
+            # 如果选择了列（点击列标题或选择整列）
+            if selected_cols:
+                unique_cols = list(set(selected_cols))
+                for col in unique_cols:
                     if col > 0:  # 跳过第一列（resid列）
-                        # 直接从列标题获取frame号
                         col_name = self.df.columns[col]
                         if col_name.startswith("Frame_"):
                             frame = int(col_name.split("_")[1])
-                            resid = self.df.iloc[row]["Resid"]
+                            # 跳转到对应帧
                             self.vmd_tcp.send_command(VMDCommands.gotoFrame(frame))
-                            self.vmd_tcp.send_command(VMDCommands.highlightResid([int(resid)]))
-                        else:
-                            pass
+                            
+                            # 获取当前列的数据和resid列
+                            column_data = self.df.iloc[:, col].values
+                            resid_column = self.df['Resid'].values
+                            
+                            # 计算beta值（直接使用原始数值）
+                            resid_values = VMDCommands.setColumnBetaValues(column_data, resid_column)
+                            
+                            if resid_values:
+                                # 计算原始数值的范围用于显示信息
+                                valid_values = [val for val in column_data if pd.notna(val) and isinstance(val, (int, float))]
+                                min_val = min(valid_values) if valid_values else 0
+                                max_val = max(valid_values) if valid_values else 0
+                                
+                                # 设置beta值
+                                beta_command = VMDCommands.setBetaValues(resid_values)
+                                self.vmd_tcp.send_command(beta_command)
+                                
+                                # 设置beta着色显示（使用实际数值范围）
+                                coloring_command = VMDCommands.setupBetaColoring(min_val, max_val)
+                                self.vmd_tcp.send_command(coloring_command)
+                                
+                                # 显示beta值信息
+                                info_command = VMDCommands.showBetaInfo(col_name, min_val, max_val, resid_values)
+                                self.vmd_tcp.send_command(info_command)
+            
+            # 如果选择了特定的行和列（点击具体单元格）
+            if selected_rows:
+                for row in selected_rows:
+                    for col in selected_cols:
+                        if col > 0:  # 跳过第一列（resid列）
+                            col_name = self.df.columns[col]
+                            if col_name.startswith("Frame_"):
+                                frame = int(col_name.split("_")[1])
+                                resid = self.df.iloc[row]["Resid"]
+                                self.vmd_tcp.send_command(VMDCommands.gotoFrame(frame))
+                                self.vmd_tcp.send_command(VMDCommands.highlightResid([int(resid)]))
         else:
             pass
 

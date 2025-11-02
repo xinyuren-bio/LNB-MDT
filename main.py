@@ -102,11 +102,35 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-    # +++ 添加以下代码以解决背景颜色问题 +++
-        # 强制所有QPushButton都填充自己的背景，以覆盖系统原生样式。
-        # 这是解决macOS等系统上背景色不生效问题的关键。
-        # for button in self.findChildren(QPushButton):
-        #     button.setAutoFillBackground(True)
+        # 强制所有QPushButton都填充自己的背景，以覆盖系统原生样式（排除左侧和顶部按钮）
+        from PySide6.QtWidgets import QPushButton
+        from PySide6.QtCore import QObject
+        
+        # 需要排除的按钮ID列表（左侧菜单和顶部控制按钮保持原始样式）
+        excluded_object_names = {
+            'btn_home', 'btn_generate', 'btn_figure', 'btn_analysis', 'btn_data_process',
+            'toggleButton', 'btn_language', 'minimizeAppBtn', 'maximizeRestoreAppBtn', 
+            'closeAppBtn', 'themeSwitchButton'
+        }
+        
+        # 需要排除的父容器
+        excluded_parents = set()
+        top_menu = self.findChild(QObject, "topMenu")
+        right_buttons = self.findChild(QObject, "rightButtons")
+        if top_menu:
+            excluded_parents.add(top_menu)
+        if right_buttons:
+            excluded_parents.add(right_buttons)
+        
+        for button in self.findChildren(QPushButton):
+            # 跳过左侧菜单按钮和顶部控制按钮
+            if button.objectName() in excluded_object_names:
+                continue
+            # 跳过 topMenu 和 rightButtons 容器中的按钮
+            parent = button.parent()
+            if parent and parent in excluded_parents:
+                continue
+            button.setAutoFillBackground(True)
 
         # 初始化 VMDControlPanel
         global widgets
@@ -202,6 +226,7 @@ class MainWindow(QMainWindow):
         # //////////////////////////Analysis/////////////////////////////////////
         # btnTools CLICK
         # ///////////////////////////////////////////////////////////////
+        # 按钮已在ui_main.py中使用make_btn创建，这里只需要绑定事件
         self.ui.btnSructure.clicked.connect(lambda: BtnGetPath.run(self.ui.editStructure, 'analysis_gro'))
         self.ui.btnTrajectory.clicked.connect(lambda: BtnGetPath.run(self.ui.editTrajectory, 'analysis_xtc'))
         self.ui.btnResult.clicked.connect(lambda: BtnGetPath.run(self.ui.editResult, 'analysis_result'))

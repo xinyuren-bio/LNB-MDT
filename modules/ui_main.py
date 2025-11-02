@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (QApplication, QButtonGroup, QComboBox, QDoubleSpi
     QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
     QWidget)
 from .resources_rc import *
+from .Tools import UIItemsMake
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -426,29 +427,21 @@ class Ui_MainWindow(object):
         self.gridLayout_6 = QGridLayout()
         self.gridLayout_6.setObjectName(u"gridLayout_6")
         self.gridLayout_6.setContentsMargins(-1, -1, -1, 0)
-        self.btnTrajectory = QPushButton(self.widget_3)
-        self.btnTrajectory.setObjectName(u"btnTrajectory")
-        self.btnTrajectory.setMinimumSize(QSize(75, 50))
-        self.btnTrajectory.setMaximumSize(QSize(100, 16777215))
+        # 创建图标和字体（图标用于按钮，字体用于其他按钮如btn_gene_path）
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/images/icons/cil-folder-open.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         font4 = QFont()
         font4.setFamilies([u"\u534e\u6587\u7ec6\u9ed1"])
         font4.setPointSize(12)
         font4.setBold(False)
         font4.setItalic(False)
-        self.btnTrajectory.setFont(font4)
-        self.btnTrajectory.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        # self.btnTrajectory.setStyleSheet(
-                # u"background-color: rgb(52, 59, 72);\n"
-# "text-align:left;\n"
-# "font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-# "\n"
-# "")
-        icon3 = QIcon()
-        icon3.addFile(u":/icons/images/icons/cil-folder-open.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        # 使用make_btn创建按钮以统一样式（不绑定事件，在main.py中绑定）
+        self.btnTrajectory = UIItemsMake.make_btn("")
+        self.btnTrajectory.setObjectName(u"btnTrajectory")
+        self.btnTrajectory.setMinimumSize(QSize(75, 50))
+        self.btnTrajectory.setMaximumSize(QSize(100, 16777215))
         self.btnTrajectory.setIcon(icon3)
-
         self.gridLayout_6.addWidget(self.btnTrajectory, 1, 1, 1, 1)
-
         self.editStructure = QLineEdit(self.widget_3)
         self.editStructure.setObjectName(u"editStructure")
         self.editStructure.setMinimumSize(QSize(100, 50))
@@ -470,33 +463,25 @@ class Ui_MainWindow(object):
 
         self.gridLayout_6.addWidget(self.editTrajectory, 1, 0, 1, 1)
 
-        self.btnSructure = QPushButton(self.widget_3)
+        # 使用make_btn创建按钮以统一样式（不绑定事件，在main.py中绑定）
+        self.btnSructure = UIItemsMake.make_btn("")
         self.btnSructure.setObjectName(u"btnSructure")
         self.btnSructure.setMinimumSize(QSize(75, 50))
         self.btnSructure.setMaximumSize(QSize(100, 16777215))
         self.btnSructure.setFont(font4)
         self.btnSructure.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        # self.btnSructure.setStyleSheet(
-                # u"background-color: rgb(52, 59, 72);\n"
-# "text-align:left;\n"
-# "font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";")
         self.btnSructure.setIcon(icon3)
         self.btnSructure.setCheckable(False)
-
         self.gridLayout_6.addWidget(self.btnSructure, 0, 1, 1, 1)
 
-        self.btnResult = QPushButton(self.widget_3)
+        # 使用make_btn创建按钮以统一样式（不绑定事件，在main.py中绑定）
+        self.btnResult = UIItemsMake.make_btn("")
         self.btnResult.setObjectName(u"btnResult")
         self.btnResult.setMinimumSize(QSize(75, 50))
         self.btnResult.setMaximumSize(QSize(100, 16777215))
         self.btnResult.setFont(font4)
         self.btnResult.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        # self.btnResult.setStyleSheet(
-                # u"background-color: rgb(52, 59, 72);\n"
-# "text-align:left;\n"
-# "font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";")
         self.btnResult.setIcon(icon3)
-
         self.gridLayout_6.addWidget(self.btnResult, 2, 1, 1, 1)
 
         self.editResult = QLineEdit(self.widget_3)
@@ -720,8 +705,6 @@ class Ui_MainWindow(object):
         self.btnNext.setFont(font)
         self.btnNext.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btnNext.setLayoutDirection(Qt.LeftToRight)
-        self.btnNext.setStyleSheet(u"background-color: rgb(189,147,249);\n"
-"")
         icon4 = QIcon()
         icon4.addFile(u":/icons/images/icons/cil-chevron-double-right.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.btnNext.setIcon(icon4)
@@ -1183,11 +1166,6 @@ class Ui_MainWindow(object):
         self.btn_figure_run.setFont(font2)
         self.btn_figure_run.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_figure_run.setLayoutDirection(Qt.LeftToRight)
-        self.btn_figure_run.setStyleSheet(u"background-color: rgb(189,147,249);\n"
-"color:white;\n"
-# "font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-"")
-
         self.verticalLayout_11.addWidget(self.btn_figure_run)
 
 
@@ -1354,13 +1332,13 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.closeAppBtn.setText("")
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:72pt; font-weight:600;\">LNB-MDT</span></p></body></html>", None))
-        self.btnTrajectory.setText(QCoreApplication.translate("MainWindow", u"Trajecory ", None))
+        self.btnTrajectory.setText(QCoreApplication.translate("MainWindow", u".xtc", None))
         self.editStructure.setText("")
         self.editStructure.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Supported file formats: GRO PDB", None))
         self.editTrajectory.setText("")
         self.editTrajectory.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Supported file formats: XTC, TPR", None))
-        self.btnSructure.setText(QCoreApplication.translate("MainWindow", u"Structure ", None))
-        self.btnResult.setText(QCoreApplication.translate("MainWindow", u"PATH", None))
+        self.btnSructure.setText(QCoreApplication.translate("MainWindow", u".gro ", None))
+        self.btnResult.setText(QCoreApplication.translate("MainWindow", u".csv", None))
         self.editResult.setText("")
         self.editResult.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Please select the result save path", None))
         self.comboBoxMethod.setItemText(0, QCoreApplication.translate("MainWindow", u"Anisotropy", None))
@@ -1402,7 +1380,7 @@ class Ui_MainWindow(object):
         self.figure_edit_path.setInputMask("")
         self.figure_edit_path.setText("")
         self.figure_edit_path.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Please import Excel file", None))
-        self.figure_btn_path.setText(QCoreApplication.translate("MainWindow", u"Select Excel File", None))
+        self.figure_btn_path.setText(QCoreApplication.translate("MainWindow", u".csv", None))
 
 
         self.btn_figure_run.setText(QCoreApplication.translate("MainWindow", u"RUN!", None))
@@ -1412,4 +1390,5 @@ class Ui_MainWindow(object):
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"By\uff1aNanoBioMembrane Lab", None))
         self.version.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>v1.0</p></body></html>", None))
     # retranslateUi
+
 
