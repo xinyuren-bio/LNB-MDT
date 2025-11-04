@@ -39,6 +39,15 @@ def get_available_plot_types(description, data_type):
     """
     available_types = []
     
+    # Check if it's a Density type based on description keywords
+    # This handles cases where description is not in TYPE dictionary
+    if any(keyword in description for keyword in ['DensityTime', 'Density Radius', 'Density With Times', 
+                                                  'Density With Time', 'Density With Radius', 'Multi-Radius Density',
+                                                  'Multi Radius Density', 'Density With']):
+        # DensityFigure: supports Line, Heatmap
+        available_types = ['line', 'heatmap']
+        return available_types
+    
     # Determine based on data_type
     if data_type == 0:
         # LipidsFigure: supports Line, Bar, Scatter
@@ -321,8 +330,13 @@ def main():
     if description in TYPE:
         data_type = TYPE[description]
     else:
+        # Check if it's a Density type based on description keywords
+        if any(keyword in description for keyword in ['DensityTime', 'Density Radius', 'Density With Times', 
+                                                      'Density With Time', 'Density With Radius', 'Multi-Radius Density',
+                                                      'Multi Radius Density', 'Density With']):
+            data_type = 3  # DensityFigure
         # Infer from data structure
-        if 'Resname' in excel_data.columns:
+        elif 'Resname' in excel_data.columns:
             data_type = 0  # LipidsFigure
         else:
             data_type = 1  # BubbleFigure
