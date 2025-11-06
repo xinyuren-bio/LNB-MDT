@@ -2322,28 +2322,59 @@ class DensityRadiusHandler:
         density_head_atoms = {}
         
         current_groups = self.Box.get_config('DensityRadius').DensityGroups
-        print(f"Total residue groups: {len(current_groups)}")
+        print(f"Total residue groups: {len(current_groups) if current_groups else 0}")
         print(f"Type of DensityGroups: {type(current_groups)}")
         
         # 检查DensityGroups的类型
         if isinstance(current_groups, list):
-            # 如果是QGroupBox列表，收集选择
+            # 如果是QGroupBox列表，收集选择（这是UI中的最新状态）
             for residue_group in current_groups:
-                if residue_group.isChecked():
+                if hasattr(residue_group, 'isChecked') and residue_group.isChecked():
                     residue_name = residue_group.residue_name
                     selected_atoms = []
-                    for atom_checkbox in residue_group.atom_checkboxes:
-                        if atom_checkbox.isChecked():
-                            selected_atoms.append(atom_checkbox.text())
+                    if hasattr(residue_group, 'atom_checkboxes'):
+                        for atom_checkbox in residue_group.atom_checkboxes:
+                            if atom_checkbox.isChecked():
+                                selected_atoms.append(atom_checkbox.text())
                     
                     if selected_atoms:
                         density_groups[residue_name] = selected_atoms
                         density_head_atoms[residue_name] = selected_atoms
         elif isinstance(current_groups, dict):
-            # 如果已经是字典格式，直接使用
-            print("DensityGroups is already a dictionary, using existing data")
-            density_groups = current_groups.copy()
-            density_head_atoms = self.Box.get_config('DensityRadius').DensityHeadAtoms.copy()
+            # 如果已经是字典格式，需要检查是否有UI widget可以从中读取
+            # 尝试从stackedWidget中获取当前的UI状态
+            current_widget = self.ui.stackedWidget_Analysis.currentWidget()
+            if current_widget and hasattr(current_widget, 'findChildren'):
+                # 尝试从当前widget中查找QGroupBox
+                qgroupboxes = current_widget.findChildren(QGroupBox)
+                if qgroupboxes:
+                    # 如果找到了QGroupBox，从UI中收集最新选择
+                    print("Found QGroupBox widgets in current UI, collecting from UI...")
+                    for residue_group in qgroupboxes:
+                        if residue_group.isChecked():
+                            residue_name = residue_group.residue_name if hasattr(residue_group, 'residue_name') else None
+                            if residue_name:
+                                selected_atoms = []
+                                if hasattr(residue_group, 'atom_checkboxes'):
+                                    for atom_checkbox in residue_group.atom_checkboxes:
+                                        if atom_checkbox.isChecked():
+                                            selected_atoms.append(atom_checkbox.text())
+                                
+                                if selected_atoms:
+                                    density_groups[residue_name] = selected_atoms
+                                    density_head_atoms[residue_name] = selected_atoms
+                else:
+                    # 如果没有找到UI widget，使用现有字典（但这种情况应该很少见）
+                    print("No UI widgets found, using existing dictionary data")
+                    density_groups = current_groups.copy()
+                    if self.Box.get_config('DensityRadius').DensityHeadAtoms:
+                        density_head_atoms = self.Box.get_config('DensityRadius').DensityHeadAtoms.copy()
+            else:
+                # 如果没有UI可以读取，使用现有字典
+                print("No valid UI widget found, using existing dictionary data")
+                density_groups = current_groups.copy()
+                if self.Box.get_config('DensityRadius').DensityHeadAtoms:
+                    density_head_atoms = self.Box.get_config('DensityRadius').DensityHeadAtoms.copy()
         
         # 保存到配置中
         self.Box.get_config('DensityRadius').DensityGroups = density_groups
@@ -2431,28 +2462,59 @@ class DensityRadiusHandler:
         gas_head_atoms = {}
         
         current_groups = self.Box.get_config('DensityRadius').GasGroups
-        print(f"Total gas groups: {len(current_groups)}")
+        print(f"Total gas groups: {len(current_groups) if current_groups else 0}")
         print(f"Type of GasGroups: {type(current_groups)}")
         
         # 检查GasGroups的类型
         if isinstance(current_groups, list):
-            # 如果是QGroupBox列表，收集选择
+            # 如果是QGroupBox列表，收集选择（这是UI中的最新状态）
             for residue_group in current_groups:
-                if residue_group.isChecked():
+                if hasattr(residue_group, 'isChecked') and residue_group.isChecked():
                     residue_name = residue_group.residue_name
                     selected_atoms = []
-                    for atom_checkbox in residue_group.atom_checkboxes:
-                        if atom_checkbox.isChecked():
-                            selected_atoms.append(atom_checkbox.text())
+                    if hasattr(residue_group, 'atom_checkboxes'):
+                        for atom_checkbox in residue_group.atom_checkboxes:
+                            if atom_checkbox.isChecked():
+                                selected_atoms.append(atom_checkbox.text())
                     
                     if selected_atoms:
                         gas_groups[residue_name] = selected_atoms
                         gas_head_atoms[residue_name] = selected_atoms
         elif isinstance(current_groups, dict):
-            # 如果已经是字典格式，直接使用
-            print("GasGroups is already a dictionary, using existing data")
-            gas_groups = current_groups.copy()
-            gas_head_atoms = self.Box.get_config('DensityRadius').GasHeadAtoms.copy()
+            # 如果已经是字典格式，需要检查是否有UI widget可以从中读取
+            # 尝试从stackedWidget中获取当前的UI状态
+            current_widget = self.ui.stackedWidget_Analysis.currentWidget()
+            if current_widget and hasattr(current_widget, 'findChildren'):
+                # 尝试从当前widget中查找QGroupBox
+                qgroupboxes = current_widget.findChildren(QGroupBox)
+                if qgroupboxes:
+                    # 如果找到了QGroupBox，从UI中收集最新选择
+                    print("Found QGroupBox widgets in current UI, collecting from UI...")
+                    for residue_group in qgroupboxes:
+                        if residue_group.isChecked():
+                            residue_name = residue_group.residue_name if hasattr(residue_group, 'residue_name') else None
+                            if residue_name:
+                                selected_atoms = []
+                                if hasattr(residue_group, 'atom_checkboxes'):
+                                    for atom_checkbox in residue_group.atom_checkboxes:
+                                        if atom_checkbox.isChecked():
+                                            selected_atoms.append(atom_checkbox.text())
+                                
+                                if selected_atoms:
+                                    gas_groups[residue_name] = selected_atoms
+                                    gas_head_atoms[residue_name] = selected_atoms
+                else:
+                    # 如果没有找到UI widget，使用现有字典（但这种情况应该很少见）
+                    print("No UI widgets found, using existing dictionary data")
+                    gas_groups = current_groups.copy()
+                    if self.Box.get_config('DensityRadius').GasHeadAtoms:
+                        gas_head_atoms = self.Box.get_config('DensityRadius').GasHeadAtoms.copy()
+            else:
+                # 如果没有UI可以读取，使用现有字典
+                print("No valid UI widget found, using existing dictionary data")
+                gas_groups = current_groups.copy()
+                if self.Box.get_config('DensityRadius').GasHeadAtoms:
+                    gas_head_atoms = self.Box.get_config('DensityRadius').GasHeadAtoms.copy()
         
         # 保存到配置中
         self.Box.get_config('DensityRadius').GasGroups = gas_groups
@@ -2465,11 +2527,18 @@ class DensityRadiusHandler:
         # 记录开始时间
         self.start_time = time.time()
         
-        # 收集选中的气体组分信息
+        # 确保收集最新的选择（包括密度和气体）
+        # 这样可以保证参数是最新的，即使用户更改了选择
+        self._collect_density_selections()
         self._collect_gas_selections()
         
+        # 检查是否选择了密度组分
+        if not self.Box.get_config('DensityRadius').DensityHeadAtoms:
+            create_warn_dialog("Please select at least one density group!", "Error")
+            return
+        
         # 检查是否选择了气体组分
-        if not self.Box.get_config('DensityRadius').GasGroups:
+        if not self.Box.get_config('DensityRadius').GasHeadAtoms:
             create_warn_dialog("Please select at least one gas group!", "Error")
             return
         

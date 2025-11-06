@@ -16,7 +16,7 @@ import configparser
 os.environ['QT_LOGGING_RULES'] = '*.debug=false;qt.qpa.fonts=false'
 os.environ['QT_FONT_DPI'] = '96'
 
-from modules.vmd_control import VMDCommands, VMDTcp
+from modules.vmd_control import VMDCommands, VMDTcp, PerformanceMonitor
 # IMPORT / GUI AND MODULES AND WIDGETS
 # ///////////////////////////////////////////////////////////////
 
@@ -407,74 +407,211 @@ class MainWindow(QMainWindow):
         self.ui.vmd_label.setText("VMD stopped")
 
     def onSelectionChanged(self):
+        """
+        处理表格选择变化事件，使用QTimer延迟处理，避免阻塞UI
+        """
+        from PySide6.QtCore import QTimer
+        from PySide6.QtWidgets import QApplication
+        
+        # 检查基本状态
         if not self.connected:
             self.ui.vmd_label.setText("VMD is not connected")
             return
-
-        selected_items = self.ui.vmd_tablewidget.selectedItems()
-        if not selected_items:
-            return
-
-        columns = set(item.column() for item in selected_items)
-        if len(columns) != 1:
-            self.ui.vmd_label.setText("Please select cells in the same frame (column)")
-            return
-
-        column = columns.pop()
-        if column == 0:
-            self.ui.vmd_label.setText("Please select cells in a frame column (not resid)")
-            return
-
-        col_name = self.ui.vmd_tablewidget.horizontalHeaderItem(column).text()
         
-        # 检查是否是Frame列
-        if col_name.startswith("Frame_"):
-            frame = int(col_name.split("_")[1])
-        else:
-            # 兼容旧格式，直接使用列标题作为frame
+        if not self.vmd:
+            self.ui.vmd_label.setText("VMD object is None")
+            return
+        
+        # 检查窗口状态并恢复（如果需要）
+        try:
+            if not self.isVisible() or self.isMinimized():
+                self.show()
+                self.raise_()
+                self.activateWindow()
+        except:
+            pass
+        
+        # 立即处理UI更新
+        for i in range(3):
+            QApplication.processEvents()
+        
+        # 使用QTimer延迟处理，避免阻塞UI
+        QTimer.singleShot(50, self._processSelectionDelayedMain)
+    
+    def _processSelectionDelayedMain(self):
+        """
+        延迟处理选择变化（main.py版本）
+        """
+        try:
+            # 快速获取选中的列（避免获取所有items导致阻塞）
             try:
-                frame = int(float(col_name))
-            except ValueError:
-                self.ui.vmd_label.setText(f"Invalid frame column: {col_name}")
+                # 优先检查列选择
+                selected_cols = []
+                column_count = self.ui.vmd_tablewidget.columnCount()
+                
+                for col in range(column_count):
+                    if col > 0:  # 跳过第一列
+                        try:
+                            if self.ui.vmd_tablewidget.isColumnSelected(col):
+                                selected_cols.append(col)
+                        except:
+                            pass
+                
+                # 如果没有通过列标题选择，检查是否整列被选中
+                if not selected_cols:
+                    # 先快速检查选中项数量（使用selectionModel更高效）
+                    try:
+                        selection_model = self.ui.vmd_tablewidget.selectionModel()
+                        selected_indexes = selection_model.selectedIndexes()
+                        total_selected = len(selected_indexes)
+                        row_count = self.ui.vmd_tablewidget.rowCount()
+                        
+                        # 如果选中项数量接近总行数，认为是整列选择
+                        if total_selected >= row_count * 0.9:
+                            # 获取列号（从第一个选中的index）
+                            if total_selected > 0:
+                                col = selected_indexes[0].column()
+                                if col > 0:  # 跳过第一列
+                                    selected_cols = [col]
+                                    selected_items = None  # 整列选择，标记为None
+                                else:
+                                    # 第一列被选中，需要获取items
+                                    selected_items = [self.ui.vmd_tablewidget.item(idx.row(), idx.column()) 
+                                                     for idx in selected_indexes[:1000] if idx.column() > 0]
+                                    if selected_items:
+                                        selected_cols = [selected_items[0].column()]
+                            else:
+                                selected_items = []
+                        else:
+                            # 不是整列，获取选中的items（限制数量避免阻塞）
+                            selected_items = [self.ui.vmd_tablewidget.item(idx.row(), idx.column()) 
+                                             for idx in selected_indexes[:1000]]
+                            selected_items = [item for item in selected_items if item is not None]
+                            
+                            if not selected_items:
+                                return
+                            
+                            columns = set(item.column() for item in selected_items)
+                            if len(columns) != 1:
+                                self.ui.vmd_label.setText("Please select cells in the same frame (column)")
+                                return
+                            
+                            selected_cols = list(columns)
+                    except Exception as e:
+                        # 回退到限制数量的方法
+                        try:
+                            selected_items = list(self.ui.vmd_tablewidget.selectedItems())[:1000]
+                            if selected_items:
+                                selected_cols = [selected_items[0].column()]
+                            else:
+                                selected_cols = []
+                        except:
+                            selected_cols = []
+                            selected_items = []
+                else:
+                    selected_items = None  # 整列选择，不需要items
+                
+                column = selected_cols[0] if selected_cols else None
+                
+                # 判断是否是整列选择
+                is_full_column = (selected_items is None and column is not None)
+                
+            except Exception as e:
+                self.ui.vmd_label.setText(f"Error getting selection: {str(e)}")
+                return
+            
+            if column is None or column == 0:
+                self.ui.vmd_label.setText("Please select cells in a frame column (not resid)")
                 return
 
-        resids = []
-        for item in selected_items:
-            row = item.row()
-            resid = self.ui.vmd_tablewidget.item(row, 0).text()
-            if resid not in resids:
-                resids.append(resid)
+            col_name = self.ui.vmd_tablewidget.horizontalHeaderItem(column).text()
+            
+            # 检查是否是Frame列
+            if col_name.startswith("Frame_"):
+                frame = int(col_name.split("_")[1])
+            else:
+                try:
+                    frame = int(float(col_name))
+                except ValueError:
+                    self.ui.vmd_label.setText(f"Invalid frame column: {col_name}")
+                    return
 
-        # 获取该帧所有resid的数值，用于设置beta值
-        resid_value_dict = {}
-        if self.data is not None:
-            for row_idx in range(len(self.data)):
-                resid = self.ui.vmd_tablewidget.item(row_idx, 0).text()
-                value_item = self.ui.vmd_tablewidget.item(row_idx, column)
-                if value_item is not None:
-                    try:
-                        value = float(value_item.text())
-                        resid_value_dict[resid] = value
-                    except ValueError:
-                        pass
-        
-        # 1. 跳转到指定帧
-        self.vmd.send_command(VMDCommands.gotoFrame(frame))
-        
-        # 2. 如果是第一次点击，切换到beta着色模式
-        if not self.beta_coloring_enabled and hasattr(self, 'csv_min_value') and hasattr(self, 'csv_max_value'):
-            if self.csv_min_value is not None and self.csv_max_value is not None:
-                self.vmd.send_command(VMDCommands.setupBetaColoring(self.csv_min_value, self.csv_max_value))
-                self.beta_coloring_enabled = True
-        
-        # 3. 设置所有resid的beta值
-        if resid_value_dict:
-            self.vmd.send_command(VMDCommands.setBetaValues(resid_value_dict))
-        
-        # 4. 高亮显示选中的resid
-        self.vmd.send_command(VMDCommands.highlightResid(resids))
-        
-        self.ui.vmd_label.setText(f"Showing resids {', '.join(resids)} at frame {frame} (colored by value)")
+            # 获取resids（如果整列选择，直接从data获取所有resids）
+            if is_full_column:
+                # 整列选择，从data获取所有resids（不限制数量）
+                resids = []
+                if self.data is not None:
+                    for row_idx in range(len(self.data)):  # 获取所有行
+                        resid_item = self.ui.vmd_tablewidget.item(row_idx, 0)
+                        if resid_item:
+                            resid = resid_item.text()
+                            if resid not in resids:
+                                resids.append(resid)
+            elif selected_items:
+                # 部分选择，从选中的items获取resids
+                resids = []
+                for item in selected_items:
+                    row = item.row()
+                    resid_item = self.ui.vmd_tablewidget.item(row, 0)
+                    if resid_item:
+                        resid = resid_item.text()
+                        if resid not in resids:
+                            resids.append(resid)
+            else:
+                resids = []
+
+            # 获取该帧所有resid的数值，用于设置beta值
+            resid_value_dict = {}
+            if self.data is not None:
+                for row_idx in range(len(self.data)):
+                    resid_item = self.ui.vmd_tablewidget.item(row_idx, 0)
+                    value_item = self.ui.vmd_tablewidget.item(row_idx, column)
+                    if resid_item and value_item is not None:
+                        try:
+                            resid = resid_item.text()
+                            value = float(value_item.text())
+                            resid_value_dict[resid] = value
+                        except ValueError:
+                            pass
+            
+            # 1. 跳转到指定帧
+            result = self.vmd.send_command(VMDCommands.gotoFrame(frame))
+            if result.startswith("error"):
+                self.ui.vmd_label.setText(f"Failed to send command: {result}")
+                return
+            
+            # 2. 如果是第一次点击，切换到beta着色模式
+            if not self.beta_coloring_enabled and hasattr(self, 'csv_min_value') and hasattr(self, 'csv_max_value'):
+                if self.csv_min_value is not None and self.csv_max_value is not None:
+                    result = self.vmd.send_command(VMDCommands.setupBetaColoring(self.csv_min_value, self.csv_max_value))
+                    if not result.startswith("error"):
+                        self.beta_coloring_enabled = True
+            
+            # 3. 设置所有resid的beta值（大命令，使用后台线程）
+            if resid_value_dict:
+                result = self.vmd.send_command(VMDCommands.setBetaValues(resid_value_dict))
+                if result.startswith("error"):
+                    self.ui.vmd_label.setText(f"Failed to set beta values: {result}")
+                    return
+            
+            # 4. 高亮显示选中的resid
+            # 如果是整列选择，高亮所有resids；否则限制数量避免命令过大
+            if is_full_column:
+                # 整列选择，高亮所有resids（使用后台线程发送大命令）
+                result = self.vmd.send_command(VMDCommands.highlightResid(resids), use_background=True)
+            else:
+                # 部分选择，限制resids数量，避免命令过大
+                limited_resids = resids[:100]
+                result = self.vmd.send_command(VMDCommands.highlightResid(limited_resids))
+            
+            if result.startswith("error"):
+                self.ui.vmd_label.setText(f"Failed to highlight: {result}")
+                return
+            
+            self.ui.vmd_label.setText(f"Showing {len(resids)} resids at frame {frame} (colored by value)")
+            
+        except Exception as e:
+            self.ui.vmd_label.setText(f"Selection error: {str(e)}")
 
     # INITIAL SETTINGS
     # Post here your directions for your main UI

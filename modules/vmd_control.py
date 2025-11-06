@@ -4,10 +4,53 @@ import time
 import pandas as pd
 from socket import socket, AF_INET, SOCK_STREAM
 import subprocess
+import tracemalloc
+import threading
 from PySide6.QtWidgets import QApplication, QWidget, QGridLayout, QLabel, QPushButton, QTableWidget, QTableWidgetItem, \
     QSizePolicy, QFrame, QHBoxLayout, QVBoxLayout
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QThread, Signal, QMutex, QWaitCondition, QTimer, QElapsedTimer
 from PySide6.QtGui import QDragEnterEvent, QDropEvent
+
+# 性能监控类（可选，默认关闭）
+class PerformanceMonitor:
+    """性能监控工具，记录每个步骤的耗时和系统状态"""
+    
+    def __init__(self, enabled=False):
+        self.enabled = enabled
+        self.timer = QElapsedTimer()
+        self.steps = []
+        self.memory_tracking = False
+        
+    def start(self, label="Total"):
+        """开始计时"""
+        if not self.enabled:
+            return
+        self.timer.start()
+        self.steps = []
+        self.steps.append(("START", 0))
+        
+    def checkpoint(self, label):
+        """记录检查点"""
+        if not self.enabled:
+            return
+        elapsed = self.timer.elapsed()
+        self.steps.append((label, elapsed))
+    
+    def finish(self):
+        """结束计时"""
+        if not self.enabled:
+            return
+        elapsed = self.timer.elapsed()
+        
+    def get_thread_info(self):
+        """获取线程信息"""
+        if not self.enabled:
+            return ""
+        try:
+            thread_count = threading.active_count()
+            return f"Threads: {thread_count}"
+        except:
+            return ""
 
 # VMD 命令类
 class VMDCommands:
@@ -109,6 +152,41 @@ class VMDCommands:
         
         return resid_values
 
+# 后台命令发送线程类
+class CommandSenderThread(QThread):
+    """在后台线程中发送VMD命令，避免阻塞UI"""
+    
+    def __init__(self, socket, command):
+        super().__init__()
+        self.socket = socket
+        self.command = command
+        
+    def run(self):
+        """在线程中执行命令发送"""
+        try:
+            cmd_bytes = (self.command + "\n").encode('utf-8')
+            
+            # 设置超时，避免无限等待
+            try:
+                original_timeout = self.socket.gettimeout()
+            except (AttributeError, OSError):
+                original_timeout = None
+            
+            self.socket.settimeout(5.0)  # 5秒超时，给大命令足够时间
+            
+            try:
+                self.socket.send(cmd_bytes)
+            finally:
+                if original_timeout is not None:
+                    self.socket.settimeout(original_timeout)
+                else:
+                    self.socket.settimeout(None)
+                    
+        except (BrokenPipeError, ConnectionResetError, socket.error) as e:
+            print(f"[ERROR] Failed to send command to VMD: {e}")
+        except Exception as e:
+            print(f"[ERROR] Unexpected error sending command: {e}")
+
 # VMD TCP 控制类
 class VMDTcp:
     def __init__(self, rctl_path, vmd_path):
@@ -119,6 +197,10 @@ class VMDTcp:
         self.ADDR = (self.HOST, self.PORT)
         self.tcpClientSocket = None
         self.vmd_process = None
+        # 后台线程相关设置
+        self._use_background_thread = True  # 启用后台线程
+        self._large_command_threshold = 10000  # 10KB，超过此大小使用后台线程
+        self._command_threads = []  # 保存线程引用，避免被垃圾回收
 
     def attemptConnection(self):
         max_attempts = 5
@@ -140,11 +222,56 @@ class VMDTcp:
         self.vmd_process = subprocess.Popen([self.vmd_path, "-e", self.rctl])
         return self.attemptConnection()
 
-    def send_command(self, cmd):
-        if self.tcpClientSocket:
-            self.tcpClientSocket.send((cmd + "\n").encode())
-            # VMD命令通常是异步的，不需要等待响应
-            return "sent"
+    def send_command(self, cmd, use_background=None):
+        """
+        向VMD发送命令，对于大命令（>10KB），自动使用后台线程发送，避免阻塞UI
+        
+        Args:
+            cmd: 要发送的命令字符串
+            use_background: 是否强制使用后台线程（None=自动判断）
+        
+        Returns:
+            "sent"、"sent_async" 或错误信息
+        """
+        if not self.tcpClientSocket:
+            return "error: no socket"
+        
+        cmd_bytes = (cmd + "\n").encode('utf-8')
+        cmd_size = len(cmd_bytes)
+        
+        # 决定是否使用后台线程
+        if use_background is None:
+            use_background = self._use_background_thread and cmd_size > self._large_command_threshold
+        
+        if use_background:
+            # 创建后台线程发送命令
+            thread = CommandSenderThread(self.tcpClientSocket, cmd)
+            self._command_threads.append(thread)  # 保存引用
+            thread.start()
+            return "sent_async"
+        
+        # 小命令直接在主线程发送
+        try:
+            try:
+                original_timeout = self.tcpClientSocket.gettimeout()
+            except (AttributeError, OSError):
+                original_timeout = None
+            
+            self.tcpClientSocket.settimeout(1.0)
+            
+            try:
+                self.tcpClientSocket.send(cmd_bytes)
+                return "sent"
+            finally:
+                if original_timeout is not None:
+                    self.tcpClientSocket.settimeout(original_timeout)
+                else:
+                    self.tcpClientSocket.settimeout(None)
+            
+        except (BrokenPipeError, ConnectionResetError, socket.error) as e:
+            return f"error: {e}"
+        except Exception as e:
+            return f"error: unexpected - {e}"
 
     def stop(self):
         if self.tcpClientSocket:
@@ -240,6 +367,8 @@ class VMDControlPanel(QWidget):
         self.df = None
         self.valid_comments = None
         self.frame_info = None
+        self._processing_selection = False  # 防止重复处理选择变化
+        self._last_selection_time = 0  # 用于防抖
 
     def pushStartVMD(self):
         try:
@@ -276,59 +405,155 @@ class VMDControlPanel(QWidget):
             self.infoLabel.setText("VMD is not running.")
 
     def onSelectionChanged(self, selected, deselected):
-        selected_rows = [index.row() for index in self.table.selectionModel().selectedRows()]
-        selected_cols = [index.column() for index in self.table.selectionModel().selectedIndexes()]
+        """
+        处理表格选择变化事件，使用QTimer延迟处理，避免阻塞UI
+        """
+        import time
         
-        if self.vmd_running and self.vmd_tcp and self.df is not None:
+        # 防抖：如果正在处理或距离上次处理时间太短，则跳过
+        current_time = time.time()
+        if self._processing_selection or (current_time - self._last_selection_time < 0.1):
+            return
+        
+        # 检查窗口状态并恢复（如果需要）
+        try:
+            parent_window = self.parent()
+            while parent_window and not hasattr(parent_window, 'isVisible'):
+                parent_window = parent_window.parent()
+            
+            if parent_window and (not parent_window.isVisible() or parent_window.isMinimized()):
+                parent_window.show()
+                parent_window.raise_()
+                parent_window.activateWindow()
+        except:
+            pass
+        
+        # 立即处理UI更新，让UI有时间响应
+        for i in range(3):
+            QApplication.processEvents()
+        
+        # 使用QTimer延迟处理，让UI先更新
+        QTimer.singleShot(50, self._processSelectionDelayed)
+    
+    def _processSelectionDelayed(self):
+        """
+        延迟处理选择变化
+        """
+        import time
+        
+        self._processing_selection = True
+        self._last_selection_time = time.time()
+        
+        try:
+            # 检查基本状态
+            if not self.vmd_running or not self.vmd_tcp or self.df is None:
+                return
+            
+            if not self.vmd_tcp.tcpClientSocket:
+                self.infoLabel.setText("VMD connection lost. Please restart VMD.")
+                return
+            
+            # 快速获取选中的列
+            try:
+                # 优先检查列标题选择（更快）
+                selected_cols = []
+                column_count = self.table.columnCount()
+                
+                for col in range(column_count):
+                    if col > 0:  # 跳过第一列
+                        try:
+                            if self.table.isColumnSelected(col):
+                                selected_cols.append(col)
+                        except:
+                            pass
+                
+                # 如果没有通过列标题选择，尝试获取选中的单元格列（限制数量避免阻塞）
+                if not selected_cols:
+                    try:
+                        # 只获取前1000个索引，避免阻塞
+                        selected_indexes = list(self.table.selectionModel().selectedIndexes())[:1000]
+                        selected_cols = list(set(index.column() for index in selected_indexes))
+                        
+                        # 如果有很多选中项，检查是否整列被选中
+                        if len(selected_indexes) >= 100:
+                            col_counts = {}
+                            for index in selected_indexes:
+                                col = index.column()
+                                col_counts[col] = col_counts.get(col, 0) + 1
+                            # 如果某个列的选中项数接近总行数，认为是整列选择
+                            row_count = self.table.rowCount()
+                            for col, count in col_counts.items():
+                                if col > 0 and count >= row_count * 0.9:  # 90%以上选中
+                                    if col not in selected_cols:
+                                        selected_cols.append(col)
+                    except Exception as e:
+                        pass
+            except Exception as e:
+                self.infoLabel.setText(f"Error getting selection: {str(e)}")
+                return
+            
             # 如果选择了列（点击列标题或选择整列）
             if selected_cols:
                 unique_cols = list(set(selected_cols))
-                for col in unique_cols:
+                
+                # 只处理第一个选中的列，避免同时处理多列导致UI卡住
+                for col_idx, col in enumerate(unique_cols):
+                    if col_idx > 0:  # 只处理第一列
+                        break
+                    
                     if col > 0:  # 跳过第一列（resid列）
-                        col_name = self.df.columns[col]
-                        if col_name.startswith("Frame_"):
-                            frame = int(col_name.split("_")[1])
-                            # 跳转到对应帧
-                            self.vmd_tcp.send_command(VMDCommands.gotoFrame(frame))
-                            
-                            # 获取当前列的数据和resid列
-                            column_data = self.df.iloc[:, col].values
-                            resid_column = self.df['Resid'].values
-                            
-                            # 计算beta值（直接使用原始数值）
-                            resid_values = VMDCommands.setColumnBetaValues(column_data, resid_column)
-                            
-                            if resid_values:
-                                # 计算原始数值的范围用于显示信息
-                                valid_values = [val for val in column_data if pd.notna(val) and isinstance(val, (int, float))]
-                                min_val = min(valid_values) if valid_values else 0
-                                max_val = max(valid_values) if valid_values else 0
-                                
-                                # 设置beta值
-                                beta_command = VMDCommands.setBetaValues(resid_values)
-                                self.vmd_tcp.send_command(beta_command)
-                                
-                                # 设置beta着色显示（使用实际数值范围）
-                                coloring_command = VMDCommands.setupBetaColoring(min_val, max_val)
-                                self.vmd_tcp.send_command(coloring_command)
-                                
-                                # 显示beta值信息
-                                info_command = VMDCommands.showBetaInfo(col_name, min_val, max_val, resid_values)
-                                self.vmd_tcp.send_command(info_command)
-            
-            # 如果选择了特定的行和列（点击具体单元格）
-            if selected_rows:
-                for row in selected_rows:
-                    for col in selected_cols:
-                        if col > 0:  # 跳过第一列（resid列）
+                        try:
                             col_name = self.df.columns[col]
+                            
                             if col_name.startswith("Frame_"):
                                 frame = int(col_name.split("_")[1])
-                                resid = self.df.iloc[row]["Resid"]
-                                self.vmd_tcp.send_command(VMDCommands.gotoFrame(frame))
-                                self.vmd_tcp.send_command(VMDCommands.highlightResid([int(resid)]))
-        else:
-            pass
+                                
+                                # 跳转到对应帧
+                                result = self.vmd_tcp.send_command(VMDCommands.gotoFrame(frame))
+                                if result.startswith("error"):
+                                    self.infoLabel.setText(f"Failed to send command to VMD: {result}")
+                                    break
+                                
+                                # 获取当前列的数据和resid列
+                                column_data = self.df.iloc[:, col].values
+                                resid_column = self.df['Resid'].values
+                                
+                                # 计算beta值（直接使用原始数值）
+                                resid_values = VMDCommands.setColumnBetaValues(column_data, resid_column)
+                                
+                                if resid_values:
+                                    # 计算原始数值的范围用于显示信息
+                                    valid_values = [val for val in column_data if pd.notna(val) and isinstance(val, (int, float))]
+                                    min_val = min(valid_values) if valid_values else 0
+                                    max_val = max(valid_values) if valid_values else 0
+                                    
+                                    # 设置beta值（大命令，使用后台线程）
+                                    beta_command = VMDCommands.setBetaValues(resid_values)
+                                    result = self.vmd_tcp.send_command(beta_command)
+                                    if result.startswith("error"):
+                                        self.infoLabel.setText(f"Failed to set beta values: {result}")
+                                        break
+                                    
+                                    # 设置beta着色显示（使用实际数值范围）
+                                    coloring_command = VMDCommands.setupBetaColoring(min_val, max_val)
+                                    result = self.vmd_tcp.send_command(coloring_command)
+                                    if result.startswith("error"):
+                                        self.infoLabel.setText(f"Failed to set coloring: {result}")
+                                        break
+                                    
+                                    # 显示beta值信息
+                                    info_command = VMDCommands.showBetaInfo(col_name, min_val, max_val, resid_values)
+                                    self.vmd_tcp.send_command(info_command)  # 非关键命令，忽略错误
+                                    
+                                    self.infoLabel.setText(f"Frame {frame}: Beta coloring applied (range: {min_val:.3f} to {max_val:.3f})")
+                        except Exception as e:
+                            self.infoLabel.setText(f"Error processing column: {str(e)}")
+                            break
+            
+        except Exception as e:
+            self.infoLabel.setText(f"Selection error: {str(e)}")
+        finally:
+            self._processing_selection = False
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls():
@@ -337,7 +562,6 @@ class VMDControlPanel(QWidget):
             event.ignore()
 
     def dropEvent(self, event: QDropEvent):
-        print("dropEvent triggered in VMDControlPanel")
         if not self.vmd_running:
             self.infoLabel.setText("Please start VMD before dropping a file.")
             event.ignore()
@@ -349,7 +573,6 @@ class VMDControlPanel(QWidget):
             return
 
         file_path = urls[0].toLocalFile()
-        print(f"File path: {file_path}")
         if file_path.lower().endswith('.csv'):
             self.loadCSV(file_path)
             event.acceptProposedAction()
@@ -358,7 +581,6 @@ class VMDControlPanel(QWidget):
             event.ignore()
 
     def loadCSV(self, file_path):
-        print("loadCSV called")
         try:
             if not os.path.exists(file_path):
                 self.infoLabel.setText("CSV file not found!")
