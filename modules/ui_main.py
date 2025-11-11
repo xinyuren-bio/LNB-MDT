@@ -543,15 +543,6 @@ class Ui_MainWindow(object):
         self.editLastFrame = QSpinBox(self.row2_height_2)
         self.editLastFrame.setObjectName(u"editLastFrame")
         self.editLastFrame.setMinimumSize(QSize(0, 40))
-        self.editLastFrame.setStyleSheet(
-# u"QSpinBox {\n"
-"    font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-# "    color: white;\n"
-# "    border: 1px solid;\n"
-# "background-color:rgb(33, 37, 43);\n"
-# "}\n"
-# "\n"
-# "QSpinBox::up-button {\n"
 # "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
 # "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
 # "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
@@ -562,33 +553,13 @@ class Ui_MainWindow(object):
 # "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
 # "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
 # "}\n"
-"")
+# "")
 
         self.gridLayout_7.addWidget(self.editLastFrame, 2, 1, 2, 1)
 
         self.editStep = QSpinBox(self.row2_height_2)
         self.editStep.setObjectName(u"editStep")
         self.editStep.setMinimumSize(QSize(0, 40))
-        self.editStep.setStyleSheet(
-                u"QSpinBox {\n"
-"    font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-# "    color: white;\n"
-# "    border: 1px solid white;\n"
-# "background-color:rgb(33, 37, 43);\n"
-# "}\n"
-# "\n"
-# "QSpinBox::up-button {\n"
-# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-# "\n"
-# "QSpinBox::down-button {\n"
-# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-"")
 
         self.gridLayout_7.addWidget(self.editStep, 2, 2, 2, 1)
 
@@ -610,26 +581,9 @@ class Ui_MainWindow(object):
         self.editFirstFrame = QSpinBox(self.row2_height_2)
         self.editFirstFrame.setObjectName(u"editFirstFrame")
         self.editFirstFrame.setMinimumSize(QSize(0, 40))
-        self.editFirstFrame.setStyleSheet(
-                u"QSpinBox {\n"
-"    font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-# "    color: white;\n"
-# "    border: 1px solid white;\n"
-# "background-color: rgb(33, 37, 43);\n"
-# "}\n"
-# "\n"
-# "QSpinBox::up-button {\n"
-# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-# "\n"
-# "QSpinBox::down-button {\n"
-# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-"")
+#         self.editFirstFrame.setStyleSheet(
+#                 u"QSpinBox {\n"
+# "    font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n""")
 
         self.gridLayout_7.addWidget(self.editFirstFrame, 2, 0, 2, 1)
 
@@ -673,25 +627,6 @@ class Ui_MainWindow(object):
         self.editK = QSpinBox(self.row2_height_2)
         self.editK.setObjectName(u"editK")
         self.editK.setMinimumSize(QSize(0, 40))
-        self.editK.setStyleSheet(u"QSpinBox {\n"
-"    font: 12pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-# "    color: white;\n"
-# "    border: 1px solid white;\n"
-# "background-color:rgb(33, 37, 43);\n"
-# "}\n"
-# "\n"
-# "QSpinBox::up-button {\n"
-# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-# "\n"
-# "QSpinBox::down-button {\n"
-# "    height: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 30px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-"")
 
         self.gridLayout_7.addWidget(self.editK, 2, 4, 2, 1)
 
@@ -820,25 +755,9 @@ class Ui_MainWindow(object):
         self.spin_box_x = QDoubleSpinBox(self.frame_2)
         self.spin_box_x.setObjectName(u"spin_box_x")
         self.spin_box_x.setMinimumSize(QSize(0, 30))
-        self.spin_box_x.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-# "    color: white;\n"
-# "    border: 1px solid white;\n"
-# "background-color:rgb(33, 37, 43);\n"
-# "}\n"
-# "\n"
-# "QDoubleSpinBox::up-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-# "\n"
-# "QDoubleSpinBox::down-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-"")
+#         self.spin_box_x.setStyleSheet(u"QDoubleSpinBox {\n"
+# "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "")
         self.spin_box_x.setValue(20.000000000000000)
 
         self.gridLayout.addWidget(self.spin_box_x, 1, 0, 1, 1)
@@ -846,25 +765,9 @@ class Ui_MainWindow(object):
         self.spin_box_y = QDoubleSpinBox(self.frame_2)
         self.spin_box_y.setObjectName(u"spin_box_y")
         self.spin_box_y.setMinimumSize(QSize(0, 30))
-        self.spin_box_y.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-# "    color: white;\n"
-# "    border: 1px solid white;\n"
-# "background-color:rgb(33, 37, 43);\n"
-# "}\n"
-# "\n"
-# "QDoubleSpinBox::up-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-# "\n"
-# "QDoubleSpinBox::down-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-"")
+#         self.spin_box_y.setStyleSheet(u"QDoubleSpinBox {\n"
+# "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "")
         self.spin_box_y.setValue(20.000000000000000)
 
         self.gridLayout.addWidget(self.spin_box_y, 1, 1, 1, 1)
@@ -872,25 +775,9 @@ class Ui_MainWindow(object):
         self.spin_box_z = QDoubleSpinBox(self.frame_2)
         self.spin_box_z.setObjectName(u"spin_box_z")
         self.spin_box_z.setMinimumSize(QSize(0, 30))
-        self.spin_box_z.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-# "    color: white;\n"
-# "    border: 1px solid white;\n"
-# "background-color:rgb(33, 37, 43);\n"
-# "}\n"
-# "\n"
-# "QDoubleSpinBox::up-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-# "\n"
-# "QDoubleSpinBox::down-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-"")
+#         self.spin_box_z.setStyleSheet(u"QDoubleSpinBox {\n"
+# "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "")
         self.spin_box_z.setValue(20.000000000000000)
 
         self.gridLayout.addWidget(self.spin_box_z, 1, 2, 1, 1)
@@ -942,26 +829,10 @@ class Ui_MainWindow(object):
         self.spin_gas_density = QSpinBox(self.frame_3)
         self.spin_gas_density.setObjectName(u"spin_gas_density")
         self.spin_gas_density.setMinimumSize(QSize(0, 30))
-        self.spin_gas_density.setStyleSheet(
-                u"QSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-# "    color: white;\n"
-# "    border: 1px solid white;\n"
-# "background-color:rgb(33, 37, 43);\n"
-# "}\n"
-# "\n"
-# "QSpinBox::up-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-# "\n"
-# "QSpinBox::down-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-"")
+#         self.spin_gas_density.setStyleSheet(
+#                 u"QSpinBox {\n"
+# "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "")
         self.spin_gas_density.setMaximum(100000)
         self.spin_gas_density.setValue(145)
 
@@ -970,25 +841,9 @@ class Ui_MainWindow(object):
         self.spin_area_5 = QDoubleSpinBox(self.frame_3)
         self.spin_area_5.setObjectName(u"spin_area_5")
         self.spin_area_5.setMinimumSize(QSize(0, 30))
-        self.spin_area_5.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-# "    color: white;\n"
-# "    border: 1px solid white;\n"
-# "background-color:rgb(33, 37, 43);\n"
-# "}\n"
-# "\n"
-# "QDoubleSpinBox::up-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-# "\n"
-# "QDoubleSpinBox::down-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-"")
+#         self.spin_area_5.setStyleSheet(u"QDoubleSpinBox {\n"
+# "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
+# "")
         self.spin_area_5.setValue(1.000000000000000)
 
         self.gridLayout_8.addWidget(self.spin_area_5, 1, 2, 1, 1)
@@ -1002,25 +857,6 @@ class Ui_MainWindow(object):
         self.spin_r = QDoubleSpinBox(self.frame_3)
         self.spin_r.setObjectName(u"spin_r")
         self.spin_r.setMinimumSize(QSize(0, 30))
-        self.spin_r.setStyleSheet(u"QDoubleSpinBox {\n"
-# "    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-# "    color: white;\n"
-# "    border: 1px solid white;\n"
-# "background-color:rgb(33, 37, 43);\n"
-# "}\n"
-# "\n"
-# "QDoubleSpinBox::up-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-# "\n"
-# "QDoubleSpinBox::down-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-"")
         self.spin_r.setValue(5.000000000000000)
 
         self.gridLayout_8.addWidget(self.spin_r, 1, 3, 1, 1)
@@ -1048,25 +884,7 @@ class Ui_MainWindow(object):
         self.spin_salt = QDoubleSpinBox(self.frame_4)
         self.spin_salt.setObjectName(u"spin_salt")
         self.spin_salt.setMinimumSize(QSize(0, 30))
-        self.spin_salt.setStyleSheet(u"QDoubleSpinBox {\n"
-"    font: 16pt \"\u534e\u6587\u7ec6\u9ed1\";\n"
-# "    color: white;\n"
-# "    border: 1px solid white;\n"
-# "background-color:rgb(33, 37, 43);\n"
-# "}\n"
-# "\n"
-# "QDoubleSpinBox::up-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: top right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-# "\n"
-# "QDoubleSpinBox::down-button {\n"
-# "    height: 10px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u9ad8\u5ea6 */\n"
-# "    width: 20px; /* \u8bbe\u7f6e\u4e00\u4e2a\u5408\u9002\u7684\u5bbd\u5ea6 */\n"
-# "    subcontrol-position: bottom right; /* \u4fdd\u6301\u6309\u94ae\u5728\u53f3\u4fa7 */\n"
-# "}\n"
-"")
+
         self.spin_salt.setValue(0.150000000000000)
 
         self.gridLayout_10.addWidget(self.spin_salt, 2, 1, 1, 1)
