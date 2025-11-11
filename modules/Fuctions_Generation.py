@@ -81,6 +81,7 @@ class BtnGeneClick:
         full_command = command + arguments
 
         result = subprocess.run(full_command, capture_output=True, text=True)
+
         if result.stderr:
             folder_path = self.writeTop(result.stderr)
             success_message = (
@@ -255,7 +256,7 @@ Notes:
                 shutil.copy2(gro_path, system_gro_path)
                 # 删除原始gro文件
                 os.remove(gro_path)
-            
+
             # 重命名并移动top文件为system.top
             top_path = os.path.join(output_dir, "topol.top")
             system_top_path = os.path.join(main_folder_path, "system.top")
@@ -263,7 +264,14 @@ Notes:
                 shutil.copy2(top_path, system_top_path)
                 # 删除原始top文件
                 os.remove(top_path)
-            
+
+            # 移动ndx文件为system.ndx
+            ndx_path = os.path.join(output_dir, f"{base_filename}.ndx")
+            system_ndx_path = os.path.join(main_folder_path, "system.ndx")
+            if os.path.exists(ndx_path):
+                shutil.copy2(ndx_path, system_ndx_path)
+                os.remove(ndx_path)
+
             # 获取files文件夹路径
             files_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'generation', 'files')
             

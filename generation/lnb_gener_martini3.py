@@ -1,4 +1,5 @@
 import sys,math,random,cmath,copy
+from ndx_generator import generate_ndx
 
 version  = "20211229.LNB"
 
@@ -1592,3 +1593,44 @@ if options["-p"].value:
      top.close()
 else:
      print("\n".join("%-10s %7d"%i for i in molecules),file=sys.stderr)
+
+# Auto-generate ndx file
+if options["-o"] and options["-o"].value and options["-o"].value != sys.stdout:
+    try:
+        import os
+
+        if hasattr(options["-o"].value, 'name'):
+            gro_path = options["-o"].value.name
+        else:
+            gro_path = options["-o"].value
+
+        ndx_path = os.path.splitext(gro_path)[0] + ".ndx"
+
+        all_resnames = [mol[0] for mol in molecules]
+
+        lipid_keywords = set(lipidsa.keys())
+        gas_keywords = {"CO2", "N2", "O2", "H2", "AIR"}
+        water_keywords = {"W", "PW", "SPC", "SPCM", "FG4W", "FG4W-MS", "BMW"}
+        ion_keywords = {"NA", "CL", "Mg", "K"}
+
+        lipid_resnames = [r for r in all_resnames if r in lipid_keywords]
+        gas_resnames = [r for r in all_resnames if r in gas_keywords]
+        water_resnames = [r for r in all_resnames if r in water_keywords]
+        ion_resnames = [r for r in all_resnames if r in ion_keywords]
+
+        generate_ndx(
+            gro_path=gro_path,
+            ndx_path=ndx_path,
+            lipid_resnames=lipid_resnames,
+            gas_resnames=gas_resnames,
+            water_resnames=water_resnames,
+            ion_resnames=ion_resnames,
+        )
+
+    except ImportError:
+        print("\n; Warning: ndx_generator.py not found. Skipping index file generation.")
+    except Exception as e:
+        print(f"\n; Error generating index file: {e}")
+else:
+    if options["-o"]:
+        print("\n; Warning: Output option '-o' not configured for ndx generation.")
