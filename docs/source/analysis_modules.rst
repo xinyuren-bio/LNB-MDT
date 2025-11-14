@@ -128,44 +128,6 @@ Simplified Format Description
 
 The residues and gas-group parameters now support more intuitive input formats:
 
-Basic Format
-~~~~~~~~~~~~
-
-**Simple format (recommended):**
-.. code-block:: bash
-
-   # Basic format: RESIDUE:ATOM
-   -r DPPC:PO4,CHOL:ROH
-   -a N2:N2
-   
-   # Multiple residues/gases
-   -r DPPC:PO4,DUPC:PO4,CHOL:ROH
-   -a N2:N2,O2:O2
-
-**Multi-atom format:**
-.. code-block:: bash
-
-   # Multi-atom: RESIDUE:ATOM1+ATOM2
-   -r DPPC:PO4+GLY,CHOL:ROH
-   -r DPPC:PO4+GLY+CH2,CHOL:ROH
-
-**Name-only format:**
-.. code-block:: bash
-
-   # Only residue/gas name (atom name same as name)
-   -r DPPC
-   -a N2
-
-Traditional Format
-~~~~~~~~~~~~~~~~~~
-
-**Dictionary string format (still supported):**
-.. code-block:: bash
-
-   # Traditional dictionary format
-   -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
-   -a "{'N2': ['N2']}"
-
 Detailed Module Description
 ----------------------------
 
