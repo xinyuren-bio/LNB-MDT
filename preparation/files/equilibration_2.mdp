@@ -1,0 +1,74 @@
+; title                   = Martini
+;define                   = -DPOSRES
+
+; Run parameters
+integrator                = md                ; leap-frog integrator
+nsteps                    = 50000             
+dt                        = 0.002              ; ps
+
+; COM motion removal
+; These options remove COM motion of the system
+nstcomm                   = 10
+comm-mode                 = Linear
+comm-grps                 = System
+
+; Output control
+nstxout                   = 5000
+nstvout                   = 5000            
+nstfout                   = 5000     
+nstenergy                 = 5000      
+nstlog                    = 5000
+nstxout-compressed        = 5000             ; 500ps
+compressed-x-precision    = 1000
+
+; Selection of energy groups =
+energygrps                = System
+
+
+; Neighborsearching
+cutoff-scheme             = Verlet
+ns-type                   = grid        
+nstlist                   = 10               
+pbc                       = xyz
+rlist                     = 1.2      
+
+; Electrostatics
+coulombtype              = Cut-off
+rcoulomb                 = 1.2
+; Dielectric constant (DC) for cut-off =
+epsilon-r                = 15
+
+; Van der Waals =
+vdwtype                  = Cut-off
+vdw-modifier             = Force-switch
+rvdw-switch              = 0.9
+rvdw                     = 1.2
+; Apply long range dispersion corrections for Energy and Pressure =
+DispCorr                 = No
+
+; Temperature coupling
+tcoupl                   = v-rescale
+tc-grps                  = System
+tau-t                    = 1.0          ;ps
+ref-t                    = 360          ;K
+
+; Pressure coupling
+pcoupl                   = Parrinello-Rahman
+pcoupltype               = isotropic
+; Time constant (ps), compressibility (1/bar) and reference P (bar) =
+tau-p                    = 5.0                    ;ps
+compressibility          = 3e-4                  ;1/bar
+ref-p                    = 1.0                   ;bar
+
+; Velocity generation
+gen-vel                  = yes                      
+gen-temp                 = 360                         ;K
+gen-seed                 = -1                          ;random generator
+
+; Bond parameters
+constraints              = none
+constraint_algorithm     = Lincs
+continuation             = no                  ;"yes" useful for exact continuation and reruns
+lincs-order              = 4
+lincs-iter               = 2
+lincs-warnangle          = 90
