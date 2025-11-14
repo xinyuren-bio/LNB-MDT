@@ -24,12 +24,12 @@ All command-line parameters have corresponding short aliases to make the command
      - Example
    * - ``-g``
      - ``--gro-file``
-     - GRO file path
+     - GRO/TPR file path
      - -
      - ``-g cases/lnb.gro``
    * - ``-x``
      - ``--xtc-file``
-     - XTC file path
+     - XTC/TRR file path
      - -
      - ``-x cases/md.xtc``
    * - ``-o``
@@ -42,21 +42,31 @@ All command-line parameters have corresponding short aliases to make the command
      - Residue group definition
      - ``DPPC:PO4,CHOL:ROH``
      - ``-r DPPC:PO4``
-   * - ``-a``
+   * - ``-gas``
      - ``--gas-group``
      - Gas group definition
      - ``N2:N2``
-     - ``-a N2:N2``
-   * - ``-m``
+     - ``-gas N2:N2``
+   * - ``-rad``
+     - ``--radius``
+     - Radius (Å) for density analysis
+     - ``50.0``
+     - ``-rad 50.0``
+   * - ``-max-rad``
+     - ``--max-radius``
+     - Maximum radius (Å) for multi-radius density analysis
+     - ``50.0``
+     - ``-max-rad 50.0``
+   * - ``-segments``
+     - ``--number-segments``
+     - Number of radius segments
+     - ``5``
+     - ``-segments 5``
+   * - ``-mw``
      - ``--MW``
      - Molecular weight (g/mol)
-     - ``14``
-     - ``-m 14``
-   * - ``-R``
-     - ``--radius``
-     - Radius (Å)
-     - ``50``
-     - ``-R 50``
+     - ``14.0``
+     - ``-mw 14.0``
    * - ``-p``
      - ``--parallel``
      - Enable parallel processing
@@ -156,123 +166,8 @@ Traditional Format
    -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
    -a "{'N2': ['N2']}"
 
-Module Overview
----------------
-
-.. raw:: html
-
-   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0;">
-
-   <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">📐 PCA Analysis</h3>
-   <p>Principal Component Analysis for studying molecular conformational changes</p>
-   <ul style="margin-bottom: 0;">
-   <li>Dimensionality reduction</li>
-   <li>Conformational changes</li>
-   <li>Motion patterns</li>
-   </ul>
-   </div>
-
-   <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">📏 Area Analysis</h3>
-   <p>APL area calculation</p>
-   <ul style="margin-bottom: 0;">
-   <li>Molecular area</li>
-   <li>Density distribution</li>
-   <li>Packing efficiency</li>
-   </ul>
-   </div>
-
-   <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">🌊 Curvature Analysis</h3>
-   <p>Membrane curvature calculation (mean/Gaussian)</p>
-   <ul style="margin-bottom: 0;">
-   <li>Mean curvature</li>
-   <li>Gaussian curvature</li>
-   <li>Membrane deformation</li>
-   </ul>
-   </div>
-
-   <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">📊 Height Analysis</h3>
-   <p>Molecular height distribution analysis</p>
-   <ul style="margin-bottom: 0;">
-   <li>Z-coordinate distribution</li>
-   <li>Membrane thickness</li>
-   <li>Surface roughness</li>
-   </ul>
-   </div>
-
-   <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">🔗 Cluster Analysis</h3>
-   <p>Molecular aggregation behavior analysis</p>
-   <ul style="margin-bottom: 0;">
-   <li>Aggregation patterns</li>
-   <li>Cluster size</li>
-   <li>Interactions</li>
-   </ul>
-   </div>
-
-   <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; padding: 20px; border-radius: 10px;">
-   <h3 style="margin-top: 0;">🎯 Anisotropy Analysis</h3>
-   <p>Molecular orientation anisotropy calculation</p>
-   <ul style="margin-bottom: 0;">
-   <li>Orientation distribution</li>
-   <li>Order parameter</li>
-   <li>Molecular alignment</li>
-   </ul>
-   </div>
-
-   </div>
-
 Detailed Module Description
 ----------------------------
-
-PCA Analysis (pca.py)
-~~~~~~~~~~~~~~~~~~~~~
-
-**Function Description**
-Principal Component Analysis is used to study conformational changes and motion patterns of lipid molecules.
-
-**Algorithm Principle**
-- Perform principal component analysis on molecular coordinates
-- Extract main motion patterns
-- Reduce dimensionality to principal component space
-
-**Key Parameters**
-
-residues *residue-definition*
-    Residue group definition, specifying molecular types and atoms to analyze. Supports simplified format like ``DPPC:PO4,CHOL:ROH``
-
-n_components *number*
-    Number of principal components, default value is ``3``
-
-start_frame *frame-number*
-    Start frame, default value is ``0``
-
-stop_frame *frame-number*
-    Stop frame, default value is ``-1`` (means analyze to the end)
-
-step_frame *frame-step*
-    Frame step, default value is ``1``
-
-**Usage Example**
-
-.. code-block:: bash
-
-   python analysis/pca.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/pca_results.csv \
-     -r DPPC:PO4,CHOL:ROH \
-     --n-components 3 \
-     -p \
-     -v
-
-**Output Results**
-- CSV file contains principal component values for each frame
-- Can be used to analyze molecular conformational change trends
-- Supports visualization of analysis results
 
 Area Analysis (area.py)
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -287,14 +182,17 @@ Uses Voronoi tessellation method to calculate area distribution of lipid molecul
 
 **Key Parameters**
 
-k-value *number*
+k-value *number* (``-k``)
     k-value for Voronoi tessellation, default value is ``20``
 
 max-normal-angle *angle*
-    Maximum normal angle, default value is ``140`` degrees
+    Maximum normal angle in degrees, default value is ``140``
 
-residues *residue-definition*
-    Residue group definition, specifying molecular types and atoms to analyze
+residues *residue-definition* (``-r``)
+    Residue group definition, specifying molecular types and atoms to analyze. Supports simplified format like ``DPPC:PO4,CHOL:ROH`` or dictionary format ``"{'DPPC': ['PO4']}"``
+
+xtc-file *file-path* (``-x``)
+    XTC file path (optional). If not provided, only GRO file will be analyzed (single frame)
 
 **Usage Example**
 
@@ -304,7 +202,7 @@ residues *residue-definition*
      -g cases/lnb.gro \
      -x cases/md.xtc \
      -o results/area_results.csv \
-     -r DPPC:PO4 \
+     -r DPPC:PO4,CHOL:ROH \
      -k 20 \
      --max-normal-angle 140 \
      -p \
@@ -314,47 +212,6 @@ residues *residue-definition*
 - Voronoi area for each molecule
 - Area distribution statistics
 - Can be used to analyze membrane density and packing
-
-Curvature Analysis (curvature.py)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-**Function Description**
-Calculates mean curvature and Gaussian curvature of lipid membranes.
-
-**Algorithm Principle**
-- Based on local surface fitting
-- Calculate curvature tensor
-- Extract mean curvature and Gaussian curvature
-
-**Key Parameters**
-
-method *curvature-type*
-    Curvature type, options are ``mean`` or ``gaussian``, default value is ``mean``
-
-k-value *number*
-    k-value for curvature calculation, default value is ``20``
-
-residues *residue-definition*
-    Residue group definition, specifying molecular types and atoms to analyze
-
-**Usage Example**
-
-.. code-block:: bash
-
-   python analysis/curvature.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/curvature_results.csv \
-     -r DPPC:PO4 \
-     -k 20 \
-     -M mean \
-     -p \
-     -v
-
-**Output Results**
-- Curvature values for each molecule
-- Curvature distribution statistics
-- Can be used to analyze membrane deformation and stability
 
 Height Analysis (height.py)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -369,11 +226,11 @@ Analyzes height distribution and membrane thickness of lipid molecules.
 
 **Key Parameters**
 
-k-value *number*
+k-value *number* (``-k``)
     k-value for height calculation, default value is ``20``
 
-residues *residue-definition*
-    Residue group definition, specifying molecular types and atoms to analyze, supports multiple atom groups
+residues *residue-definition* (``-r``)
+    Residue group definition, specifying molecular types and atoms to analyze. Supports multiple atom groups using tuple format: ``"{'DPPC': (['PO4'], ['C4B', 'C4A']), 'CHOL':(['ROH'], ['R5'])}"``
 
 **Usage Example**
 
@@ -383,7 +240,7 @@ residues *residue-definition*
      -g cases/lnb.gro \
      -x cases/md.xtc \
      -o results/height_results.csv \
-     -r DPPC:PO4,CHOL:ROH \
+     -r "{'DPPC': (['PO4'], ['C4B', 'C4A']), 'CHOL':(['ROH'], ['R5'])}" \
      -k 20 \
      -p \
      -v
@@ -407,10 +264,10 @@ Analyzes aggregation behavior and clustering patterns of lipid molecules.
 **Key Parameters**
 
 cutoff *distance*
-    Clustering cutoff distance, default value is ``8.0`` Å
+    Clustering cutoff distance in Angstroms, default value is ``8.0``
 
-residues *residue-definition*
-    Residue group definition, specifying molecular types and atoms to analyze
+residues *residue-definition* (``-r``)
+    Residue group definition, specifying molecular types and atoms to analyze. Supports simplified format like ``DPPC:PO4,CHOL:ROH``
 
 **Usage Example**
 
@@ -443,8 +300,11 @@ Calculates anisotropy parameters of molecular orientation.
 
 **Key Parameters**
 
-residues *residue-definition*
-    Residue group definition, specifying molecular types and atoms to analyze
+residues *residue-definition* (``-r``)
+    Residue group definition, specifying molecular types and atoms to analyze. Supports multiple atoms per residue: ``"{'DPPC': ['PO4', 'C1', 'C2'], 'CHOL': ['ROH']}"``. When multiple atoms are provided, their center of geometry will be calculated.
+
+xtc-file *file-path* (``-x``)
+    XTC file path (optional). If not provided, only GRO file will be analyzed (single frame)
 
 **Usage Example**
 
@@ -476,8 +336,8 @@ Calculates molecular radius of gyration, reflecting molecular compactness.
 
 **Key Parameters**
 
-residues *residue-definition*
-    Residue group definition, specifying molecular types and atoms to analyze
+residues *residue-definition* (``-r``)
+    Residue group definition, specifying molecular types and atoms to analyze. Supports simplified format like ``DPPC:PO4,CHOL:ROH`` or dictionary format ``"{'DPPC': ['PO4']}"``
 
 **Usage Example**
 
@@ -510,13 +370,16 @@ Calculates Sz order parameter of lipid chains, reflecting chain ordering degree.
 **Key Parameters**
 
 chain *chain-type*
-    Chain type, options are ``sn1``, ``sn2`` or ``both``
+    Chain type, options are ``sn1``, ``sn2`` or ``both``, default value is ``both``
 
-k-value *number*
+k-value *number* (``-k``)
     k-value for Sz calculation, default value is ``15``
 
-residues *residue-definition*
-    Residue group definition, specifying molecular types and atoms to analyze
+residues *residue-definition* (``-r``)
+    Residue group definition, specifying molecular types and atoms to analyze. Supports simplified format like ``DPPC:PO4,DUPC:PO4``
+
+xtc-file *file-path* (``-x``)
+    XTC file path (optional). If not provided, only GRO file will be used
 
 **Usage Example**
 
@@ -537,80 +400,79 @@ residues *residue-definition*
 - Chain ordering analysis
 - Phase transition behavior
 
-N-Cluster Analysis (n_cluster.py)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Density Analysis (density.py)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Function Description**
-Counts cluster numbers and analyzes aggregation patterns.
+Analyzes gas density distribution in lipid nanobubbles. Supports two analysis methods: single-radius density analysis (frame method) and multi-radius density analysis (radius method).
 
 **Algorithm Principle**
-- Distance-based clustering
-- Count cluster numbers
-- Analyze aggregation patterns
+- Calculate gas molecule density within specified radius
+- Analyze density changes over time (frame method)
+- Analyze density distribution across different radii (radius method)
+- Support for multiple gas types
 
 **Key Parameters**
 
-cutoff *distance*
-    Clustering cutoff distance, default value is ``12.0`` Å
+method *analysis-type* (``-M``)
+    Analysis method, options are ``frame`` (single radius) or ``radius`` (multi-radius), default value is ``frame``
 
-n-cutoff *number*
-    Minimum cluster size threshold, default value is ``10``
+residues *residue-definition* (``-r``)
+    Residue group definition for lipid molecules. Format: ``DPPC:PO4,CHOL:ROH``
 
-residues *residue-definition*
-    Residue group definition, specifying molecular types and atoms to analyze
+gas-group *gas-definition* (``-gas``)
+    Gas group definition. Format: ``N2:N2`` or ``N2:N2,O2:O2`` for multiple gases
+
+radius *distance* (``-rad``)
+    Radius for density calculation in Angstroms (used for single radius method), default value is ``50.0``
+
+max-radius *distance* (``-max-rad``)
+    Maximum radius for density calculation in Angstroms (used for multi-radius method), default value is ``50.0``
+
+number-segments *number* (``-segments``)
+    Number of radius segments for multi-radius analysis, default value is ``5``
+
+MW *molecular-weight* (``-mw``)
+    Molecular weight of gas molecules in g/mol, default value is ``14.0``
 
 **Usage Example**
 
+Single-radius analysis (frame method):
 .. code-block:: bash
 
-   python analysis/n_cluster.py \
+   python analysis/density.py \
      -g cases/lnb.gro \
      -x cases/md.xtc \
-     -o results/ncluster_results.csv \
-     -r DAPC:GL1+GL2,DPPC:PO4 \
-     --cutoff 12.0 \
-     --n-cutoff 10 \
+     -o results/density_frame.csv \
+     -r DPPC:PO4,CHOL:ROH \
+     -gas N2:N2 \
+     -rad 50.0 \
+     -mw 14.0 \
+     -M frame \
+     -p \
+     -v
+
+Multi-radius analysis (radius method):
+.. code-block:: bash
+
+   python analysis/density.py \
+     -g cases/lnb.gro \
+     -x cases/md.xtc \
+     -o results/density_radius.csv \
+     -r DPPC:PO4,CHOL:ROH \
+     -gas N2:N2 \
+     -max-rad 50.0 \
+     -segments 5 \
+     -mw 14.0 \
+     -M radius \
      -p \
      -v
 
 **Output Results**
-- Cluster count statistics
-- Aggregation pattern analysis
-- Interaction strength
-
-Radial Distribution Analysis (rad.py)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-**Function Description**
-Calculates radial distribution function and analyzes distance distribution between molecules.
-
-**Algorithm Principle**
-- Calculate intermolecular distances
-- Construct radial distribution function
-- Analyze interactions
-
-**Key Parameters**
-
-n-circle *number*
-    Number of concentric circles for radial analysis, default value is ``50``
-
-residues *residue-definition*
-    Residue group definition, specifying molecular types and atoms to analyze
-
-**Usage Example**
-
-.. code-block:: bash
-
-   python analysis/rad.py \
-     -g cases/lnb.gro \
-     --output-excel results/radial_distribution.xlsx \
-     -r DPPC:NC3,CHOL:ROH \
-     --n-circle 50
-
-**Output Results**
-- Excel file containing radial distribution data
-- Distance distribution statistics
-- Interaction analysis
+- CSV file containing density values for each frame (frame method)
+- CSV file containing density values for each radius segment (radius method)
+- Can be used to analyze gas distribution and bubble dynamics
+- Supports visualization of analysis results
 
 Parameter Optimization Recommendations
 ----------------------------------------
