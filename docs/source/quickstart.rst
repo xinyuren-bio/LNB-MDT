@@ -52,7 +52,7 @@ For batch processing and automated analysis, you can use command-line tools:
    conda activate LNB-MDT
    
    # View help information
-   python analysis/pca.py --help
+   python analysis/area.py --help
 
 Basic Analysis Workflow
 -----------------------
@@ -62,12 +62,12 @@ Prepare Data Files
 
 LNB-MDT requires the following files for analysis:
 
-- **GRO file**: Molecular topology structure file
-- **XTC file**: Molecular dynamics trajectory file
+- **GRO/TPR file**: Molecular coordinate structure file
+- **XTC/TRR file**: Molecular dynamics trajectory file
 
-The project includes sample data files:
-- `cases/lnb.gro` - Sample topology file  
-- `cases/md.xtc` - Sample trajectory file
+The project includes example data files:
+- `cases/lnb.gro` - Example GRO file  
+- `cases/md.xtc` - Example XTC file
 
 Select Analysis Type
 ~~~~~~~~~~~~~~~~~~~~
@@ -142,11 +142,11 @@ LNB-MDT supports simplified command-line parameter input, making it easier to us
 
 .. code-block:: python
 
-   # PCA analysis example
-   python analysis/pca.py \
+   # Gyration analysis example
+   python analysis/gyration.py \
      --gro-file cases/lnb.gro \
      --xtc-file cases/md.xtc \
-     --output-csv results/pca_results.csv \
+     --output-csv results/gyration_results.csv \
      --residues "{'DPPC': ['PO4']}" \
      --parallel \
      --verbose
@@ -156,10 +156,10 @@ LNB-MDT supports simplified command-line parameter input, making it easier to us
 .. code-block:: python
 
    # Using short parameters and simple format
-   python analysis/pca.py \
+   python analysis/gyration.py \
      -g cases/lnb.gro \
      -x cases/md.xtc \
-     -o results/pca_results.csv \
+     -o results/gyration_results.csv \
      -r DPPC:PO4 \
      -p \
      -v
@@ -179,135 +179,7 @@ Result interpretation:
 - Use chart module to visualize data
 - Combine with VMD for molecular visualization
 
-Practical Examples
--------------------
 
-PCA Analysis
-~~~~~~~~~~~~
-
-Analyze conformational changes of lipid molecules:
-
-**Traditional approach:**
-
-.. code-block:: python
-
-   python analysis/pca.py \
-     --gro-file cases/lnb.gro \
-     --xtc-file cases/md.xtc \
-     --output-csv results/pca_test.csv \
-     --residues "{'DPPC': ['PO4'], 'CHOL': ['ROH']}" \
-     --start-frame 0 \
-     --stop-frame 100 \
-     --parallel \
-     --verbose
-
-**Simplified approach:**
-
-.. code-block:: python
-
-   python analysis/pca.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/pca_test.csv \
-     -r DPPC:PO4,CHOL:ROH \
-     -s 0 \
-     -e 100 \
-     -p \
-     -v
-
-Area Analysis
-~~~~~~~~~~~~~
-
-Calculate Voronoi tessellation area of lipid molecules:
-
-**Traditional approach:**
-
-.. code-block:: python
-
-   python analysis/area.py \
-     --gro-file cases/lnb.gro \
-     --xtc-file cases/md.xtc \
-     --output-csv results/area_test.csv \
-     --residues "{'DPPC': ['PO4']}" \
-     --k-value 20 \
-     --max-normal-angle 140 \
-     --parallel \
-     --verbose
-
-**Simplified approach:**
-
-.. code-block:: python
-
-   python analysis/area.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/area_test.csv \
-     -r DPPC:PO4 \
-     -k 20 \
-     --max-normal-angle 140 \
-     -p \
-     -v
-
-Curvature Analysis
-~~~~~~~~~~~~~~~~~~
-
-Calculate curvature properties of lipid membranes:
-
-**Traditional approach:**
-
-.. code-block:: python
-
-   python analysis/curvature.py \
-     --gro-file cases/lnb.gro \
-     --xtc-file cases/md.xtc \
-     --output-csv results/curvature_test.csv \
-     --residues "{'DPPC': ['PO4']}" \
-     --k-value 20 \
-     --method mean \
-     --parallel \
-     --verbose
-
-**Simplified approach:**
-
-.. code-block:: python
-
-   python analysis/curvature.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/curvature_test.csv \
-     -r DPPC:PO4 \
-     -k 20 \
-     -M mean \
-     -p \
-     -v
-
-Density Analysis
-~~~~~~~~~~~~~~~~
-
-Analyze gas density changes over time in bubbles:
-
-**Simplified approach (recommended):**
-
-.. code-block:: python
-
-   python analysis/densitywithframe.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/density_test.csv \
-     -r DPPC:PO4,CHOL:ROH \
-     -a N2:N2 \
-     -m 14 \
-     -R 50 \
-     -p \
-     -v
-
-
-VMD Integration
----------------
-
-LNB-MDT supports seamless integration with VMD for molecular visualization and trajectory analysis.
-
-VMD Path Configuration
 ~~~~~~~~~~~~~~~~~~~~~~
 
 First-time use requires configuring the VMD path:
@@ -342,24 +214,6 @@ Graphical interface launch:
 2. Wait for VMD to start
 3. Drag CSV files to the VMD window
 4. Select molecules for visualization
-
-Command line launch:
-
-.. code:: python
-
-   # Start VMD
-   python -c "from modules.vmd_control import VMDTcp; vmd = VMDTcp(); vmd.start()"
-
-Visualization Operations
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-Operation steps:
-
-1. Load analysis results in LNB-MDT
-2. Select frames and molecules to visualize
-3. VMD automatically jumps to the corresponding frame
-4. Highlight selected molecules
-5. Adjust visualization parameters
 
 Next Steps
 ----------

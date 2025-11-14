@@ -9,26 +9,22 @@ Features
 Graphical User Interface Modules
 --------------------------------
 
-LNB-MDT provides four main functional modules:
+LNB-MDT provides three main functional modules:
 
 .. raw:: html
 
    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
 
    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-center: 0;">🧬 Generation Module</h4>
+   <h4 style="margin-center: 0;">Preparation Module</h4>
    </div>
 
    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-center: 0;">📊 Analysis Module</h4>
+   <h4 style="margin-center: 0;">Analysis Module</h4>
    </div>
 
    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-center: 0;">📈 Figure Module</h4>
-   </div>
-
-   <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 10px; border-radius: 8px; text-align: center;">
-   <h4 style="margin-center: 0;">🔧 VMD Module</h4>
+   <h4 style="margin-center: 0;">Visualization Module</h4>
    </div>
 
    </div>
