@@ -4,7 +4,8 @@
 
 **LNB-MDT** (Lipid NanoBubble Molecular Dynamics Toolkit) is a comprehensive toolkit designed for molecular dynamics simulations of lipid nanobubbles.
 
-## 📋 Table of Contents
+<details>
+<summary>Table of Contents</summary>
 
 - [Features](#features)
 - [System Requirements](#system-requirements)
@@ -17,9 +18,11 @@
 - [Contributing](#contributing)
 - [License](#license)
 
-## ✨ Features
+</details>
 
-### 🧬 Molecular Dynamics Analysis
+## Features
+
+### Molecular Dynamics Analysis
 - **PCA Analysis**: Principal Component Analysis for analyzing lipid molecular conformational changes
 - **Area Analysis**: Voronoi tessellation area calculation
 - **Curvature Analysis**: Mean and Gaussian curvature calculation
@@ -32,18 +35,18 @@
 - **Radial Distribution Analysis**: Radial distribution function calculation
 
 
-### 🖥️ Graphical User Interface
+### Graphical User Interface
 - Modern Qt6 interface design
 - Intuitive data visualization
 - Drag-and-drop file operations
 - VMD integration support
 
-### ⚡ High-Performance Computing
+### High-Performance Computing
 - Parallel processing support
 - Configurable computation parameters
 - Optimized algorithm implementation
 
-## 💻 System Requirements
+## System Requirements
 
 ### Operating System
 - **Windows**: Windows 10/11 (64-bit)
@@ -60,7 +63,7 @@
 - **Storage**: At least 2GB available space
 - **Processor**: Multi-core processor supporting parallel computation
 
-## 🚀 Installation Guide
+## Installation Guide
 
 ### Method 1: Using Installation Scripts (Recommended)
 
@@ -117,7 +120,7 @@ python --version
 python -c "import MDAnalysis, numpy, pandas, PySide6; print('All dependencies installed successfully!')"
 ```
 
-## 🎯 Quick Start
+## Quick Start
 
 ### Launch Graphical Interface
 
@@ -140,7 +143,7 @@ python analysis/area.py --gro-file cases/lnb.gro --xtc-file cases/md.xtc --resid
 
 ```
 
-## 📖 User Guide
+## User Guide
 
 ### Graphical Interface Usage
 
@@ -153,16 +156,16 @@ python analysis/area.py --gro-file cases/lnb.gro --xtc-file cases/md.xtc --resid
 
 ### Main Function Modules
 
-#### 🧬 Generation Module
+#### Generation Module
 - Lipid nanobubble structure generation
 - Custom parameter configuration
 
-#### 📊 Analysis Module
+#### Analysis Module
 - Multiple physical property analysis
 - Real-time progress display
 - Result visualization
 
-#### 📈 Visualization Module
+#### Visualization Module
 - Multiple chart types
 - Custom styles
 - Interactive with VMD
@@ -173,7 +176,7 @@ python analysis/area.py --gro-file cases/lnb.gro --xtc-file cases/md.xtc --resid
 2. **Start VMD**: Click "Start VMD" in the interface
 3. **Visualization**: Use VMD for molecular visualization
 
-## 🖥️ Command Line Tools
+## Command Line Tools
 
 LNB-MDT provides a complete command-line interface supporting batch processing and automated analysis.
 
@@ -237,7 +240,7 @@ python analysis/curvature.py \
 For detailed usage instructions, please refer to [analysis/README_COMMAND_LINE.md](analysis/README_COMMAND_LINE.md)
 
 
-## 📁 File Structure
+## File Structure
 
 ```
 LNB-MDT/
@@ -262,7 +265,7 @@ LNB-MDT/
     └── csv/              # Results file directory
 ```
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
