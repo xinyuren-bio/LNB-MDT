@@ -5,7 +5,7 @@ import shutil
 
 from main import *
 from functools import partial
-from generation.lipidsInfo_martini3 import *
+from preparation.lipidsInfo_martini3 import *
 from .Tools import *
 global window
 
@@ -63,7 +63,7 @@ class InfoGeneration:
 
 
 class BtnGeneClick:
-    LNB_PATH: str = 'generation//lnb_gener_martini3.py'
+    LNB_PATH: str = 'preparation//lnb_gener_martini3.py'
 
     def __init__(self, ui):
         self.ui = ui
@@ -273,7 +273,7 @@ Notes:
                 os.remove(ndx_path)
 
             # 获取files文件夹路径
-            files_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'generation', 'files')
+            files_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'preparation', 'files')
             
             # 复制文件到相应位置
             if os.path.exists(files_dir):

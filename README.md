@@ -101,7 +101,7 @@ LNB-MDT/
 │   ├── n_cluster.py      # N-cluster analysis
 │   ├── rad.py            # Radial distribution analysis
 │   └── README_COMMAND_LINE.md  # Command line usage guide
-├── generation/            # Generation module
+├── preparation/            # Preparation module
 ├── cases/                 # Example data
     ├── lnb.gro           # Example topology file
     ├── md.xtc            # Example trajectory file
