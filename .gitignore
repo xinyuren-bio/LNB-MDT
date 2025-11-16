@@ -14,3 +14,4 @@ cases/
 test_outputs/
 k_test/
 _setup_.py
+./main.ui
