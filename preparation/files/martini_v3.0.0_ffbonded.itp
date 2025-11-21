@@ -1,0 +1,54 @@
+
+; NAMED BONDED TYPES FOR THE MARTINI 3 MODEL FOR IONIZABLE LIPIDS
+;
+;
+; authors: Lisbeth Ravnkilde
+; 
+;
+
+;;;;;
+;;;;; GENERAL
+;;;;;
+;; Here we present a list of basic parameters, which can be used
+;; as defaults or for starting points for further optimization
+
+
+[ bondtypes ]
+;type   length   k
+;tails version 1
+#define b_C1_C1           1       0.47    3800 ; C1_C1_mid
+#define b_C1_C4           1       0.47    3800 ; C1_C4h_mid
+#define b_C4_C1           1       0.47    3800 ; C4h_C1_end
+#define b_SN4a_C1         1       0.47    5000 ; SN4a_C1
+#define b_C1_C1           1       0.47    3800 ; C1_C1_end
+#define b_C4_C4           1       0.47    3800 ; C4h_C4h_mid_end
+#define b_ET_C1_glyc      1       0.37    5000 ; C1_SN4ah
+#define b_SC1_C1          1       0.37    2500 ; SC1-C1 from fragments
+
+
+
+[ angletypes ]
+;type   angle   k
+;tails version 1
+#define a_SN4a_C1_C1    2       180.0   35.0 ; SN4a_C1_C1
+#define a_SN4a_C4_C4    2       100.0   10.0 ; SN4a_C4h_C4h
+#define a_SN4a_C1_C4    2       180.0   35.0 ; SN4a_C1_C4h
+#define a_C1_C4_C1      2       120.0   35.0 ; C1_C4h_C1
+#define a_C1_C1_C4      2       180.0   35.0 ; C1_C1_C4h
+#define a_C4_C1_C1      2       180.0   35.0 ; C1_C1_C4h
+#define a_C1_C4_C4      2       100.0   10.0 ; C1_C4h_C4h
+#define a_C4_C4_C1      2       100.0   10.0 ; C4h_C4h_C1
+#define a_C4_C4_C4      2       100.0   10.0 ; C4h_C4h_C4h
+#define a_C1_C1_C1      2       180.0   35.0 ; C1_C1_C1
+#define a_ET_C1_C4_glyc 2       150.0   25.0 ; SN4ah_C1_C4h From fragment called ether_link_unsat
+#define a_ET_C1_C1_glyc 2       150.0   25.0 ; SN4ah_C1_C1 From fragment called ether_link_sat
+
+
+;; Missing params
+;C4h_C4h_C1
+;C1_SN4a_C1
+;C1_SN4a_SN4a
+;b_ET_C4_glyc
+;a_ET_C4_C4_glyc
+;a_ET_C4_C1_glyc
+;b_SN4a_C4

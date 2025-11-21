@@ -136,6 +136,7 @@ class BtnGeneClick:
 ; molecules present in your system.  
 
 #include "toppar/martini_v3.0.0.itp"
+#include "toppar/martini_v3.0.0_ffbonded.itp"
 #include "toppar/martini_v3.0.0_ions.itp"  
 #include "toppar/martini_v3.0.0_phospholipids.itp"
 #include "toppar/martini_v3.0.0_gas.itp" 

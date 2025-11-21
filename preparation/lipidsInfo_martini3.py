@@ -9,6 +9,7 @@ ALL_LIPIDS = ["DAPC",
      "DOPC",
      "DPPC",
      "DRPC",
+     "DSPC",
      "DTPC",
      "DVPC",
      "DXPC",
@@ -126,7 +127,10 @@ GLYCOLIPIDS = [
 # Sterols
 STEROLS = ['CHOL']
 
-ALL_P = [*ALL_LIPIDS, *GLYCOLIPIDS, *STEROLS]
+# Ionizable Lipids
+IONIZABLE_LIPIDS = ['MC3']
+
+ALL_P = [*ALL_LIPIDS, *GLYCOLIPIDS, *STEROLS, *IONIZABLE_LIPIDS]
 # Lipids
 PC_LIPIDS = [i for i in ALL_LIPIDS if (i[-2:] == 'PC')]
 PE_LIPIDS = [i for i in ALL_LIPIDS if (i[-2:] == 'PE')]
@@ -140,5 +144,6 @@ lipids = {'PC Lipids': PC_LIPIDS,
           'PS Lipids': PS_LIPIDS,
           'Other Lipids': OTHER_LIPIDS,
           'Sterol': STEROLS,
-          'Glycoipids': GLYCOLIPIDS
+          'Glycoipids': GLYCOLIPIDS,
+          'Ionizable Lipids': IONIZABLE_LIPIDS
           }
