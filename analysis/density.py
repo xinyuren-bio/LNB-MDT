@@ -50,9 +50,13 @@ class DensityTime(AnalysisBase):
         for sp in self.residues:
             self.headAtoms += self.u.select_atoms('resname %s and name %s'
                                                   % (sp, self.headSp[sp]), updating=False)
+        # 合并多个残基的相同原子名：例如DPPC:C4B和DAPC:C4B会被合并统计
+        # GasGroup格式：{'DPPC': ['C4B'], 'DAPC': ['C4B']}，这些原子会被当作一类统计
         for sp in self.gas_group:
-            self.gas_atoms += self.u.select_atoms('resname %s and name %s'
-                                                  % (sp, self.gas_sp[sp]), updating=False)
+            atom_names = self.gas_sp[sp].split()  # 支持多个原子名（空格分隔）
+            for atom_name in atom_names:
+                self.gas_atoms += self.u.select_atoms('resname %s and name %s'
+                                                      % (sp, atom_name), updating=False)
 
         self._n_residues = self.headAtoms.n_residues
         self.results.DensityWithtimes = None
@@ -68,8 +72,11 @@ class DensityTime(AnalysisBase):
 
     def _single_frame(self):
         center_of_mass = self.headAtoms.center_of_mass()
-        gas_atom = self.u.select_atoms(f'point {center_of_mass[0]:.3f} {center_of_mass[1]:.3f} {center_of_mass[2]:.3f} {self.radius:.3f}')
-        n_atoms = gas_atom.n_residues
+        # 先在预先定义的gas_atoms范围内选择，然后再应用空间选择
+        # 这样可以正确统计多个残基的相同原子名（如DPPC:C4B和DAPC:C4B）
+        selection_string = f'point {center_of_mass[0]:.3f} {center_of_mass[1]:.3f} {center_of_mass[2]:.3f} {self.radius:.3f}'
+        gas_atom = self.gas_atoms.select_atoms(selection_string)
+        n_atoms = gas_atom.n_atoms  # 使用原子数，因为gas_atoms已经包含了所有相关原子
         volume = (4/3) * np.pi * (self.radius ** 3) * 1e-30
         mass = n_atoms * self.MW * 1.66054e-27
         density = mass / volume
@@ -78,6 +85,10 @@ class DensityTime(AnalysisBase):
     def run(self, start=None, stop=None, step=None, frames=None,
             verbose=None, *, progressbar_kwargs={}, callBack=None):
         """运行密度分析"""
+        # 处理stop参数：-1应该转换为None，让MDAnalysis的check_slice_indices正确处理
+        if stop == -1:
+            stop = None  # 转换为None，让MDAnalysis处理为完整的轨迹长度
+        
         verbose = getattr(self, '_verbose', False) if verbose is None else verbose
         
         self._setup_frames(self._trajectory, start=start, stop=stop, step=step, frames=frames)
@@ -92,11 +103,12 @@ class DensityTime(AnalysisBase):
             )
             if results_list:
                 self.results.DensityWithtimes = np.array(results_list)
+            # 并行模式下需要手动调用_conclude，因为不会调用super().run()
+            self._conclude()
         else:
             print("Running in serial mode...")
+            # 串行模式下，super().run()会在最后自动调用_conclude()，所以这里不需要再调用
             super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)
-
-        self._conclude()
 
     def _process_frame_parallel(self, frame_idx, ts):
         """并行处理单帧"""
@@ -104,8 +116,11 @@ class DensityTime(AnalysisBase):
         self._trajectory[ts.frame]
         
         center = self.headAtoms.center_of_mass()
-        gas_atom = self.u.select_atoms(f'point {center[0]:.3f} {center[1]:.3f} {center[2]:.3f} {self.radius:.3f}')
-        n_atoms = gas_atom.n_residues
+        # 先在预先定义的gas_atoms范围内选择，然后再应用空间选择
+        # 这样可以正确统计多个残基的相同原子名（如DPPC:C4B和DAPC:C4B）
+        selection_string = f'point {center[0]:.3f} {center[1]:.3f} {center[2]:.3f} {self.radius:.3f}'
+        gas_atom = self.gas_atoms.select_atoms(selection_string)
+        n_atoms = gas_atom.n_atoms  # 使用原子数，因为gas_atoms已经包含了所有相关原子
         volume = (4/3) * np.pi * (self.radius ** 3) * 1e-30
         mass = n_atoms * self.MW * 1.66054e-27
         density = mass / volume
@@ -359,9 +374,13 @@ class DensityRadius(AnalysisBase):
         for sp in self.residues:
             self.headAtoms += self.u.select_atoms('resname %s and name %s'
                                                   % (sp, self.headSp[sp]), updating=False)
+        # 合并多个残基的相同原子名：例如DPPC:C4B和DAPC:C4B会被合并统计
+        # GasGroup格式：{'DPPC': ['C4B'], 'DAPC': ['C4B']}，这些原子会被当作一类统计
         for sp in self.gas_group:
-            self.gas_atoms += self.u.select_atoms('resname %s and name %s'
-                                                  % (sp, self.gas_sp[sp]), updating=False)
+            atom_names = self.gas_sp[sp].split()  # 支持多个原子名（空格分隔）
+            for atom_name in atom_names:
+                self.gas_atoms += self.u.select_atoms('resname %s and name %s'
+                                                      % (sp, atom_name), updating=False)
 
         self._n_residues = self.headAtoms.n_residues
         self.results.DensityMultiRadius = None
@@ -428,6 +447,10 @@ class DensityRadius(AnalysisBase):
     def run(self, start=None, stop=None, step=None, frames=None,
             verbose=None, *, progressbar_kwargs={}, callBack=None):
         """运行多半径密度分析"""
+        # 处理stop参数：-1应该转换为None，让MDAnalysis的check_slice_indices正确处理
+        if stop == -1:
+            stop = None  # 转换为None，让MDAnalysis处理为完整的轨迹长度
+        
         verbose = getattr(self, '_verbose', False) if verbose is None else verbose
         
         self._setup_frames(self._trajectory, start=start, stop=stop, step=step, frames=frames)
@@ -441,11 +464,12 @@ class DensityRadius(AnalysisBase):
             )
             if results_list:
                 self.results.DensityMultiRadius = np.array(results_list).transpose(1, 0)
+            # 并行模式下需要手动调用_conclude，因为不会调用super().run()
+            self._conclude()
         else:
             print("Running in serial mode...")
+            # 串行模式下，super().run()会在最后自动调用_conclude()，所以这里不需要再调用
             super().run(start=start, stop=stop, step=step, verbose=verbose, callBack=callBack)
-
-        self._conclude()
 
     def _process_frame_parallel(self, frame_idx, ts):
         """并行处理单帧"""
@@ -675,42 +699,38 @@ class DensityRadius(AnalysisBase):
     
 
     def _save_multi_radius_data(self):
-        """保存多半径密度数据到CSV，前4列保持不变，后面每一列是每一帧的该半径层密度"""
-        # 创建半径层数据框
-        data_rows = []
-        
+        """保存多半径密度数据到CSV，第一列是Time，第二列是Frames，从第三列开始是每个半径层的密度"""
         # 获取帧数并转换为时间单位（ns）
         frames = list(range(self.start, self.stop, self.step))
         time_values = [frame * self._trajectory.dt / 1000 for frame in frames]  # 转换为ns
         
-        for radius_idx in range(len(self.radii) - 1):
-            inner_radius = self.radii[radius_idx]
-            outer_radius = self.radii[radius_idx + 1]
-            
-            # 计算环形体积
-            inner_vol = (4/3) * np.pi * (inner_radius ** 3) * 1e-30
-            outer_vol = (4/3) * np.pi * (outer_radius ** 3) * 1e-30
-            ring_volume = outer_vol - inner_vol
-            
-            # 构建行数据：前4列保持不变
+        # 创建数据行：每一行代表一个时间点
+        data_rows = []
+        
+        # 为每个时间点创建一行数据
+        for frame_idx, (frame, time_val) in enumerate(zip(frames, time_values)):
             row_data = {
-                'Radius_Layer': radius_idx + 1,
-                'Inner_Radius_A': inner_radius,
-                'Outer_Radius_A': outer_radius,
-                'Radius_Range': f"{inner_radius:.1f}-{outer_radius:.1f}Å"
+                'Time': time_val,  # 第一列：时间（ns）
+                'Frames': frame    # 第二列：帧数
             }
             
-            # 添加每一帧的该半径层密度作为列，使用时间单位
-            for frame_idx, time_val in enumerate(time_values):
+            # 从第三列开始：每个半径层的密度值
+            for radius_idx in range(len(self.radii) - 1):
+                inner_radius = self.radii[radius_idx]
+                outer_radius = self.radii[radius_idx + 1]
+                radius_range = f"{inner_radius:.1f}-{outer_radius:.1f}Å"
+                
+                # 获取该时间点该半径层的密度值
                 if self.results.DensityMultiRadius is not None:
                     layer_density = self.results.DensityMultiRadius[radius_idx, frame_idx]
                 else:
                     layer_density = 0.0
-                row_data[str(time_val)] = layer_density
+                
+                row_data[radius_range] = layer_density
             
             data_rows.append(row_data)
         
-        df_radius = pd.DataFrame(data_rows)
+        df_time = pd.DataFrame(data_rows)
         
         # 保存到CSV
         with open(self.file_path, 'w') as f:
@@ -723,8 +743,8 @@ class DensityRadius(AnalysisBase):
             f.write(f"# Number Segments: {self.number_segments}\n")
             f.write(f"\n")
             
-            # 写入半径层数据
-            df_radius.to_csv(f, index=False)
+            # 写入时间序列数据
+            df_time.to_csv(f, index=False)
             f.write(f"\n")
 
         

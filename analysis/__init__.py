@@ -1,7 +1,7 @@
 from .height import Height
 from .area import Area
 # from .pca import PCA
-from .curvature import Curvature
+# from .curvature import Curvature
 from .sz import SZ
 from .anisotropy import Anisotropy
 # from .rad import CalRad

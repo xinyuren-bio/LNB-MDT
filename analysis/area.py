@@ -390,9 +390,21 @@ class Area(AnalysisBase):
         Execute the analysis.
         Chooses between serial and parallel execution based on self.parallel.
         """
+        # 处理stop参数：-1应该转换为None，让MDAnalysis的check_slice_indices正确处理
+        if stop == -1:
+            stop = None  # 转换为None，让MDAnalysis处理为完整的轨迹长度
+        
         if self.parallel:
+            # 对于并行模式，需要先计算实际的stop值用于n_frames计算
+            if stop is None:
+                actual_stop = self._trajectory.n_frames
+            elif stop < 0:
+                actual_stop = self._trajectory.n_frames + stop + 1
+            else:
+                actual_stop = stop if stop <= self._trajectory.n_frames else self._trajectory.n_frames
+            
             self.start = start if start is not None else 0
-            self.stop = stop if stop is not None and stop < self._trajectory.n_frames else self._trajectory.n_frames
+            self.stop = actual_stop
             self.step = step if step is not None else 1
             self.n_frames = len(range(self.start, self.stop, self.step))
             

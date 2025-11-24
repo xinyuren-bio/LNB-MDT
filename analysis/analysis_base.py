@@ -254,7 +254,7 @@ class WriteExcelLipids(WriteExcel):
             'Resid': self.resids.astype(int),
             'Resname': self.resnames,
             'Coordinates': [f"{x:.2f},{y:.2f},{z:.2f}" for x, y, z in self.positions],
-            **{f"{time_val:.2f}": self.results[:, i].round(3)
+            **{f"{time_val:.2f}": self.results[:, i].round(5)
                for i, time_val in enumerate(time_values)},
         })
         
@@ -263,7 +263,7 @@ class WriteExcelLipids(WriteExcel):
             {
                 'Frame': self.frames,
                 f'Time ({time_unit})': time_values,
-                'Values': np.mean(self.results, axis=0).round(3)
+                'Values': np.mean(self.results, axis=0).round(5)
             }
         )
 
@@ -295,7 +295,7 @@ class WriteExcelBubble(WriteExcel):
             {
                 'Frame': self.frames,
                 f'Time ({time_unit})': time_values,
-                'Values': self.results.round(3)
+                'Values': self.results.round(5)
             }
         )
         comments = ['Created by LNB-MDT v1.0', self.description, f'TYPE:{self.type_name}', 'Parameters:' + self.parameters]
