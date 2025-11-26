@@ -501,7 +501,7 @@ density_multi.plot_heatmap()  # Heatmap showing density vs radius vs time
 | Anisotropy | ✅ | ✅ | ❌ | ❌ | - |
 | Gyration | ✅ | ✅ | ❌ | ❌ | - |
 | Sz | ✅ | ✅ | ❌ | ❌ | - |
-| Density (single) | ✅ | ✅ | ✅ | ✅ | - |
+| Density (single) | ✅ | ✅ | ❌ | ❌ | - |
 | Density (multi) | ✅ | ❌ | ✅ | ❌ | - |
 
 **Note:** All plots are displayed interactively using matplotlib. To save plots programmatically, you can modify the plot methods or use matplotlib's `plt.savefig()` function.
