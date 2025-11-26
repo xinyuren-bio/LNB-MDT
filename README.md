@@ -82,7 +82,7 @@ LNB-MDT/
 │   ├── sz.py             # Sz order parameter analysis
 │   └── density.py        # Density analysis (time and radius)
 ├── preparation/            # Preparation module
-├── cases/                 # Example data
+└── cases/                 # Example data
     ├── lnb.gro           # Example topology file
     ├── md.xtc            # Example trajectory file
     └── csv/              # Results file directory
