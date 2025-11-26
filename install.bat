@@ -45,7 +45,7 @@ pip install -r requirements.txt
 
 REM Verify installation
 echo 🔍 Verifying installation...
-python -c "import sys; import importlib; required_packages = ['MDAnalysis', 'numpy', 'pandas', 'PySide6', 'scipy', 'matplotlib']; print('Python version:', sys.version); print('Checking dependencies...'); [print(f'✅ {package}: Installed') if importlib.util.find_spec(package) else print(f'❌ {package}: Not installed') for package in required_packages]; print('\n🎉 Installation complete!'); print('\nUsage:'); print('1. Activate environment: conda activate LNB-MDT'); print('2. Start program: python main.py'); print('3. Command line analysis: python analysis/pca.py --help')"
+python -c "import sys; import importlib; required_packages = ['MDAnalysis', 'numpy', 'pandas', 'PySide6', 'scipy', 'matplotlib', 'seaborn']; print('Python version:', sys.version); print('Checking dependencies...'); [print(f'✅ {package}: Installed') if importlib.util.find_spec(package) else print(f'❌ {package}: Not installed') for package in required_packages]; print('\n🎉 Installation complete!'); print('\nUsage:'); print('1. Activate environment: conda activate LNB-MDT'); print('2. Start program: python main.py'); print('3. Command line analysis: python analysis/pca.py --help')"
 
 echo.
 echo 🎯 Installation complete!

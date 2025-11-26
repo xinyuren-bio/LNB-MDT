@@ -53,7 +53,7 @@ python -c "
 import sys
 import importlib
 
-required_packages = ['MDAnalysis', 'numpy', 'pandas', 'PySide6', 'scipy', 'matplotlib']
+required_packages = ['MDAnalysis', 'numpy', 'pandas', 'PySide6', 'scipy', 'matplotlib', 'seaborn']
 
 print('Python version:', sys.version)
 print('Checking dependencies...')
