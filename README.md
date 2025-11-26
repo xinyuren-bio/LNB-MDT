@@ -74,17 +74,13 @@ LNB-MDT/
 ├── main.py                 # Main program entry
 ├── requirements.txt        # Python dependencies
 ├── analysis/              # Analysis modules
-│   ├── pca.py            # PCA analysis
 │   ├── area.py           # Area analysis
-│   ├── curvature.py      # Curvature analysis
 │   ├── height.py         # Height analysis
 │   ├── cluster.py        # Cluster analysis
 │   ├── anisotropy.py     # Anisotropy analysis
 │   ├── gyration.py       # Gyration analysis
 │   ├── sz.py             # Sz order parameter analysis
-│   ├── n_cluster.py      # N-cluster analysis
-│   ├── rad.py            # Radial distribution analysis
-│   └── README_COMMAND_LINE.md  # Command line usage guide
+│   └── density.py        # Density analysis (time and radius)
 ├── preparation/            # Preparation module
 ├── cases/                 # Example data
     ├── lnb.gro           # Example topology file
