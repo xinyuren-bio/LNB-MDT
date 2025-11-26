@@ -1,3 +1,68 @@
+[ moleculetype ]
+A3P  1
+[ atoms ]
+; nr type resnr residue atom cgnr charge mass
+   1    P1         0    A3P     OH         1       0      72
+   2    SQ2p       0    A3P     NP         2       1      54
+   3    C2         0    A3P     CA         3       0      72
+   4    SN4a       0    A3P     GLA        4       0      54
+   5    SC2        0    A3P     CAX        5       0      54
+   6    C1         0    A3P     CA1        6       0      72
+   7    SC1        0    A3P     CA2        7       0      54
+   8    C1         0    A3P     CA3        8       0      72
+   9    C2         0    A3P     CB         9       0      72
+  10    SN4a       0    A3P     GLB       10       0      54
+  11    SC2        0    A3P     CBX       11       0      54
+  12    C1         0    A3P     CB1       12       0      72
+  13    SC1        0    A3P     CB2       13       0      54
+  14    C1         0    A3P     CB3       14       0      72
+
+
+[ bonds ]
+; i  j  funct length
+   1       2       1    0.52    2500  ;OH-NP
+   2       3       1    0.52    2500  ;NP-CA
+   2       9       1    0.52    2500  ;NP-CB
+   3       4       1    0.37    5000  ;CA-GLA 
+   9      10       1    0.37    5000  ;CB-GLB 
+   4       5       1    0.37    5000  ;GLA-CAX 
+   5       6       1    0.47    5000  ;CAX-CA1 
+   5       7       1    0.37    5000  ;CAX-CA2 
+   7       8       b_SC1_C1           ;CA2-CA3 
+  10      11       1    0.37    5000  ;GLB-CBX 
+  11      12       1    0.47    5000  ;CBX-CB1 
+  11      13       1    0.37    5000  ;CBX-CB2 
+  13      14       b_SC1_C1           ;CB2-CB3 
+
+[ angles ]
+;  i  j  k   funct   angle   force.c.
+   1       2       3       2     115      30  ;OH-NP-CA
+   1       2       9       2     115      30  ;OH-NP-CB
+   3       2       9       2     110      40  ;CA-NP-CB
+   3       4       5       2     120      35  ;CA-GLA-CAX  
+   4       5       6       2     100      25  ;GLA-CAX-CA1 
+   4       5       7       2     100      25  ;GLA-CAX-CA2 
+   6       5       7       2     125      25  ;CA1-CAX-CA2 
+   5       7       8       2     155      35  ;CAX-CA2-CA3 
+   9      10      11       2     120      35  ;CB-GLB-CBX  
+  10      11      12       2     100      25  ;GLB-CBX-CB1 
+  10      11      13       2     100      25  ;GLB-CBX-CB2 
+  12      11      13       2     125      25  ;CB1-CBX-CB2 
+  11      12      14       2     155      35  ;CBX-CB2-CB3 
+
+
+
+[ exclusions ]
+1 2 3 9 ;OH-NP-CA-CB
+3 9     ;CA-CB
+6  7    ;CA1-CA2
+12 13   ;CB1-CB2
+
+[ pairs ]
+6   7  1 4.100000e-01    2.350000e+00
+12 13  1 4.100000e-01    2.350000e+00
+
+
 ;;;;; Martini 3 - Database of PC, PE, PS, PA and PG phospholipids
 ;;;;;  
 ;;;;; File updated on 2021-03-29
@@ -6,6 +71,59 @@
 ;;;;;                                                                                     
 ;;;;; This collection contains the models included as part of the Martini 3 publication: 
 ;;;;;   PCT Souza, et al., Nat. Methods, 2021. DOI: 10.1038/s41592-021-01098-3 
+
+[ moleculetype ]
+MC3H  1
+[ atoms ]
+; nr type resnr residue atom cgnr charge mass
+1    TQ2p   0    MC3H    NP     1    1    36
+2    TC2    0    MC3H    CN     2    0    36
+3    SN4a   0    MC3H    GLA    3    0    54
+4    SC2    0    MC3H    CX     4    0    54
+5    C1     0    MC3H    C1A    5    0    72
+6    C4h    0    MC3H    D2A    6    0    72
+7    C4h    0    MC3H    D3A    7    0    72
+8    C1     0    MC3H    C4A    8    0    72
+9    C1     0    MC3H    C1B    9    0    72
+10   C4h    0    MC3H    D2B    10   0    72
+11   C4h    0    MC3H    D3B    11   0    72
+12   C1     0    MC3H    C4B    12   0    72
+
+[ bonds ]
+; i  j  funct length
+1     2    1    0.34     5000 ;N1-CN
+2     3    1    0.365    5000 ;CN-GLA
+3     4    1    0.365    5000 ;GLA-CX
+4     5    1    0.47     5000 ;CX-C1A
+4     9    1    0.47     5000 ;CX-C1B
+5     6 	b_C1_C4       ;C1A-D2A
+6     7 	b_C4_C4       ;D2A-D3A
+7     8 	b_C4_C4       ;D3A-C4A
+9    10 	b_C1_C4       ;C1B-D2B
+10   11 	b_C4_C4       ;D2B-D3B
+11   12 	b_C4_C4       ;D3B-C4B
+
+[ angles ]
+;  i  j  k   funct   angle   force.c.
+1    2    3    1    152    10 ;N1-CN-GLA
+2    3    4    1    137    15 ;CN-GLA-CX
+3    4    9    1    110    10 ;GLA-CX-C1B
+3    4    5    1    110    10 ;GLA-CX-C1A
+5    4    9    1    125    25 ;C1A-CX-C1B
+4    5    6    1    140    15 ;CX-C1A-D2A
+4    9   10    1    140    15 ;CX-C1B-D2B
+5    6    7    a_C1_C4_C4     ;C1A-D2A-D3A
+6    7    8    a_C4_C4_C1     ;D2A-D3A-C4A
+9   10   11    a_C1_C4_C4     ;C1B-D2B-D3B
+10  11   12    a_C1_C4_C4     ;D3B-D3B-C4B
+
+
+[ exclusions ]
+5 9
+
+[ pairs ] 
+5 9  1 4.100000e-01    2.350000e+00
+
 
 ;
 ; Collection with all phosphatidylcholines Martini 3 lipids
