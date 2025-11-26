@@ -82,10 +82,10 @@ LNB-MDT/
 │   ├── sz.py             # Sz order parameter analysis
 │   └── density.py        # Density analysis (time and radius)
 ├── preparation/            # Preparation module
-└── cases/                 # Example data
-    ├── lnb.gro           # Example topology file
-    ├── md.xtc            # Example trajectory file
-    └── csv/              # Results file directory
+└── cases_lnb/             # Example lipid nanobubble data
+    ├── lnb.gro           # Example topology file (Martini 3.0, DPPC:DAPC:CHOL=5:3:2)
+    ├── lnb.xtc           # Example trajectory file (50-60 ns time window)
+    └── README.md         # Example data description
 ```
 
 ## License
