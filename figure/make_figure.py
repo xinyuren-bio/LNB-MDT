@@ -26,25 +26,46 @@ from figure.figure import read_excel, LipidsFigure, BubbleFigure, TYPE
 from figure.density_figure import DensityFigure
 
 
-def get_available_plot_types(description, data_type):
+def get_available_plot_types(description, data_type, excel_data=None):
     """
     Determine available plot types based on description and data_type
     
     Args:
         description: Description from CSV file
         data_type: Type value from TYPE dictionary
+        excel_data: pandas DataFrame (optional, for checking data structure)
     
     Returns:
         list: List of available plot types ['line', 'bar', 'scatter', 'heatmap']
     """
     available_types = []
     
-    # Check if it's a Density type based on description keywords
-    # This handles cases where description is not in TYPE dictionary
-    if any(keyword in description for keyword in ['DensityTime', 'Density Radius', 'Density With Times', 
-                                                  'Density With Time', 'Density With Radius', 'Multi-Radius Density',
-                                                  'Multi Radius Density', 'Density With']):
-        # DensityFigure: supports Line, Heatmap
+    # Check if it's a Density type and determine if it's time or radius
+    is_density_time = any(keyword in description for keyword in [
+        'DensityTime', 'Density With Times', 'Density With Time', 
+        'Density Analysis', 'Time Series'
+    ])
+    
+    is_density_radius = any(keyword in description for keyword in [
+        'DensityRadius', 'Density With Radius', 'Multi-Radius Density',
+        'Multi Radius Density', 'Multi-Radius Density Analysis'
+    ])
+    
+    # If still uncertain and excel_data is provided, check data structure
+    if not is_density_time and not is_density_radius and excel_data is not None:
+        if 'Radius' in excel_data.columns or 'radius' in excel_data.columns:
+            is_density_radius = True
+        elif 'Time(ns)' in excel_data.columns or 'Time' in excel_data.columns:
+            # Check if it's simple time series (only Time and Density columns)
+            if len(excel_data.columns) <= 3:  # Frame, Time, Density
+                is_density_time = True
+    
+    if is_density_time:
+        # DensityTime: supports Line, Bar (1D time series)
+        available_types = ['line', 'bar']
+        return available_types
+    elif is_density_radius:
+        # DensityRadius: supports Line, Heatmap (2D data: time x radius)
         available_types = ['line', 'heatmap']
         return available_types
     
@@ -56,7 +77,7 @@ def get_available_plot_types(description, data_type):
         # BubbleFigure: supports Line, Bar
         available_types = ['line', 'bar']
     elif data_type == 3:
-        # DensityFigure: supports Line, Heatmap
+        # DensityFigure: default to Line, Heatmap (but should be handled above)
         available_types = ['line', 'heatmap']
     elif data_type == 2:
         # Other types, default to Line, Bar
@@ -82,7 +103,8 @@ def create_figure_instance(description, excel_data, figure_settings):
     """
     # Check if it's a Density type
     if any(keyword in description for keyword in ['DensityTime', 'Density Radius', 'Density With Times', 
-                                                  'Density With Time', 'Density With Radius', 'Multi-Radius Density']):
+                                                  'Density With Time', 'Density With Radius', 'Multi-Radius Density',
+                                                  'Multi Radius Density', 'Density With', 'Density Analysis']):
         return DensityFigure(description, excel_data, figure_settings)
     
     # Determine based on TYPE dictionary
@@ -333,7 +355,7 @@ def main():
         # Check if it's a Density type based on description keywords
         if any(keyword in description for keyword in ['DensityTime', 'Density Radius', 'Density With Times', 
                                                       'Density With Time', 'Density With Radius', 'Multi-Radius Density',
-                                                      'Multi Radius Density', 'Density With']):
+                                                      'Multi Radius Density', 'Density With', 'Density Analysis']):
             data_type = 3  # DensityFigure
         # Infer from data structure
         elif 'Resname' in excel_data.columns:
@@ -341,7 +363,7 @@ def main():
         else:
             data_type = 1  # BubbleFigure
     
-    available_types = get_available_plot_types(description, data_type)
+    available_types = get_available_plot_types(description, data_type, excel_data)
     
     if not available_types:
         print("Error: Unable to determine available plot types")

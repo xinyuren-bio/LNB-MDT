@@ -25,12 +25,21 @@ class DensityFigure:
         self.figure_settings = figure_settings
         
         # 根据描述确定数据类型
-        if 'DensityTime' in description or 'Density With Times' in description or 'Density With Time' in description:
+        if ('DensityTime' in description or 'Density With Times' in description or 
+            'Density With Time' in description or 'Density Analysis' in description or
+            'Time Series' in description):
             self.data_type = 'time'
-        elif 'DensityRadius' in description or 'Multi-Radius Density Analysis' in description or 'Density With Radius' in description:
+        elif ('DensityRadius' in description or 'Multi-Radius Density Analysis' in description or 
+              'Density With Radius' in description or 'Multi-Radius Density' in description):
             self.data_type = 'radius'
         else:
-            self.data_type = 'unknown'
+            # 如果无法从描述判断，尝试从数据列判断
+            if 'Time(ns)' in excel_data.columns or 'Time' in excel_data.columns:
+                self.data_type = 'time'
+            elif 'Radius' in excel_data.columns or 'radius' in excel_data.columns:
+                self.data_type = 'radius'
+            else:
+                self.data_type = 'unknown'
     
     def plot_line(self):
         """绘制Density数据的折线图"""
@@ -41,10 +50,20 @@ class DensityFigure:
         else:
             print(f"未知的Density类型: {self.description}")
     
-    def plot_heatmap(self):
-        """绘制Density数据的热力图"""
+    def plot_bar(self):
+        """绘制Density数据的柱状图（仅支持time类型）"""
         if self.data_type == 'time':
-            self._plot_time_heatmap()
+            self._plot_time_bar()
+        elif self.data_type == 'radius':
+            print("Density Radius类型不支持Bar图表，请使用Line或Heatmap")
+        else:
+            print(f"未知的Density类型: {self.description}")
+    
+    def plot_heatmap(self):
+        """绘制Density数据的热力图（仅支持radius类型）"""
+        if self.data_type == 'time':
+            print("Density Time类型不支持Heatmap图表，请使用Line或Bar")
+            raise ValueError("Heatmap is not supported for Density Time (1D time series). Use Line or Bar instead.")
         elif self.data_type == 'radius':
             self._plot_radius_heatmap()
         else:
@@ -57,16 +76,33 @@ class DensityFigure:
             print("错误：数据列数不足，无法绘制图表")
             return
         
-        # 对于简单的Time-Values格式，使用前两列
-        if len(self.excel_data.columns) == 2:
+        # 检查是否有Time和Density列
+        if 'Time(ns)' in self.excel_data.columns and 'Density' in self.excel_data.columns:
+            # 标准格式：Frame, Time(ns), Density
+            x_axis = self.excel_data['Time(ns)'].astype(float).to_numpy()
+            y_values = self.excel_data['Density'].astype(float).to_numpy()
+        elif 'Time' in self.excel_data.columns and 'Density' in self.excel_data.columns:
+            # 变体格式：Frame, Time, Density
+            x_axis = self.excel_data['Time'].astype(float).to_numpy()
+            y_values = self.excel_data['Density'].astype(float).to_numpy()
+        elif len(self.excel_data.columns) == 2:
+            # 简单格式：只有两列
             x_axis = self.excel_data.iloc[:, 0].astype(float).to_numpy()
             y_values = self.excel_data.iloc[:, 1].astype(float).to_numpy()
+        elif len(self.excel_data.columns) == 3:
+            # 三列格式：假设是 Frame, Time, Density
+            x_axis = self.excel_data.iloc[:, 1].astype(float).to_numpy()  # 第2列是时间
+            y_values = self.excel_data.iloc[:, 2].astype(float).to_numpy()  # 第3列是密度
         else:
-            # 复杂格式：从第4列开始是时间数据
+            # 复杂格式：从第4列开始是时间数据（多行数据，每行代表一个时间点）
             time_columns = self.excel_data.columns[3:]
-            x_axis = time_columns.astype(float).to_numpy()
-            result = self.excel_data.iloc[:, 3:].mean(axis=0)
-            y_values = result.to_numpy()
+            if len(time_columns) > 0:
+                x_axis = time_columns.astype(float).to_numpy()
+                result = self.excel_data.iloc[:, 3:].mean(axis=0)
+                y_values = result.to_numpy()
+            else:
+                print("错误：无法识别数据格式")
+                return
         
         # 使用DensityTime颜色
         density_color = self.figure_settings.get('density_color', '#2E8B57')  # 海绿色
@@ -84,6 +120,67 @@ class DensityFigure:
         plt.title(self.figure_settings.get('title', f'{self.description} Density Over Time'))
         plt.legend()
         plt.grid(True, alpha=0.3)
+        
+        # 设置坐标轴范围
+        self._set_axes()
+        plt.tight_layout()
+        plt.show()
+    
+    def _plot_time_bar(self):
+        """绘制DensityTime的柱状图"""
+        # 检查数据格式
+        if len(self.excel_data.columns) < 2:
+            print("错误：数据列数不足，无法绘制图表")
+            return
+        
+        # 检查是否有Time和Density列
+        if 'Time(ns)' in self.excel_data.columns and 'Density' in self.excel_data.columns:
+            # 标准格式：Frame, Time(ns), Density
+            x_axis = self.excel_data['Time(ns)'].astype(float).to_numpy()
+            y_values = self.excel_data['Density'].astype(float).to_numpy()
+        elif 'Time' in self.excel_data.columns and 'Density' in self.excel_data.columns:
+            # 变体格式：Frame, Time, Density
+            x_axis = self.excel_data['Time'].astype(float).to_numpy()
+            y_values = self.excel_data['Density'].astype(float).to_numpy()
+        elif len(self.excel_data.columns) == 2:
+            # 简单格式：只有两列
+            x_axis = self.excel_data.iloc[:, 0].astype(float).to_numpy()
+            y_values = self.excel_data.iloc[:, 1].astype(float).to_numpy()
+        elif len(self.excel_data.columns) == 3:
+            # 三列格式：假设是 Frame, Time, Density
+            x_axis = self.excel_data.iloc[:, 1].astype(float).to_numpy()  # 第2列是时间
+            y_values = self.excel_data.iloc[:, 2].astype(float).to_numpy()  # 第3列是密度
+        else:
+            # 复杂格式：从第4列开始是时间数据（多行数据，每行代表一个时间点）
+            time_columns = self.excel_data.columns[3:]
+            if len(time_columns) > 0:
+                x_axis = time_columns.astype(float).to_numpy()
+                result = self.excel_data.iloc[:, 3:].mean(axis=0)
+                y_values = result.to_numpy()
+            else:
+                print("错误：无法识别数据格式")
+                return
+        
+        # 使用DensityTime颜色
+        density_color = self.figure_settings.get('density_color', '#2E8B57')  # 海绿色
+        
+        # 计算柱状图宽度（基于时间间隔）
+        if len(x_axis) > 1:
+            bar_width = (x_axis.max() - x_axis.min()) / len(x_axis) * 0.8
+        else:
+            bar_width = None
+        
+        plt.bar(x_axis, y_values,
+                width=bar_width if bar_width else self.figure_settings.get('bar_width', None),
+                color=density_color,
+                alpha=self.figure_settings.get('bar_alpha', 0.7),
+                label=f'{self.description} Density')
+        
+        plt.xlabel(self.figure_settings.get('x_label', 'Time (ns)'))
+        plt.ylabel(self.figure_settings.get('y_label', 'Density'))
+        plt.title(self.figure_settings.get('title', f'{self.description} Density Over Time'))
+        plt.legend()
+        plt.grid(True, alpha=0.3, axis='y')
         
         # 设置坐标轴范围
         self._set_axes()
