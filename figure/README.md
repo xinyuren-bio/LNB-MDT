@@ -241,7 +241,7 @@ The tool supports figures for all LNB-MDT analysis modules:
 | Anisotropy | `anisotropy_results.csv` | Line, Bar |
 | Gyration | `gyration_results.csv` | Line, Bar |
 | Sz Order Parameter | `sz_results.csv` | Line, Bar, Scatter |
-| Density (Time) | `density_time_results.csv` | Line, Heatmap |
+| Density (Time) | `density_time_results.csv` | Line, Bar |
 | Density (Radius) | `density_radius_results.csv` | Line, Heatmap |
 
 ## Troubleshooting
