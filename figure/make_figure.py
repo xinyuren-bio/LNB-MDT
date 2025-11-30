@@ -41,19 +41,23 @@ def get_available_plot_types(description, data_type, excel_data=None):
     available_types = []
     
     # Check if it's a Density type and determine if it's time or radius
+    # Check radius first (more specific), then time
+    is_density_radius = any(keyword in description for keyword in [
+        'DensityRadius', 'Density With Radius', 'Multi-Radius Density',
+        'Multi Radius Density', 'Multi-Radius Density Analysis',
+        'Radius Layer'  # Add this for "Radius Layer Density Values"
+    ])
+    
     is_density_time = any(keyword in description for keyword in [
         'DensityTime', 'Density With Times', 'Density With Time', 
         'Density Analysis', 'Time Series'
-    ])
-    
-    is_density_radius = any(keyword in description for keyword in [
-        'DensityRadius', 'Density With Radius', 'Multi-Radius Density',
-        'Multi Radius Density', 'Multi-Radius Density Analysis'
-    ])
+    ]) and not is_density_radius  # Only if not radius
     
     # If still uncertain and excel_data is provided, check data structure
     if not is_density_time and not is_density_radius and excel_data is not None:
-        if 'Radius' in excel_data.columns or 'radius' in excel_data.columns:
+        # Check for radius-related columns (like "10.0-20.0Å" format)
+        has_radius_columns = any('Å' in str(col) or 'Radius' in str(col) for col in excel_data.columns)
+        if has_radius_columns or 'Radius' in excel_data.columns or 'radius' in excel_data.columns:
             is_density_radius = True
         elif 'Time(ns)' in excel_data.columns or 'Time' in excel_data.columns:
             # Check if it's simple time series (only Time and Density columns)

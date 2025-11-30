@@ -24,20 +24,28 @@ class DensityFigure:
         self.excel_data = excel_data
         self.figure_settings = figure_settings
         
-        # 根据描述确定数据类型
-        if ('DensityTime' in description or 'Density With Times' in description or 
-            'Density With Time' in description or 'Density Analysis' in description or
-            'Time Series' in description):
-            self.data_type = 'time'
-        elif ('DensityRadius' in description or 'Multi-Radius Density Analysis' in description or 
-              'Density With Radius' in description or 'Multi-Radius Density' in description):
+        # 根据描述确定数据类型（先检查radius，因为更具体）
+        if ('DensityRadius' in description or 'Multi-Radius Density Analysis' in description or 
+            'Density With Radius' in description or 'Multi-Radius Density' in description or
+            'Radius Layer' in description):
             self.data_type = 'radius'
+        elif ('DensityTime' in description or 'Density With Times' in description or 
+              'Density With Time' in description or 'Density Analysis' in description or
+              'Time Series' in description):
+            self.data_type = 'time'
         else:
             # 如果无法从描述判断，尝试从数据列判断
-            if 'Time(ns)' in excel_data.columns or 'Time' in excel_data.columns:
-                self.data_type = 'time'
-            elif 'Radius' in excel_data.columns or 'radius' in excel_data.columns:
+            # 检查是否有包含 'Å' 的列（radius 数据的特征）
+            has_radius_columns = any('Å' in str(col) for col in excel_data.columns)
+            if has_radius_columns or 'Radius' in excel_data.columns or 'radius' in excel_data.columns:
                 self.data_type = 'radius'
+            elif 'Time(ns)' in excel_data.columns or 'Time' in excel_data.columns:
+                # 检查是否是简单的时间序列（只有Time和Density列）
+                if len(excel_data.columns) <= 3:  # Frame, Time, Density
+                    self.data_type = 'time'
+                else:
+                    # 多列数据，可能是radius类型
+                    self.data_type = 'radius'
             else:
                 self.data_type = 'unknown'
     
@@ -55,9 +63,12 @@ class DensityFigure:
         if self.data_type == 'time':
             self._plot_time_bar()
         elif self.data_type == 'radius':
-            print("Density Radius类型不支持Bar图表，请使用Line或Heatmap")
+            error_msg = "Density Radius类型不支持Bar图表，请使用Line或Heatmap"
+            print(error_msg)
+            raise ValueError(error_msg)
         else:
             print(f"未知的Density类型: {self.description}")
+            raise ValueError(f"未知的Density类型: {self.description}")
     
     def plot_heatmap(self):
         """绘制Density数据的热力图（仅支持radius类型）"""
@@ -451,6 +462,79 @@ class DensityFigure:
             plt.show()
             
         else:
+            # 检查是否是另一种格式：Time, Frames, 0.0-10.0Å, 10.0-20.0Å, ...
+            radius_columns = [col for col in self.excel_data.columns if 'Å' in str(col)]
+            
+            if len(radius_columns) > 0 and 'Time' in self.excel_data.columns:
+                # 新格式：Time列 + 多个半径范围列
+                plt.figure(figsize=(12, 8))
+                
+                # 获取时间数据
+                time_data = self.excel_data['Time'].astype(float).to_numpy()
+                
+                # 创建数据矩阵：每行是一个时间点，每列是一个半径层
+                data_matrix = []
+                radius_labels = []
+                
+                for col in radius_columns:
+                    # 提取半径范围作为标签
+                    radius_labels.append(col)
+                    density_values = self.excel_data[col].astype(float).to_numpy()
+                    data_matrix.append(density_values)
+                
+                # 转置矩阵：每行是一个半径层，每列是一个时间点
+                data_matrix = np.array(data_matrix)
+                
+                # 为了确保每个半径层占相等的垂直空间，扩展数据矩阵
+                expanded_data_matrix = []
+                rows_per_layer = 10  # 每个半径层扩展为10行
+                
+                for i in range(data_matrix.shape[0]):  # 对每个半径层
+                    layer_data = data_matrix[i, :]  # 获取该层的所有时间数据
+                    for _ in range(rows_per_layer):  # 扩展为多行
+                        expanded_data_matrix.append(layer_data)
+                
+                expanded_data_matrix = np.array(expanded_data_matrix)
+                
+                # 绘制热图
+                cmap = self.figure_settings.get('cmap', 'viridis')
+                im = plt.imshow(expanded_data_matrix, cmap=cmap, aspect='auto', interpolation='nearest',
+                               extent=[time_data.min(), time_data.max(), 
+                                      0, expanded_data_matrix.shape[0]])
+                
+                # 设置坐标轴
+                plt.xlabel(self.figure_settings.get('x_title', 'Time (ns)'), 
+                          fontsize=self.figure_settings.get('axis_text', 12))
+                plt.ylabel(self.figure_settings.get('y_title', 'Radius Layer'), 
+                          fontsize=self.figure_settings.get('axis_text', 12))
+                plt.title('Multi-Radius Density Analysis - Heatmap', fontsize=14)
+                
+                # 设置x轴标签（时间）
+                if len(time_data) > 0:
+                    x_ticks = np.linspace(time_data.min(), time_data.max(), min(10, len(time_data)))
+                    plt.xticks(x_ticks, [f'{t:.1f}' for t in x_ticks])
+                
+                # 设置y轴标签（半径层）- 每个半径层占多行，所以标签位置需要调整
+                y_ticks = []
+                y_labels = []
+                for i in range(len(radius_labels)):
+                    tick_pos = (i * rows_per_layer) + (rows_per_layer // 2)  # 每个层的中间位置
+                    y_ticks.append(tick_pos)
+                    y_labels.append(radius_labels[i])
+                
+                plt.yticks(y_ticks, y_labels)
+                
+                # 添加水平分割线，区分不同的半径层
+                for i in range(1, len(radius_labels)):
+                    plt.axhline(y=i * rows_per_layer - 0.5, color='white', linewidth=1)
+                
+                # 添加颜色条
+                cbar = plt.colorbar(im, label='Density Value')
+                cbar.ax.tick_params(labelsize=self.figure_settings.get('axis_text', 12))
+                plt.tight_layout()
+                plt.show()
+                return
+            
             # 如果没有标准列，尝试其他方式
             print(f"警告：未找到Radius_Layer列或数据格式不正确，尝试使用其他列")
             print(f"可用列：{list(self.excel_data.columns)}")
