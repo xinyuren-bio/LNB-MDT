@@ -23,9 +23,9 @@ vdw-modifier             = Potential-shift-verlet
 rvdw                     = 1.1
 
 tcoupl                   = v-rescale
-tc-grps                  = membrane solute
-tau_t                    = 1.0  1.0
-ref_t                    = 310 310
+tc-grps                  = lnb_layer  lnb_gas  solute
+tau_t                    = 1.0  1.0  1.0
+ref_t                    = 310 310  310
 
 ; Pressure coupling:
 Pcoupl                   = berendsen

@@ -55,12 +55,49 @@ def generate_ndx(
     with open(gro_path, "r", encoding="utf-8") as gro_file:
         lines = gro_file.readlines()
 
-    # Atom records are between the 3rd line and the last line (box vectors)
+    # Atom records are between the 3rd line and before the box vectors line
     # Line 1: title
     # Line 2: number of atoms
-    # Lines 3 to second-to-last: atom records
-    # Last line: box vectors
-    atom_lines = lines[2:-1]
+    # Lines 3 to N: atom records (N = 2 + atom_count)
+    # Line N+1: box vectors (may be followed by empty line)
+    # 
+    # Determine where atom records end by checking for box vector format
+    # Box vectors are typically 3 or 9 floating point numbers
+    # Atom records have resname in columns 5-10, which is not all numbers
+    atom_count_declared = int(lines[1].strip())
+    
+    # Check if last line is empty
+    if not lines[-1].strip():
+        # Last line is empty, box vectors should be second-to-last
+        atom_lines = lines[2:-2]
+    else:
+        # Check if last line looks like box vectors (all numbers, no resname)
+        last_line_parts = lines[-1].strip().split()
+        if len(last_line_parts) >= 3:
+            try:
+                # Try to parse as numbers (box vector format)
+                float(last_line_parts[0])
+                float(last_line_parts[1])
+                float(last_line_parts[2])
+                # If successful and no resname in expected position, it's box vectors
+                if len(lines[-1]) <= 10 or not lines[-1][5:10].strip():
+                    atom_lines = lines[2:-1]
+                else:
+                    # Has resname, it's an atom record
+                    atom_lines = lines[2:]
+            except ValueError:
+                # Not all numbers, it's an atom record
+                atom_lines = lines[2:]
+        else:
+            # Not enough parts, treat as atom record
+            atom_lines = lines[2:]
+    
+    # Validate: atom_lines should match declared count
+    if len(atom_lines) != atom_count_declared:
+        raise ValueError(
+            f"Mismatch: declared {atom_count_declared} atoms, "
+            f"found {len(atom_lines)} atom record lines"
+        )
     for atom_index, line in enumerate(atom_lines, start=1):
         # GRO file format: resnr(5) resname(5) atomname(5) atomnr(5) x(8) y(8) z(8)
         # resname is at positions 5-10 (0-based: [5:10])
