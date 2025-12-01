@@ -1,21 +1,44 @@
 Analysis Modules Details
 ========================
 
-LNB-MDT provides rich molecular dynamics analysis modules, each targeting specific physical properties for analysis.
+This directory contains various analysis modules for lipid nanobubble molecular dynamics simulations. All modules can be executed from the command line and support both single-frame (GRO only) and multi-frame (GRO + XTC) trajectory analysis.
 
-Command Line Parameters Details
-===============================
+Prerequisites
+-------------
 
-LNB-MDT provides rich command-line parameters with support for simplified input formats and short parameter aliases.
+Before running the analysis modules, ensure you have:
 
-Parameter Reference Table
--------------------------
+- Activated the LNB-MDT conda environment: ``conda activate LNB-MDT``
+- Example data files in ``cases_lnb/`` directory (see ``cases_lnb/README.md`` for details)
 
-All command-line parameters have corresponding short aliases to make the command line more concise:
+General Usage Pattern
+---------------------
+
+All analysis modules follow a similar command-line interface pattern. **Run from the project root directory:**
+
+.. code-block:: bash
+
+   python analysis/<module_name>.py [OPTIONS]
+
+Common options available across most modules:
+
+- ``--gro-file, -g``: Path to GRO topology file (default: ``cases_lnb/lnb.gro``)
+- ``--xtc-file, -x``: Path to XTC trajectory file (optional for some modules)
+- ``--output-csv, -o``: Output CSV file path
+- ``--residues, -r``: Residue groups dictionary string
+- ``--parallel, -p``: Enable parallel processing
+- ``--n-jobs, -j``: Number of parallel jobs (-1 for all cores)
+- ``--start-frame, -s``: Starting frame (0-indexed)
+- ``--stop-frame, -e``: Stopping frame (exclusive)
+- ``--step-frame, -t``: Frame step size
+- ``--verbose, -v``: Enable verbose output
+
+Command Line Parameters Reference
+---------------------------------
 
 .. list-table:: Parameter Reference Table
    :header-rows: 1
-   :widths: 8 15 25 20 32
+   :widths: 8 15 30 20 27
 
    * - Short Parameter
      - Long Parameter
@@ -25,28 +48,28 @@ All command-line parameters have corresponding short aliases to make the command
    * - ``-g``
      - ``--gro-file``
      - GRO/TPR file path
-     - -
-     - ``-g cases/lnb.gro``
+     - ``cases_lnb/lnb.gro``
+     - ``-g cases_lnb/lnb.gro``
    * - ``-x``
      - ``--xtc-file``
      - XTC/TRR file path
      - -
-     - ``-x cases/md.xtc``
+     - ``-x cases_lnb/lnb.xtc``
    * - ``-o``
      - ``--output-csv``
      - Output CSV file path
-     - ``cases/csv/results.csv``
+     - -
      - ``-o results.csv``
    * - ``-r``
      - ``--residues``
      - Residue group definition
-     - ``DPPC:PO4,CHOL:ROH``
-     - ``-r DPPC:PO4``
+     - -
+     - ``-r "{'DPPC': ['PO4']}"``
    * - ``-gas``
      - ``--gas-group``
      - Gas group definition
-     - ``N2:N2``
-     - ``-gas N2:N2``
+     - -
+     - ``-gas O2:O2``
    * - ``-rad``
      - ``--radius``
      - Radius (Å) for density analysis
@@ -66,7 +89,7 @@ All command-line parameters have corresponding short aliases to make the command
      - ``--MW``
      - Molecular weight (g/mol)
      - ``14.0``
-     - ``-mw 14.0``
+     - ``-mw 32.0``
    * - ``-p``
      - ``--parallel``
      - Enable parallel processing
@@ -75,21 +98,21 @@ All command-line parameters have corresponding short aliases to make the command
    * - ``-j``
      - ``--n-jobs``
      - Number of parallel jobs
-     - ``2``
+     - ``-1`` (all cores)
      - ``-j 4``
    * - ``-s``
      - ``--start-frame``
-     - Start frame
+     - Start frame (0-indexed)
      - ``0``
      - ``-s 0``
    * - ``-e``
      - ``--stop-frame``
-     - Stop frame
-     - ``All frames``
+     - Stop frame (exclusive)
+     - All frames
      - ``-e 100``
    * - ``-t``
      - ``--step-frame``
-     - Frame step
+     - Frame step size
      - ``1``
      - ``-t 5``
    * - ``-v``
@@ -99,405 +122,429 @@ All command-line parameters have corresponding short aliases to make the command
      - ``-v``
    * - ``-k``
      - ``--k-value``
-     - k value
-     - ``20``
+     - K value for Voronoi/Sz calculation
+     - ``20`` (area), ``15`` (sz)
      - ``-k 20``
-   * - ``-M``
-     - ``--method``
-     - Calculation method
-     - ``mean``
-     - ``-M mean``
-   * - ``-T``
-     - ``--threshold``
-     - Threshold
-     - ``0.5``
-     - ``-T 0.5``
-   * - ``-P``
-     - ``--plot-type``
-     - Plot type
-     - ``all``
-     - ``-P line``
-   * - ``-d``
-     - ``--plot-dir``
-     - Plot directory
-     - ``plots/``
-     - ``-d plots/``
 
-Simplified Format Description
------------------------------
+Available Analysis Modules
+---------------------------
 
-The residues and gas-group parameters now support more intuitive input formats:
+1. Area Analysis (``area.py``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Detailed Module Description
-----------------------------
+Calculates the area per lipid using Voronoi tessellation.
 
-Area Analysis (area.py)
-~~~~~~~~~~~~~~~~~~~~~~~
-
-**Function Description**
-Uses Voronoi tessellation method to calculate area distribution of lipid molecules.
-
-**Algorithm Principle**
-- Construct Voronoi diagram
-- Calculate Voronoi area for each molecule
-- Analyze area distribution and changes
-
-**Key Parameters**
-
-k-value *number* (``-k``)
-    k-value for Voronoi tessellation, default value is ``20``
-
-max-normal-angle *angle*
-    Maximum normal angle in degrees, default value is ``140``
-
-residues *residue-definition* (``-r``)
-    Residue group definition, specifying molecular types and atoms to analyze. Supports simplified format like ``DPPC:PO4,CHOL:ROH`` or dictionary format ``"{'DPPC': ['PO4']}"``
-
-xtc-file *file-path* (``-x``)
-    XTC file path (optional). If not provided, only GRO file will be analyzed (single frame)
-
-**Usage Example**
+**Basic usage:**
 
 .. code-block:: bash
 
    python analysis/area.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/area_results.csv \
-     -r DPPC:PO4,CHOL:ROH \
-     -k 20 \
-     --max-normal-angle 140 \
-     -p \
-     -v
+       --gro-file cases_lnb/lnb.gro \
+       --xtc-file cases_lnb/lnb.xtc \
+       --output-csv cases_lnb/area_results.csv \
+       --residues "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
+       --k-value 20 \
+       --max-normal-angle 140
 
-**Output Results**
-- Voronoi area for each molecule
-- Area distribution statistics
-- Can be used to analyze membrane density and packing
+**With parallel processing:**
 
-Height Analysis (height.py)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: bash
 
-**Function Description**
-Analyzes height distribution and membrane thickness of lipid molecules.
+   python analysis/area.py \
+       -g cases_lnb/lnb.gro \
+       -x cases_lnb/lnb.xtc \
+       -o cases_lnb/area_results.csv \
+       -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
+       -k 20 \
+       --parallel \
+       -j 4
 
-**Algorithm Principle**
-- Calculate molecular positions in Z direction
-- Analyze height distribution
-- Calculate membrane thickness and surface roughness
+**Single frame analysis (GRO only):**
 
-**Key Parameters**
+.. code-block:: bash
 
-k-value *number* (``-k``)
-    k-value for height calculation, default value is ``20``
+   python analysis/area.py \
+       -g cases_lnb/lnb.gro \
+       -o cases_lnb/area_single_frame.csv \
+       -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}"
 
-residues *residue-definition* (``-r``)
-    Residue group definition, specifying molecular types and atoms to analyze. Supports multiple atom groups using tuple format: ``"{'DPPC': (['PO4'], ['C4B', 'C4A']), 'CHOL':(['ROH'], ['R5'])}"``
+**Key parameters:**
 
-**Usage Example**
+- ``--k-value, -k``: K value for Voronoi tessellation (default: 20)
+- ``--max-normal-angle``: Maximum normal angle in degrees (default: 140)
+
+**Note:** To generate plots, use the Python API (see "Plotting and Visualization" section below).
+
+2. Height Analysis (``height.py``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Calculates the height of lipid molecules relative to a reference plane.
+
+**Basic usage:**
 
 .. code-block:: bash
 
    python analysis/height.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/height_results.csv \
-     -r "{'DPPC': (['PO4'], ['C4B', 'C4A']), 'CHOL':(['ROH'], ['R5'])}" \
-     -k 20 \
-     -p \
-     -v
+       --gro-file cases_lnb/lnb.gro \
+       --xtc-file cases_lnb/lnb.xtc \
+       --output-csv cases_lnb/height_results.csv \
+       --residues "{'DPPC': (['PO4'], ['C4B', 'C4A']), 'DAPC': (['PO4'], ['C4B', 'C4A']), 'CHOL': (['ROH'], ['R5'])}" \
+       --k-value 20
 
-**Output Results**
-- Height values for each molecule
-- Height distribution statistics
-- Membrane thickness analysis
+**Note:** The residues argument for height analysis uses tuples: ``(head_atoms, tail_atoms)`` for each lipid type.
 
-Cluster Analysis (cluster.py)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**With frame selection:**
 
-**Function Description**
-Analyzes aggregation behavior and clustering patterns of lipid molecules.
+.. code-block:: bash
 
-**Algorithm Principle**
-- Distance-based clustering algorithm
-- Identify molecular aggregations
-- Analyze cluster size and distribution
+   python analysis/height.py \
+       -g cases_lnb/lnb.gro \
+       -x cases_lnb/lnb.xtc \
+       -o cases_lnb/height_results.csv \
+       -r "{'DPPC': (['PO4'], ['C4B', 'C4A']), 'DAPC': (['PO4'], ['C4B', 'C4A']), 'CHOL': (['ROH'], ['R5'])}" \
+       -s 0 \
+       -e 100 \
+       -t 5
 
-**Key Parameters**
+**Note:** To generate plots, use the Python API (see "Plotting and Visualization" section below).
 
-cutoff *distance*
-    Clustering cutoff distance in Angstroms, default value is ``8.0``
+3. Cluster Analysis (``cluster.py``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-residues *residue-definition* (``-r``)
-    Residue group definition, specifying molecular types and atoms to analyze. Supports simplified format like ``DPPC:PO4,CHOL:ROH``
+Analyzes lipid clustering based on distance cutoff.
 
-**Usage Example**
+**Basic usage:**
 
 .. code-block:: bash
 
    python analysis/cluster.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/cluster_results.csv \
-     -r DPPC:PO4,CHOL:ROH \
-     --cutoff 8.0 \
-     -p \
-     -v
+       --gro-file cases_lnb/lnb.gro \
+       --xtc-file cases_lnb/lnb.xtc \
+       --output-csv cases_lnb/cluster_results.csv \
+       --residues "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
+       --cutoff 8.0
 
-**Output Results**
-- Cluster size distribution
-- Cluster count statistics
-- Aggregation behavior analysis
+**With custom cutoff and parallel processing:**
 
-Anisotropy Analysis (anisotropy.py)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: bash
 
-**Function Description**
-Calculates anisotropy parameters of molecular orientation.
+   python analysis/cluster.py \
+       -g cases_lnb/lnb.gro \
+       -x cases_lnb/lnb.xtc \
+       -o cases_lnb/cluster_results.csv \
+       -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
+       --cutoff 10.0 \
+       --parallel \
+       -j 8
 
-**Algorithm Principle**
-- Calculate molecular orientation vectors
-- Analyze orientation distribution
-- Calculate anisotropy parameters
+**Key parameters:**
 
-**Key Parameters**
+- ``--cutoff``: Cutoff distance for clustering in Angstroms (default: 8.0)
 
-residues *residue-definition* (``-r``)
-    Residue group definition, specifying molecular types and atoms to analyze. Supports multiple atoms per residue: ``"{'DPPC': ['PO4', 'C1', 'C2'], 'CHOL': ['ROH']}"``. When multiple atoms are provided, their center of geometry will be calculated.
+**Note:** To generate plots, use the Python API (see "Plotting and Visualization" section below).
 
-xtc-file *file-path* (``-x``)
-    XTC file path (optional). If not provided, only GRO file will be analyzed (single frame)
+4. Anisotropy Analysis (``anisotropy.py``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Usage Example**
+Calculates the asphericity/anisotropy of lipid molecules.
+
+**Basic usage:**
 
 .. code-block:: bash
 
    python analysis/anisotropy.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/anisotropy_results.csv \
-     -r DPPC:PO4,CHOL:ROH \
-     -p \
-     -v
+       --gro-file cases_lnb/lnb.gro \
+       --xtc-file cases_lnb/lnb.xtc \
+       --output-csv cases_lnb/anisotropy_results.csv \
+       --residues "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}"
 
-**Output Results**
-- Anisotropy parameters
-- Orientation distribution statistics
-- Molecular alignment analysis
+**With plotting:**
 
-Gyration Analysis (gyration.py)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: bash
 
-**Function Description**
-Calculates molecular radius of gyration, reflecting molecular compactness.
+   python analysis/anisotropy.py \
+       -g cases_lnb/lnb.gro \
+       -x cases_lnb/lnb.xtc \
+       -o cases_lnb/anisotropy_results.csv \
+       -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
+       --plot both \
+       --plot-output cases_lnb/anisotropy_plot
 
-**Algorithm Principle**
-- Calculate molecular center of mass
-- Calculate radius of gyration
-- Analyze molecular shape changes
+**Single frame analysis:**
 
-**Key Parameters**
+.. code-block:: bash
 
-residues *residue-definition* (``-r``)
-    Residue group definition, specifying molecular types and atoms to analyze. Supports simplified format like ``DPPC:PO4,CHOL:ROH`` or dictionary format ``"{'DPPC': ['PO4']}"``
+   python analysis/anisotropy.py \
+       -g cases_lnb/lnb.gro \
+       -o cases_lnb/anisotropy_single_frame.csv \
+       -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}"
 
-**Usage Example**
+**Key parameters:**
+
+- ``--plot``: Plot type - 'line', 'bar', 'both', or 'none' (default: 'none')
+- ``--plot-output``: Output file path for plots
+
+**Note:** Supports multiple atoms per residue. When multiple atoms are provided, their center of geometry will be calculated.
+
+5. Gyration Analysis (``gyration.py``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Calculates the radius of gyration for lipid molecules.
+
+**Basic usage:**
 
 .. code-block:: bash
 
    python analysis/gyration.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/gyration_results.csv \
-     -r DPPC:PO4,CHOL:ROH \
-     -p \
-     -v
+       --gro-file cases_lnb/lnb.gro \
+       --xtc-file cases_lnb/lnb.xtc \
+       --output-csv cases_lnb/gyration_results.csv \
+       --residues "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}"
 
-**Output Results**
-- Radius of gyration values
-- Shape change analysis
-- Molecular compactness
+**With parallel processing:**
 
-Sz Order Parameter Analysis (sz.py)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: bash
 
-**Function Description**
-Calculates Sz order parameter of lipid chains, reflecting chain ordering degree.
+   python analysis/gyration.py \
+       -g cases_lnb/lnb.gro \
+       -x cases_lnb/lnb.xtc \
+       -o cases_lnb/gyration_results.csv \
+       -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
+       --parallel
 
-**Algorithm Principle**
-- Calculate chain orientation vectors
-- Calculate Sz order parameter
-- Analyze chain ordering
+**Note:** To generate plots, use the Python API (see "Plotting and Visualization" section below).
 
-**Key Parameters**
+6. Sz Order Parameter Analysis (``sz.py``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-chain *chain-type*
-    Chain type, options are ``sn1``, ``sn2`` or ``both``, default value is ``both``
+Calculates the Sz order parameter for lipid acyl chains.
 
-k-value *number* (``-k``)
-    k-value for Sz calculation, default value is ``15``
-
-residues *residue-definition* (``-r``)
-    Residue group definition, specifying molecular types and atoms to analyze. Supports simplified format like ``DPPC:PO4,DUPC:PO4``
-
-xtc-file *file-path* (``-x``)
-    XTC file path (optional). If not provided, only GRO file will be used
-
-**Usage Example**
+**Basic usage:**
 
 .. code-block:: bash
 
    python analysis/sz.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/sz_results.csv \
-     -r DPPC:PO4,DUPC:PO4 \
-     --chain sn1 \
-     -k 15 \
-     -p \
-     -v
+       --gro-file cases_lnb/lnb.gro \
+       --xtc-file cases_lnb/lnb.xtc \
+       --output-csv cases_lnb/sz_results.csv \
+       --residues "{'DPPC': ['PO4'], 'DAPC': ['PO4']}" \
+       --chain both \
+       --k-value 15
 
-**Output Results**
-- Sz order parameter values
-- Chain ordering analysis
-- Phase transition behavior
+**Analyze specific chain:**
 
-Density Analysis (density.py)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: bash
 
-**Function Description**
-Analyzes gas density distribution in lipid nanobubbles. Supports two analysis methods: single-radius density analysis (frame method) and multi-radius density analysis (radius method).
+   python analysis/sz.py \
+       -g cases_lnb/lnb.gro \
+       -x cases_lnb/lnb.xtc \
+       -o cases_lnb/sz_sn1_results.csv \
+       -r "{'DPPC': ['PO4'], 'DAPC': ['PO4']}" \
+       --chain sn1 \
+       -k 15
 
-**Algorithm Principle**
-- Calculate gas molecule density within specified radius
-- Analyze density changes over time (frame method)
-- Analyze density distribution across different radii (radius method)
-- Support for multiple gas types
+**Key parameters:**
 
-**Key Parameters**
+- ``--chain``: Chain type to analyze - 'sn1', 'sn2', or 'both' (default: 'both')
+- ``--k-value, -k``: K value for Sz calculation (default: 15)
 
-method *analysis-type* (``-M``)
-    Analysis method, options are ``frame`` (single radius) or ``radius`` (multi-radius), default value is ``frame``
+**Note:** To generate plots, use the Python API (see "Plotting and Visualization" section below).
 
-residues *residue-definition* (``-r``)
-    Residue group definition for lipid molecules. Format: ``DPPC:PO4,CHOL:ROH``
+7. Density Analysis (``density.py``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-gas-group *gas-definition* (``-gas``)
-    Gas group definition. Format: ``N2:N2`` or ``N2:N2,O2:O2`` for multiple gases
+Performs density analysis with two methods: single radius (frame) or multi-radius analysis.
 
-radius *distance* (``-rad``)
-    Radius for density calculation in Angstroms (used for single radius method), default value is ``50.0``
+**Single radius analysis (frame method):**
 
-max-radius *distance* (``-max-rad``)
-    Maximum radius for density calculation in Angstroms (used for multi-radius method), default value is ``50.0``
-
-number-segments *number* (``-segments``)
-    Number of radius segments for multi-radius analysis, default value is ``5``
-
-MW *molecular-weight* (``-mw``)
-    Molecular weight of gas molecules in g/mol, default value is ``14.0``
-
-**Usage Example**
-
-Single-radius analysis (frame method):
 .. code-block:: bash
 
    python analysis/density.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/density_frame.csv \
-     -r DPPC:PO4,CHOL:ROH \
-     -gas N2:N2 \
-     -rad 50.0 \
-     -mw 14.0 \
-     -M frame \
-     -p \
-     -v
+       --method frame \
+       --gro-file cases_lnb/lnb.gro \
+       --xtc-file cases_lnb/lnb.xtc \
+       --output-csv cases_lnb/density_frame_results.csv \
+       --residues "DPPC:PO4,CHOL:ROH" \
+       --gas-group "O2:O2" \
+       --radius 50.0 \
+       --MW 32.0
 
-Multi-radius analysis (radius method):
+**Multi-radius analysis:**
+
 .. code-block:: bash
 
    python analysis/density.py \
-     -g cases/lnb.gro \
-     -x cases/md.xtc \
-     -o results/density_radius.csv \
-     -r DPPC:PO4,CHOL:ROH \
-     -gas N2:N2 \
-     -max-rad 50.0 \
-     -segments 5 \
-     -mw 14.0 \
-     -M radius \
-     -p \
-     -v
+       --method radius \
+       --gro-file cases_lnb/lnb.gro \
+       --xtc-file cases_lnb/lnb.xtc \
+       --output-csv cases_lnb/density_radius_results.csv \
+       --residues "DPPC:PO4,CHOL:ROH" \
+       --gas-group "O2:O2" \
+       --max-radius 50.0 \
+       --number-segments 5 \
+       --MW 32.0
 
-**Output Results**
-- CSV file containing density values for each frame (frame method)
-- CSV file containing density values for each radius segment (radius method)
-- Can be used to analyze gas distribution and bubble dynamics
-- Supports visualization of analysis results
+**Key parameters:**
 
-Parameter Optimization Recommendations
-----------------------------------------
+- ``--method, -M``: Analysis method - 'frame' or 'radius' (default: 'frame')
+- ``--residues, -r``: Residue groups in format 'RESNAME:ATOMNAME,RESNAME:ATOMNAME'
+- ``--gas-group, -gas``: Gas group in format 'GASNAME:ATOMNAME'
+- ``--radius, -rad``: Radius for single radius method in Angstroms (default: 50.0)
+- ``--max-radius, -max-rad``: Maximum radius for multi-radius method (default: 50.0)
+- ``--number-segments, -segments``: Number of radius segments for multi-radius method (default: 5)
+- ``--MW, -mw``: Molecular weight of gas molecules (default: 14.0, use 32.0 for O₂)
 
-k-value Selection
-~~~~~~~~~~~~~~~~~
+**Note:** To generate plots, use the Python API (see "Plotting and Visualization" section below).
 
-.. raw:: html
+Common Workflow Examples
+------------------------
 
-   <div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;">
+Analyzing a subset of frames:
 
-**k-value Selection Principles:**
+.. code-block:: bash
 
-- **Small systems**: k = 10-15
-- **Medium systems**: k = 15-25  
-- **Large systems**: k = 25-35
-- **High density**: Increase k-value
-- **Low density**: Decrease k-value
+   python analysis/area.py \
+       -g cases_lnb/lnb.gro \
+       -x cases_lnb/lnb.xtc \
+       -o cases_lnb/area_subset.csv \
+       -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
+       -s 0 \
+       -e 50 \
+       -t 2
 
-**Optimization Method:**
-Use the k-value optimizer from the machine learning module:
+Getting help for any module:
 
-.. code:: python
+.. code-block:: bash
 
-   from machine_learning import KValueOptimizer
-   optimizer = KValueOptimizer('area')
-   best_k = optimizer.optimize()
+   python analysis/<module_name>.py --help
 
-   </div>
+Plotting and Visualization
+--------------------------
 
-Cutoff Distance Selection
-~~~~~~~~~~~~~~~~~~~~~~~~
+All analysis modules support plotting functionality. There are two ways to generate plots:
 
-.. raw:: html
+Method 1: Command-line Plotting (Anisotropy Module Only)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   <div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;">
+The ``anisotropy.py`` module supports direct plotting via command-line arguments:
 
-**Cutoff Distance Selection:**
+.. code-block:: bash
 
-- **Cluster analysis**: 8-12 Å
-- **Interactions**: 5-8 Å
-- **Long-range interactions**: 12-20 Å
+   python analysis/anisotropy.py \
+       -g cases_lnb/lnb.gro \
+       -x cases_lnb/lnb.xtc \
+       -o cases_lnb/anisotropy_results.csv \
+       -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
+       --plot both \
+       --plot-output cases_lnb/anisotropy_plot
 
-**Selection Criteria:**
-- Molecular size
-- Interaction strength
-- System density
+**Plot options:**
 
+- ``--plot line``: Generate line chart
+- ``--plot bar``: Generate bar chart
+- ``--plot both``: Generate both line and bar charts
+- ``--plot-output``: Output file path (without extension for 'both', will create ``_line.png`` and ``_bar.png``)
 
-Parallel Processing Optimization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Method 2: Python Script Plotting (All Modules)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. raw:: html
+For other modules, you can create a Python script to generate plots after running the analysis. See :doc:`figure_details` for details on using the ``make_figure.py`` tool to generate plots from CSV files.
 
-   <div style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50;">
+**Available Plot Types by Module:**
 
-**Parallel Processing Recommendations:**
+.. list-table:: Plot Types by Module
+   :header-rows: 1
+   :widths: 20 15 15 15 15 20
 
-- **CPU cores**: Use `--n-jobs -1` for automatic detection
-- **Memory considerations**: Reduce parallel jobs for large systems
-- **I/O limitations**: SSD drives allow more parallel jobs
+   * - Module
+     - Line Chart
+     - Bar Chart
+     - Scatter
+     - Heatmap
+     - Notes
+   * - Area
+     - ✅
+     - ✅
+     - ✅
+     - ❌
+     - Use make_figure.py
+   * - Height
+     - ✅
+     - ✅
+     - ✅
+     - ❌
+     - Use make_figure.py
+   * - Cluster
+     - ✅
+     - ✅
+     - ❌
+     - ❌
+     - Use make_figure.py
+   * - Anisotropy
+     - ✅
+     - ✅
+     - ❌
+     - ❌
+     - Command-line or make_figure.py
+   * - Gyration
+     - ✅
+     - ✅
+     - ❌
+     - ❌
+     - Use make_figure.py
+   * - Sz
+     - ✅
+     - ✅
+     - ✅
+     - ❌
+     - Use make_figure.py
+   * - Density (single)
+     - ✅
+     - ✅
+     - ❌
+     - ❌
+     - Use make_figure.py
+   * - Density (multi)
+     - ✅
+     - ❌
+     - ❌
+     - ✅
+     - Use make_figure.py
 
-**Performance Optimization:**
-- Use SSD storage for trajectory files
-- Increase system memory
-- Optimize network file systems
+**Note:** For detailed information on generating figures, see :doc:`figure_details`.
+
+Output Format
+-------------
+
+All modules output CSV files with the following general structure:
+
+- **Time column**: Simulation time (if trajectory is provided)
+- **Frame column**: Frame number (if trajectory is provided)
+- **Residue-specific columns**: Analysis results for each residue type specified
+- **Additional columns**: Module-specific metrics
+
+Notes
+-----
+
+1. **Residue dictionary format**: Most modules require a dictionary string for residues. Use single quotes inside double quotes: ``"{'DPPC': ['PO4'], 'CHOL': ['ROH']}"``
+
+2. **Relative paths**: All paths in the examples are relative to the project root directory. Make sure to run commands from the project root directory.
+
+3. **Parallel processing**: Enable with ``--parallel`` flag. Use ``--n-jobs`` to control the number of parallel workers.
+
+4. **Frame indexing**: Frame numbers are 0-indexed. Use ``--start-frame`` and ``--stop-frame`` to select a subset of frames.
+
+5. **Single frame analysis**: Some modules (area, anisotropy, sz) support analyzing only the GRO file without XTC trajectory.
+
+6. **Example data**: The example files in ``cases_lnb/`` use Martini 3.0 force field with DPPC:DAPC:CHOL = 5:3:2 composition and O₂ gas molecules.
+
+Troubleshooting
+---------------
+
+**Import errors**: Ensure the LNB-MDT environment is activated: ``conda activate LNB-MDT``
+
+**File not found**: Check that file paths are correct relative to your current working directory
+
+**Memory issues**: Use ``--step-frame`` to analyze fewer frames, or reduce ``--n-jobs`` for parallel processing
+
+**Residue parsing errors**: Ensure the residues dictionary string uses proper Python syntax with matching quotes

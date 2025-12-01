@@ -97,10 +97,12 @@ Contents
 
 .. toctree::
    :maxdepth: 2
+   :caption: Documentation
 
    installation
    quickstart
    analysis_modules
+   figure_details
 
 Indices and tables
 ==================
