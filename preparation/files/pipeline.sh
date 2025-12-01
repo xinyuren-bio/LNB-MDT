@@ -26,6 +26,6 @@ gmx_mpi grompp -f equilibration_5.mdp -o equilibration_5.tpr -c equilibration_4.
 gmx_mpi mdrun -deffnm equilibration_5
 
 # Production
-gmx_mpi grompp -f production.mdp -o production.tpr -c equilibration_4.gro -p system.top -r system.gro -n system.ndx -maxwarn 1
+gmx_mpi grompp -f production.mdp -o production.tpr -c equilibration_5.gro -p system.top -r system.gro -n system.ndx -maxwarn 1
 gmx_mpi mdrun -deffnm production
 
