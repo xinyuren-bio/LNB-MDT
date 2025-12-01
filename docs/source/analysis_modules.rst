@@ -34,7 +34,7 @@ Common options available across most modules:
 - ``--verbose, -v``: Enable verbose output
 
 Command Line Parameters Reference
----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. list-table:: Parameter Reference Table
    :header-rows: 1
@@ -127,7 +127,7 @@ Command Line Parameters Reference
      - ``-k 20``
 
 Available Analysis Modules
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Area Analysis (``area.py``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -419,7 +419,7 @@ Getting help for any module:
    python analysis/<module_name>.py --help
 
 Plotting and Visualization
---------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 All analysis modules support plotting functionality. There are two ways to generate plots:
 
@@ -514,7 +514,7 @@ For other modules, you can create a Python script to generate plots after runnin
 **Note:** For detailed information on generating figures, see :doc:`figure_details`.
 
 Output Format
--------------
+~~~~~~~~~~~~~~
 
 All modules output CSV files with the following general structure:
 
@@ -524,7 +524,7 @@ All modules output CSV files with the following general structure:
 - **Additional columns**: Module-specific metrics
 
 Notes
------
+~~~~~
 
 1. **Residue dictionary format**: Most modules require a dictionary string for residues. Use single quotes inside double quotes: ``"{'DPPC': ['PO4'], 'CHOL': ['ROH']}"``
 
@@ -539,7 +539,7 @@ Notes
 6. **Example data**: The example files in ``cases_lnb/`` use Martini 3.0 force field with DPPC:DAPC:CHOL = 5:3:2 composition and O₂ gas molecules.
 
 Troubleshooting
----------------
+~~~~~~~~~~~~~~~~
 
 **Import errors**: Ensure the LNB-MDT environment is activated: ``conda activate LNB-MDT``
 

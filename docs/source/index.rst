@@ -101,6 +101,7 @@ Contents
 
    installation
    quickstart
+   preparation
    analysis_modules
    figure_details
 
