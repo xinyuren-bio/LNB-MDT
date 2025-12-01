@@ -33,8 +33,8 @@ Common options available across most modules:
 - ``--step-frame, -t``: Frame step size
 - ``--verbose, -v``: Enable verbose output
 
-Command Line Parameters Reference
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Parameter Reference Table
+--------------------------
 
 .. list-table:: Parameter Reference Table
    :header-rows: 1
