@@ -6679,12 +6679,8 @@ MC3  1
   13    1    1000   1000   1000
 #endif
 
-[ position_restraints ]
-;  	atom	type	g	r	k
-#endif
 
 ;keep lipid tails out of a cylinder along X Y Z axis to maintain the waterpore:
-    #endif
 
 #ifdef LNB_LIPIDHEAD_FC
 
@@ -6694,8 +6690,6 @@ MC3  1
 
       2     1.0      1.0      1.0     LNB_LIPIDHEAD_FC
 
-#endif
-    [ position_restraints ]
 #endif
  
 ;;;;;; Martini lipid topology for C16:0/20:1 PS (PGPS), generated using:
