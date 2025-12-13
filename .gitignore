@@ -46,4 +46,4 @@ Thumbs.db
 _setup_.py
 ./main.ui
 ./preparation/lnb_gener_martini3.py.backup
-./scripts/
+./scripts
