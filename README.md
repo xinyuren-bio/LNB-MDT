@@ -4,61 +4,84 @@
 
 **LNB-MDT** (Lipid NanoBubble Molecular Dynamics Toolkit) is a comprehensive toolkit designed for molecular dynamics simulations of lipid nanobubbles.
 
-## Installation Guide
+## Installation
 
-### Method 1: Using Installation Scripts (Recommended)
+### Method 1: Install from PyPI (Recommended)
 
-**Linux/macOS:**
-```bash
-git clone https://github.com/xinyuren-bio/LNB-MDT.git
-cd LNB-MDT
-./install.sh
-```
-
-**Windows:**
-```cmd
-git clone https://github.com/xinyuren-bio/LNB-MDT.git
-cd LNB-MDT
-install.bat
-```
-
-### Method 2: Manual Installation
-
-#### 1. Install Conda
-
-If you haven't installed Conda yet, please visit the following links to download the version suitable for your operating system:
-
-- **Miniconda**: [https://docs.conda.io/en/latest/miniconda.html](https://docs.conda.io/en/latest/miniconda.html)
-- **Anaconda**: [https://www.anaconda.com/products/distribution](https://www.anaconda.com/products/distribution)
-
-#### 2. Clone the Project
+The easiest way to install LNB-MDT is using pip. We recommend using conda to create a virtual environment first:
 
 ```bash
-git clone https://github.com/xinyuren-bio/LNB-MDT.git
-cd LNB-MDT
-```
-
-#### 3. Create Virtual Environment
-
-```bash
-# Create new conda environment
+# Create conda environment
 conda create -n LNB-MDT python=3.11
-
-# Activate environment
 conda activate LNB-MDT
 
-# Install dependencies
-pip install -r requirements.txt
+# Install from PyPI
+pip install lnb-mdt
 ```
 
-#### 4. Verify Installation
+### Method 2: Install from Source
+
+If you want to install the latest development version or contribute to the project:
 
 ```bash
-# Check Python version
-python --version
+# Clone the repository
+git clone https://github.com/xinyuren-bio/LNB-MDT.git
+cd LNB-MDT
 
-# Check key dependencies
-python -c "import MDAnalysis, numpy, pandas, PySide6; print('All dependencies installed successfully!')"
+# Create conda environment (optional but recommended)
+conda create -n LNB-MDT python=3.11
+conda activate LNB-MDT
+
+# Install in editable mode
+pip install -e .
+```
+
+**Note:** For editable installation, you need Python 3.7+ and pip. Using conda is recommended for managing dependencies.
+
+### Verify Installation
+
+After installation, verify that LNB-MDT is correctly installed:
+
+```bash
+# Check if command is available
+LNB-MDT --help
+
+# Or test in Python
+python -c "import LNB_MDT; print('LNB-MDT installed successfully!')"
+```
+
+## Quick Start
+
+After installation, you can use LNB-MDT in two ways:
+
+### 1. Command Line Interface (CLI)
+
+```bash
+# Launch GUI
+LNB-MDT UI
+
+# Run area analysis
+LNB-MDT AREA --help
+
+# Run with test data
+LNB-MDT AREA -test
+
+# Configure VMD path
+LNB-MDT VMD --path /path/to/vmd
+```
+
+### 2. Python API
+
+```python
+from LNB_MDT.analysis import Area
+import MDAnalysis as mda
+
+# Load trajectory
+u = mda.Universe("system.gro", "trajectory.xtc")
+
+# Run analysis
+area_analysis = Area(u, {'DPPC': ['PO4'], 'CHOL': ['ROH']})
+area_analysis.run()
 ```
 
 ## Documentation

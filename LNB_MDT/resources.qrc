@@ -1,0 +1,36 @@
+<RCC>
+  <qresource prefix="images">
+    <file>images/images/LNB.png</file>
+    <file>images/images/PyDracula.png</file>
+    <file>images/images/PyDracula_vertical.png</file>
+  </qresource>
+  <qresource prefix="newPrefix"/>
+  <qresource prefix="icons">
+    <file>images/icons/cil-arrow-bottom.png</file>
+    <file>images/icons/cil-briefcase.png</file>
+    <file>images/icons/cil-calendar-check.png</file>
+    <file>images/icons/cil-chart-line.png</file>
+    <file>images/icons/cil-check-alt.png</file>
+    <file>images/icons/cil-chevron-double-right.png</file>
+    <file>images/icons/cil-description.png</file>
+    <file>images/icons/cil-equalizer.png</file>
+    <file>images/icons/cil-folder-open.png</file>
+    <file>images/icons/cil-home.png</file>
+    <file>images/icons/cil-image1.png</file>
+    <file>images/icons/cil-layers.png</file>
+    <file>images/icons/cil-link.png</file>
+    <file>images/icons/cil-save.png</file>
+    <file>images/icons/cil-share-boxed.png</file>
+    <file>images/icons/cil-window-restore.png</file>
+    <file>images/icons/houtui.png</file>
+    <file>images/icons/houtui_black.png</file>
+    <file>images/icons/icon_close.png</file>
+    <file>images/icons/icon_maximize.png</file>
+    <file>images/icons/icon_menu.png</file>
+    <file>images/icons/icon_minimize.png</file>
+    <file>images/icons/icon_restore.png</file>
+    <file>images/icons/icon_settings.png</file>
+    <file>images/icons/shuaxin.png</file>
+    <file>images/icons/shuaxin_black.png</file>
+  </qresource>
+</RCC>

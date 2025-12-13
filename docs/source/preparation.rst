@@ -37,7 +37,7 @@ The ``-o`` parameter specifies the **folder name** (not file path). The script w
 
 .. code-block:: bash
 
-   python preparation/lnb_generate_with_folder.py \
+   LNB-MDT GEN \
        -d 1 \
        -r 5 \
        -x 20 -y 20 -z 20 \
@@ -64,13 +64,13 @@ This will create a folder ``LNB_MDT_my_lnb_system/`` containing:
 
 .. code-block:: bash
 
-   python preparation/lnb_generate_with_folder.py -h
+   LNB-MDT GEN -h
 
 For detailed parameter descriptions, see:
 
 .. code-block:: bash
 
-   python preparation/lnb_gener_martini3.py -h
+   LNB-MDT GEN --help
 
 **Note:** All parameters are the same as ``lnb_gener_martini3.py``, except that ``-o`` specifies a folder name instead of a file path.
 
@@ -82,7 +82,7 @@ Step 1: Generate LNB System with Complete Folder Structure
 
 .. code-block:: bash
 
-   python preparation/lnb_generate_with_folder.py \
+   LNB-MDT GEN \
        -d 1 \
        -r 5 \
        -x 20 -y 20 -z 20 \
@@ -161,7 +161,7 @@ You can specify multiple lipid types with different abundances:
 
 .. code-block:: bash
 
-   python preparation/lnb_generate_with_folder.py \
+   LNB-MDT GEN \
        -u DPPC:50 \
        -u DAPC:30 \
        -u CHOL:20 \
@@ -175,7 +175,7 @@ Support for multiple gas molecules:
 
 .. code-block:: bash
 
-   python preparation/lnb_generate_with_folder.py \
+   LNB-MDT GEN \
        -gas O2 \
        -gden 200 \
        -gas N2 \
@@ -189,7 +189,7 @@ Adjust simulation box size based on your system:
 
 .. code-block:: bash
 
-   python preparation/lnb_generate_with_folder.py \
+   LNB-MDT GEN \
        -x 30 -y 30 -z 30 \
        -pbc cubic \
        -o my_system
@@ -203,7 +203,7 @@ Common Issues
 **Error: "Lipid type not found"**
 
 - **Solution**: Check that the lipid name matches exactly with entries in ``lipidsInfo_martini3.py``
-- Use ``python preparation/lnb_generate_with_folder.py -h`` to see supported options
+- Use ``LNB-MDT GEN --help`` to see supported options
 
 **Error: "Box dimensions too small"**
 

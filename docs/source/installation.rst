@@ -26,7 +26,7 @@ You can also install LNB-MDT from the Python Package Index:
 
 .. code-block:: bash
 
-   pip install LNB-MDT
+   pip install lnb-mdt
 
 Or install the development version:
 

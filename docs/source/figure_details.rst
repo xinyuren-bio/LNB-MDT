@@ -26,13 +26,13 @@ Simple Command
 
 .. code-block:: bash
 
-   python figure/make_figure.py -f <input_csv> -o <output_path>
+   LNB-MDT FIGURE -f <input_csv> -o <output_path>
 
 **Example:**
 
 .. code-block:: bash
 
-   python figure/make_figure.py -f cases_lnb/area_results.csv -o cases_lnb/area_plot.png
+   LNB-MDT FIGURE -f cases_lnb/area_results.csv -o cases_lnb/area_plot.png
 
 Interactive Mode (Default)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,7 +41,7 @@ When you don't specify ``--plot-type``, the tool will display an interactive men
 
 .. code-block:: bash
 
-   python figure/make_figure.py -f cases_lnb/height_results.csv -o cases_lnb/height_plot.png
+   LNB-MDT FIGURE -f cases_lnb/height_results.csv -o cases_lnb/height_plot.png
 
 **Output:**
 
@@ -67,7 +67,7 @@ Use ``--no-interactive`` flag to skip the menu and use the default plot type:
 
 .. code-block:: bash
 
-   python figure/make_figure.py -f cases_lnb/area_results.csv -o cases_lnb/area_plot.png --no-interactive
+   LNB-MDT FIGURE -f cases_lnb/area_results.csv -o cases_lnb/area_plot.png --no-interactive
 
 Specify Plot Type
 ~~~~~~~~~~~~~~~~~
@@ -76,7 +76,7 @@ Directly specify the plot type:
 
 .. code-block:: bash
 
-   python figure/make_figure.py -f cases_lnb/cluster_results.csv -o cases_lnb/cluster_plot.png --plot-type line
+   LNB-MDT FIGURE -f cases_lnb/cluster_results.csv -o cases_lnb/cluster_plot.png --plot-type line
 
 Command-Line Options
 -------------------
@@ -120,7 +120,7 @@ Line Chart (``line``)
 
 .. code-block:: bash
 
-   python figure/make_figure.py -f cases_lnb/area_results.csv -o cases_lnb/area_line.png --plot-type line
+   LNB-MDT FIGURE -f cases_lnb/area_results.csv -o cases_lnb/area_line.png --plot-type line
 
 Bar Chart (``bar``)
 ~~~~~~~~~~~~~~~~~~~
@@ -131,7 +131,7 @@ Bar Chart (``bar``)
 
 .. code-block:: bash
 
-   python figure/make_figure.py -f cases_lnb/anisotropy_results.csv -o cases_lnb/anisotropy_bar.png --plot-type bar
+   LNB-MDT FIGURE -f cases_lnb/anisotropy_results.csv -o cases_lnb/anisotropy_bar.png --plot-type bar
 
 Scatter Chart (``scatter``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -142,7 +142,7 @@ Scatter Chart (``scatter``)
 
 .. code-block:: bash
 
-   python figure/make_figure.py -f cases_lnb/sz_results.csv -o cases_lnb/sz_scatter.png --plot-type scatter
+   LNB-MDT FIGURE -f cases_lnb/sz_results.csv -o cases_lnb/sz_scatter.png --plot-type scatter
 
 Heatmap (``heatmap``)
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -153,7 +153,7 @@ Heatmap (``heatmap``)
 
 .. code-block:: bash
 
-   python figure/make_figure.py -f cases_lnb/density_radius_results.csv -o cases_lnb/density_heatmap.png --plot-type heatmap
+   LNB-MDT FIGURE -f cases_lnb/density_radius_results.csv -o cases_lnb/density_heatmap.png --plot-type heatmap
 
 Generate All (``all``)
 ~~~~~~~~~~~~~~~~~~~~~
@@ -164,7 +164,7 @@ Generate All (``all``)
 
 .. code-block:: bash
 
-   python figure/make_figure.py -f cases_lnb/area_results.csv -o cases_lnb/area_plots --plot-type all
+   LNB-MDT FIGURE -f cases_lnb/area_results.csv -o cases_lnb/area_plots --plot-type all
 
 When using ``all``, the tool will generate multiple files with suffixes:
 - ``area_plots_line.png``
@@ -207,7 +207,7 @@ Example 1: Generate Line Chart for Area Analysis
 
 .. code-block:: bash
 
-   python figure/make_figure.py \
+   LNB-MDT FIGURE \
        -f cases_lnb/area_results.csv \
        -o cases_lnb/area_line.png \
        --plot-type line
@@ -217,7 +217,7 @@ Example 2: Generate All Plot Types for Height Analysis
 
 .. code-block:: bash
 
-   python figure/make_figure.py \
+   LNB-MDT FIGURE \
        -f cases_lnb/height_results.csv \
        -o cases_lnb/height_plots \
        --plot-type all
@@ -232,7 +232,7 @@ Example 3: Generate Heatmap for Density Analysis
 
 .. code-block:: bash
 
-   python figure/make_figure.py \
+   LNB-MDT FIGURE \
        -f cases_lnb/density_radius_results.csv \
        -o cases_lnb/density_heatmap.png \
        --plot-type heatmap
@@ -245,7 +245,7 @@ Example 4: Batch Processing (Non-Interactive)
    # Generate figures for multiple analysis results
    for csv_file in cases_lnb/*_results.csv; do
        base_name=$(basename "$csv_file" _results.csv)
-       python figure/make_figure.py \
+       LNB-MDT FIGURE \
            -f "$csv_file" \
            -o "cases_lnb/figures/${base_name}_plot.png" \
            --plot-type line \
@@ -257,7 +257,7 @@ Example 5: Generate All Available Types Interactively
 
 .. code-block:: bash
 
-   python figure/make_figure.py \
+   LNB-MDT FIGURE \
        -f cases_lnb/cluster_results.csv \
        -o cases_lnb/cluster_plot.png
 
@@ -341,14 +341,14 @@ Typical workflow:
 .. code-block:: bash
 
    # 1. Run analysis
-   python analysis/area.py \
+   LNB-MDT AREA \
        -g cases_lnb/lnb.gro \
        -x cases_lnb/lnb.xtc \
        -o cases_lnb/area_results.csv \
        -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}"
 
    # 2. Generate figure
-   python figure/make_figure.py \
+   LNB-MDT FIGURE \
        -f cases_lnb/area_results.csv \
        -o cases_lnb/area_plot.png \
        --plot-type line
@@ -402,4 +402,7 @@ Notes
 - Output images are saved in PNG format with 300 DPI resolution
 - The tool uses non-interactive matplotlib backend ('Agg') to avoid GUI dependencies
 - All paths are relative to the project root directory
+
+
+
 

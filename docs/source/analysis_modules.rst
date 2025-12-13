@@ -14,11 +14,27 @@ Before running the analysis modules, ensure you have:
 General Usage Pattern
 ---------------------
 
-All analysis modules follow a similar command-line interface pattern. **Run from the project root directory:**
+All analysis modules can be accessed through the unified `LNB-MDT` command:
 
 .. code-block:: bash
 
-   python analysis/<module_name>.py [OPTIONS]
+   LNB-MDT <ANALYSIS_TYPE> [OPTIONS]
+   
+   # Available analysis types:
+   # AREA, DENSITY, SZ, HEIGHT, ANISOTROPY, CLUSTER, GYRATION
+
+**Examples:**
+
+.. code-block:: bash
+
+   # View help for a specific analysis
+   LNB-MDT AREA --help
+   
+   # Run analysis with test data
+   LNB-MDT AREA -test
+   
+   # Run with custom parameters
+   LNB-MDT AREA -g system.gro -x trajectory.xtc -o results.csv
 
 Common options available across most modules:
 
@@ -138,35 +154,38 @@ Calculates the area per lipid using Voronoi tessellation.
 
 .. code-block:: bash
 
-   python analysis/area.py \
-       --gro-file cases_lnb/lnb.gro \
-       --xtc-file cases_lnb/lnb.xtc \
-       --output-csv cases_lnb/area_results.csv \
-       --residues "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
-       --k-value 20 \
-       --max-normal-angle 140
+   LNB-MDT AREA \
+     --gro-file cases_lnb/lnb.gro \
+     --xtc-file cases_lnb/lnb.xtc \
+     --output-csv cases_lnb/area_results.csv \
+     --residues "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
+     --k-value 20 \
+     --max-normal-angle 140
 
 **With parallel processing:**
 
 .. code-block:: bash
 
-   python analysis/area.py \
-       -g cases_lnb/lnb.gro \
-       -x cases_lnb/lnb.xtc \
-       -o cases_lnb/area_results.csv \
-       -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
-       -k 20 \
-       --parallel \
-       -j 4
+   LNB-MDT AREA \
+     -g cases_lnb/lnb.gro \
+     -x cases_lnb/lnb.xtc \
+     -o cases_lnb/area_results.csv \
+     -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
+     -k 20 \
+     --parallel \
+     -j 4
 
 **Single frame analysis (GRO only):**
 
 .. code-block:: bash
 
-   python analysis/area.py \
-       -g cases_lnb/lnb.gro \
-       -o cases_lnb/area_single_frame.csv \
-       -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}"
+   LNB-MDT AREA \
+     -g cases_lnb/lnb.gro \
+     -o cases_lnb/area_single_frame.csv \
+     -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}"
+   
+   # Or use test mode
+   LNB-MDT AREA -test
 
 **Key parameters:**
 
@@ -184,7 +203,7 @@ Calculates the height of lipid molecules relative to a reference plane.
 
 .. code-block:: bash
 
-   python analysis/height.py \
+   LNB-MDT HEIGHT \
        --gro-file cases_lnb/lnb.gro \
        --xtc-file cases_lnb/lnb.xtc \
        --output-csv cases_lnb/height_results.csv \
@@ -197,7 +216,7 @@ Calculates the height of lipid molecules relative to a reference plane.
 
 .. code-block:: bash
 
-   python analysis/height.py \
+   LNB-MDT HEIGHT \
        -g cases_lnb/lnb.gro \
        -x cases_lnb/lnb.xtc \
        -o cases_lnb/height_results.csv \
@@ -205,6 +224,9 @@ Calculates the height of lipid molecules relative to a reference plane.
        -s 0 \
        -e 100 \
        -t 5
+   
+   # Or use test mode
+   LNB-MDT HEIGHT -test
 
 **Note:** To generate plots, use the Python API (see "Plotting and Visualization" section below).
 
@@ -217,7 +239,7 @@ Analyzes lipid clustering based on distance cutoff.
 
 .. code-block:: bash
 
-   python analysis/cluster.py \
+   LNB-MDT CLUSTER \
        --gro-file cases_lnb/lnb.gro \
        --xtc-file cases_lnb/lnb.xtc \
        --output-csv cases_lnb/cluster_results.csv \
@@ -228,7 +250,7 @@ Analyzes lipid clustering based on distance cutoff.
 
 .. code-block:: bash
 
-   python analysis/cluster.py \
+   LNB-MDT CLUSTER \
        -g cases_lnb/lnb.gro \
        -x cases_lnb/lnb.xtc \
        -o cases_lnb/cluster_results.csv \
@@ -236,6 +258,9 @@ Analyzes lipid clustering based on distance cutoff.
        --cutoff 10.0 \
        --parallel \
        -j 8
+   
+   # Or use test mode
+   LNB-MDT CLUSTER -test
 
 **Key parameters:**
 
@@ -252,7 +277,7 @@ Calculates the asphericity/anisotropy of lipid molecules.
 
 .. code-block:: bash
 
-   python analysis/anisotropy.py \
+   LNB-MDT ANISOTROPY \
        --gro-file cases_lnb/lnb.gro \
        --xtc-file cases_lnb/lnb.xtc \
        --output-csv cases_lnb/anisotropy_results.csv \
@@ -262,7 +287,7 @@ Calculates the asphericity/anisotropy of lipid molecules.
 
 .. code-block:: bash
 
-   python analysis/anisotropy.py \
+   LNB-MDT ANISOTROPY \
        -g cases_lnb/lnb.gro \
        -x cases_lnb/lnb.xtc \
        -o cases_lnb/anisotropy_results.csv \
@@ -274,10 +299,13 @@ Calculates the asphericity/anisotropy of lipid molecules.
 
 .. code-block:: bash
 
-   python analysis/anisotropy.py \
+   LNB-MDT ANISOTROPY \
        -g cases_lnb/lnb.gro \
        -o cases_lnb/anisotropy_single_frame.csv \
        -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}"
+   
+   # Or use test mode
+   LNB-MDT ANISOTROPY -test
 
 **Key parameters:**
 
@@ -295,7 +323,7 @@ Calculates the radius of gyration for lipid molecules.
 
 .. code-block:: bash
 
-   python analysis/gyration.py \
+   LNB-MDT GYRATION \
        --gro-file cases_lnb/lnb.gro \
        --xtc-file cases_lnb/lnb.xtc \
        --output-csv cases_lnb/gyration_results.csv \
@@ -305,12 +333,15 @@ Calculates the radius of gyration for lipid molecules.
 
 .. code-block:: bash
 
-   python analysis/gyration.py \
+   LNB-MDT GYRATION \
        -g cases_lnb/lnb.gro \
        -x cases_lnb/lnb.xtc \
        -o cases_lnb/gyration_results.csv \
        -r "{'DPPC': ['PO4'], 'DAPC': ['PO4'], 'CHOL': ['ROH']}" \
        --parallel
+   
+   # Or use test mode
+   LNB-MDT GYRATION -test
 
 **Note:** To generate plots, use the Python API (see "Plotting and Visualization" section below).
 
@@ -323,7 +354,7 @@ Calculates the Sz order parameter for lipid acyl chains.
 
 .. code-block:: bash
 
-   python analysis/sz.py \
+   LNB-MDT SZ \
        --gro-file cases_lnb/lnb.gro \
        --xtc-file cases_lnb/lnb.xtc \
        --output-csv cases_lnb/sz_results.csv \
@@ -335,13 +366,16 @@ Calculates the Sz order parameter for lipid acyl chains.
 
 .. code-block:: bash
 
-   python analysis/sz.py \
+   LNB-MDT SZ \
        -g cases_lnb/lnb.gro \
        -x cases_lnb/lnb.xtc \
        -o cases_lnb/sz_sn1_results.csv \
        -r "{'DPPC': ['PO4'], 'DAPC': ['PO4']}" \
        --chain sn1 \
        -k 15
+   
+   # Or use test mode
+   LNB-MDT SZ -test
 
 **Key parameters:**
 
@@ -359,7 +393,7 @@ Performs density analysis with two methods: single radius (frame) or multi-radiu
 
 .. code-block:: bash
 
-   python analysis/density.py \
+   LNB-MDT DENSITY \
        --method frame \
        --gro-file cases_lnb/lnb.gro \
        --xtc-file cases_lnb/lnb.xtc \
@@ -373,7 +407,7 @@ Performs density analysis with two methods: single radius (frame) or multi-radiu
 
 .. code-block:: bash
 
-   python analysis/density.py \
+   LNB-MDT DENSITY \
        --method radius \
        --gro-file cases_lnb/lnb.gro \
        --xtc-file cases_lnb/lnb.xtc \
@@ -383,6 +417,9 @@ Performs density analysis with two methods: single radius (frame) or multi-radiu
        --max-radius 50.0 \
        --number-segments 5 \
        --MW 32.0
+   
+   # Or use test mode
+   LNB-MDT DENSITY -test
 
 **Key parameters:**
 
@@ -403,7 +440,7 @@ Analyzing a subset of frames:
 
 .. code-block:: bash
 
-   python analysis/area.py \
+   LNB-MDT AREA \
        -g cases_lnb/lnb.gro \
        -x cases_lnb/lnb.xtc \
        -o cases_lnb/area_subset.csv \
@@ -416,7 +453,12 @@ Getting help for any module:
 
 .. code-block:: bash
 
-   python analysis/<module_name>.py --help
+   LNB-MDT <ANALYSIS_TYPE> --help
+   
+   # Examples:
+   LNB-MDT AREA --help
+   LNB-MDT DENSITY --help
+   LNB-MDT SZ --help
 
 Plotting and Visualization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -430,7 +472,7 @@ The ``anisotropy.py`` module supports direct plotting via command-line arguments
 
 .. code-block:: bash
 
-   python analysis/anisotropy.py \
+   LNB-MDT ANISOTROPY \
        -g cases_lnb/lnb.gro \
        -x cases_lnb/lnb.xtc \
        -o cases_lnb/anisotropy_results.csv \

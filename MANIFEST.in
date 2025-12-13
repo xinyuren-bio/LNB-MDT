@@ -1,0 +1,31 @@
+include README.md
+include LICENSE
+include requirements.txt
+include setup.py
+include MANIFEST.in
+include .readthedocs.yaml
+
+# Include documentation source files
+recursive-include docs/source *.rst
+recursive-include docs/source *.py
+recursive-include docs/source *.css
+recursive-include docs/source *.js
+recursive-include docs/source *.yaml
+recursive-include docs *.md
+recursive-include docs *.sh
+recursive-include docs *.bat
+recursive-include docs Makefile
+
+# Include package data files
+recursive-include LNB_MDT *.mdp
+recursive-include LNB_MDT *.itp
+recursive-include LNB_MDT *.tcl
+recursive-include LNB_MDT *.ico
+recursive-include LNB_MDT *.ini
+recursive-include LNB_MDT *.ui
+recursive-include LNB_MDT *.qrc
+recursive-include LNB_MDT *.png
+recursive-include LNB_MDT *.qss
+recursive-include LNB_MDT *.sh
+
+

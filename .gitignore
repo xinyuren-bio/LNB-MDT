@@ -1,17 +1,49 @@
+# Python
 __pycache__/
-.git/
-.pyc.venv/
-.idea/
-__pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
 .venv/
+venv/
+ENV/
+env/
+.pyc.venv/
+
+# Setuptools / Distribution
+build/
+dist/
+*.egg-info/
+LNB_MDT.egg-info/
+lnb_mdt.egg-info/
+.eggs/
+*.egg
+
+# IDE
 .idea/
-__pycache__/
-*.pyc
+.vscode/
+*.swp
+*.swo
+*~
+
+# Documentation builds
 docs/build/
+docs/docs/
+
+# Test and development
+test_outputs/
 benchmark/
 cases/
-test_outputs/
 k_test/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
 _setup_.py
 ./main.ui
+./preparation/lnb_gener_martini3.py.backup
+./scripts/

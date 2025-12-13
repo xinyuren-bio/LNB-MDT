@@ -8,7 +8,24 @@ Configure VMD Path
 
 First-time use of LNB-MDT requires configuring the VMD path. VMD is used for molecular visualization and trajectory analysis.
 
-1. **Edit Configuration File**
+1. **Configure VMD Path Using Command Line (Recommended)**
+   
+   Use the built-in VMD configuration command:
+
+.. code:: bash
+
+   LNB-MDT VMD --path /path/to/vmd
+   
+   # Example for macOS
+   LNB-MDT VMD --path /Applications/VMD.app/Contents/MacOS/VMD
+   
+   # Example for Linux
+   LNB-MDT VMD --path /usr/local/bin/vmd
+   
+   # Example for Windows
+   LNB-MDT VMD --path "C:/Program Files/VMD/vmd.exe"
+
+2. **Or Edit Configuration File Manually**
    
    Open the `config.ini` file in the project root directory and modify `vmd_path` to your actual VMD installation path:
 
@@ -19,9 +36,13 @@ First-time use of LNB-MDT requires configuring the VMD path. VMD is used for mol
    macOS:   /Applications/VMD.app/Contents/vmd/vmd_MACOSXARM64
    Linux:   /usr/local/bin/vmd
 
-2. **Save and Restart**
+3. **Verify Configuration**
    
-   Save the configuration file and restart the program.
+   Check if VMD path is correctly configured:
+
+.. code:: bash
+
+   LNB-MDT VMD
 
 Starting the Program
 --------------------
@@ -31,13 +52,13 @@ Graphical Interface Launch
 
 Using the graphical interface is the easiest way to start using LNB-MDT:
 
-.. code:: python
+.. code:: bash
 
-   # Activate environment
-   conda activate LNB-MDT
+   # Launch GUI (after installation)
+   LNB-MDT UI
    
-   # Start main program
-   python main.py
+   # Or simply (UI is the default)
+   LNB-MDT
 
 After launching, you will see the LNB-MDT main interface with four functional modules: Generation, Analysis, Figure, and VMD modules. For detailed information about these modules, see the main Features section on the homepage.
 
@@ -46,13 +67,13 @@ Command Line Launch
 
 For batch processing and automated analysis, you can use command-line tools:
 
-.. code:: python
+.. code:: bash
 
-   # Activate environment
-   conda activate LNB-MDT
-   
    # View help information
-   python analysis/area.py --help
+   LNB-MDT --help
+   
+   # View help for specific analysis
+   LNB-MDT AREA --help
 
 Basic Analysis Workflow
 -----------------------
@@ -138,12 +159,12 @@ LNB-MDT supports simplified command-line parameter input, making it easier to us
    # Traditional dictionary format (still supported)
    -r "{'DPPC': ['PO4'], 'CHOL': ['ROH']}"
 
-**Traditional approach (still supported):**
+**Using LNB-MDT command (recommended):**
 
-.. code-block:: python
+.. code-block:: bash
 
-   # Gyration analysis example
-   python analysis/gyration.py \
+   # Gyration analysis example with full parameters
+   LNB-MDT GYRATION \
      --gro-file cases/lnb.gro \
      --xtc-file cases/md.xtc \
      --output-csv results/gyration_results.csv \
@@ -151,18 +172,21 @@ LNB-MDT supports simplified command-line parameter input, making it easier to us
      --parallel \
      --verbose
 
-**New simplified approach (recommended):**
+**Simplified approach with short parameters:**
 
-.. code-block:: python
+.. code-block:: bash
 
    # Using short parameters and simple format
-   python analysis/gyration.py \
+   LNB-MDT GYRATION \
      -g cases/lnb.gro \
      -x cases/md.xtc \
      -o results/gyration_results.csv \
      -r DPPC:PO4 \
      -p \
      -v
+   
+   # Or use test mode for quick testing
+   LNB-MDT GYRATION -test
 
 Viewing Results
 ~~~~~~~~~~~~~~~
