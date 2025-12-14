@@ -45,7 +45,7 @@ Thumbs.db
 # Project specific
 _setup_.py
 ./main.ui
-./scripts
+scripts/
 
 # backup files
 *.backup
