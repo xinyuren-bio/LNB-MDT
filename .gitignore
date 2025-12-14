@@ -49,5 +49,5 @@ _setup_.py
 
 # backup files
 *.backup
-./preparation/lnb_gener_martini2.py
-./preparation/lipidsInfo_martini2.py
+LNB_MDT/preparation/lnb_gener_martini2.py
+LNB_MDT/preparation/lipidsInfo_martini2.py
