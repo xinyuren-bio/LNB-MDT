@@ -45,5 +45,9 @@ Thumbs.db
 # Project specific
 _setup_.py
 ./main.ui
-./preparation/lnb_gener_martini3.py.backup
 ./scripts
+
+# backup files
+*.backup
+./preparation/lnb_gener_martini2.py
+./preparation/lipidsInfo_martini2.py
