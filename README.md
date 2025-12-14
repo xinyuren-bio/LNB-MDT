@@ -36,7 +36,7 @@ conda activate LNB-MDT
 pip install -e .
 ```
 
-**Note:** For editable installation, you need Python 3.7+ and pip. Using conda is recommended for managing dependencies.
+**Note:** For editable installation, you need Python 3.10+ and pip. Using conda is recommended for managing dependencies.
 
 ### Verify Installation
 
