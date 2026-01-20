@@ -4,24 +4,6 @@
 
 **LNB-MDT** (Lipid NanoBubble Molecular Dynamics Toolkit) is a comprehensive toolkit designed for molecular dynamics simulations of lipid nanobubbles.
 
-## Citation
-
-If you use LNB-MDT in your research, please cite our paper:
-
-```bibtex
-@article{ren2025lnb,
-   author = {Xinyu Ren and Xubo Lin},
-   title = {LNB-MDT: An Integrated Python Toolkit for Preparing and Analyzing Lipid Nanobubble Simulations},
-   journal = {Journal of Chemical Information and Modeling},
-   volume = {66},
-   number = {1},
-   year = {2025},
-   month = {December},
-   doi = {10.1021/acs.jcim.5c02771},
-   URL = {https://pubs.acs.org/doi/10.1021/acs.jcim.5c02771},
-}
-```
-
 ## Installation
 
 ### Method 1: Install from PyPI (Recommended)
@@ -127,6 +109,24 @@ LNB-MDT/
     ├── lnb.gro           # Example topology file (Martini 3.0, DPPC:DAPC:CHOL=5:3:2)
     ├── lnb.xtc           # Example trajectory file (50-60 ns time window)
     └── README.md         # Example data description
+```
+
+## Citation
+
+If you use LNB-MDT in your research, please cite our paper:
+
+```bibtex
+@article{ren2025lnb,
+   author = {Xinyu Ren and Xubo Lin},
+   title = {LNB-MDT: An Integrated Python Toolkit for Preparing and Analyzing Lipid Nanobubble Simulations},
+   journal = {Journal of Chemical Information and Modeling},
+   volume = {66},
+   number = {1},
+   year = {2025},
+   month = {December},
+   doi = {10.1021/acs.jcim.5c02771},
+   URL = {https://pubs.acs.org/doi/10.1021/acs.jcim.5c02771},
+}
 ```
 
 ## License
